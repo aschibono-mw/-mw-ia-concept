@@ -111,14 +111,18 @@ export const Header = () => {
               </div>
               <div className="max-h-96 overflow-y-auto">
                 {alertsData.map((alert, index) => (
-                  <div key={index} className="p-4 border-b border-border hover:bg-muted/50 cursor-pointer">
-                    <div className="flex flex-col items-center text-center">
-                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mb-2">
-                        <TrendingUp className="w-5 h-5 text-green-600" />
+                  <div key={index} className="px-3 py-2 border-b border-border hover:bg-muted/50 cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                        <TrendingUp className="w-4 h-4 text-green-600" />
                       </div>
-                      <span className="text-sm font-medium">{alert.type}</span>
-                      <span className="text-xs text-muted-foreground mb-2">{alert.source}</span>
-                      <p className="text-sm font-semibold">{alert.description}</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium">{alert.type}</span>
+                          <span className="text-xs text-muted-foreground">· {alert.source}</span>
+                        </div>
+                        <p className="text-sm text-foreground truncate">{alert.description}</p>
+                      </div>
                     </div>
                   </div>
                 ))}
