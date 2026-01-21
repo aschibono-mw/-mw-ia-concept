@@ -4,9 +4,19 @@ import { Input } from "@/components/ui/input";
 
 export const Header = () => {
   return (
-    <header className="h-16 bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 fixed top-0 left-52 right-0 z-10">
+    <header className="h-16 bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-10">
+      {/* Logo */}
+      <div className="flex items-center gap-2 min-w-[200px]">
+        <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 text-primary-foreground" fill="currentColor">
+            <path d="M12 4L4 8l8 4 8-4-8-4zM4 12l8 4 8-4M4 16l8 4 8-4" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <span className="text-lg font-semibold text-foreground">Meltwater</span>
+      </div>
+
       {/* Search Bar */}
-      <div className="relative w-80">
+      <div className="relative w-80 flex-shrink-0">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
           type="text"
@@ -16,7 +26,7 @@ export const Header = () => {
       </div>
 
       {/* Right Actions */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 min-w-[200px] justify-end">
         <Button variant="outline" className="gap-2 rounded-full px-4">
           Create
           <ChevronDown className="w-4 h-4" />

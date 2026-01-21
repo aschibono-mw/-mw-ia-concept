@@ -17,17 +17,7 @@ const navItems: NavItem[] = [
 
 export const Sidebar = () => {
   return (
-    <aside className="w-52 bg-sidebar border-r border-sidebar-border flex flex-col h-screen fixed left-0 top-0">
-      {/* Logo */}
-      <div className="p-4 flex items-center gap-2">
-        <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-primary-foreground" fill="currentColor">
-            <path d="M12 4L4 8l8 4 8-4-8-4zM4 12l8 4 8-4M4 16l8 4 8-4" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-        <span className="text-lg font-semibold text-foreground">Meltwater</span>
-      </div>
-
+    <aside className="w-52 bg-sidebar border-r border-sidebar-border flex flex-col h-screen fixed left-0 top-16">
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4">
         <ul className="space-y-1">
