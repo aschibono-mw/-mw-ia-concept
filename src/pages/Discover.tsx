@@ -131,7 +131,7 @@ const Discover = () => {
               
               {isSearchExpanded && (
                 <div className="mt-4 pt-4 border-t border-border">
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="text-sm text-foreground mb-4">
                     Enter a keyword. We'll guide you from a single keyword to a fully formed boolean search.
                   </p>
                   <div className="flex gap-3">
