@@ -95,14 +95,7 @@ export const Header = () => {
                 </div>
               </div>
               
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger className="cursor-pointer">
-                  Account
-                </DropdownMenuSubTrigger>
-                <DropdownMenuSubContent className="w-40 bg-card">
-                  <DropdownMenuItem className="cursor-pointer">Jackalope St...</DropdownMenuItem>
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
+              <DropdownMenuItem className="cursor-pointer">Account</DropdownMenuItem>
               
               <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
               
