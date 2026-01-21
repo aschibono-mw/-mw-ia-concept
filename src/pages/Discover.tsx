@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { Search, ChevronDown, Star, MoreVertical, Plus } from "lucide-react";
+import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 
 interface SearchItem {
   id: number;
@@ -45,6 +46,8 @@ const Discover = () => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [sortField, setSortField] = useState<SortField>('lastEdited');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState('');
 
   const toggleItem = (id: number) => {
     setSelectedItems(prev => 
@@ -103,14 +106,42 @@ const Discover = () => {
             </div>
 
             {/* Build a new search */}
-            <div className="bg-card rounded-lg border border-border p-4 mb-6">
-              <button className="w-full flex items-center justify-between text-left">
+            <div className="bg-muted/50 rounded-lg border border-border p-4 mb-6">
+              <button 
+                className="w-full flex items-center justify-between text-left"
+                onClick={() => setIsSearchExpanded(!isSearchExpanded)}
+              >
                 <div className="flex items-center gap-3">
                   <Search className="w-5 h-5 text-muted-foreground" />
                   <span className="font-semibold text-card-foreground">Build a new search</span>
                 </div>
-                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                {isSearchExpanded ? (
+                  <ChevronUp className="w-4 h-4 text-foreground" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                )}
               </button>
+              
+              {isSearchExpanded && (
+                <div className="mt-4 pt-4 border-t border-border">
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Enter a keyword. We'll guide you from a single keyword to a fully formed boolean search.
+                  </p>
+                  <div className="flex gap-3">
+                    <Input 
+                      type="text"
+                      placeholder="Enter a keyword to get started"
+                      value={searchKeyword}
+                      onChange={(e) => setSearchKeyword(e.target.value)}
+                      className="flex-1 bg-white border-border"
+                    />
+                    <button className="flex items-center gap-2 px-4 py-2 bg-white border border-border rounded-md text-sm font-medium text-foreground hover:bg-gray-100">
+                      Search Mode
+                      <ChevronDown className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="flex gap-6 items-start">
