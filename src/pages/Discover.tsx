@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus } from "lucide-react";
+import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, FileText, Pencil } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import {
@@ -375,7 +375,7 @@ const Discover = () => {
               </div>
 
               {/* Categories Sidebar */}
-              <div className="w-64 sticky top-20">
+              <div className="w-64 sticky top-20 space-y-4">
                 <div className="bg-card rounded-lg border border-border p-4">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold text-card-foreground">Categories</h3>
@@ -395,6 +395,58 @@ const Discover = () => {
                       </li>
                     ))}
                   </ul>
+                </div>
+
+                {/* Recents */}
+                <div className="bg-card rounded-lg border border-border p-4">
+                  <h3 className="font-semibold text-card-foreground mb-3">Recents</h3>
+                  <ul className="space-y-2">
+                    {[
+                      { icon: <Search className="w-4 h-4 text-muted-foreground" />, label: "Brand + Earnings Risk" },
+                      { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Weekly Brand Health" },
+                      { icon: <FileText className="w-4 h-4 text-muted-foreground" />, label: "The Daily Media Brief" },
+                      { icon: <Search className="w-4 h-4 text-muted-foreground" />, label: "Competitor Analysis" },
+                      { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Market Trends Q1" },
+                    ].map((item, index) => (
+                      <li key={index} className="flex items-center gap-2 py-1.5">
+                        {item.icon}
+                        <span className="flex-1 text-sm text-card-foreground truncate cursor-pointer underline hover:text-primary">
+                          {item.label}
+                        </span>
+                        <Pencil className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground cursor-pointer" />
+                      </li>
+                    ))}
+                  </ul>
+                  <button className="flex items-center justify-center gap-1 w-full mt-3 text-sm text-muted-foreground hover:text-foreground">
+                    Show more
+                    <ChevronDown className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Favorites */}
+                <div className="bg-card rounded-lg border border-border p-4">
+                  <h3 className="font-semibold text-card-foreground mb-3">Favorites</h3>
+                  <ul className="space-y-2">
+                    {[
+                      { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Executive Visibility" },
+                      { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Crisis Watch" },
+                      { icon: <FileText className="w-4 h-4 text-muted-foreground" />, label: "The Daily Media Brief" },
+                      { icon: <Search className="w-4 h-4 text-muted-foreground" />, label: "Industry Insights" },
+                      { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Media Coverage Report" },
+                    ].map((item, index) => (
+                      <li key={index} className="flex items-center gap-2 py-1.5">
+                        {item.icon}
+                        <span className="flex-1 text-sm text-card-foreground truncate cursor-pointer underline hover:text-primary">
+                          {item.label}
+                        </span>
+                        <Star className="w-3.5 h-3.5 text-primary fill-primary" />
+                      </li>
+                    ))}
+                  </ul>
+                  <button className="flex items-center justify-center gap-1 w-full mt-3 text-sm text-muted-foreground hover:text-foreground">
+                    Show more
+                    <ChevronDown className="w-4 h-4" />
+                  </button>
                 </div>
 
                 {/* Add Category Dialog */}
