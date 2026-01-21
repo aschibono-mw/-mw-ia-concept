@@ -30,19 +30,21 @@ export const WelcomeBanner = () => {
   return (
     <div className="mb-6">
       <h1 className="text-2xl font-semibold text-foreground mb-2">Good morning, John</h1>
-      <div className="h-6 overflow-hidden">
-        <div
-          className={`flex items-center gap-2 text-sm text-muted-foreground transition-all duration-300 ${
-            isAnimating ? "opacity-0 -translate-y-2" : "opacity-100 translate-y-0"
-          }`}
-        >
-          <Sparkles className="w-4 h-4 flex-shrink-0" />
-          <span>
-            {currentInsight.text}
-            <a href="#" className="ml-1 font-semibold text-foreground underline hover:text-primary">
-              {currentInsight.link}
-            </a>
-          </span>
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <Sparkles className="w-4 h-4 flex-shrink-0" />
+        <div className="h-5 overflow-hidden">
+          <div
+            className={`transition-all duration-300 ${
+              isAnimating ? "opacity-0 -translate-y-2" : "opacity-100 translate-y-0"
+            }`}
+          >
+            <span>
+              {currentInsight.text}
+              <a href="#" className="ml-1 font-semibold text-foreground underline hover:text-primary">
+                {currentInsight.link}
+              </a>
+            </span>
+          </div>
         </div>
       </div>
     </div>
