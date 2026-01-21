@@ -109,15 +109,15 @@ const Discover = () => {
                           onCheckedChange={toggleAll}
                         />
                       </th>
-                      <th className="p-4 text-xs font-bold text-muted-foreground">Name</th>
-                      <th className="p-4 text-xs font-bold text-muted-foreground">Category</th>
-                      <th className="p-4 text-xs font-bold text-muted-foreground">
+                      <th className="p-4 text-sm font-bold text-foreground">Name</th>
+                      <th className="p-4 text-sm font-bold text-foreground">Category</th>
+                      <th className="p-4 text-sm font-bold text-foreground">
                         <button className="flex items-center gap-1">
                           Last edited
                           <ChevronDown className="w-3 h-3" />
                         </button>
                       </th>
-                      <th className="p-4 text-xs font-bold text-muted-foreground">Owner</th>
+                      <th className="p-4 text-sm font-bold text-foreground">Owner</th>
                       <th className="p-4 w-20"></th>
                     </tr>
                   </thead>
