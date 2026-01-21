@@ -27,7 +27,7 @@ export const Sidebar = () => {
                 className={cn(
                   "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                   item.active
-                    ? "text-sidebar-primary bg-sidebar-accent"
+                    ? "text-foreground bg-sidebar-accent"
                     : "text-sidebar-foreground hover:bg-sidebar-accent/50"
                 )}
               >
