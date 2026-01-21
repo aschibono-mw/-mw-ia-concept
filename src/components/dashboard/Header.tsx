@@ -28,21 +28,21 @@ export const Header = () => {
           <ChevronDown className="w-4 h-4" />
         </Button>
 
-        <div className="flex items-center gap-1">
-          <button className="w-9 h-9 rounded-full bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors">
-            <Wand2 className="w-[18px] h-[18px]" />
+        <div className="flex items-center gap-2 ml-1">
+          <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+            <Wand2 className="w-5 h-5" />
           </button>
-          <button className="w-9 h-9 rounded-full bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors">
-            <LayoutGrid className="w-[18px] h-[18px]" />
+          <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+            <LayoutGrid className="w-5 h-5" />
           </button>
-          <button className="w-9 h-9 rounded-full bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors">
-            <Bell className="w-[18px] h-[18px]" />
+          <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+            <Bell className="w-5 h-5" />
           </button>
-          <button className="w-9 h-9 rounded-full bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors">
-            <HelpCircle className="w-[18px] h-[18px]" />
+          <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+            <HelpCircle className="w-5 h-5" />
           </button>
-          <button className="w-9 h-9 rounded-full bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors">
-            <User className="w-[18px] h-[18px]" />
+          <button className="w-11 h-11 rounded-full border-2 border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+            <User className="w-5 h-5" />
           </button>
         </div>
       </div>
