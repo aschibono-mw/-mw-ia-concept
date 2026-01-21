@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, PieChart, Mail, Newspaper, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,7 @@ const createMenuItems = [
 ];
 
 export const Header = () => {
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   return (
     <header className="h-16 bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-10">
       {/* Logo */}
@@ -38,9 +40,12 @@ export const Header = () => {
 
       {/* Right Actions */}
       <div className="flex items-center gap-3 min-w-[200px] justify-end">
-        <DropdownMenu>
+        <DropdownMenu open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="gap-2 rounded-full px-5 h-10 border-border bg-white hover:bg-gray-100 hover:text-foreground">
+            <Button 
+              variant="outline" 
+              className={`gap-2 rounded-full px-5 h-10 border-border bg-white hover:bg-gray-100 hover:text-foreground ${isCreateOpen ? 'bg-gray-100' : ''}`}
+            >
               Create
               <ChevronDown className="w-4 h-4" />
             </Button>
