@@ -218,7 +218,7 @@ const Discover = () => {
                   <ul className="space-y-2">
                     {categories.map((category) => (
                       <li key={category.name}>
-                        <button className="text-sm text-foreground hover:text-primary hover:underline cursor-pointer">
+                        <button className="text-sm text-foreground underline hover:text-primary cursor-pointer">
                           {category.name} ({category.count})
                         </button>
                       </li>
