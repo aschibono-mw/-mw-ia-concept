@@ -78,7 +78,7 @@ const Discover = () => {
               <button className="w-full flex items-center justify-between text-left">
                 <div className="flex items-center gap-3">
                   <Search className="w-5 h-5 text-muted-foreground" />
-                  <span className="text-sm font-medium text-card-foreground">Build a new search</span>
+                  <span className="font-semibold text-card-foreground">Build a new search</span>
                 </div>
                 <ChevronDown className="w-4 h-4 text-muted-foreground" />
               </button>
@@ -89,7 +89,7 @@ const Discover = () => {
               <div className="flex-1 bg-card rounded-lg border border-border">
                 {/* Table Header Controls */}
                 <div className="flex items-center justify-between p-4 border-b border-border">
-                  <button className="flex items-center gap-1 text-sm font-medium text-card-foreground">
+                  <button className="flex items-center gap-1 font-semibold text-card-foreground">
                     Recent
                     <ChevronDown className="w-4 h-4" />
                   </button>
