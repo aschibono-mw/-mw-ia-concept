@@ -23,7 +23,7 @@ export const Header = () => {
 
       {/* Right Actions */}
       <div className="flex items-center gap-3 min-w-[200px] justify-end">
-        <Button variant="outline" className="gap-2 rounded-full px-5 h-10 border-border">
+        <Button variant="outline" className="gap-2 rounded-full px-5 h-10 border-border bg-background">
           Create
           <ChevronDown className="w-4 h-4" />
         </Button>
