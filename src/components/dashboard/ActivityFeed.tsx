@@ -247,7 +247,7 @@ export const ActivityFeed = () => {
   return (
     <div className="bg-card rounded-lg border border-border p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 pb-4 border-b border-border">
         <h2 className="text-lg font-semibold text-card-foreground">What's happening now</h2>
         <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           Last 7 days
