@@ -11,11 +11,10 @@ const Index = () => {
       <Header />
       
       <main className="ml-52 pt-16">
-        <div className="p-6 max-w-6xl mx-auto">
-          <WelcomeBanner />
-          
-          <div className="flex gap-6 justify-center">
+        <div className="p-6 flex flex-col items-center">
+          <div className="w-full flex gap-6 justify-center">
             <div className="flex-1 max-w-3xl">
+              <WelcomeBanner />
               <ActivityFeed />
             </div>
             <RightPanel />
