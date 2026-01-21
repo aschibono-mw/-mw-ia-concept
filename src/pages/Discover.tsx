@@ -4,6 +4,12 @@ import { Header } from "@/components/dashboard/Header";
 import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface SearchItem {
   id: number;
@@ -48,6 +54,7 @@ const Discover = () => {
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchMode, setSearchMode] = useState('Single Keyword');
 
   const toggleItem = (id: number) => {
     setSelectedItems(prev => 
@@ -135,10 +142,25 @@ const Discover = () => {
                       onChange={(e) => setSearchKeyword(e.target.value)}
                       className="flex-1 bg-white border-border"
                     />
-                    <button className="flex items-center gap-2 px-4 py-2 bg-white border border-border rounded-md text-sm font-medium text-foreground hover:bg-gray-100">
-                      Search Mode
-                      <ChevronDown className="w-4 h-4" />
-                    </button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="flex items-center gap-2 px-4 py-2 bg-white border border-border rounded-md text-sm font-medium text-foreground hover:bg-muted whitespace-nowrap">
+                          {searchMode}
+                          <ChevronDown className="w-4 h-4" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="bg-card">
+                        <DropdownMenuItem onClick={() => setSearchMode('Single Keyword')}>
+                          Single Keyword
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setSearchMode('Advanced Boolean')}>
+                          Advanced Boolean
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setSearchMode('AI Assisted')}>
+                          AI Assisted
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
               )}
