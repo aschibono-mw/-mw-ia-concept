@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, Newspaper, AlertCircle, Settings, ShieldCheck, LogOut } from "lucide-react";
+import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, Newspaper, AlertCircle, Settings, ShieldCheck, LogOut, TrendingUp, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,6 +21,34 @@ const createMenuItems = [
   { icon: Mail, label: "Outreach" },
   { icon: Newspaper, label: "Newsletter" },
   { icon: AlertCircle, label: "Alert" },
+];
+
+const alertsData = [
+  {
+    type: "Spike Detection",
+    source: "Industry News Search",
+    description: "Spike Detected: Surge in Discussions on AI Market Trends"
+  },
+  {
+    type: "Spike Detection",
+    source: "Competitor Monitoring",
+    description: "Spike Detected: Increased Mentions of Product Launch"
+  },
+  {
+    type: "Spike Detection",
+    source: "Brand Mentions",
+    description: "Spike Detected: Social Media Buzz Around Campaign"
+  },
+  {
+    type: "Spike Detection",
+    source: "Crisis Watch",
+    description: "Spike Detected: Rising Sentiment on Customer Feedback"
+  },
+  {
+    type: "Spike Detection",
+    source: "Market Analysis",
+    description: "Spike Detected: Trending Topics in Tech Industry"
+  }
 ];
 
 export const Header = () => {
@@ -71,9 +99,41 @@ export const Header = () => {
           <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
             <LayoutGrid className="w-5 h-5" />
           </button>
-          <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
-            <Bell className="w-5 h-5" />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                <Bell className="w-5 h-5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-80 bg-card p-0">
+              <div className="p-3 border-b border-border">
+                <h3 className="font-semibold text-sm">Alerts</h3>
+              </div>
+              <div className="max-h-96 overflow-y-auto">
+                {alertsData.map((alert, index) => (
+                  <div key={index} className="p-4 border-b border-border hover:bg-muted/50 cursor-pointer">
+                    <div className="flex flex-col items-center text-center">
+                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mb-2">
+                        <TrendingUp className="w-5 h-5 text-green-600" />
+                      </div>
+                      <span className="text-sm font-medium">{alert.type}</span>
+                      <span className="text-xs text-muted-foreground mb-2">{alert.source}</span>
+                      <p className="text-sm font-semibold">{alert.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="p-2 border-t border-border">
+                <DropdownMenuItem className="cursor-pointer justify-center">
+                  View More
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer justify-center text-primary">
+                  <Plus className="w-4 h-4 mr-1" />
+                  Create Alert
+                </DropdownMenuItem>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
             <HelpCircle className="w-5 h-5" />
           </button>
