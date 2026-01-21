@@ -106,7 +106,7 @@ const Discover = () => {
             </div>
 
             {/* Build a new search */}
-            <div className="bg-muted/50 rounded-lg border border-border p-4 mb-6">
+            <div className="bg-card rounded-lg border border-border p-4 mb-6">
               <button 
                 className="w-full flex items-center justify-between text-left"
                 onClick={() => setIsSearchExpanded(!isSearchExpanded)}
