@@ -52,8 +52,8 @@ export const Header = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 bg-card border border-border shadow-lg z-50">
             {createMenuItems.map((item) => (
-              <DropdownMenuItem key={item.label} className="cursor-pointer">
-                <item.icon className="w-4 h-4 mr-2 text-muted-foreground" />
+              <DropdownMenuItem key={item.label} className="cursor-pointer group">
+                <item.icon className="w-4 h-4 mr-2 text-muted-foreground group-hover:text-white" />
                 {item.label}
               </DropdownMenuItem>
             ))}
