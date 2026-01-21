@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, PieChart, Mail, Newspaper, AlertCircle } from "lucide-react";
+import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, Newspaper, AlertCircle, Settings, ShieldCheck, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -7,6 +7,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import meltwaterLogo from "@/assets/meltwater-logo.png";
 
@@ -73,9 +77,54 @@ export const Header = () => {
           <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
             <HelpCircle className="w-5 h-5" />
           </button>
-          <button className="w-11 h-11 rounded-full border-2 border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
-            <User className="w-5 h-5" />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="w-11 h-11 rounded-full border-2 border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
+                <User className="w-5 h-5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56 bg-card">
+              {/* User Info */}
+              <div className="flex items-center gap-3 p-3 border-b border-border">
+                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                  <User className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-medium text-sm">Tony Schibono</span>
+                  <span className="text-xs text-muted-foreground">tony.schibono@meltwater.com</span>
+                </div>
+              </div>
+              
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger className="cursor-pointer">
+                  Account
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent className="w-40 bg-card">
+                  <DropdownMenuItem className="cursor-pointer">Jackalope St...</DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              
+              <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
+              
+              <DropdownMenuSeparator />
+              
+              <DropdownMenuItem className="cursor-pointer">
+                <Settings className="w-4 h-4 mr-2" />
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <ShieldCheck className="w-4 h-4 mr-2" />
+                Admin
+              </DropdownMenuItem>
+              
+              <DropdownMenuSeparator />
+              
+              <DropdownMenuItem className="cursor-pointer text-destructive">
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>
