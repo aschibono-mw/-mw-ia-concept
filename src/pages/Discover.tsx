@@ -243,10 +243,22 @@ const Discover = () => {
               <div className="flex-1 bg-card rounded-lg border border-border">
                 {/* Table Header Controls */}
                 <div className="flex items-center justify-between p-4 border-b border-border">
-                  <button className="flex items-center gap-1 font-semibold text-card-foreground">
-                    Recent
-                    <ChevronDown className="w-4 h-4" />
-                  </button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="flex items-center gap-1 font-semibold text-card-foreground hover:text-primary">
+                        Recent
+                        <ChevronDown className="w-4 h-4" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-48 bg-card">
+                      <DropdownMenuItem className="cursor-pointer">Favorites</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">Most Used</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">Created by Me</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">Shared with Me</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">Alphabetical (A-Z)</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">Last Edited</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                   <button className="flex items-center gap-1 text-sm text-muted-foreground">
                     Owner: Anyone
                     <ChevronDown className="w-4 h-4" />
