@@ -12,12 +12,14 @@ const Index = () => {
       
       <main className="ml-52 pt-16">
         <div className="p-6 flex flex-col items-center">
-          <div className="w-full flex gap-6 justify-center">
-            <div className="flex-1 max-w-3xl">
-              <WelcomeBanner />
-              <ActivityFeed />
+          <div className="w-full max-w-[1100px]">
+            <WelcomeBanner />
+            <div className="flex gap-6">
+              <div className="flex-1 max-w-3xl">
+                <ActivityFeed />
+              </div>
+              <RightPanel />
             </div>
-            <RightPanel />
           </div>
         </div>
       </main>
