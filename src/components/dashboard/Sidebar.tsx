@@ -37,13 +37,6 @@ export const Sidebar = () => {
             </li>
           ))}
         </ul>
-
-        {/* Promotional Space */}
-        <div className="mt-8 pt-8 border-t border-sidebar-border">
-          <p className="px-3 text-xs text-sidebar-muted font-medium uppercase tracking-wider">
-            Promotional Space
-          </p>
-        </div>
       </nav>
     </aside>
   );
