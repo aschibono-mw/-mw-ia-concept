@@ -38,8 +38,13 @@ const categories = [
   { name: "Crisis", count: 1 },
 ];
 
+type SortField = 'name' | 'category' | 'lastEdited' | 'owner';
+type SortDirection = 'asc' | 'desc';
+
 const Discover = () => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [sortField, setSortField] = useState<SortField>('lastEdited');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 
   const toggleItem = (id: number) => {
     setSelectedItems(prev => 
@@ -48,12 +53,36 @@ const Discover = () => {
   };
 
   const toggleAll = () => {
-    if (selectedItems.length === searchItems.length) {
+    if (selectedItems.length === sortedItems.length) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(searchItems.map(item => item.id));
+      setSelectedItems(sortedItems.map(item => item.id));
     }
   };
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedItems = [...searchItems].sort((a, b) => {
+    let comparison = 0;
+    if (sortField === 'name') {
+      comparison = a.name.localeCompare(b.name);
+    } else if (sortField === 'category') {
+      comparison = a.category.localeCompare(b.category);
+    } else if (sortField === 'owner') {
+      comparison = a.owner.localeCompare(b.owner);
+    } else if (sortField === 'lastEdited') {
+      // Simple string comparison for demo - in real app would parse dates
+      comparison = a.lastEdited.localeCompare(b.lastEdited);
+    }
+    return sortDirection === 'asc' ? comparison : -comparison;
+  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -109,20 +138,35 @@ const Discover = () => {
                           onCheckedChange={toggleAll}
                         />
                       </th>
-                      <th className="p-4 text-sm font-bold text-foreground">Name</th>
-                      <th className="p-4 text-sm font-bold text-foreground">Category</th>
                       <th className="p-4 text-sm font-bold text-foreground">
-                        <button className="flex items-center gap-1">
-                          Last edited
-                          <ChevronDown className="w-3 h-3" />
+                        <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('name')}>
+                          Name
+                          {sortField === 'name' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
                         </button>
                       </th>
-                      <th className="p-4 text-sm font-bold text-foreground">Owner</th>
+                      <th className="p-4 text-sm font-bold text-foreground">
+                        <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('category')}>
+                          Category
+                          {sortField === 'category' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                        </button>
+                      </th>
+                      <th className="p-4 text-sm font-bold text-foreground">
+                        <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('lastEdited')}>
+                          Last edited
+                          {sortField === 'lastEdited' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                        </button>
+                      </th>
+                      <th className="p-4 text-sm font-bold text-foreground">
+                        <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('owner')}>
+                          Owner
+                          {sortField === 'owner' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                        </button>
+                      </th>
                       <th className="p-4 w-20"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {searchItems.map((item) => (
+                    {sortedItems.map((item) => (
                       <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
                         <td className="p-4">
                           <Checkbox 
