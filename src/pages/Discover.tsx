@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, FileText, Pencil } from "lucide-react";
+import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, FileText } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import {
@@ -397,32 +397,6 @@ const Discover = () => {
                   </ul>
                 </div>
 
-                {/* Recents */}
-                <div className="bg-card rounded-lg border border-border p-4">
-                  <h3 className="font-semibold text-card-foreground mb-3">Recents</h3>
-                  <ul className="space-y-2">
-                    {[
-                      { icon: <Search className="w-4 h-4 text-muted-foreground" />, label: "Brand + Earnings Risk" },
-                      { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Weekly Brand Health" },
-                      { icon: <FileText className="w-4 h-4 text-muted-foreground" />, label: "The Daily Media Brief" },
-                      { icon: <Search className="w-4 h-4 text-muted-foreground" />, label: "Competitor Analysis" },
-                      { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Market Trends Q1" },
-                    ].map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 py-1.5">
-                        {item.icon}
-                        <span className="flex-1 text-sm text-card-foreground truncate cursor-pointer underline hover:text-primary">
-                          {item.label}
-                        </span>
-                        <Pencil className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground cursor-pointer" />
-                      </li>
-                    ))}
-                  </ul>
-                  <button className="flex items-center justify-center gap-1 w-full mt-3 text-sm text-muted-foreground hover:text-foreground">
-                    Show more
-                    <ChevronDown className="w-4 h-4" />
-                  </button>
-                </div>
-
                 {/* Favorites */}
                 <div className="bg-card rounded-lg border border-border p-4">
                   <h3 className="font-semibold text-card-foreground mb-3">Favorites</h3>
@@ -431,8 +405,6 @@ const Discover = () => {
                       { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Executive Visibility" },
                       { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Crisis Watch" },
                       { icon: <FileText className="w-4 h-4 text-muted-foreground" />, label: "The Daily Media Brief" },
-                      { icon: <Search className="w-4 h-4 text-muted-foreground" />, label: "Industry Insights" },
-                      { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Media Coverage Report" },
                     ].map((item, index) => (
                       <li key={index} className="flex items-center gap-2 py-1.5">
                         {item.icon}
