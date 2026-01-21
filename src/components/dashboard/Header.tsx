@@ -7,9 +7,9 @@ export const Header = () => {
   return (
     <header className="h-16 bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-10">
       {/* Logo */}
-      <div className="flex items-center gap-2 min-w-[200px]">
-        <img src={meltwaterLogo} alt="Meltwater" className="w-8 h-8" />
-        <span className="text-lg font-semibold text-foreground">Meltwater</span>
+      <div className="flex items-center gap-2.5 min-w-[200px]">
+        <img src={meltwaterLogo} alt="Meltwater" className="h-6 w-auto" />
+        <span className="text-xl font-bold text-foreground tracking-tight">Meltwater</span>
       </div>
 
       {/* Search Bar */}
