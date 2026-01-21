@@ -1,17 +1,14 @@
 import { Search, Sparkles, LayoutGrid, Bell, HelpCircle, User, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import meltwaterLogo from "@/assets/meltwater-logo.png";
 
 export const Header = () => {
   return (
     <header className="h-16 bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-10">
       {/* Logo */}
       <div className="flex items-center gap-2 min-w-[200px]">
-        <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
-          <svg viewBox="0 0 24 24" className="w-5 h-5 text-primary-foreground" fill="currentColor">
-            <path d="M12 4L4 8l8 4 8-4-8-4zM4 12l8 4 8-4M4 16l8 4 8-4" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
+        <img src={meltwaterLogo} alt="Meltwater" className="w-8 h-8" />
         <span className="text-lg font-semibold text-foreground">Meltwater</span>
       </div>
 
