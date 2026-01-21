@@ -133,13 +133,13 @@ const Discover = () => {
                         <td className="p-4">
                           <div className="flex items-center gap-2">
                             <Search className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm font-medium text-primary underline cursor-pointer">
+                            <span className="text-sm font-medium text-foreground underline cursor-pointer hover:text-primary">
                               {item.name}
                             </span>
                           </div>
                         </td>
                         <td className="p-4">
-                          <span className="text-sm text-primary underline cursor-pointer">
+                          <span className="text-sm text-foreground underline cursor-pointer hover:text-primary">
                             {item.category}
                           </span>
                         </td>
@@ -147,7 +147,7 @@ const Discover = () => {
                         <td className="p-4">
                           <div className="flex items-center gap-2">
                             <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs">👤</div>
-                            <span className="text-sm text-primary cursor-pointer">{item.owner}</span>
+                            <span className="text-sm text-foreground cursor-pointer hover:text-primary">{item.owner}</span>
                           </div>
                         </td>
                         <td className="p-4">
@@ -174,7 +174,7 @@ const Discover = () => {
                   <ul className="space-y-2">
                     {categories.map((category) => (
                       <li key={category.name}>
-                        <button className="text-sm text-primary hover:underline cursor-pointer">
+                        <button className="text-sm text-foreground hover:text-primary hover:underline cursor-pointer">
                           {category.name} ({category.count})
                         </button>
                       </li>
