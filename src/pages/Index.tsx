@@ -7,7 +7,7 @@ import { RightPanel } from "@/components/dashboard/RightPanel";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Sidebar />
+      <Sidebar activePage="home" />
       <Header />
       
       <main className="ml-52 pt-16">
