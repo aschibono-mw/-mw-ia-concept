@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus } from "lucide-react";
@@ -33,7 +33,7 @@ interface SearchItem {
   starred?: boolean;
 }
 
-const searchItems: SearchItem[] = [
+const allSearchItems: SearchItem[] = [
   { id: 1, name: "Brand + Earnings Risk", category: "Brand", lastEdited: "3 hrs ago", owner: "Rachel Wu", starred: true },
   { id: 2, name: "Regulatory & Policy Mentions", category: "Policy", lastEdited: "7 hrs ago", owner: "Sophia Patel", starred: true },
   { id: 3, name: "Executive Leadership Coverage", category: "Leadership", lastEdited: "Yesterday", owner: "Tom Nguyen", starred: true },
@@ -43,6 +43,27 @@ const searchItems: SearchItem[] = [
   { id: 7, name: "Social Backlash Monitoring", category: "Social", lastEdited: "4 days ago", owner: "Sophia Patel", starred: true },
   { id: 8, name: "Influencer Mentions Tracker", category: "Social", lastEdited: "5 days ago", owner: "Laura Burn..", starred: true },
   { id: 9, name: "Crisis & Reputation Risk", category: "Crisis", lastEdited: "Nov 20", owner: "Tom Nguyen", starred: true },
+  { id: 10, name: "Competitor Product Launches", category: "Competition", lastEdited: "Nov 18", owner: "David Kim", starred: false },
+  { id: 11, name: "Market Share Analysis", category: "Market", lastEdited: "Nov 17", owner: "Rachel Wu", starred: true },
+  { id: 12, name: "Customer Feedback Trends", category: "Brand", lastEdited: "Nov 15", owner: "Sophia Patel", starred: false },
+  { id: 13, name: "Supply Chain Disruptions", category: "Risk", lastEdited: "Nov 14", owner: "Alex Morgan", starred: true },
+  { id: 14, name: "ESG Coverage Tracker", category: "Policy", lastEdited: "Nov 12", owner: "Tom Nguyen", starred: false },
+  { id: 15, name: "Earnings Call Mentions", category: "Finance", lastEdited: "Nov 10", owner: "David Kim", starred: true },
+  { id: 16, name: "Product Review Sentiment", category: "Product", lastEdited: "Nov 8", owner: "Laura Burn..", starred: false },
+  { id: 17, name: "CEO Media Appearances", category: "Leadership", lastEdited: "Nov 5", owner: "Rachel Wu", starred: true },
+  { id: 18, name: "Industry Trends Report", category: "Market", lastEdited: "Nov 3", owner: "Sophia Patel", starred: false },
+  { id: 19, name: "Cybersecurity Incidents", category: "Risk", lastEdited: "Nov 1", owner: "Tom Nguyen", starred: true },
+  { id: 20, name: "Partner Announcements", category: "Competition", lastEdited: "Oct 28", owner: "David Kim", starred: false },
+  { id: 21, name: "Investor Relations Updates", category: "Finance", lastEdited: "Oct 25", owner: "Alex Morgan", starred: true },
+  { id: 22, name: "New Feature Coverage", category: "Product", lastEdited: "Oct 22", owner: "Laura Burn..", starred: false },
+  { id: 23, name: "Board Changes Tracker", category: "Leadership", lastEdited: "Oct 20", owner: "Rachel Wu", starred: true },
+  { id: 24, name: "Consumer Spending Trends", category: "Market", lastEdited: "Oct 18", owner: "Sophia Patel", starred: false },
+  { id: 25, name: "Legal & Litigation News", category: "Risk", lastEdited: "Oct 15", owner: "Tom Nguyen", starred: true },
+  { id: 26, name: "Startup Acquisitions", category: "Competition", lastEdited: "Oct 12", owner: "David Kim", starred: false },
+  { id: 27, name: "Quarterly Financials", category: "Finance", lastEdited: "Oct 10", owner: "Alex Morgan", starred: true },
+  { id: 28, name: "Product Recall Alerts", category: "Crisis", lastEdited: "Oct 8", owner: "Laura Burn..", starred: false },
+  { id: 29, name: "Executive Departures", category: "Leadership", lastEdited: "Oct 5", owner: "Rachel Wu", starred: true },
+  { id: 30, name: "Industry Awards & Recognition", category: "Brand", lastEdited: "Oct 3", owner: "Sophia Patel", starred: false },
 ];
 
 const initialCategories: CategoryItem[] = [
@@ -61,6 +82,8 @@ const initialCategories: CategoryItem[] = [
 type SortField = 'name' | 'category' | 'lastEdited' | 'owner';
 type SortDirection = 'asc' | 'desc';
 
+const ITEMS_PER_PAGE = 10;
+
 const Discover = () => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [sortField, setSortField] = useState<SortField>('lastEdited');
@@ -71,6 +94,9 @@ const Discover = () => {
   const [categories, setCategories] = useState<CategoryItem[]>(initialCategories);
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
+  const [displayedItemsCount, setDisplayedItemsCount] = useState(ITEMS_PER_PAGE);
+  const [isLoading, setIsLoading] = useState(false);
+  const loaderRef = useRef<HTMLDivElement>(null);
 
   const toggleItem = (id: number) => {
     setSelectedItems(prev => 
@@ -95,7 +121,7 @@ const Discover = () => {
     }
   };
 
-  const sortedItems = [...searchItems].sort((a, b) => {
+  const sortedItems = [...allSearchItems].sort((a, b) => {
     let comparison = 0;
     if (sortField === 'name') {
       comparison = a.name.localeCompare(b.name);
@@ -109,6 +135,35 @@ const Discover = () => {
     }
     return sortDirection === 'asc' ? comparison : -comparison;
   });
+
+  const displayedItems = sortedItems.slice(0, displayedItemsCount);
+  const hasMore = displayedItemsCount < allSearchItems.length;
+
+  const loadMore = useCallback(() => {
+    if (isLoading || !hasMore) return;
+    setIsLoading(true);
+    setTimeout(() => {
+      setDisplayedItemsCount(prev => Math.min(prev + ITEMS_PER_PAGE, allSearchItems.length));
+      setIsLoading(false);
+    }, 300);
+  }, [isLoading, hasMore]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loadMore, hasMore, isLoading]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -203,7 +258,7 @@ const Discover = () => {
                     <tr className="border-b border-border text-left">
                       <th className="p-4 w-10">
                         <Checkbox 
-                          checked={selectedItems.length === searchItems.length}
+                          checked={selectedItems.length === displayedItems.length && displayedItems.length > 0}
                           onCheckedChange={toggleAll}
                         />
                       </th>
@@ -235,7 +290,7 @@ const Discover = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {sortedItems.map((item) => (
+                    {displayedItems.map((item) => (
                       <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
                         <td className="p-4">
                           <Checkbox 
@@ -273,6 +328,16 @@ const Discover = () => {
                     ))}
                   </tbody>
                 </table>
+                
+                {/* Infinite scroll loader */}
+                <div ref={loaderRef} className="py-4 flex justify-center">
+                  {isLoading && (
+                    <div className="text-sm text-muted-foreground">Loading more...</div>
+                  )}
+                  {!hasMore && displayedItems.length > 0 && (
+                    <div className="text-sm text-muted-foreground">All items loaded</div>
+                  )}
+                </div>
               </div>
 
               {/* Categories Sidebar */}
