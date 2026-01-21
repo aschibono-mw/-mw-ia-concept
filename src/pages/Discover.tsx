@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -321,7 +322,28 @@ const Discover = () => {
                         <td className="p-4">
                           <div className="flex items-center gap-2">
                             <Star className="w-4 h-4 text-muted-foreground hover:text-primary cursor-pointer" />
-                            <MoreVertical className="w-4 h-4 text-muted-foreground hover:text-foreground cursor-pointer" />
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <button className="p-1 hover:bg-muted rounded">
+                                  <MoreVertical className="w-4 h-4 text-muted-foreground hover:text-foreground cursor-pointer" />
+                                </button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="w-48 bg-card">
+                                <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">Export</DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">Create Alert</DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">Schedule Reporting</DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">AI Summary</DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">Duplicate</DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">Move to Category</DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer">Share</DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="cursor-pointer text-destructive">Delete</DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </div>
                         </td>
                       </tr>
