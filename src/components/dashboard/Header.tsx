@@ -1,4 +1,4 @@
-import { Search, Sparkles, LayoutGrid, Bell, HelpCircle, User, ChevronDown } from "lucide-react";
+import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import meltwaterLogo from "@/assets/meltwater-logo.png";
@@ -22,28 +22,28 @@ export const Header = () => {
       </div>
 
       {/* Right Actions */}
-      <div className="flex items-center gap-2 min-w-[200px] justify-end">
-        <Button variant="outline" className="gap-2 rounded-full px-4">
+      <div className="flex items-center gap-3 min-w-[200px] justify-end">
+        <Button variant="outline" className="gap-2 rounded-full px-5 h-10 border-border">
           Create
           <ChevronDown className="w-4 h-4" />
         </Button>
 
-        <div className="flex items-center gap-1 ml-2">
-          <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground">
-            <Sparkles className="w-5 h-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground">
+        <div className="flex items-center gap-2 ml-1">
+          <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+            <Wand2 className="w-5 h-5" />
+          </button>
+          <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
             <LayoutGrid className="w-5 h-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground">
+          </button>
+          <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
             <Bell className="w-5 h-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground">
+          </button>
+          <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
             <HelpCircle className="w-5 h-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground">
+          </button>
+          <button className="w-11 h-11 rounded-full border-2 border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
             <User className="w-5 h-5" />
-          </Button>
+          </button>
         </div>
       </div>
     </header>
