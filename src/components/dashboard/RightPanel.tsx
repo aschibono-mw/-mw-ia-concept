@@ -74,7 +74,7 @@ const PanelSection = ({ title, items }: PanelSectionProps) => (
       {items.map((item, index) => (
         <li key={index} className="flex items-center gap-2 py-1.5">
           {item.icon}
-          <span className="flex-1 text-sm text-card-foreground truncate cursor-pointer hover:underline">
+          <span className="flex-1 text-sm text-card-foreground truncate cursor-pointer underline hover:no-underline">
             {item.label}
           </span>
           {item.action}
