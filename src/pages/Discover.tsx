@@ -10,6 +10,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+
+interface CategoryItem {
+  name: string;
+  count: number;
+}
 
 interface SearchItem {
   id: number;
@@ -32,7 +45,7 @@ const searchItems: SearchItem[] = [
   { id: 9, name: "Crisis & Reputation Risk", category: "Crisis", lastEdited: "Nov 20", owner: "Tom Nguyen", starred: true },
 ];
 
-const categories = [
+const initialCategories: CategoryItem[] = [
   { name: "Brand", count: 24 },
   { name: "Market", count: 20 },
   { name: "Competition", count: 17 },
@@ -55,6 +68,9 @@ const Discover = () => {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchMode, setSearchMode] = useState('Single Keyword');
+  const [categories, setCategories] = useState<CategoryItem[]>(initialCategories);
+  const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState('');
 
   const toggleItem = (id: number) => {
     setSelectedItems(prev => 
@@ -264,7 +280,10 @@ const Discover = () => {
                 <div className="bg-card rounded-lg border border-border p-4">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold text-card-foreground">Categories</h3>
-                    <button className="text-muted-foreground hover:text-foreground">
+                    <button 
+                      className="text-muted-foreground hover:text-foreground"
+                      onClick={() => setIsAddCategoryOpen(true)}
+                    >
                       <Plus className="w-4 h-4" />
                     </button>
                   </div>
@@ -278,6 +297,46 @@ const Discover = () => {
                     ))}
                   </ul>
                 </div>
+
+                {/* Add Category Dialog */}
+                <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle>Add New Category</DialogTitle>
+                    </DialogHeader>
+                    <div className="py-4">
+                      <Input
+                        placeholder="Category name"
+                        value={newCategoryName}
+                        onChange={(e) => setNewCategoryName(e.target.value)}
+                        className="w-full"
+                      />
+                    </div>
+                    <DialogFooter>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => {
+                          setIsAddCategoryOpen(false);
+                          setNewCategoryName('');
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        onClick={() => {
+                          if (newCategoryName.trim()) {
+                            setCategories(prev => [...prev, { name: newCategoryName.trim(), count: 0 }]);
+                            setNewCategoryName('');
+                            setIsAddCategoryOpen(false);
+                          }
+                        }}
+                        disabled={!newCategoryName.trim()}
+                      >
+                        Add Category
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>
