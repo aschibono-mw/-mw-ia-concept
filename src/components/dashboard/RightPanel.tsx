@@ -22,6 +22,16 @@ const recentItems: ListItem[] = [
     label: "The Daily Media Brief",
     action: <Pencil className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground cursor-pointer" />
   },
+  { 
+    icon: <Search className="w-4 h-4 text-muted-foreground" />, 
+    label: "Competitor Analysis",
+    action: <Pencil className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground cursor-pointer" />
+  },
+  { 
+    icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, 
+    label: "Market Trends Q1",
+    action: <Pencil className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground cursor-pointer" />
+  },
 ];
 
 const favoriteItems: ListItem[] = [
@@ -38,6 +48,16 @@ const favoriteItems: ListItem[] = [
   { 
     icon: <FileText className="w-4 h-4 text-muted-foreground" />, 
     label: "The Daily Media Brief",
+    action: <Star className="w-3.5 h-3.5 text-primary fill-primary" />
+  },
+  { 
+    icon: <Search className="w-4 h-4 text-muted-foreground" />, 
+    label: "Industry Insights",
+    action: <Star className="w-3.5 h-3.5 text-primary fill-primary" />
+  },
+  { 
+    icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, 
+    label: "Media Coverage Report",
     action: <Star className="w-3.5 h-3.5 text-primary fill-primary" />
   },
 ];
