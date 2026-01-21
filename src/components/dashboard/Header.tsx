@@ -1,7 +1,22 @@
-import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown } from "lucide-react";
+import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, PieChart, Mail, Newspaper, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import meltwaterLogo from "@/assets/meltwater-logo.png";
+
+const createMenuItems = [
+  { icon: Search, label: "Search" },
+  { icon: LayoutGrid, label: "Dashboard" },
+  { icon: FileText, label: "Report" },
+  { icon: Mail, label: "Outreach" },
+  { icon: Newspaper, label: "Newsletter" },
+  { icon: AlertCircle, label: "Alert" },
+];
 
 export const Header = () => {
   return (
@@ -23,10 +38,22 @@ export const Header = () => {
 
       {/* Right Actions */}
       <div className="flex items-center gap-3 min-w-[200px] justify-end">
-        <Button variant="outline" className="gap-2 rounded-full px-5 h-10 border-border bg-white hover:bg-gray-100 hover:text-foreground">
-          Create
-          <ChevronDown className="w-4 h-4" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="gap-2 rounded-full px-5 h-10 border-border bg-white hover:bg-gray-100 hover:text-foreground">
+              Create
+              <ChevronDown className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 bg-card border border-border shadow-lg z-50">
+            {createMenuItems.map((item) => (
+              <DropdownMenuItem key={item.label} className="cursor-pointer">
+                <item.icon className="w-4 h-4 mr-2 text-muted-foreground" />
+                {item.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <div className="flex items-center gap-2 ml-1">
           <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
