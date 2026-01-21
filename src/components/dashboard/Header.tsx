@@ -25,29 +25,24 @@ const createMenuItems = [
 
 const alertsData = [
   {
-    type: "Spike Detection",
     source: "Industry News Search",
-    description: "Spike Detected: Surge in Discussions on AI Market Trends"
+    description: "Surge in Discussions on AI Market Trends"
   },
   {
-    type: "Spike Detection",
     source: "Competitor Monitoring",
-    description: "Spike Detected: Increased Mentions of Product Launch"
+    description: "Increased Mentions of Product Launch"
   },
   {
-    type: "Spike Detection",
     source: "Brand Mentions",
-    description: "Spike Detected: Social Media Buzz Around Campaign"
+    description: "Social Media Buzz Around Campaign"
   },
   {
-    type: "Spike Detection",
     source: "Crisis Watch",
-    description: "Spike Detected: Rising Sentiment on Customer Feedback"
+    description: "Rising Sentiment on Customer Feedback"
   },
   {
-    type: "Spike Detection",
     source: "Market Analysis",
-    description: "Spike Detected: Trending Topics in Tech Industry"
+    description: "Trending Topics in Tech Industry"
   }
 ];
 
