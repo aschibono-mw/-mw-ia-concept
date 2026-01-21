@@ -8,7 +8,7 @@ export const Header = () => {
     <header className="h-16 bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-10">
       {/* Logo */}
       <div className="flex items-center min-w-[200px]">
-        <img src={meltwaterLogo} alt="Meltwater" className="h-7 w-auto" />
+        <img src={meltwaterLogo} alt="Meltwater" className="h-[22px] w-auto" />
       </div>
 
       {/* Search Bar */}
