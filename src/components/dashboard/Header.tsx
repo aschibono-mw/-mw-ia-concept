@@ -117,10 +117,7 @@ export const Header = () => {
                         <TrendingUp className="w-4 h-4 text-green-600" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium">{alert.type}</span>
-                          <span className="text-xs text-muted-foreground">· {alert.source}</span>
-                        </div>
+                        <span className="text-xs text-muted-foreground">{alert.source}</span>
                         <p className="text-sm text-foreground truncate">{alert.description}</p>
                       </div>
                     </div>
