@@ -23,31 +23,36 @@ const createMenuItems = [
   { icon: AlertCircle, label: "Alert" },
 ];
 
-const alertsData: { source: string; description: string; icon: LucideIcon }[] = [
+const alertsData: { source: string; description: string; icon: LucideIcon; time: string }[] = [
   {
     source: "Industry News Search",
     description: "Surge in Discussions on AI Market Trends",
-    icon: TrendingUp
+    icon: TrendingUp,
+    time: "2m ago"
   },
   {
     source: "Competitor Monitoring",
     description: "Increased Mentions of Product Launch",
-    icon: Eye
+    icon: Eye,
+    time: "15m ago"
   },
   {
     source: "Brand Mentions",
     description: "Social Media Buzz Around Campaign",
-    icon: MessageSquare
+    icon: MessageSquare,
+    time: "1h ago"
   },
   {
     source: "Crisis Watch",
     description: "Rising Sentiment on Customer Feedback",
-    icon: Activity
+    icon: Activity,
+    time: "3h ago"
   },
   {
     source: "Market Analysis",
     description: "Trending Topics in Tech Industry",
-    icon: BarChart3
+    icon: BarChart3,
+    time: "5h ago"
   }
 ];
 
@@ -115,7 +120,10 @@ export const Header = () => {
                     <div className="flex items-center gap-3">
                       <alert.icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <span className="text-xs text-muted-foreground">{alert.source}</span>
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-xs text-muted-foreground">{alert.source}</span>
+                          <span className="text-xs text-muted-foreground">{alert.time}</span>
+                        </div>
                         <p className="text-sm text-foreground truncate">{alert.description}</p>
                       </div>
                     </div>
