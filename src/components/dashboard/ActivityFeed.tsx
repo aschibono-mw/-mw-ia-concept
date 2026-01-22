@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { 
-  TrendingUp, 
+  Bell,
   Search, 
-  Globe, 
   Sparkles, 
   FileText, 
   Mail, 
@@ -32,7 +31,7 @@ const initialActivities: ActivityItem[] = [
   {
     id: 1,
     type: "alert",
-    icon: <TrendingUp className="w-4 h-4 text-muted-foreground" />,
+    icon: <Bell className="w-4 h-4 text-muted-foreground" />,
     content: (
       <>Spike detected: <span className="font-medium underline cursor-pointer">Brand mentions in Finance (+43%)</span></>
     ),
@@ -60,7 +59,7 @@ const initialActivities: ActivityItem[] = [
   {
     id: 4,
     type: "alert",
-    icon: <TrendingUp className="w-4 h-4 text-muted-foreground" />,
+    icon: <Bell className="w-4 h-4 text-muted-foreground" />,
     content: (
       <>Sentiment shift detected: <span className="font-medium underline cursor-pointer">Negative tone in Europe</span></>
     ),
@@ -79,7 +78,7 @@ const initialActivities: ActivityItem[] = [
   {
     id: 6,
     type: "alert",
-    icon: <Globe className="w-4 h-4 text-muted-foreground" />,
+    icon: <Bell className="w-4 h-4 text-muted-foreground" />,
     content: (
       <>Geography shift detected: <span className="font-medium underline cursor-pointer">Conversation moved from US to APAC</span></>
     ),
@@ -126,7 +125,7 @@ const initialActivities: ActivityItem[] = [
   {
     id: 11,
     type: "alert",
-    icon: <TrendingUp className="w-4 h-4 text-muted-foreground" />,
+    icon: <Bell className="w-4 h-4 text-muted-foreground" />,
     content: (
       <>Topic surge detected: <span className="font-medium underline cursor-pointer">"AI regulation"</span></>
     ),
@@ -232,7 +231,7 @@ const moreActivities: Omit<ActivityItem, 'id'>[] = [
   },
   {
     type: "alert",
-    icon: <TrendingUp className="w-4 h-4 text-muted-foreground" />,
+    icon: <Bell className="w-4 h-4 text-muted-foreground" />,
     content: <>Volume increase: <span className="font-medium underline cursor-pointer">Social media mentions up 28%</span></>,
     time: "1 week ago",
     isSystem: true
