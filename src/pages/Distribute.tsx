@@ -398,25 +398,27 @@ const Distribute = () => {
               </div>
 
               {/* Categories Sidebar */}
-              <div className="w-48 flex-shrink-0">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-card-foreground">Categories</h3>
-                  <button 
-                    className="w-6 h-6 flex items-center justify-center text-muted-foreground hover:text-primary"
-                    onClick={() => setIsAddCategoryOpen(true)}
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
+              <div className="w-64 sticky top-20 space-y-4">
+                <div className="bg-card rounded-lg border border-border p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-card-foreground">Categories</h3>
+                    <button 
+                      className="text-muted-foreground hover:text-foreground"
+                      onClick={() => setIsAddCategoryOpen(true)}
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <ul className="space-y-2">
+                    {categories.map((category) => (
+                      <li key={category.name}>
+                        <button className="text-sm text-foreground underline hover:text-primary cursor-pointer">
+                          {category.name} ({category.count})
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="space-y-2">
-                  {categories.map((category) => (
-                    <li key={category.name}>
-                      <button className="text-sm text-foreground underline hover:text-primary cursor-pointer">
-                        {category.name} ({category.count})
-                      </button>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
           </div>
