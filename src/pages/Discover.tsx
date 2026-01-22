@@ -405,6 +405,8 @@ const Discover = () => {
                       { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Executive Visibility" },
                       { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Crisis Watch" },
                       { icon: <FileText className="w-4 h-4 text-muted-foreground" />, label: "The Daily Media Brief" },
+                      { icon: <Search className="w-4 h-4 text-muted-foreground" />, label: "Industry Insights" },
+                      { icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />, label: "Media Coverage Report" },
                     ].map((item, index) => (
                       <li key={index} className="flex items-center gap-2 py-1.5">
                         {item.icon}
