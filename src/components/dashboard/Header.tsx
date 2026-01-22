@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, Newspaper, AlertCircle, Settings, ShieldCheck, LogOut, TrendingUp, Plus, Building2, UserCircle, FolderOpen, Users, FileStack, Eye, MessageSquare, Activity, BarChart3, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "./SearchBar";
@@ -56,13 +57,25 @@ const alertsData: { source: string; description: string; icon: LucideIcon; time:
   }
 ];
 
+const pageTitles: Record<string, string> = {
+  "/": "Meltwater",
+  "/discover": "Discover",
+  "/analyze": "Analyze",
+  "/distribute": "Distribute",
+  "/outreach": "Outreach",
+};
+
 export const Header = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const location = useLocation();
+  const pageTitle = pageTitles[location.pathname] || "Meltwater";
+  
   return (
     <header className="h-16 bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-10">
-      {/* Logo */}
-      <div className="flex items-center min-w-[200px]">
+      {/* Logo and Title */}
+      <div className="flex items-center gap-3 min-w-[200px]">
         <img src={meltwaterLogo} alt="Meltwater" className="h-[22px] w-auto" />
+        <span className="text-xl font-semibold text-foreground">{pageTitle}</span>
       </div>
 
       {/* Search Bar */}
