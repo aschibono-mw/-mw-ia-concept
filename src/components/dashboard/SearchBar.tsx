@@ -203,18 +203,15 @@ export const SearchBar = () => {
                 <button
                   key={result.id}
                   onClick={() => handleSelect(result.name)}
-                  className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted/50 transition-colors text-left group"
+                  className="w-full grid grid-cols-[20px_1fr_20px_80px] items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-muted/50 transition-colors text-left border-b border-border/50 last:border-b-0"
                 >
                   <span className="text-muted-foreground">{getIcon(result.type)}</span>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-sm text-foreground">{result.name}</span>
-                  </div>
-                  {result.starred && <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />}
-                  <span className="text-xs text-muted-foreground">
-                    {result.category}
+                  <span className="text-sm text-foreground truncate">{result.name}</span>
+                  <span className="flex justify-center">
+                    {result.starred && <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />}
                   </span>
-                  <span className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                    {getTypeLabel(result.type)}
+                  <span className="text-xs text-muted-foreground text-right">
+                    {result.category}
                   </span>
                 </button>
               ))}
