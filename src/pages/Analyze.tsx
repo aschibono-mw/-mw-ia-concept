@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, Sparkles, Music2, Users, ChevronsUpDown } from "lucide-react";
+import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, Sparkles, Music2, Users } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -100,8 +101,6 @@ const Analyze = () => {
   const [displayedItemsCount, setDisplayedItemsCount] = useState(ITEMS_PER_PAGE);
   const [isLoading, setIsLoading] = useState(false);
   const loaderRef = useRef<HTMLDivElement>(null);
-  const [templatesExpanded, setTemplatesExpanded] = useState(false);
-  const [intelligenceExpanded, setIntelligenceExpanded] = useState(false);
 
   const toggleItem = (id: number) => {
     setSelectedItems(prev => 
@@ -187,23 +186,206 @@ const Analyze = () => {
               </p>
             </div>
 
-            {/* Create a new dashboard */}
-            <div className="bg-card rounded-lg border border-border p-4 mb-6">
-              <div className="flex items-center justify-between mb-1">
-                <h2 className="font-semibold text-card-foreground">Create a new dashboard</h2>
-                <button 
-                  onClick={() => setTemplatesExpanded(!templatesExpanded)}
-                  className="flex items-center gap-1 text-sm text-foreground hover:text-foreground/80"
+            {/* Tabbed Interface */}
+            <Tabs defaultValue="dashboards" className="w-full">
+              <TabsList className="bg-transparent border-b border-border w-full justify-start rounded-none h-auto p-0 mb-6">
+                <TabsTrigger 
+                  value="dashboards" 
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
                 >
-                  More Templates
-                  <ChevronsUpDown className="w-4 h-4" />
-                </button>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">Build dashboards from your searches and social accounts.</p>
-              
-              {templatesExpanded ? (
-                <ScrollArea className="h-[600px]">
-                  <div className="grid grid-cols-4 gap-4 pr-4 pb-4">
+                  My Dashboards
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="templates" 
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
+                >
+                  Templates
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="intelligence" 
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
+                >
+                  Intelligence
+                  <span className="ml-2 text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">Premium</span>
+                </TabsTrigger>
+              </TabsList>
+
+              {/* My Dashboards Tab */}
+              <TabsContent value="dashboards" className="mt-0">
+                <div className="flex gap-6 items-start">
+                  {/* Main Table */}
+                  <div className="flex-1 bg-card rounded-lg border border-border">
+                    {/* Table Header Controls */}
+                    <div className="flex items-center justify-between p-4 border-b border-border">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="flex items-center gap-1 font-semibold text-card-foreground hover:text-primary">
+                            Recent
+                            <ChevronDown className="w-4 h-4" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-48 bg-card">
+                          <DropdownMenuItem className="cursor-pointer">Favorites</DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer">Most Used</DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer">Created by Me</DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer">Shared with Me</DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer">Alphabetical (A-Z)</DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer">Last Edited</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                      <button className="flex items-center gap-1 text-sm text-muted-foreground">
+                        Owner: Anyone
+                        <ChevronDown className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    {/* Table */}
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-border text-left">
+                          <th className="p-4 w-10">
+                            <Checkbox 
+                              checked={selectedItems.length === displayedItems.length && displayedItems.length > 0}
+                              onCheckedChange={toggleAll}
+                            />
+                          </th>
+                          <th className="p-4 text-sm font-bold text-foreground">
+                            <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('name')}>
+                              Name
+                              {sortField === 'name' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                            </button>
+                          </th>
+                          <th className="p-4 text-sm font-bold text-foreground">
+                            <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('category')}>
+                              Category
+                              {sortField === 'category' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                            </button>
+                          </th>
+                          <th className="p-4 text-sm font-bold text-foreground">
+                            <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('lastEdited')}>
+                              Last Edited
+                              {sortField === 'lastEdited' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                            </button>
+                          </th>
+                          <th className="p-4 text-sm font-bold text-foreground">
+                            <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('owner')}>
+                              Owner
+                              {sortField === 'owner' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                            </button>
+                          </th>
+                          <th className="p-4 w-20"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {displayedItems.map((item) => (
+                          <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
+                            <td className="p-4">
+                              <Checkbox 
+                                checked={selectedItems.includes(item.id)}
+                                onCheckedChange={() => toggleItem(item.id)}
+                              />
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <LayoutGrid className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-sm font-medium text-foreground underline cursor-pointer hover:text-primary">
+                                  {item.name}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <span className="text-sm text-foreground underline cursor-pointer hover:text-primary">
+                                {item.category}
+                              </span>
+                            </td>
+                            <td className="p-4 text-sm text-muted-foreground">{item.lastEdited}</td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs">👤</div>
+                                <span className="text-sm text-foreground cursor-pointer hover:text-primary">{item.owner}</span>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <Star className={`w-4 h-4 cursor-pointer ${item.starred ? 'text-primary fill-primary' : 'text-muted-foreground hover:text-primary'}`} />
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <button className="p-1 hover:bg-muted rounded">
+                                      <MoreVertical className="w-4 h-4 text-muted-foreground hover:text-foreground cursor-pointer" />
+                                    </button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end" className="w-48 bg-card">
+                                    <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer">Export</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer">Create Alert</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer">Schedule Reporting</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer">AI Summary</DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer">Duplicate</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer">Move to Category</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer">Share</DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem className="cursor-pointer text-destructive">Delete</DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+
+                    {/* Load More */}
+                    <div ref={loaderRef} className="p-4 text-center">
+                      {isLoading && (
+                        <span className="text-sm text-muted-foreground">Loading...</span>
+                      )}
+                      {hasMore && !isLoading && (
+                        <button 
+                          onClick={loadMore}
+                          className="flex items-center justify-center gap-1 w-full text-sm text-muted-foreground hover:text-primary"
+                        >
+                          Show more
+                          <ChevronDown className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Right Sidebar */}
+                  <div className="w-56 space-y-4 sticky top-20">
+                    {/* Categories */}
+                    <div className="bg-card rounded-lg border border-border p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-semibold text-card-foreground">Categories</h3>
+                        <button className="p-1 hover:bg-muted rounded">
+                          <Plus className="w-4 h-4 text-muted-foreground" />
+                        </button>
+                      </div>
+                      <ul className="space-y-1">
+                        {categories.map((category, index) => (
+                          <li key={index} className="text-sm text-foreground hover:text-primary cursor-pointer py-1">
+                            <span className="underline">{category.name}</span>
+                            <span className="text-muted-foreground ml-1">({category.count})</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* Templates Tab */}
+              <TabsContent value="templates" className="mt-0">
+                <div className="bg-card rounded-lg border border-border p-6">
+                  <div className="mb-4">
+                    <h2 className="font-semibold text-card-foreground mb-1">Create a new dashboard</h2>
+                    <p className="text-sm text-muted-foreground">Build dashboards from your searches and social accounts.</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-4 gap-4">
                     {dashboardTemplates.map((template, index) => (
                       <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors flex flex-col">
                         <div className="flex items-center gap-2 mb-2">
@@ -215,210 +397,32 @@ const Analyze = () => {
                       </div>
                     ))}
                   </div>
-                </ScrollArea>
-              ) : (
-                <div className="grid grid-cols-4 gap-4">
-                  {dashboardTemplates.slice(0, 4).map((template, index) => (
-                    <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors flex flex-col">
-                      <div className="flex items-center gap-2 mb-2">
-                        <template.icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-                        <span className="font-medium text-card-foreground">{template.title}</span>
+                </div>
+              </TabsContent>
+
+              {/* Intelligence Tab */}
+              <TabsContent value="intelligence" className="mt-0">
+                <div className="bg-card rounded-lg border border-border p-6">
+                  <div className="mb-4">
+                    <h2 className="font-semibold text-card-foreground mb-1">Intelligence Dashboards</h2>
+                    <p className="text-sm text-muted-foreground">Always-on dashboards with insights beyond your searches.</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-4">
+                    {intelligenceDashboards.map((dashboard, index) => (
+                      <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors flex flex-col">
+                        <div className="flex items-center gap-2 mb-2">
+                          <dashboard.icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                          <span className="font-medium text-card-foreground">{dashboard.title}</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-3 flex-1">{dashboard.description}</p>
+                        <button className="text-sm text-foreground underline hover:text-primary self-start">Learn more &gt;&gt;</button>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-3 flex-1 line-clamp-3">{template.description}</p>
-                      <button className="text-sm text-foreground underline hover:text-primary self-start">Create &gt;&gt;</button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Intelligence Dashboards */}
-            <div className="bg-card rounded-lg border border-border p-4 mb-6">
-              <div className="flex items-center justify-between mb-1">
-                <div className="flex items-center gap-3">
-                  <h2 className="font-semibold text-card-foreground">Intelligence Dashboards</h2>
-                  <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">Premium add-ons</span>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">Always-on dashboards with insights beyond your searches.</p>
-              
-              <div className="grid grid-cols-3 gap-4">
-                {intelligenceDashboards.slice(0, 3).map((dashboard, index) => (
-                  <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors flex flex-col">
-                    <div className="flex items-center gap-2 mb-2">
-                      <dashboard.icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-                      <span className="font-medium text-card-foreground">{dashboard.title}</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3 flex-1">{dashboard.description}</p>
-                    <button className="text-sm text-foreground underline hover:text-primary self-start">Learn more &gt;&gt;</button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex gap-6 items-start">
-              {/* Main Table */}
-              <div className="flex-1 bg-card rounded-lg border border-border">
-                {/* Table Header Controls */}
-                <div className="flex items-center justify-between p-4 border-b border-border">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button className="flex items-center gap-1 font-semibold text-card-foreground hover:text-primary">
-                        Recent
-                        <ChevronDown className="w-4 h-4" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-48 bg-card">
-                      <DropdownMenuItem className="cursor-pointer">Favorites</DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">Most Used</DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">Created by Me</DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">Shared with Me</DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">Alphabetical (A-Z)</DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">Last Edited</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  <button className="flex items-center gap-1 text-sm text-muted-foreground">
-                    Owner: Anyone
-                    <ChevronDown className="w-4 h-4" />
-                  </button>
-                </div>
-
-                {/* Table */}
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-border text-left">
-                      <th className="p-4 w-10">
-                        <Checkbox 
-                          checked={selectedItems.length === displayedItems.length && displayedItems.length > 0}
-                          onCheckedChange={toggleAll}
-                        />
-                      </th>
-                      <th className="p-4 text-sm font-bold text-foreground">
-                        <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('name')}>
-                          Name
-                          {sortField === 'name' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
-                        </button>
-                      </th>
-                      <th className="p-4 text-sm font-bold text-foreground">
-                        <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('category')}>
-                          Category
-                          {sortField === 'category' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
-                        </button>
-                      </th>
-                      <th className="p-4 text-sm font-bold text-foreground">
-                        <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('lastEdited')}>
-                          Last Edited
-                          {sortField === 'lastEdited' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
-                        </button>
-                      </th>
-                      <th className="p-4 text-sm font-bold text-foreground">
-                        <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('owner')}>
-                          Owner
-                          {sortField === 'owner' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
-                        </button>
-                      </th>
-                      <th className="p-4 w-20"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {displayedItems.map((item) => (
-                      <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
-                        <td className="p-4">
-                          <Checkbox 
-                            checked={selectedItems.includes(item.id)}
-                            onCheckedChange={() => toggleItem(item.id)}
-                          />
-                        </td>
-                        <td className="p-4">
-                          <div className="flex items-center gap-2">
-                            <LayoutGrid className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm font-medium text-foreground underline cursor-pointer hover:text-primary">
-                              {item.name}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="p-4">
-                          <span className="text-sm text-foreground underline cursor-pointer hover:text-primary">
-                            {item.category}
-                          </span>
-                        </td>
-                        <td className="p-4 text-sm text-muted-foreground">{item.lastEdited}</td>
-                        <td className="p-4">
-                          <div className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs">👤</div>
-                            <span className="text-sm text-foreground cursor-pointer hover:text-primary">{item.owner}</span>
-                          </div>
-                        </td>
-                        <td className="p-4">
-                          <div className="flex items-center gap-2">
-                            <Star className={`w-4 h-4 cursor-pointer ${item.starred ? 'text-primary fill-primary' : 'text-muted-foreground hover:text-primary'}`} />
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <button className="p-1 hover:bg-muted rounded">
-                                  <MoreVertical className="w-4 h-4 text-muted-foreground hover:text-foreground cursor-pointer" />
-                                </button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end" className="w-48 bg-card">
-                                <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">Export</DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">Create Alert</DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">Schedule Reporting</DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">AI Summary</DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">Duplicate</DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">Move to Category</DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">Share</DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem className="cursor-pointer text-destructive">Delete</DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </td>
-                      </tr>
                     ))}
-                  </tbody>
-                </table>
-
-                {/* Load More */}
-                <div ref={loaderRef} className="p-4 text-center">
-                  {isLoading && (
-                    <span className="text-sm text-muted-foreground">Loading...</span>
-                  )}
-                  {hasMore && !isLoading && (
-                    <button 
-                      onClick={loadMore}
-                      className="flex items-center justify-center gap-1 w-full text-sm text-muted-foreground hover:text-primary"
-                    >
-                      Show more
-                      <ChevronDown className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Right Sidebar */}
-              <div className="w-56 space-y-4 sticky top-20">
-                {/* Categories */}
-                <div className="bg-card rounded-lg border border-border p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-card-foreground">Categories</h3>
-                    <button className="p-1 hover:bg-muted rounded">
-                      <Plus className="w-4 h-4 text-muted-foreground" />
-                    </button>
                   </div>
-                  <ul className="space-y-1">
-                    {categories.map((category, index) => (
-                      <li key={index} className="text-sm text-foreground hover:text-primary cursor-pointer py-1">
-                        <span className="underline">{category.name}</span>
-                        <span className="text-muted-foreground ml-1">({category.count})</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
-              </div>
-            </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </main>
