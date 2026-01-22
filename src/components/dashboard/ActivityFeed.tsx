@@ -256,14 +256,14 @@ export const ActivityFeed = () => {
       </div>
 
       {/* Tabs */}
-      <div className="relative mb-4 border-b border-border pb-3">
+      <div className="relative mb-4 border-b border-border py-2">
         <div className="flex gap-1 overflow-x-auto scrollbar-none pr-8">
           {tabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={cn(
-                "px-3 py-1.5 text-sm font-medium rounded-md whitespace-nowrap transition-colors",
+                "px-3 py-1 text-sm font-medium rounded-md whitespace-nowrap transition-colors",
                 activeTab === tab
                   ? "bg-foreground text-background"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -274,7 +274,7 @@ export const ActivityFeed = () => {
           ))}
         </div>
         {/* Scroll fade indicator */}
-        <div className="absolute right-0 top-0 bottom-3 w-12 bg-gradient-to-l from-card to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-2 bottom-2 w-12 bg-gradient-to-l from-card to-transparent pointer-events-none" />
       </div>
 
       {/* Activity List */}
