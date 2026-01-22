@@ -199,16 +199,18 @@ const Analyze = () => {
 
             {/* Tabbed Interface */}
             <Tabs defaultValue="dashboards" className="w-full">
-              <TooltipProvider>
-                <TabsList className="bg-transparent border-b border-border w-full justify-start rounded-none h-auto p-0 mb-6">
+              <TabsList className="bg-transparent border-b border-border w-full justify-start rounded-none h-auto p-0 mb-6">
+                <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <TabsTrigger 
-                        value="dashboards" 
-                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
-                      >
-                        Dashboards
-                      </TabsTrigger>
+                      <span>
+                        <TabsTrigger 
+                          value="dashboards" 
+                          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
+                        >
+                          Dashboards
+                        </TabsTrigger>
+                      </span>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>View and manage your saved dashboards</p>
@@ -216,12 +218,14 @@ const Analyze = () => {
                   </Tooltip>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <TabsTrigger 
-                        value="templates" 
-                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
-                      >
-                        Templates
-                      </TabsTrigger>
+                      <span>
+                        <TabsTrigger 
+                          value="templates" 
+                          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
+                        >
+                          Templates
+                        </TabsTrigger>
+                      </span>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Start with pre-built dashboard templates</p>
@@ -229,20 +233,22 @@ const Analyze = () => {
                   </Tooltip>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <TabsTrigger 
-                        value="intelligence" 
-                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
-                      >
-                        Intelligence
-                        <span className="ml-2 text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">Premium</span>
-                      </TabsTrigger>
+                      <span>
+                        <TabsTrigger 
+                          value="intelligence" 
+                          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
+                        >
+                          Intelligence
+                          <span className="ml-2 text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">Premium</span>
+                        </TabsTrigger>
+                      </span>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Always-on dashboards with insights beyond your searches.</p>
                     </TooltipContent>
                   </Tooltip>
-                </TabsList>
-              </TooltipProvider>
+                </TooltipProvider>
+              </TabsList>
 
               {/* My Dashboards Tab */}
               <TabsContent value="dashboards" className="mt-0">
