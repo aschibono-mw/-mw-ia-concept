@@ -209,7 +209,7 @@ const Analyze = () => {
               <div 
                 className="overflow-hidden transition-all duration-300 ease-out"
                 style={{ 
-                  maxHeight: templatesExpanded ? '480px' : '160px',
+                  maxHeight: templatesExpanded ? '480px' : '176px',
                 }}
               >
                 <ScrollArea className={templatesExpanded ? "h-[480px]" : "h-auto"}>
@@ -252,7 +252,7 @@ const Analyze = () => {
               <div 
                 className="overflow-hidden transition-all duration-300 ease-out"
                 style={{ 
-                  maxHeight: intelligenceExpanded ? '480px' : '160px',
+                  maxHeight: intelligenceExpanded ? '480px' : '148px',
                 }}
               >
                 <ScrollArea className={intelligenceExpanded ? "h-[480px]" : "h-auto"}>
