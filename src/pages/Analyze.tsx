@@ -213,7 +213,9 @@ const Analyze = () => {
                 }}
               >
                 <ScrollArea className={templatesExpanded ? "h-[480px]" : "h-auto"}>
-                  <div className="grid grid-cols-4 gap-4 pr-4">
+                  <div
+                    className={`grid grid-cols-4 gap-4 ${templatesExpanded ? "pr-4 pb-4" : ""}`}
+                  >
                     {dashboardTemplates.map((template, index) => (
                       <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
                         <div className="flex items-center gap-2 mb-2">
@@ -256,7 +258,9 @@ const Analyze = () => {
                 }}
               >
                 <ScrollArea className={intelligenceExpanded ? "h-[480px]" : "h-auto"}>
-                  <div className="grid grid-cols-3 gap-4 pr-4">
+                  <div
+                    className={`grid grid-cols-3 gap-4 ${intelligenceExpanded ? "pr-4 pb-4" : ""}`}
+                  >
                     {intelligenceDashboards.map((dashboard, index) => (
                       <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
                         <div className="flex items-center gap-2 mb-2">
