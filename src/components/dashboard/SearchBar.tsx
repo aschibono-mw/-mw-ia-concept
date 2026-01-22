@@ -128,7 +128,7 @@ export const SearchBar = () => {
   const showNoResults = isOpen && query.trim() && results.length === 0;
 
   return (
-    <div ref={containerRef} className="relative w-80 flex-shrink-0">
+    <div ref={containerRef} className="relative w-80 flex-shrink-0 z-50">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none z-10" />
       <Input
         ref={inputRef}
