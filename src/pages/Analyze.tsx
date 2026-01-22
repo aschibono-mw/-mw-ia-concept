@@ -167,17 +167,15 @@ const Analyze = () => {
 
             {/* Create a new dashboard */}
             <div className="bg-card rounded-lg border border-border p-4 mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h2 className="font-semibold text-card-foreground">Create a new dashboard</h2>
-                  <p className="text-sm text-muted-foreground">Build dashboards from your searches and social accounts.</p>
-                </div>
+              <div className="flex items-center justify-between mb-1">
+                <h2 className="font-semibold text-card-foreground">Create a new dashboard</h2>
                 <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
                   More Templates
                   <ChevronUp className="w-4 h-4" />
                   <ChevronDown className="w-4 h-4 -ml-2" />
                 </button>
               </div>
+              <p className="text-sm text-muted-foreground mb-4">Build dashboards from your searches and social accounts.</p>
               
               <div className="grid grid-cols-4 gap-4">
                 {dashboardTemplates.map((template, index) => (
