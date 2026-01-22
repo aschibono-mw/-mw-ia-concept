@@ -69,6 +69,10 @@ const dashboardTemplates = [
   { icon: LayoutGrid, title: "Market", description: "Analyze market trends and competitive landscape." },
   { icon: LayoutGrid, title: "Product", description: "Monitor product mentions and customer sentiment." },
   { icon: LayoutGrid, title: "Regional", description: "Track coverage and performance by geographic region." },
+  { icon: LayoutGrid, title: "Competitive", description: "Compare your brand performance against key competitors." },
+  { icon: LayoutGrid, title: "Earned Media", description: "Track organic media coverage and earned impressions." },
+  { icon: LayoutGrid, title: "Share of Voice", description: "Measure your brand's share of conversation vs competitors." },
+  { icon: LayoutGrid, title: "Reputation", description: "Monitor and protect your brand's online reputation." },
 ];
 
 const intelligenceDashboards = [
@@ -81,6 +85,9 @@ const intelligenceDashboards = [
   { icon: Sparkles, title: "Predictive Trends", description: "Forecast emerging topics before they become mainstream." },
   { icon: Music2, title: "Video Analytics", description: "Track performance across YouTube, Reels, and video content." },
   { icon: Users, title: "Community Pulse", description: "Monitor Reddit, forums, and community discussions." },
+  { icon: Sparkles, title: "Crisis Radar", description: "Early detection of potential brand crises using AI." },
+  { icon: Music2, title: "News Impact", description: "Measure the impact and reach of news coverage." },
+  { icon: Users, title: "Competitor Intel", description: "AI-driven competitive intelligence and benchmarking." },
 ];
 
 type SortField = 'name' | 'category' | 'lastEdited' | 'owner';
@@ -188,7 +195,7 @@ const Analyze = () => {
                 <h2 className="font-semibold text-card-foreground">Create a new dashboard</h2>
                 <button 
                   onClick={() => setTemplatesExpanded(!templatesExpanded)}
-                  className="flex items-center gap-1 text-sm text-foreground hover:text-primary"
+                  className="flex items-center gap-1 text-sm text-primary hover:text-primary/80"
                 >
                   More Templates
                   <div className="flex flex-col -space-y-1">
@@ -199,8 +206,13 @@ const Analyze = () => {
               </div>
               <p className="text-sm text-muted-foreground mb-4">Build dashboards from your searches and social accounts.</p>
               
-              {templatesExpanded ? (
-                <ScrollArea className="h-[340px]">
+              <div 
+                className="overflow-hidden transition-all duration-300 ease-out"
+                style={{ 
+                  maxHeight: templatesExpanded ? '420px' : '130px',
+                }}
+              >
+                <ScrollArea className={templatesExpanded ? "h-[420px]" : "h-auto"}>
                   <div className="grid grid-cols-4 gap-4 pr-4">
                     {dashboardTemplates.map((template, index) => (
                       <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
@@ -214,20 +226,7 @@ const Analyze = () => {
                     ))}
                   </div>
                 </ScrollArea>
-              ) : (
-                <div className="grid grid-cols-4 gap-4">
-                  {dashboardTemplates.slice(0, 4).map((template, index) => (
-                    <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
-                      <div className="flex items-center gap-2 mb-2">
-                        <template.icon className="w-5 h-5 text-muted-foreground" />
-                        <span className="font-medium text-card-foreground">{template.title}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
-                      <button className="text-sm text-foreground underline hover:text-primary">Create &gt;&gt;</button>
-                    </div>
-                  ))}
-                </div>
-              )}
+              </div>
             </div>
 
             {/* Intelligence Dashboards */}
@@ -239,7 +238,7 @@ const Analyze = () => {
                 </div>
                 <button 
                   onClick={() => setIntelligenceExpanded(!intelligenceExpanded)}
-                  className="flex items-center gap-1 text-sm text-foreground hover:text-primary"
+                  className="flex items-center gap-1 text-sm text-primary hover:text-primary/80"
                 >
                   More Intelligence
                   <div className="flex flex-col -space-y-1">
@@ -250,8 +249,13 @@ const Analyze = () => {
               </div>
               <p className="text-sm text-muted-foreground mb-4">Always-on dashboards with insights beyond your searches.</p>
               
-              {intelligenceExpanded ? (
-                <ScrollArea className="h-[340px]">
+              <div 
+                className="overflow-hidden transition-all duration-300 ease-out"
+                style={{ 
+                  maxHeight: intelligenceExpanded ? '420px' : '130px',
+                }}
+              >
+                <ScrollArea className={intelligenceExpanded ? "h-[420px]" : "h-auto"}>
                   <div className="grid grid-cols-3 gap-4 pr-4">
                     {intelligenceDashboards.map((dashboard, index) => (
                       <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
@@ -265,20 +269,7 @@ const Analyze = () => {
                     ))}
                   </div>
                 </ScrollArea>
-              ) : (
-                <div className="grid grid-cols-3 gap-4">
-                  {intelligenceDashboards.slice(0, 3).map((dashboard, index) => (
-                    <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
-                      <div className="flex items-center gap-2 mb-2">
-                        <dashboard.icon className="w-5 h-5 text-muted-foreground" />
-                        <span className="font-medium text-card-foreground">{dashboard.title}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-3">{dashboard.description}</p>
-                      <button className="text-sm text-foreground underline hover:text-primary">Learn more &gt;&gt;</button>
-                    </div>
-                  ))}
-                </div>
-              )}
+              </div>
             </div>
 
             <div className="flex gap-6 items-start">
