@@ -86,7 +86,8 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
 
       {/* Promo Area */}
       <div className="px-3 mt-2">
-        <div className="border border-border rounded-lg bg-background p-3 relative overflow-hidden">
+        <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1.5 px-1">Featured</div>
+        <div className="border border-border rounded-lg bg-card shadow-sm p-3 relative overflow-hidden">
           {promoCards.map((promo, index) => (
             <div
               key={index}
