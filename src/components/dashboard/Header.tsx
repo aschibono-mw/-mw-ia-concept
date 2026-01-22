@@ -13,7 +13,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
-import meltwaterIcon from "@/assets/meltwater-icon.png";
+import meltwaterIcon from "@/assets/meltwater-icon.svg";
 
 const createMenuItems = [
   { icon: Search, label: "Search" },
