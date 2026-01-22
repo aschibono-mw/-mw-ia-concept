@@ -172,11 +172,6 @@ export const Header = () => {
                 <UserCircle className="w-4 h-4 mr-2" />
                 Profile
               </DropdownMenuItem>
-              
-              <DropdownMenuItem className="cursor-pointer">
-                <Building2 className="w-4 h-4 mr-2" />
-                Account Settings
-              </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
                 <FolderOpen className="w-4 h-4 mr-2" />
                 Asset Manager
@@ -193,8 +188,8 @@ export const Header = () => {
               <DropdownMenuSeparator />
               
               <DropdownMenuItem className="cursor-pointer">
-                <Settings className="w-4 h-4 mr-2" />
-                Settings
+                <Building2 className="w-4 h-4 mr-2" />
+                Account Settings
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
                 <ShieldCheck className="w-4 h-4 mr-2" />
