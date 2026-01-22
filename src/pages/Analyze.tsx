@@ -448,33 +448,32 @@ const Analyze = () => {
               </TabsContent>
 
               {/* Intelligence Tab */}
-              <TabsContent value="intelligence" className="mt-0 space-y-6">
-                {/* GenAI Lens Hero Banner */}
-                <div className="bg-card rounded-lg border border-border p-8 flex items-center justify-between">
-                  <div className="flex-1 max-w-xl">
-                    <div className="flex items-center gap-2 mb-3">
-                      <Sparkles className="w-6 h-6 text-primary" />
-                      <span className="text-xs font-medium text-primary uppercase tracking-wide">Featured</span>
-                    </div>
-                    <h2 className="text-xl font-semibold text-card-foreground mb-2">GenAI Lens</h2>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      See how your brand is represented and ranked across leading AI models like ChatGPT, Claude, and Gemini. Understand your AI visibility and competitive positioning in the new era of search.
-                    </p>
-                    <button className="text-sm text-foreground underline hover:text-primary">Get started &gt;&gt;</button>
-                  </div>
-                  <div className="w-64 h-36 bg-muted rounded-lg border border-border flex items-center justify-center ml-8">
-                    <div className="text-center text-muted-foreground">
-                      <Sparkles className="w-10 h-10 mx-auto mb-2 opacity-50" />
-                      <span className="text-xs">Preview</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Intelligence Dashboards */}
+              <TabsContent value="intelligence" className="mt-0">
                 <div className="bg-card rounded-lg border border-border p-6">
                   <div className="mb-4">
                     <h2 className="font-semibold text-card-foreground mb-1">Intelligence Dashboards</h2>
                     <p className="text-sm text-muted-foreground">Always-on dashboards with insights beyond your searches.</p>
+                  </div>
+
+                  {/* GenAI Lens Hero Banner */}
+                  <div className="border border-border rounded-lg p-6 mb-6 flex items-center justify-between bg-muted/30">
+                    <div className="flex-1 max-w-xl">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Sparkles className="w-5 h-5 text-primary" />
+                        <span className="text-xs font-medium text-primary uppercase tracking-wide">Featured</span>
+                      </div>
+                      <h3 className="text-lg font-semibold text-card-foreground mb-2">GenAI Lens</h3>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        See how your brand is represented and ranked across leading AI models like ChatGPT, Claude, and Gemini. Understand your AI visibility and competitive positioning in the new era of search.
+                      </p>
+                      <button className="text-sm text-foreground underline hover:text-primary">Get started &gt;&gt;</button>
+                    </div>
+                    <div className="w-56 h-32 bg-muted rounded-lg border border-border flex items-center justify-center ml-6">
+                      <div className="text-center text-muted-foreground">
+                        <Sparkles className="w-8 h-8 mx-auto mb-1 opacity-50" />
+                        <span className="text-xs">Preview</span>
+                      </div>
+                    </div>
                   </div>
                   
                   <div className="grid grid-cols-3 gap-4">
