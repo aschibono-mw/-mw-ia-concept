@@ -193,13 +193,10 @@ const Analyze = () => {
                 <h2 className="font-semibold text-card-foreground">Create a new dashboard</h2>
                 <button 
                   onClick={() => setTemplatesExpanded(!templatesExpanded)}
-                  className="flex items-center gap-1 text-sm text-primary hover:text-primary/80"
+                  className="flex items-center gap-1 text-sm text-foreground hover:text-foreground/80"
                 >
                   More Templates
-                  <div className="flex flex-col -space-y-1">
-                    <ChevronUp className="w-3.5 h-3.5" />
-                    <ChevronDown className="w-3.5 h-3.5" />
-                  </div>
+                  <ChevronsUpDown className="w-4 h-4" />
                 </button>
               </div>
               <p className="text-sm text-muted-foreground mb-4">Build dashboards from your searches and social accounts.</p>
@@ -207,20 +204,20 @@ const Analyze = () => {
               <div 
                 className="overflow-hidden transition-all duration-300 ease-out"
                 style={{ 
-                  maxHeight: templatesExpanded ? '480px' : '176px',
+                  maxHeight: templatesExpanded ? '600px' : '200px',
                 }}
               >
-                <ScrollArea className={templatesExpanded ? "h-[480px]" : "h-auto"}>
+                <ScrollArea className={templatesExpanded ? "h-[600px]" : "h-auto"}>
                   <div
                     className={`grid grid-cols-4 gap-4 ${templatesExpanded ? "pr-4 pb-4" : ""}`}
                   >
                     {dashboardTemplates.map((template, index) => (
-                      <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
+                      <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors flex flex-col">
                         <div className="flex items-center gap-2 mb-2">
-                          <template.icon className="w-5 h-5 text-muted-foreground" />
+                          <template.icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
                           <span className="font-medium text-card-foreground">{template.title}</span>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
+                        <p className="text-sm text-muted-foreground mb-3 flex-1 line-clamp-3">{template.description}</p>
                         <button className="text-sm text-foreground underline hover:text-primary">Create &gt;&gt;</button>
                       </div>
                     ))}
@@ -236,41 +233,20 @@ const Analyze = () => {
                   <h2 className="font-semibold text-card-foreground">Intelligence Dashboards</h2>
                   <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">Premium add-ons</span>
                 </div>
-                <button 
-                  onClick={() => setIntelligenceExpanded(!intelligenceExpanded)}
-                  className="flex items-center gap-1 text-sm text-primary hover:text-primary/80"
-                >
-                  More Intelligence
-                  <div className="flex flex-col -space-y-1">
-                    <ChevronUp className="w-3.5 h-3.5" />
-                    <ChevronDown className="w-3.5 h-3.5" />
-                  </div>
-                </button>
               </div>
               <p className="text-sm text-muted-foreground mb-4">Always-on dashboards with insights beyond your searches.</p>
               
-              <div 
-                className="overflow-hidden transition-all duration-300 ease-out"
-                style={{ 
-                  maxHeight: intelligenceExpanded ? '480px' : '148px',
-                }}
-              >
-                <ScrollArea className={intelligenceExpanded ? "h-[480px]" : "h-auto"}>
-                  <div
-                    className={`grid grid-cols-3 gap-4 ${intelligenceExpanded ? "pr-4 pb-4" : ""}`}
-                  >
-                    {intelligenceDashboards.map((dashboard, index) => (
-                      <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
-                        <div className="flex items-center gap-2 mb-2">
-                          <dashboard.icon className="w-5 h-5 text-muted-foreground" />
-                          <span className="font-medium text-card-foreground">{dashboard.title}</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-3">{dashboard.description}</p>
-                        <button className="text-sm text-foreground underline hover:text-primary">Learn more &gt;&gt;</button>
-                      </div>
-                    ))}
+              <div className="grid grid-cols-3 gap-4">
+                {intelligenceDashboards.slice(0, 3).map((dashboard, index) => (
+                  <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors flex flex-col">
+                    <div className="flex items-center gap-2 mb-2">
+                      <dashboard.icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                      <span className="font-medium text-card-foreground">{dashboard.title}</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-3 flex-1">{dashboard.description}</p>
+                    <button className="text-sm text-foreground underline hover:text-primary">Learn more &gt;&gt;</button>
                   </div>
-                </ScrollArea>
+                ))}
               </div>
             </div>
 
