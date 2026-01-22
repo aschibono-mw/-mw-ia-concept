@@ -146,8 +146,8 @@ export const Header = () => {
                   <User className="w-5 h-5 text-muted-foreground" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-medium text-sm">Tony Schibono</span>
-                  <span className="text-xs text-muted-foreground">tony.schibono@meltwater.com</span>
+                  <span className="font-medium text-sm">John Box</span>
+                  <span className="text-xs text-muted-foreground">John.Box@meltwater.com</span>
                 </div>
               </div>
               
