@@ -33,7 +33,7 @@ const initialActivities: ActivityItem[] = [
     type: "alert",
     icon: <Bell className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <>Spike detected: <span className="font-medium underline cursor-pointer">Brand mentions in Finance (+43%)</span></>
+      <>Spike detected: <span className="font-semibold underline cursor-pointer hover:text-primary">Brand mentions in Finance (+43%)</span></>
     ),
     time: "5 mins ago",
     isSystem: true
@@ -43,7 +43,7 @@ const initialActivities: ActivityItem[] = [
     type: "search",
     icon: <Search className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">David Kim</span> created a search: <span className="font-medium underline cursor-pointer">Brand + Earnings Risk</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">David Kim</span> created a search: <span className="font-semibold underline cursor-pointer hover:text-primary">Brand + Earnings Risk</span></>
     ),
     time: "10 mins ago"
   },
@@ -52,7 +52,7 @@ const initialActivities: ActivityItem[] = [
     type: "dashboard",
     icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Rachel Wu</span> updated a dashboard: <span className="font-medium underline cursor-pointer">Executive Visibility Report</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Rachel Wu</span> updated a dashboard: <span className="font-semibold underline cursor-pointer hover:text-primary">Executive Visibility Report</span></>
     ),
     time: "1 hr ago"
   },
@@ -61,7 +61,7 @@ const initialActivities: ActivityItem[] = [
     type: "alert",
     icon: <Bell className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <>Sentiment shift detected: <span className="font-medium underline cursor-pointer">Negative tone in Europe</span></>
+      <>Sentiment shift detected: <span className="font-semibold underline cursor-pointer hover:text-primary">Negative tone in Europe</span></>
     ),
     time: "3 hrs ago",
     isSystem: true
@@ -71,7 +71,7 @@ const initialActivities: ActivityItem[] = [
     type: "dashboard",
     icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Sophia Patel</span> created a dashboard: <span className="font-medium underline cursor-pointer">Brand Health Dashboard</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Sophia Patel</span> created a dashboard: <span className="font-semibold underline cursor-pointer hover:text-primary">Brand Health Dashboard</span></>
     ),
     time: "5 hrs ago"
   },
@@ -80,7 +80,7 @@ const initialActivities: ActivityItem[] = [
     type: "alert",
     icon: <Bell className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <>Geography shift detected: <span className="font-medium underline cursor-pointer">Conversation moved from US to APAC</span></>
+      <>Geography shift detected: <span className="font-semibold underline cursor-pointer hover:text-primary">Conversation moved from US to APAC</span></>
     ),
     time: "6 hrs ago",
     isSystem: true
@@ -90,7 +90,7 @@ const initialActivities: ActivityItem[] = [
     type: "genai",
     icon: <Sparkles className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <>GenAI generated a summary: <span className="font-medium underline cursor-pointer">Today's global media coverage</span></>
+      <>GenAI generated a summary: <span className="font-semibold underline cursor-pointer hover:text-primary">Today's global media coverage</span></>
     ),
     time: "10 hrs ago",
     isSystem: true
@@ -100,7 +100,7 @@ const initialActivities: ActivityItem[] = [
     type: "publishing",
     icon: <FileText className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Laura Bennett</span> scheduled a newsletter: <span className="font-medium underline cursor-pointer">The Daily Media Brief</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Laura Bennett</span> scheduled a newsletter: <span className="font-semibold underline cursor-pointer hover:text-primary">The Daily Media Brief</span></>
     ),
     time: "Yesterday"
   },
@@ -109,7 +109,7 @@ const initialActivities: ActivityItem[] = [
     type: "search",
     icon: <Search className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Tom Nguyen</span> edited a search: <span className="font-medium underline cursor-pointer">Competitor Monitoring</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Tom Nguyen</span> edited a search: <span className="font-semibold underline cursor-pointer hover:text-primary">Competitor Monitoring</span></>
     ),
     time: "Yesterday"
   },
@@ -118,7 +118,7 @@ const initialActivities: ActivityItem[] = [
     type: "dashboard",
     icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Tom Nguyen</span> shared a dashboard: <span className="font-medium underline cursor-pointer">Competitor Benchmark</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Tom Nguyen</span> shared a dashboard: <span className="font-semibold underline cursor-pointer hover:text-primary">Competitor Benchmark</span></>
     ),
     time: "Yesterday"
   },
@@ -127,7 +127,7 @@ const initialActivities: ActivityItem[] = [
     type: "alert",
     icon: <Bell className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <>Topic surge detected: <span className="font-medium underline cursor-pointer">"AI regulation"</span></>
+      <>Topic surge detected: <span className="font-semibold underline cursor-pointer hover:text-primary">"AI regulation"</span></>
     ),
     time: "2 days ago",
     isSystem: true
@@ -137,7 +137,7 @@ const initialActivities: ActivityItem[] = [
     type: "outreach",
     icon: <Mail className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Rachel Wu</span> sent a pitch: <span className="font-medium underline cursor-pointer">Executive Visibility Report</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Rachel Wu</span> sent a pitch: <span className="font-semibold underline cursor-pointer hover:text-primary">Executive Visibility Report</span></>
     ),
     time: "2 days ago"
   },
@@ -146,7 +146,7 @@ const initialActivities: ActivityItem[] = [
     type: "dashboard",
     icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">David Kim</span> created a dashboard: <span className="font-medium underline cursor-pointer">Audience Insights</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">David Kim</span> created a dashboard: <span className="font-semibold underline cursor-pointer hover:text-primary">Audience Insights</span></>
     ),
     time: "2 days ago"
   },
@@ -155,7 +155,7 @@ const initialActivities: ActivityItem[] = [
     type: "mention",
     icon: <Flag className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Alex Morgan</span> flagged a mention: <span className="font-medium underline cursor-pointer">WSJ — Leadership Change Reported</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Alex Morgan</span> flagged a mention: <span className="font-semibold underline cursor-pointer hover:text-primary">WSJ — Leadership Change Reported</span></>
     ),
     time: "3 days ago"
   },
@@ -164,7 +164,7 @@ const initialActivities: ActivityItem[] = [
     type: "search",
     icon: <Search className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Alex Morgan</span> created a search: <span className="font-medium underline cursor-pointer">ESG Coverage Tracker</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Alex Morgan</span> created a search: <span className="font-semibold underline cursor-pointer hover:text-primary">ESG Coverage Tracker</span></>
     ),
     time: "4 days ago"
   },
@@ -173,7 +173,7 @@ const initialActivities: ActivityItem[] = [
     type: "dashboard",
     icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Rachel Wu</span> updated a dashboard: <span className="font-medium underline cursor-pointer">Crisis Monitor</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Rachel Wu</span> updated a dashboard: <span className="font-semibold underline cursor-pointer hover:text-primary">Crisis Monitor</span></>
     ),
     time: "4 days ago"
   },
@@ -182,7 +182,7 @@ const initialActivities: ActivityItem[] = [
     type: "publishing",
     icon: <FileText className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Sophia Patel</span> published a report: <span className="font-medium underline cursor-pointer">Daily Coverage Digest</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Sophia Patel</span> published a report: <span className="font-semibold underline cursor-pointer hover:text-primary">Daily Coverage Digest</span></>
     ),
     time: "5 days ago"
   },
@@ -191,7 +191,7 @@ const initialActivities: ActivityItem[] = [
     type: "search",
     icon: <Search className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">David Kim</span> created a search: <span className="font-medium underline cursor-pointer">Earnings Call Mentions</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">David Kim</span> created a search: <span className="font-semibold underline cursor-pointer hover:text-primary">Earnings Call Mentions</span></>
     ),
     time: "5 days ago"
   },
@@ -200,7 +200,7 @@ const initialActivities: ActivityItem[] = [
     type: "dashboard",
     icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Sophia Patel</span> shared a dashboard: <span className="font-medium underline cursor-pointer">Sentiment Tracker</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Sophia Patel</span> shared a dashboard: <span className="font-semibold underline cursor-pointer hover:text-primary">Sentiment Tracker</span></>
     ),
     time: "5 days ago"
   },
@@ -209,7 +209,7 @@ const initialActivities: ActivityItem[] = [
     type: "outreach",
     icon: <Mail className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">David Kim</span> sent a pitch: <span className="font-medium underline cursor-pointer">Competitor Watch Update</span></>
+      <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">David Kim</span> sent a pitch: <span className="font-semibold underline cursor-pointer hover:text-primary">Competitor Watch Update</span></>
     ),
     time: "6 days ago"
   },
@@ -220,51 +220,51 @@ const moreActivities: Omit<ActivityItem, 'id'>[] = [
   {
     type: "search",
     icon: <Search className="w-4 h-4 text-muted-foreground" />,
-    content: <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Rachel Wu</span> created a search: <span className="font-medium underline cursor-pointer">CEO Media Appearances</span></>,
+    content: <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Rachel Wu</span> created a search: <span className="font-semibold underline cursor-pointer hover:text-primary">CEO Media Appearances</span></>,
     time: "1 week ago"
   },
   {
     type: "dashboard",
     icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
-    content: <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Tom Nguyen</span> updated a dashboard: <span className="font-medium underline cursor-pointer">Influencer Watch</span></>,
+    content: <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Tom Nguyen</span> updated a dashboard: <span className="font-semibold underline cursor-pointer hover:text-primary">Influencer Watch</span></>,
     time: "1 week ago"
   },
   {
     type: "alert",
     icon: <Bell className="w-4 h-4 text-muted-foreground" />,
-    content: <>Volume increase: <span className="font-medium underline cursor-pointer">Social media mentions up 28%</span></>,
+    content: <>Volume increase: <span className="font-semibold underline cursor-pointer hover:text-primary">Social media mentions up 28%</span></>,
     time: "1 week ago",
     isSystem: true
   },
   {
     type: "publishing",
     icon: <FileText className="w-4 h-4 text-muted-foreground" />,
-    content: <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Alex Morgan</span> scheduled a newsletter: <span className="font-medium underline cursor-pointer">The Brand Pulse</span></>,
+    content: <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Alex Morgan</span> scheduled a newsletter: <span className="font-semibold underline cursor-pointer hover:text-primary">The Brand Pulse</span></>,
     time: "1 week ago"
   },
   {
     type: "search",
     icon: <Search className="w-4 h-4 text-muted-foreground" />,
-    content: <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Tom Nguyen</span> created a search: <span className="font-medium underline cursor-pointer">Cybersecurity Incidents</span></>,
+    content: <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Tom Nguyen</span> created a search: <span className="font-semibold underline cursor-pointer hover:text-primary">Cybersecurity Incidents</span></>,
     time: "2 weeks ago"
   },
   {
     type: "genai",
     icon: <Sparkles className="w-4 h-4 text-muted-foreground" />,
-    content: <>GenAI insight: <span className="font-medium underline cursor-pointer">Competitor sentiment trending negative</span></>,
+    content: <>GenAI insight: <span className="font-semibold underline cursor-pointer hover:text-primary">Competitor sentiment trending negative</span></>,
     time: "2 weeks ago",
     isSystem: true
   },
   {
     type: "dashboard",
     icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
-    content: <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Laura Bennett</span> created a dashboard: <span className="font-medium underline cursor-pointer">Campaign Performance</span></>,
+    content: <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Laura Bennett</span> created a dashboard: <span className="font-semibold underline cursor-pointer hover:text-primary">Campaign Performance</span></>,
     time: "2 weeks ago"
   },
   {
     type: "outreach",
     icon: <Mail className="w-4 h-4 text-muted-foreground" />,
-    content: <><span className="font-medium text-foreground underline cursor-pointer hover:text-primary">Sophia Patel</span> sent a pitch: <span className="font-medium underline cursor-pointer">Industry Trends Digest</span></>,
+    content: <><span className="font-semibold text-foreground underline cursor-pointer hover:text-primary">Sophia Patel</span> sent a pitch: <span className="font-semibold underline cursor-pointer hover:text-primary">Industry Trends Digest</span></>,
     time: "2 weeks ago"
   },
 ];
@@ -362,7 +362,7 @@ export const ActivityFeed = () => {
         {filteredActivities.map((activity) => (
           <div
             key={activity.id}
-            className="flex items-center gap-3 py-2.5 border-b border-border last:border-b-0"
+            className="flex items-center gap-3 py-3.5 border-b border-border last:border-b-0"
           >
             <div className="flex-shrink-0 w-8 flex items-center justify-center">
               <span className="whitespace-nowrap leading-none">{activity.icon}</span>
