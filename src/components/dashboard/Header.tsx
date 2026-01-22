@@ -13,7 +13,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
-import meltwaterLogo from "@/assets/meltwater-logo.png";
+import meltwaterIcon from "@/assets/meltwater-icon.png";
 
 const createMenuItems = [
   { icon: Search, label: "Search" },
@@ -74,7 +74,7 @@ export const Header = () => {
     <header className="h-16 bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-10">
       {/* Logo and Title */}
       <div className="flex items-center gap-3 min-w-[200px]">
-        <img src={meltwaterLogo} alt="Meltwater" className="h-[22px] w-auto" />
+        <img src={meltwaterIcon} alt="Meltwater" className="h-6 w-auto" />
         <span className="text-xl font-semibold text-foreground">{pageTitle}</span>
       </div>
 
