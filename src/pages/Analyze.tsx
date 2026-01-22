@@ -201,16 +201,9 @@ const Analyze = () => {
               </div>
               <p className="text-sm text-muted-foreground mb-4">Build dashboards from your searches and social accounts.</p>
               
-              <div 
-                className="overflow-hidden transition-all duration-300 ease-out"
-                style={{ 
-                  maxHeight: templatesExpanded ? '600px' : '200px',
-                }}
-              >
-                <ScrollArea className={templatesExpanded ? "h-[600px]" : "h-auto"}>
-                  <div
-                    className={`grid grid-cols-4 gap-4 ${templatesExpanded ? "pr-4 pb-4" : ""}`}
-                  >
+              {templatesExpanded ? (
+                <ScrollArea className="h-[600px]">
+                  <div className="grid grid-cols-4 gap-4 pr-4 pb-4">
                     {dashboardTemplates.map((template, index) => (
                       <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors flex flex-col">
                         <div className="flex items-center gap-2 mb-2">
@@ -223,7 +216,20 @@ const Analyze = () => {
                     ))}
                   </div>
                 </ScrollArea>
-              </div>
+              ) : (
+                <div className="grid grid-cols-4 gap-4">
+                  {dashboardTemplates.slice(0, 4).map((template, index) => (
+                    <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors flex flex-col">
+                      <div className="flex items-center gap-2 mb-2">
+                        <template.icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                        <span className="font-medium text-card-foreground">{template.title}</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3 flex-1 line-clamp-3">{template.description}</p>
+                      <button className="text-sm text-foreground underline hover:text-primary">Create &gt;&gt;</button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Intelligence Dashboards */}
