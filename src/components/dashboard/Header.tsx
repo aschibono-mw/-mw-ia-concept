@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, Newspaper, AlertCircle, Settings, ShieldCheck, LogOut, TrendingUp, Plus, Building2, UserCircle, FolderOpen, Users, FileStack } from "lucide-react";
+import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, Newspaper, AlertCircle, Settings, ShieldCheck, LogOut, TrendingUp, Plus, Building2, UserCircle, FolderOpen, Users, FileStack, Eye, MessageSquare, Activity, BarChart3, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -23,26 +23,31 @@ const createMenuItems = [
   { icon: AlertCircle, label: "Alert" },
 ];
 
-const alertsData = [
+const alertsData: { source: string; description: string; icon: LucideIcon }[] = [
   {
     source: "Industry News Search",
-    description: "Surge in Discussions on AI Market Trends"
+    description: "Surge in Discussions on AI Market Trends",
+    icon: TrendingUp
   },
   {
     source: "Competitor Monitoring",
-    description: "Increased Mentions of Product Launch"
+    description: "Increased Mentions of Product Launch",
+    icon: Eye
   },
   {
     source: "Brand Mentions",
-    description: "Social Media Buzz Around Campaign"
+    description: "Social Media Buzz Around Campaign",
+    icon: MessageSquare
   },
   {
     source: "Crisis Watch",
-    description: "Rising Sentiment on Customer Feedback"
+    description: "Rising Sentiment on Customer Feedback",
+    icon: Activity
   },
   {
     source: "Market Analysis",
-    description: "Trending Topics in Tech Industry"
+    description: "Trending Topics in Tech Industry",
+    icon: BarChart3
   }
 ];
 
@@ -108,8 +113,8 @@ export const Header = () => {
                 {alertsData.map((alert, index) => (
                   <div key={index} className="px-3 py-2 border-b border-border hover:bg-muted/50 cursor-pointer">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                        <TrendingUp className="w-4 h-4 text-green-600" />
+                      <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                        <alert.icon className="w-3 h-3 text-green-600" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <span className="text-xs text-muted-foreground">{alert.source}</span>
@@ -119,12 +124,12 @@ export const Header = () => {
                   </div>
                 ))}
               </div>
-              <div className="p-2 border-t border-border">
-                <DropdownMenuItem className="cursor-pointer justify-center">
+              <div className="p-2 border-t border-border flex items-center justify-between gap-2">
+                <DropdownMenuItem className="cursor-pointer justify-center flex-1">
                   View More
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer justify-center text-primary">
-                  <Plus className="w-4 h-4 mr-1" />
+                <DropdownMenuItem className="cursor-pointer justify-center text-primary flex-1">
+                  <Plus className="w-3 h-3 mr-1" />
                   Create Alert
                 </DropdownMenuItem>
               </div>
