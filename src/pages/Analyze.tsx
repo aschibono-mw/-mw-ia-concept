@@ -59,14 +59,9 @@ const categories: CategoryItem[] = [
 
 const templateCategories = [
   {
-    label: "General",
-    templates: [
-      { icon: LayoutGrid, title: "Custom", description: "Start from scratch with an empty dashboard." },
-    ]
-  },
-  {
     label: "Analytics",
     templates: [
+      { icon: LayoutGrid, title: "Custom", description: "Start from scratch with an empty dashboard." },
       { icon: LayoutGrid, title: "Audience", description: "Gain insights into your audience by exploring demographics, trending topics, and key phrases using both social and editorial content." },
       { icon: LayoutGrid, title: "Benchmark", description: "Compare brands, topics, or competitors to understand their share of voice across mentions, reach, sentiment, source type, and markets." },
       { icon: LayoutGrid, title: "Brand", description: "Understand and report on brand awareness using metrics such as number of mentions, reach, sentiment, coverage by market & key themes." },
