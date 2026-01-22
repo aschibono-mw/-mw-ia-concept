@@ -247,7 +247,7 @@ export const ActivityFeed = () => {
   return (
     <div className="bg-card rounded-lg border border-border p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4 pb-4 border-b border-border">
+      <div className="flex items-center justify-between mb-2 pb-2 border-b border-border">
         <h2 className="text-lg font-semibold text-card-foreground">What's happening now</h2>
         <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           Last 7 days
@@ -256,7 +256,7 @@ export const ActivityFeed = () => {
       </div>
 
       {/* Tabs */}
-      <div className="relative mb-4 border-b border-border py-2">
+      <div className="relative mb-4 border-b border-border pb-2">
         <div className="flex gap-1 overflow-x-auto scrollbar-none pr-8">
           {tabs.map((tab) => (
             <button
@@ -274,7 +274,7 @@ export const ActivityFeed = () => {
           ))}
         </div>
         {/* Scroll fade indicator */}
-        <div className="absolute right-0 top-2 bottom-2 w-12 bg-gradient-to-l from-card to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-2 w-12 bg-gradient-to-l from-card to-transparent pointer-events-none" />
       </div>
 
       {/* Activity List */}
