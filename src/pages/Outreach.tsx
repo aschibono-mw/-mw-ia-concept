@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { ChevronDown, Star, MoreVertical, Plus, Mail, Users, Megaphone } from "lucide-react";
+import { ChevronDown, Star, MoreVertical, Plus, Mail, Users, Megaphone, Radio } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -239,6 +239,22 @@ const Outreach = () => {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Create and design PR content</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span>
+                        <TabsTrigger 
+                          value="newswire" 
+                          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground flex items-center gap-2"
+                        >
+                          <Radio className="w-4 h-4" />
+                          Newswire
+                        </TabsTrigger>
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Distribute press releases via newswire</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -479,6 +495,18 @@ const Outreach = () => {
                     <Megaphone className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                     <h2 className="font-semibold text-card-foreground mb-2">PR Studio</h2>
                     <p className="text-sm text-muted-foreground mb-4">Create and design professional PR content.</p>
+                    <button className="text-sm text-foreground underline hover:text-primary">Get started &gt;&gt;</button>
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* Newswire Tab */}
+              <TabsContent value="newswire" className="mt-0">
+                <div className="bg-card rounded-lg border border-border p-6">
+                  <div className="text-center py-12">
+                    <Radio className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <h2 className="font-semibold text-card-foreground mb-2">Newswire</h2>
+                    <p className="text-sm text-muted-foreground mb-4">Distribute your press releases to major news outlets worldwide.</p>
                     <button className="text-sm text-foreground underline hover:text-primary">Get started &gt;&gt;</button>
                   </div>
                 </div>
