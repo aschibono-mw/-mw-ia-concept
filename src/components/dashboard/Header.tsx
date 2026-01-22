@@ -139,7 +139,7 @@ export const Header = () => {
                 <User className="w-5 h-5" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-card">
+            <DropdownMenuContent align="end" className="w-64 bg-card">
               {/* User Info */}
               <div className="flex items-center gap-3 p-3 border-b border-border">
                 <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
