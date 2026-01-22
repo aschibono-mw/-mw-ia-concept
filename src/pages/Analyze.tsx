@@ -5,6 +5,7 @@ import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, S
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -198,27 +199,50 @@ const Analyze = () => {
 
             {/* Tabbed Interface */}
             <Tabs defaultValue="dashboards" className="w-full">
-              <TabsList className="bg-transparent border-b border-border w-full justify-start rounded-none h-auto p-0 mb-6">
-                <TabsTrigger 
-                  value="dashboards" 
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
-                >
-                  Dashboards
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="templates" 
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
-                >
-                  Templates
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="intelligence" 
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
-                >
-                  Intelligence
-                  <span className="ml-2 text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">Premium</span>
-                </TabsTrigger>
-              </TabsList>
+              <TooltipProvider>
+                <TabsList className="bg-transparent border-b border-border w-full justify-start rounded-none h-auto p-0 mb-6">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <TabsTrigger 
+                        value="dashboards" 
+                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
+                      >
+                        Dashboards
+                      </TabsTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>View and manage your saved dashboards</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <TabsTrigger 
+                        value="templates" 
+                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
+                      >
+                        Templates
+                      </TabsTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Start with pre-built dashboard templates</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <TabsTrigger 
+                        value="intelligence" 
+                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground"
+                      >
+                        Intelligence
+                        <span className="ml-2 text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">Premium</span>
+                      </TabsTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>AI-powered insights and advanced analytics</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TabsList>
+              </TooltipProvider>
 
               {/* My Dashboards Tab */}
               <TabsContent value="dashboards" className="mt-0">
