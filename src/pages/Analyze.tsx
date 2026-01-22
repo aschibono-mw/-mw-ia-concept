@@ -382,7 +382,7 @@ const Analyze = () => {
                 <div className="bg-card rounded-lg border border-border p-6">
                   <div className="mb-4">
                     <h2 className="font-semibold text-card-foreground mb-1">Dashboard Templates</h2>
-                    <p className="text-sm text-muted-foreground">Choose a template to get started quickly.</p>
+                    <p className="text-sm text-muted-foreground">Choose a template to get started.</p>
                   </div>
                   
                   <div className="grid grid-cols-4 gap-4">
