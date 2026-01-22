@@ -1,7 +1,6 @@
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { WelcomeBanner } from "@/components/dashboard/WelcomeBanner";
-import { DashboardHero } from "@/components/dashboard/DashboardHero";
 import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
 import { RightPanel } from "@/components/dashboard/RightPanel";
 
@@ -15,7 +14,6 @@ const Index = () => {
         <div className="p-6 flex flex-col items-center">
           <div className="w-full max-w-[1100px]">
             <WelcomeBanner />
-            <DashboardHero />
             <div className="flex gap-6 items-start">
               <div className="flex-1 max-w-3xl">
                 <ActivityFeed />
