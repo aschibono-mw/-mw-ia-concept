@@ -209,10 +209,10 @@ const Analyze = () => {
               <div 
                 className="overflow-hidden transition-all duration-300 ease-out"
                 style={{ 
-                  maxHeight: templatesExpanded ? '420px' : '130px',
+                  maxHeight: templatesExpanded ? '480px' : '160px',
                 }}
               >
-                <ScrollArea className={templatesExpanded ? "h-[420px]" : "h-auto"}>
+                <ScrollArea className={templatesExpanded ? "h-[480px]" : "h-auto"}>
                   <div className="grid grid-cols-4 gap-4 pr-4">
                     {dashboardTemplates.map((template, index) => (
                       <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
@@ -252,10 +252,10 @@ const Analyze = () => {
               <div 
                 className="overflow-hidden transition-all duration-300 ease-out"
                 style={{ 
-                  maxHeight: intelligenceExpanded ? '420px' : '130px',
+                  maxHeight: intelligenceExpanded ? '480px' : '160px',
                 }}
               >
-                <ScrollArea className={intelligenceExpanded ? "h-[420px]" : "h-auto"}>
+                <ScrollArea className={intelligenceExpanded ? "h-[480px]" : "h-auto"}>
                   <div className="grid grid-cols-3 gap-4 pr-4">
                     {intelligenceDashboards.map((dashboard, index) => (
                       <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
