@@ -195,7 +195,7 @@ const Analyze = () => {
 
             {/* Intelligence Dashboards */}
             <div className="bg-card rounded-lg border border-border p-4 mb-6">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-3">
                   <h2 className="font-semibold text-card-foreground">Intelligence Dashboards</h2>
                   <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">Premium add-ons</span>
