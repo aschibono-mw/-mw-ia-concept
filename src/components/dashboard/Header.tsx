@@ -59,7 +59,7 @@ const alertsData: { source: string; description: string; icon: LucideIcon; time:
 
 const pageTitles: Record<string, string> = {
   "/": "Meltwater",
-  "/discover": "Discover",
+  "/discover": "Explore",
   "/analyze": "Analyze",
   "/distribute": "Distribute",
   "/outreach": "Outreach",
