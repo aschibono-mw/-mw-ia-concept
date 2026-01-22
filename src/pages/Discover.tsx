@@ -382,7 +382,7 @@ const Discover = () => {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold text-card-foreground">Categories</h3>
                     <button 
-                      className="text-muted-foreground hover:text-foreground"
+                      className="w-7 h-7 rounded-full border border-border bg-white flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                       onClick={() => setIsAddCategoryOpen(true)}
                     >
                       <Plus className="w-4 h-4" />
