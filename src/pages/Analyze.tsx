@@ -211,7 +211,7 @@ const Analyze = () => {
                           <span className="font-medium text-card-foreground">{template.title}</span>
                         </div>
                         <p className="text-sm text-muted-foreground mb-3 flex-1 line-clamp-3">{template.description}</p>
-                        <button className="text-sm text-foreground underline hover:text-primary">Create &gt;&gt;</button>
+                        <button className="text-sm text-foreground underline hover:text-primary self-start">Create &gt;&gt;</button>
                       </div>
                     ))}
                   </div>
@@ -225,7 +225,7 @@ const Analyze = () => {
                         <span className="font-medium text-card-foreground">{template.title}</span>
                       </div>
                       <p className="text-sm text-muted-foreground mb-3 flex-1 line-clamp-3">{template.description}</p>
-                      <button className="text-sm text-foreground underline hover:text-primary">Create &gt;&gt;</button>
+                      <button className="text-sm text-foreground underline hover:text-primary self-start">Create &gt;&gt;</button>
                     </div>
                   ))}
                 </div>
@@ -250,7 +250,7 @@ const Analyze = () => {
                       <span className="font-medium text-card-foreground">{dashboard.title}</span>
                     </div>
                     <p className="text-sm text-muted-foreground mb-3 flex-1">{dashboard.description}</p>
-                    <button className="text-sm text-foreground underline hover:text-primary">Learn more &gt;&gt;</button>
+                    <button className="text-sm text-foreground underline hover:text-primary self-start">Learn more &gt;&gt;</button>
                   </div>
                 ))}
               </div>
