@@ -60,7 +60,7 @@ const initialActivities: ActivityItem[] = [
   {
     id: 4,
     type: "alert",
-    icon: <span className="text-base leading-none">😐→😟</span>,
+    icon: <span className="text-sm leading-none whitespace-nowrap">😐→😟</span>,
     content: (
       <>Sentiment shift detected: <span className="font-medium underline cursor-pointer">Negative tone in Europe</span></>
     ),
