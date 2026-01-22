@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const tabs = ["All", "Mine", "My team", "Searches", "Mentions", "GenAI", "Alerts", "Publishing", "Outreach"];
+const tabs = ["All", "Mine", "My team", "Searches", "Dashboards", "Mentions", "GenAI", "Alerts", "Publishing", "Outreach"];
 
 interface ActivityItem {
   id: number;
@@ -256,7 +256,7 @@ export const ActivityFeed = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-4 border-b border-border pb-3 overflow-x-auto">
+      <div className="flex gap-1 mb-4 border-b border-border pb-3 overflow-x-auto scrollbar-none">
         {tabs.map((tab) => (
           <button
             key={tab}
