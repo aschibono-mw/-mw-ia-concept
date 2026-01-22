@@ -9,197 +9,265 @@ import {
   Flag,
   LayoutGrid,
   ChevronDown,
-  Loader2
+  Loader2,
+  User
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const tabs = ["All", "Mine", "My team", "Searches", "Dashboards", "Mentions", "GenAI", "Alerts", "Publishing", "Outreach"];
 
+type ActivityType = "search" | "dashboard" | "newsletter" | "pitch" | "mention" | "alert" | "genai" | "publishing" | "outreach";
+
 interface ActivityItem {
   id: number;
+  type: ActivityType;
   icon: React.ReactNode;
   content: React.ReactNode;
   time: string;
+  isSystem?: boolean;
 }
 
-const names = ["David Kim", "Laura Bennett", "Sophia Patel", "Rachel Wu", "Tom Nguyen", "Alex Morgan", "James Chen", "Emily Davis", "Michael Brown", "Sarah Wilson"];
-const actions = [
-  { action: "created a search", link: "Brand + Earnings Risk" },
-  { action: "edited a search", link: "Competitor Watch" },
-  { action: "scheduled a Newsletter", link: "The Daily Media Brief" },
-  { action: "sent a pitch", link: "AI Leadership in 2025" },
-  { action: "flagged a mention", link: "WSJ — Leadership Change Reported" },
-  { action: "created a dashboard", link: "Market Share Tracker" },
-  { action: "shared a report", link: "Q4 Media Analysis" },
-  { action: "updated a dashboard", link: "Executive Visibility" },
-];
-const systemEvents = [
-  { text: "Spike detected:", link: "Brand mentions in Finance (+43%)" },
-  { text: "Sentiment shift detected:", link: "Negative tone in Europe" },
-  { text: "Geography shift detected:", link: "Conversation moved from US to APAC" },
-  { text: "Topic surge detected:", link: '"AI regulation"' },
-  { text: "Volume increase:", link: "Social media mentions up 28%" },
-  { text: "New trend identified:", link: "ESG discussions rising" },
-];
-const times = ["5 mins ago", "10 mins ago", "30 mins ago", "1 hr ago", "2 hrs ago", "3 hrs ago", "6 hrs ago", "10 hrs ago", "Yesterday", "2 days ago", "3 days ago", "5 days ago", "1 week ago"];
-const icons = [TrendingUp, Search, Globe, Sparkles, FileText, Mail, Flag, LayoutGrid];
-
-const generateActivity = (id: number): ActivityItem => {
-  const isUserAction = Math.random() > 0.4;
-  const Icon = icons[Math.floor(Math.random() * icons.length)];
-  const time = times[Math.floor(Math.random() * times.length)];
-  
-  if (isUserAction) {
-    const name = names[Math.floor(Math.random() * names.length)];
-    const { action, link } = actions[Math.floor(Math.random() * actions.length)];
-    return {
-      id,
-      icon: (
-        <div className="flex items-center gap-1">
-          <Icon className="w-4 h-4 text-muted-foreground" />
-          <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs">👤</div>
-        </div>
-      ),
-      content: (
-        <><span className="font-semibold text-primary cursor-pointer">{name}</span> {action}: <span className="font-semibold underline cursor-pointer">{link}</span></>
-      ),
-      time
-    };
-  } else {
-    const { text, link } = systemEvents[Math.floor(Math.random() * systemEvents.length)];
-    const useEmoji = Math.random() > 0.7;
-    return {
-      id,
-      icon: useEmoji ? <span className="text-sm">😐→😟</span> : <Icon className="w-4 h-4 text-muted-foreground" />,
-      content: (
-        <>{text} <span className="font-semibold underline cursor-pointer">{link}</span></>
-      ),
-      time
-    };
-  }
-};
-
+// Consistent data matching other pages
 const initialActivities: ActivityItem[] = [
   {
     id: 1,
+    type: "alert",
     icon: <TrendingUp className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <>Spike detected: <span className="font-semibold underline cursor-pointer">Brand mentions in Finance (+43%)</span></>
+      <>Spike detected: <span className="font-medium underline cursor-pointer">Brand mentions in Finance (+43%)</span></>
     ),
-    time: "5 mins ago"
+    time: "5 mins ago",
+    isSystem: true
   },
   {
     id: 2,
-    icon: (
-      <div className="flex items-center gap-1">
-        <Search className="w-4 h-4 text-muted-foreground" />
-        <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs">👤</div>
-      </div>
-    ),
+    type: "search",
+    icon: <Search className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-semibold text-primary cursor-pointer">David Kim</span> created a search: <span className="font-semibold underline cursor-pointer">Brand + Earnings Risk</span></>
+      <><span className="font-medium text-primary">David Kim</span> created a search: <span className="font-medium underline cursor-pointer">Brand + Earnings Risk</span></>
     ),
     time: "10 mins ago"
   },
   {
     id: 3,
-    icon: <span className="text-sm">😐→😟</span>,
+    type: "dashboard",
+    icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <>Sentiment shift detected: <span className="font-semibold underline cursor-pointer">Negative tone in Europe</span></>
+      <><span className="font-medium text-primary">Rachel Wu</span> updated a dashboard: <span className="font-medium underline cursor-pointer">Executive Visibility Report</span></>
     ),
-    time: "3 hrs ago"
+    time: "1 hr ago"
   },
   {
     id: 4,
-    icon: <Globe className="w-4 h-4 text-muted-foreground" />,
+    type: "alert",
+    icon: <span className="text-base leading-none">😐→😟</span>,
     content: (
-      <>Geography shift detected: <span className="font-semibold underline cursor-pointer">Conversation moved from US to APAC</span></>
+      <>Sentiment shift detected: <span className="font-medium underline cursor-pointer">Negative tone in Europe</span></>
     ),
-    time: "6 hrs ago"
+    time: "3 hrs ago",
+    isSystem: true
   },
   {
     id: 5,
-    icon: <Sparkles className="w-4 h-4 text-muted-foreground" />,
+    type: "dashboard",
+    icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <>GenAI generated a summary: <span className="font-semibold underline cursor-pointer">Today's global media coverage</span></>
+      <><span className="font-medium text-primary">Sophia Patel</span> created a dashboard: <span className="font-medium underline cursor-pointer">Brand Health Dashboard</span></>
     ),
-    time: "10 hrs ago"
+    time: "5 hrs ago"
   },
   {
     id: 6,
-    icon: (
-      <div className="flex items-center gap-1">
-        <FileText className="w-4 h-4 text-muted-foreground" />
-        <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs">👤</div>
-      </div>
-    ),
+    type: "alert",
+    icon: <Globe className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-semibold text-primary cursor-pointer">Laura Bennett</span> scheduled a Newsletter: <span className="font-semibold underline cursor-pointer">The Daily Media Brief</span></>
+      <>Geography shift detected: <span className="font-medium underline cursor-pointer">Conversation moved from US to APAC</span></>
     ),
-    time: "Yesterday"
+    time: "6 hrs ago",
+    isSystem: true
   },
   {
     id: 7,
-    icon: (
-      <div className="flex items-center gap-1">
-        <Search className="w-4 h-4 text-muted-foreground" />
-        <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs">👤</div>
-      </div>
-    ),
+    type: "genai",
+    icon: <Sparkles className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-semibold text-primary cursor-pointer">Sophia Patel</span> edited a search: <span className="font-semibold underline cursor-pointer">Competitor Watch</span></>
+      <>GenAI generated a summary: <span className="font-medium underline cursor-pointer">Today's global media coverage</span></>
+    ),
+    time: "10 hrs ago",
+    isSystem: true
+  },
+  {
+    id: 8,
+    type: "publishing",
+    icon: <FileText className="w-4 h-4 text-muted-foreground" />,
+    content: (
+      <><span className="font-medium text-primary">Laura Bennett</span> scheduled a newsletter: <span className="font-medium underline cursor-pointer">The Daily Media Brief</span></>
     ),
     time: "Yesterday"
   },
   {
-    id: 8,
+    id: 9,
+    type: "search",
+    icon: <Search className="w-4 h-4 text-muted-foreground" />,
+    content: (
+      <><span className="font-medium text-primary">Tom Nguyen</span> edited a search: <span className="font-medium underline cursor-pointer">Competitor Monitoring</span></>
+    ),
+    time: "Yesterday"
+  },
+  {
+    id: 10,
+    type: "dashboard",
+    icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
+    content: (
+      <><span className="font-medium text-primary">Tom Nguyen</span> shared a dashboard: <span className="font-medium underline cursor-pointer">Competitor Benchmark</span></>
+    ),
+    time: "Yesterday"
+  },
+  {
+    id: 11,
+    type: "alert",
     icon: <TrendingUp className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <>Topic surge detected: <span className="font-semibold underline cursor-pointer">"AI regulation"</span></>
+      <>Topic surge detected: <span className="font-medium underline cursor-pointer">"AI regulation"</span></>
+    ),
+    time: "2 days ago",
+    isSystem: true
+  },
+  {
+    id: 12,
+    type: "outreach",
+    icon: <Mail className="w-4 h-4 text-muted-foreground" />,
+    content: (
+      <><span className="font-medium text-primary">Rachel Wu</span> sent a pitch: <span className="font-medium underline cursor-pointer">Executive Visibility Report</span></>
     ),
     time: "2 days ago"
   },
   {
-    id: 9,
-    icon: (
-      <div className="flex items-center gap-1">
-        <Mail className="w-4 h-4 text-muted-foreground" />
-        <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs">👤</div>
-      </div>
-    ),
+    id: 13,
+    type: "dashboard",
+    icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-semibold text-primary cursor-pointer">Rachel Wu</span> sent a pitch: <span className="font-semibold underline cursor-pointer">AI Leadership in 2025</span></>
+      <><span className="font-medium text-primary">David Kim</span> created a dashboard: <span className="font-medium underline cursor-pointer">Audience Insights</span></>
+    ),
+    time: "2 days ago"
+  },
+  {
+    id: 14,
+    type: "mention",
+    icon: <Flag className="w-4 h-4 text-muted-foreground" />,
+    content: (
+      <><span className="font-medium text-primary">Alex Morgan</span> flagged a mention: <span className="font-medium underline cursor-pointer">WSJ — Leadership Change Reported</span></>
     ),
     time: "3 days ago"
   },
   {
-    id: 10,
-    icon: (
-      <div className="flex items-center gap-1">
-        <Flag className="w-4 h-4 text-muted-foreground" />
-        <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs">👤</div>
-      </div>
-    ),
+    id: 15,
+    type: "search",
+    icon: <Search className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-semibold text-primary cursor-pointer">Tom Nguyen</span> flagged a mention: <span className="font-semibold underline cursor-pointer">WSJ — Leadership Change Reported</span></>
+      <><span className="font-medium text-primary">Alex Morgan</span> created a search: <span className="font-medium underline cursor-pointer">ESG Coverage Tracker</span></>
+    ),
+    time: "4 days ago"
+  },
+  {
+    id: 16,
+    type: "dashboard",
+    icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
+    content: (
+      <><span className="font-medium text-primary">Rachel Wu</span> updated a dashboard: <span className="font-medium underline cursor-pointer">Crisis Monitor</span></>
+    ),
+    time: "4 days ago"
+  },
+  {
+    id: 17,
+    type: "publishing",
+    icon: <FileText className="w-4 h-4 text-muted-foreground" />,
+    content: (
+      <><span className="font-medium text-primary">Sophia Patel</span> published a report: <span className="font-medium underline cursor-pointer">Daily Coverage Digest</span></>
     ),
     time: "5 days ago"
   },
   {
-    id: 11,
-    icon: (
-      <div className="flex items-center gap-1">
-        <LayoutGrid className="w-4 h-4 text-muted-foreground" />
-        <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs">👤</div>
-      </div>
-    ),
+    id: 18,
+    type: "search",
+    icon: <Search className="w-4 h-4 text-muted-foreground" />,
     content: (
-      <><span className="font-semibold text-primary cursor-pointer">Alex Morgan</span> created a dashboard: <span className="font-semibold underline cursor-pointer">Market Share Tracker</span></>
+      <><span className="font-medium text-primary">David Kim</span> created a search: <span className="font-medium underline cursor-pointer">Earnings Call Mentions</span></>
     ),
     time: "5 days ago"
   },
-  // Additional items to make the page scroll
-  ...Array.from({ length: 15 }, (_, i) => generateActivity(12 + i))
+  {
+    id: 19,
+    type: "dashboard",
+    icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
+    content: (
+      <><span className="font-medium text-primary">Sophia Patel</span> shared a dashboard: <span className="font-medium underline cursor-pointer">Sentiment Tracker</span></>
+    ),
+    time: "5 days ago"
+  },
+  {
+    id: 20,
+    type: "outreach",
+    icon: <Mail className="w-4 h-4 text-muted-foreground" />,
+    content: (
+      <><span className="font-medium text-primary">David Kim</span> sent a pitch: <span className="font-medium underline cursor-pointer">Competitor Watch Update</span></>
+    ),
+    time: "6 days ago"
+  },
+];
+
+// Additional activities for infinite scroll
+const moreActivities: Omit<ActivityItem, 'id'>[] = [
+  {
+    type: "search",
+    icon: <Search className="w-4 h-4 text-muted-foreground" />,
+    content: <><span className="font-medium text-primary">Rachel Wu</span> created a search: <span className="font-medium underline cursor-pointer">CEO Media Appearances</span></>,
+    time: "1 week ago"
+  },
+  {
+    type: "dashboard",
+    icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
+    content: <><span className="font-medium text-primary">Tom Nguyen</span> updated a dashboard: <span className="font-medium underline cursor-pointer">Influencer Watch</span></>,
+    time: "1 week ago"
+  },
+  {
+    type: "alert",
+    icon: <TrendingUp className="w-4 h-4 text-muted-foreground" />,
+    content: <>Volume increase: <span className="font-medium underline cursor-pointer">Social media mentions up 28%</span></>,
+    time: "1 week ago",
+    isSystem: true
+  },
+  {
+    type: "publishing",
+    icon: <FileText className="w-4 h-4 text-muted-foreground" />,
+    content: <><span className="font-medium text-primary">Alex Morgan</span> scheduled a newsletter: <span className="font-medium underline cursor-pointer">The Brand Pulse</span></>,
+    time: "1 week ago"
+  },
+  {
+    type: "search",
+    icon: <Search className="w-4 h-4 text-muted-foreground" />,
+    content: <><span className="font-medium text-primary">Tom Nguyen</span> created a search: <span className="font-medium underline cursor-pointer">Cybersecurity Incidents</span></>,
+    time: "2 weeks ago"
+  },
+  {
+    type: "genai",
+    icon: <Sparkles className="w-4 h-4 text-muted-foreground" />,
+    content: <>GenAI insight: <span className="font-medium underline cursor-pointer">Competitor sentiment trending negative</span></>,
+    time: "2 weeks ago",
+    isSystem: true
+  },
+  {
+    type: "dashboard",
+    icon: <LayoutGrid className="w-4 h-4 text-muted-foreground" />,
+    content: <><span className="font-medium text-primary">Laura Bennett</span> created a dashboard: <span className="font-medium underline cursor-pointer">Campaign Performance</span></>,
+    time: "2 weeks ago"
+  },
+  {
+    type: "outreach",
+    icon: <Mail className="w-4 h-4 text-muted-foreground" />,
+    content: <><span className="font-medium text-primary">Sophia Patel</span> sent a pitch: <span className="font-medium underline cursor-pointer">Industry Trends Digest</span></>,
+    time: "2 weeks ago"
+  },
 ];
 
 export const ActivityFeed = () => {
@@ -207,25 +275,25 @@ export const ActivityFeed = () => {
   const [activities, setActivities] = useState<ActivityItem[]>(initialActivities);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [loadCount, setLoadCount] = useState(0);
   const loaderRef = useRef<HTMLDivElement>(null);
 
   const loadMore = useCallback(() => {
     if (isLoading || !hasMore) return;
     
     setIsLoading(true);
-    // Simulate API delay
     setTimeout(() => {
-      const newActivities = Array.from({ length: 10 }, (_, i) => 
-        generateActivity(activities.length + i + 1)
-      );
+      const startIdx = (loadCount * 4) % moreActivities.length;
+      const newActivities = moreActivities.slice(startIdx, startIdx + 4).map((activity, i) => ({
+        ...activity,
+        id: activities.length + i + 1
+      }));
       setActivities(prev => [...prev, ...newActivities]);
+      setLoadCount(prev => prev + 1);
       setIsLoading(false);
-      // Stop after 100 items for demo purposes
-      if (activities.length >= 90) {
-        setHasMore(false);
-      }
+      if (loadCount >= 5) setHasMore(false);
     }, 500);
-  }, [isLoading, hasMore, activities.length]);
+  }, [isLoading, hasMore, activities.length, loadCount]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -243,6 +311,19 @@ export const ActivityFeed = () => {
 
     return () => observer.disconnect();
   }, [loadMore, hasMore, isLoading]);
+
+  // Filter activities based on active tab
+  const filteredActivities = activities.filter(activity => {
+    if (activeTab === "All") return true;
+    if (activeTab === "Searches") return activity.type === "search";
+    if (activeTab === "Dashboards") return activity.type === "dashboard";
+    if (activeTab === "Mentions") return activity.type === "mention";
+    if (activeTab === "GenAI") return activity.type === "genai";
+    if (activeTab === "Alerts") return activity.type === "alert";
+    if (activeTab === "Publishing") return activity.type === "publishing";
+    if (activeTab === "Outreach") return activity.type === "outreach";
+    return true;
+  });
 
   return (
     <div className="bg-card rounded-lg border border-border p-6">
@@ -279,18 +360,23 @@ export const ActivityFeed = () => {
 
       {/* Activity List */}
       <div className="space-y-0">
-        {activities.map((activity) => (
+        {filteredActivities.map((activity) => (
           <div
             key={activity.id}
-            className="flex items-center gap-3 py-3 border-b border-border last:border-b-0"
+            className="flex items-center gap-3 py-2.5 border-b border-border last:border-b-0"
           >
-            <div className="flex-shrink-0 w-8 flex justify-center">
+            <div className="flex-shrink-0 w-5 flex justify-center">
               {activity.icon}
             </div>
-            <div className="flex-1 text-sm text-card-foreground">
+            {!activity.isSystem && (
+              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+                <User className="w-3 h-3 text-muted-foreground" />
+              </div>
+            )}
+            <div className="flex-1 text-sm text-card-foreground min-w-0">
               {activity.content}
             </div>
-            <div className="text-xs text-muted-foreground whitespace-nowrap">
+            <div className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0">
               {activity.time}
             </div>
           </div>
