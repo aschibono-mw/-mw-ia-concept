@@ -57,21 +57,36 @@ const categories: CategoryItem[] = [
   { name: "Crisis", count: 1 },
 ];
 
-const dashboardTemplates = [
-  { icon: LayoutGrid, title: "Custom", description: "Start from scratch with an empty dashboard." },
-  { icon: LayoutGrid, title: "Audience", description: "Gain insights into your audience by exploring demographics, trending topics, and key phrases using both social and editorial content." },
-  { icon: LayoutGrid, title: "Benchmark", description: "Compare brands, topics, or competitors to understand their share of voice across mentions, reach, sentiment, source type, and markets." },
-  { icon: LayoutGrid, title: "Brand", description: "Understand and report on brand awareness using metrics such as number of mentions, reach, sentiment, coverage by market & key themes." },
-  { icon: LayoutGrid, title: "Campaign", description: "Analyze and report on mentions from your campaign across various media types, engagement levels, and reach. Highlight the key coverage achieved." },
-  { icon: LayoutGrid, title: "Coverage Report", description: "Highlight your coverage from a campaign or a time period in an easy-to-create and beautiful report." },
-  { icon: LayoutGrid, title: "Crisis Management", description: "Monitor and detect emerging risks by tracking sentiment, spikes in mentions, and influential sources using both social and editorial content." },
-  { icon: LayoutGrid, title: "Earned Media Measurement", description: "Measure and understand drivers of earned media metrics using an interactive dashboard template designed for PR teams." },
-  { icon: LayoutGrid, title: "Facebook Overview", description: "Analyze your Facebook Page activity to measure your impact." },
-  { icon: LayoutGrid, title: "Instagram Overview", description: "Track your performance, audience growth, views, and engagement." },
-  { icon: LayoutGrid, title: "LinkedIn Overview", description: "Look at your LinkedIn Page data to understand your company's presence." },
-  { icon: LayoutGrid, title: "TikTok Overview", description: "Analyze your profile performance to see your impact on TikTok." },
-  { icon: LayoutGrid, title: "X Overview", description: "Monitor your X presence and track engagement, reach, and audience growth." },
-  { icon: LayoutGrid, title: "YouTube Overview", description: "Track your YouTube channel performance, views, and subscriber engagement." },
+const templateCategories = [
+  {
+    label: "General",
+    templates: [
+      { icon: LayoutGrid, title: "Custom", description: "Start from scratch with an empty dashboard." },
+    ]
+  },
+  {
+    label: "Analytics",
+    templates: [
+      { icon: LayoutGrid, title: "Audience", description: "Gain insights into your audience by exploring demographics, trending topics, and key phrases using both social and editorial content." },
+      { icon: LayoutGrid, title: "Benchmark", description: "Compare brands, topics, or competitors to understand their share of voice across mentions, reach, sentiment, source type, and markets." },
+      { icon: LayoutGrid, title: "Brand", description: "Understand and report on brand awareness using metrics such as number of mentions, reach, sentiment, coverage by market & key themes." },
+      { icon: LayoutGrid, title: "Campaign", description: "Analyze and report on mentions from your campaign across various media types, engagement levels, and reach. Highlight the key coverage achieved." },
+      { icon: LayoutGrid, title: "Coverage Report", description: "Highlight your coverage from a campaign or a time period in an easy-to-create and beautiful report." },
+      { icon: LayoutGrid, title: "Crisis Management", description: "Monitor and detect emerging risks by tracking sentiment, spikes in mentions, and influential sources using both social and editorial content." },
+      { icon: LayoutGrid, title: "Earned Media Measurement", description: "Measure and understand drivers of earned media metrics using an interactive dashboard template designed for PR teams." },
+    ]
+  },
+  {
+    label: "Social",
+    templates: [
+      { icon: LayoutGrid, title: "Facebook Overview", description: "Analyze your Facebook Page activity to measure your impact." },
+      { icon: LayoutGrid, title: "Instagram Overview", description: "Track your performance, audience growth, views, and engagement." },
+      { icon: LayoutGrid, title: "LinkedIn Overview", description: "Look at your LinkedIn Page data to understand your company's presence." },
+      { icon: LayoutGrid, title: "TikTok Overview", description: "Analyze your profile performance to see your impact on TikTok." },
+      { icon: LayoutGrid, title: "X Overview", description: "Monitor your X presence and track engagement, reach, and audience growth." },
+      { icon: LayoutGrid, title: "YouTube Overview", description: "Track your YouTube channel performance, views, and subscriber engagement." },
+    ]
+  },
 ];
 
 const intelligenceDashboards = [
@@ -385,15 +400,22 @@ const Analyze = () => {
                     <p className="text-sm text-muted-foreground">Choose a template to get started.</p>
                   </div>
                   
-                  <div className="grid grid-cols-4 gap-4">
-                    {dashboardTemplates.map((template, index) => (
-                      <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors flex flex-col">
-                        <div className="flex items-center gap-2 mb-2">
-                          <template.icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-                          <span className="font-medium text-card-foreground">{template.title}</span>
+                  <div className="space-y-6">
+                    {templateCategories.map((category, categoryIndex) => (
+                      <div key={categoryIndex}>
+                        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">{category.label}</h3>
+                        <div className="grid grid-cols-4 gap-4">
+                          {category.templates.map((template, index) => (
+                            <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors flex flex-col">
+                              <div className="flex items-center gap-2 mb-2">
+                                <template.icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                                <span className="font-medium text-card-foreground">{template.title}</span>
+                              </div>
+                              <p className="text-sm text-muted-foreground mb-3 flex-1 line-clamp-3">{template.description}</p>
+                              <button className="text-sm text-foreground underline hover:text-primary self-start">Create &gt;&gt;</button>
+                            </div>
+                          ))}
                         </div>
-                        <p className="text-sm text-muted-foreground mb-3 flex-1 line-clamp-3">{template.description}</p>
-                        <button className="text-sm text-foreground underline hover:text-primary self-start">Create &gt;&gt;</button>
                       </div>
                     ))}
                   </div>
