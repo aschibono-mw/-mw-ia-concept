@@ -238,7 +238,7 @@ const Analyze = () => {
                       </TabsTrigger>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>AI-powered insights and advanced analytics</p>
+                      <p>Always-on dashboards with insights beyond your searches.</p>
                     </TooltipContent>
                   </Tooltip>
                 </TabsList>
