@@ -365,8 +365,8 @@ export const ActivityFeed = () => {
             key={activity.id}
             className="flex items-center gap-3 py-2.5 border-b border-border last:border-b-0"
           >
-            <div className="flex-shrink-0 w-5 flex justify-center">
-              {activity.icon}
+            <div className="flex-shrink-0 w-8 flex items-center justify-center">
+              <span className="whitespace-nowrap leading-none">{activity.icon}</span>
             </div>
             {!activity.isSystem && (
               <div className="flex-shrink-0 w-5 h-5 rounded-full bg-muted flex items-center justify-center">
