@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, Newspaper, AlertCircle, Settings, ShieldCheck, LogOut, TrendingUp, Plus, Building2, UserCircle, FolderOpen, Users } from "lucide-react";
+import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, Newspaper, AlertCircle, Settings, ShieldCheck, LogOut, TrendingUp, Plus, Building2, UserCircle, FolderOpen, Users, FileStack } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -163,6 +163,10 @@ export const Header = () => {
               <DropdownMenuItem className="cursor-pointer">
                 <FolderOpen className="w-4 h-4 mr-2" />
                 Asset Manager
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <FileStack className="w-4 h-4 mr-2" />
+                Content Manager
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
                 <Users className="w-4 h-4 mr-2" />
