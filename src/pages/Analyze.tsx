@@ -57,22 +57,20 @@ const categories: CategoryItem[] = [
 ];
 
 const dashboardTemplates = [
-  { icon: LayoutGrid, title: "Custom", description: "Start from scratch with a clean, customizable dashboard." },
-  { icon: LayoutGrid, title: "Monitor", description: "Monitor multiple Explore searches in a single, unified view." },
-  { icon: LayoutGrid, title: "Benchmark", description: "Compare performance across brands, topics, and competitors." },
-  { icon: LayoutGrid, title: "Brand", description: "Measure brand awareness across mentions, reach, sentiment, and markets." },
-  { icon: LayoutGrid, title: "Executive", description: "Track executive visibility and thought leadership across media." },
-  { icon: LayoutGrid, title: "Campaign", description: "Measure campaign performance and ROI across all channels." },
-  { icon: LayoutGrid, title: "Crisis", description: "Monitor and respond to emerging crisis situations in real-time." },
-  { icon: LayoutGrid, title: "Social", description: "Track social media performance and engagement metrics." },
-  { icon: LayoutGrid, title: "Influencer", description: "Identify and track key influencers in your industry." },
-  { icon: LayoutGrid, title: "Market", description: "Analyze market trends and competitive landscape." },
-  { icon: LayoutGrid, title: "Product", description: "Monitor product mentions and customer sentiment." },
-  { icon: LayoutGrid, title: "Regional", description: "Track coverage and performance by geographic region." },
-  { icon: LayoutGrid, title: "Competitive", description: "Compare your brand performance against key competitors." },
-  { icon: LayoutGrid, title: "Earned Media", description: "Track organic media coverage and earned impressions." },
-  { icon: LayoutGrid, title: "Share of Voice", description: "Measure your brand's share of conversation vs competitors." },
-  { icon: LayoutGrid, title: "Reputation", description: "Monitor and protect your brand's online reputation." },
+  { icon: LayoutGrid, title: "Custom", description: "Start from scratch with an empty dashboard." },
+  { icon: LayoutGrid, title: "Audience", description: "Gain insights into your audience by exploring demographics, trending topics, and key phrases using both social and editorial content." },
+  { icon: LayoutGrid, title: "Benchmark", description: "Compare brands, topics, or competitors to understand their share of voice across mentions, reach, sentiment, source type, and markets." },
+  { icon: LayoutGrid, title: "Brand", description: "Understand and report on brand awareness using metrics such as number of mentions, reach, sentiment, coverage by market & key themes." },
+  { icon: LayoutGrid, title: "Campaign", description: "Analyze and report on mentions from your campaign across various media types, engagement levels, and reach. Highlight the key coverage achieved." },
+  { icon: LayoutGrid, title: "Coverage Report", description: "Highlight your coverage from a campaign or a time period in an easy-to-create and beautiful report." },
+  { icon: LayoutGrid, title: "Crisis Management", description: "Monitor and detect emerging risks by tracking sentiment, spikes in mentions, and influential sources using both social and editorial content." },
+  { icon: LayoutGrid, title: "Earned Media Measurement", description: "Measure and understand drivers of earned media metrics using an interactive dashboard template designed for PR teams." },
+  { icon: LayoutGrid, title: "Facebook Overview", description: "Analyze your Facebook Page activity to measure your impact." },
+  { icon: LayoutGrid, title: "Instagram Overview", description: "Track your performance, audience growth, views, and engagement." },
+  { icon: LayoutGrid, title: "LinkedIn Overview", description: "Look at your LinkedIn Page data to understand your company's presence." },
+  { icon: LayoutGrid, title: "TikTok Overview", description: "Analyze your profile performance to see your impact on TikTok." },
+  { icon: LayoutGrid, title: "X Overview", description: "Monitor your X presence and track engagement, reach, and audience growth." },
+  { icon: LayoutGrid, title: "YouTube Overview", description: "Track your YouTube channel performance, views, and subscriber engagement." },
 ];
 
 const intelligenceDashboards = [
