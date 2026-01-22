@@ -87,7 +87,6 @@ const templateCategories = [
 
 const intelligenceDashboards = [
   { icon: Music2, title: "TikTok Trends", description: "Discover trending topics, creators, and signals shaping conversations on TikTok." },
-  { icon: Music2, title: "TikTok Trends", description: "Discover trending topics, creators, and signals shaping conversations on TikTok." },
   { icon: Users, title: "Audience Segments", description: "Analyze your audience across demographics, trends, and language." },
   { icon: Sparkles, title: "Sentiment AI", description: "Deep sentiment analysis powered by advanced machine learning." },
   { icon: Music2, title: "Podcast Monitor", description: "Track brand mentions across podcast content and audio media." },
