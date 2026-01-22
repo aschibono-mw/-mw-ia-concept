@@ -105,7 +105,7 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
               <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
                 {promo.description}
               </p>
-              <button className="text-xs text-primary hover:underline flex items-center gap-1">
+              <button className="text-xs font-semibold text-foreground underline hover:text-primary flex items-center gap-1">
                 {promo.cta}
                 <ChevronRight className="w-3 h-3" />
               </button>
@@ -120,7 +120,7 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
                 onClick={() => setCurrentPromo(index)}
                 className={cn(
                   "w-1.5 h-1.5 rounded-full transition-colors",
-                  index === currentPromo ? "bg-primary" : "bg-border"
+                  index === currentPromo ? "bg-foreground" : "bg-border"
                 )}
               />
             ))}
