@@ -177,7 +177,7 @@ const Discover = () => {
             {/* Page Header */}
             <div className="mb-6">
               <h1 className="text-2xl font-semibold text-foreground mb-2">
-                Discover and explore media coverage in one place
+                Explore media coverage in one place
               </h1>
               <p className="text-sm text-muted-foreground">
                 Build searches across news, social, and online sources.
