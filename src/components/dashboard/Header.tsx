@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, Newspaper, AlertCircle, Settings, ShieldCheck, LogOut, TrendingUp, Plus, Building2, UserCircle, FolderOpen, Users, FileStack, Eye, MessageSquare, Activity, BarChart3, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { SearchBar } from "./SearchBar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -66,14 +66,7 @@ export const Header = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="relative w-80 flex-shrink-0">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <Input
-          type="text"
-          placeholder="Search"
-          className="pl-10 bg-background border-border rounded-full h-10"
-        />
-      </div>
+      <SearchBar />
 
       {/* Right Actions */}
       <div className="flex items-center gap-3 min-w-[200px] justify-end">
