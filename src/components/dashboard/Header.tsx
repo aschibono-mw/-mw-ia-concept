@@ -116,7 +116,7 @@ export const Header = () => {
               </div>
               <div className="max-h-96 overflow-y-auto">
                 {alertsData.map((alert, index) => (
-                  <div key={index} className="px-3 py-2 border-b border-border hover:bg-muted/50 cursor-pointer">
+                  <div key={index} className="px-4 py-3 border-b border-border hover:bg-muted/50 cursor-pointer">
                     <div className="flex items-center gap-3">
                       <alert.icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                       <div className="flex-1 min-w-0">
