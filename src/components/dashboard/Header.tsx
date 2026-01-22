@@ -175,7 +175,7 @@ export const Header = () => {
               
               <DropdownMenuItem className="cursor-pointer">
                 <Building2 className="w-4 h-4 mr-2" />
-                Account
+                Account Settings
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
                 <FolderOpen className="w-4 h-4 mr-2" />
