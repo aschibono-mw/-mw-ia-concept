@@ -295,25 +295,25 @@ const Analyze = () => {
                       </th>
                       <th className="p-4 text-sm font-bold text-foreground">
                         <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('name')}>
-                          name
+                          Name
                           {sortField === 'name' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
                         </button>
                       </th>
                       <th className="p-4 text-sm font-bold text-foreground">
                         <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('category')}>
-                          category
+                          Category
                           {sortField === 'category' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
                         </button>
                       </th>
                       <th className="p-4 text-sm font-bold text-foreground">
                         <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('lastEdited')}>
-                          last edited
+                          Last Edited
                           {sortField === 'lastEdited' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
                         </button>
                       </th>
                       <th className="p-4 text-sm font-bold text-foreground">
                         <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('owner')}>
-                          owner
+                          Owner
                           {sortField === 'owner' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
                         </button>
                       </th>
