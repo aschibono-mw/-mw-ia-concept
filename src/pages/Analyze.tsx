@@ -401,8 +401,8 @@ const Analyze = () => {
                     <div className="bg-card rounded-lg border border-border p-4">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="font-semibold text-card-foreground">Categories</h3>
-                        <button className="p-1 hover:bg-muted rounded">
-                          <Plus className="w-4 h-4 text-muted-foreground" />
+                        <button className="w-7 h-7 rounded-full border border-border bg-white flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                          <Plus className="w-4 h-4" />
                         </button>
                       </div>
                       <ul className="space-y-1">
