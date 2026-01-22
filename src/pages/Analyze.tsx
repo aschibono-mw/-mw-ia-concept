@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, Sparkles, Music2, Users } from "lucide-react";
+import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, Sparkles, Music2, Users, ChevronsUpDown } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -60,12 +61,26 @@ const dashboardTemplates = [
   { icon: LayoutGrid, title: "Monitor", description: "Monitor multiple Explore searches in a single, unified view." },
   { icon: LayoutGrid, title: "Benchmark", description: "Compare performance across brands, topics, and competitors." },
   { icon: LayoutGrid, title: "Brand", description: "Measure brand awareness across mentions, reach, sentiment, and markets." },
+  { icon: LayoutGrid, title: "Executive", description: "Track executive visibility and thought leadership across media." },
+  { icon: LayoutGrid, title: "Campaign", description: "Measure campaign performance and ROI across all channels." },
+  { icon: LayoutGrid, title: "Crisis", description: "Monitor and respond to emerging crisis situations in real-time." },
+  { icon: LayoutGrid, title: "Social", description: "Track social media performance and engagement metrics." },
+  { icon: LayoutGrid, title: "Influencer", description: "Identify and track key influencers in your industry." },
+  { icon: LayoutGrid, title: "Market", description: "Analyze market trends and competitive landscape." },
+  { icon: LayoutGrid, title: "Product", description: "Monitor product mentions and customer sentiment." },
+  { icon: LayoutGrid, title: "Regional", description: "Track coverage and performance by geographic region." },
 ];
 
 const intelligenceDashboards = [
   { icon: Sparkles, title: "GenAI Lens", description: "See how your brand is represented and ranked across leading AI models." },
   { icon: Music2, title: "TikTok Trends", description: "Discover trending topics, creators, and signals shaping conversations on TikTok." },
   { icon: Users, title: "Audience Segments", description: "Analyze your audience across demographics, trends, and language." },
+  { icon: Sparkles, title: "Sentiment AI", description: "Deep sentiment analysis powered by advanced machine learning." },
+  { icon: Music2, title: "Podcast Monitor", description: "Track brand mentions across podcast content and audio media." },
+  { icon: Users, title: "Influencer Intel", description: "AI-powered influencer identification and impact analysis." },
+  { icon: Sparkles, title: "Predictive Trends", description: "Forecast emerging topics before they become mainstream." },
+  { icon: Music2, title: "Video Analytics", description: "Track performance across YouTube, Reels, and video content." },
+  { icon: Users, title: "Community Pulse", description: "Monitor Reddit, forums, and community discussions." },
 ];
 
 type SortField = 'name' | 'category' | 'lastEdited' | 'owner';
@@ -80,6 +95,8 @@ const Analyze = () => {
   const [displayedItemsCount, setDisplayedItemsCount] = useState(ITEMS_PER_PAGE);
   const [isLoading, setIsLoading] = useState(false);
   const loaderRef = useRef<HTMLDivElement>(null);
+  const [templatesExpanded, setTemplatesExpanded] = useState(false);
+  const [intelligenceExpanded, setIntelligenceExpanded] = useState(false);
 
   const toggleItem = (id: number) => {
     setSelectedItems(prev => 
@@ -169,26 +186,48 @@ const Analyze = () => {
             <div className="bg-card rounded-lg border border-border p-4 mb-6">
               <div className="flex items-center justify-between mb-1">
                 <h2 className="font-semibold text-card-foreground">Create a new dashboard</h2>
-                <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
+                <button 
+                  onClick={() => setTemplatesExpanded(!templatesExpanded)}
+                  className="flex items-center gap-1 text-sm text-foreground hover:text-primary"
+                >
                   More Templates
-                  <ChevronUp className="w-4 h-4" />
-                  <ChevronDown className="w-4 h-4 -ml-2" />
+                  <div className="flex flex-col -space-y-1">
+                    <ChevronUp className="w-3.5 h-3.5" />
+                    <ChevronDown className="w-3.5 h-3.5" />
+                  </div>
                 </button>
               </div>
               <p className="text-sm text-muted-foreground mb-4">Build dashboards from your searches and social accounts.</p>
               
-              <div className="grid grid-cols-4 gap-4">
-                {dashboardTemplates.map((template, index) => (
-                  <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
-                    <div className="flex items-center gap-2 mb-2">
-                      <template.icon className="w-5 h-5 text-muted-foreground" />
-                      <span className="font-medium text-card-foreground">{template.title}</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
-                    <button className="text-sm text-foreground underline hover:text-primary">Create &gt;&gt;</button>
+              {templatesExpanded ? (
+                <ScrollArea className="h-[340px]">
+                  <div className="grid grid-cols-4 gap-4 pr-4">
+                    {dashboardTemplates.map((template, index) => (
+                      <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
+                        <div className="flex items-center gap-2 mb-2">
+                          <template.icon className="w-5 h-5 text-muted-foreground" />
+                          <span className="font-medium text-card-foreground">{template.title}</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
+                        <button className="text-sm text-foreground underline hover:text-primary">Create &gt;&gt;</button>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </ScrollArea>
+              ) : (
+                <div className="grid grid-cols-4 gap-4">
+                  {dashboardTemplates.slice(0, 4).map((template, index) => (
+                    <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
+                      <div className="flex items-center gap-2 mb-2">
+                        <template.icon className="w-5 h-5 text-muted-foreground" />
+                        <span className="font-medium text-card-foreground">{template.title}</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
+                      <button className="text-sm text-foreground underline hover:text-primary">Create &gt;&gt;</button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Intelligence Dashboards */}
@@ -198,26 +237,48 @@ const Analyze = () => {
                   <h2 className="font-semibold text-card-foreground">Intelligence Dashboards</h2>
                   <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">Premium add-ons</span>
                 </div>
-                <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
+                <button 
+                  onClick={() => setIntelligenceExpanded(!intelligenceExpanded)}
+                  className="flex items-center gap-1 text-sm text-foreground hover:text-primary"
+                >
                   More Intelligence
-                  <ChevronUp className="w-4 h-4" />
-                  <ChevronDown className="w-4 h-4 -ml-2" />
+                  <div className="flex flex-col -space-y-1">
+                    <ChevronUp className="w-3.5 h-3.5" />
+                    <ChevronDown className="w-3.5 h-3.5" />
+                  </div>
                 </button>
               </div>
               <p className="text-sm text-muted-foreground mb-4">Always-on dashboards with insights beyond your searches.</p>
               
-              <div className="grid grid-cols-3 gap-4">
-                {intelligenceDashboards.map((dashboard, index) => (
-                  <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
-                    <div className="flex items-center gap-2 mb-2">
-                      <dashboard.icon className="w-5 h-5 text-muted-foreground" />
-                      <span className="font-medium text-card-foreground">{dashboard.title}</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">{dashboard.description}</p>
-                    <button className="text-sm text-foreground underline hover:text-primary">Learn more &gt;&gt;</button>
+              {intelligenceExpanded ? (
+                <ScrollArea className="h-[340px]">
+                  <div className="grid grid-cols-3 gap-4 pr-4">
+                    {intelligenceDashboards.map((dashboard, index) => (
+                      <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
+                        <div className="flex items-center gap-2 mb-2">
+                          <dashboard.icon className="w-5 h-5 text-muted-foreground" />
+                          <span className="font-medium text-card-foreground">{dashboard.title}</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-3">{dashboard.description}</p>
+                        <button className="text-sm text-foreground underline hover:text-primary">Learn more &gt;&gt;</button>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </ScrollArea>
+              ) : (
+                <div className="grid grid-cols-3 gap-4">
+                  {intelligenceDashboards.slice(0, 3).map((dashboard, index) => (
+                    <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors">
+                      <div className="flex items-center gap-2 mb-2">
+                        <dashboard.icon className="w-5 h-5 text-muted-foreground" />
+                        <span className="font-medium text-card-foreground">{dashboard.title}</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">{dashboard.description}</p>
+                      <button className="text-sm text-foreground underline hover:text-primary">Learn more &gt;&gt;</button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex gap-6 items-start">
