@@ -1,4 +1,5 @@
-import { Home, Compass, BarChart2, Share2, Users } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Home, Compass, BarChart2, Share2, Users, Sparkles, Bot, UsersRound, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
@@ -17,15 +18,52 @@ const navItems: NavItem[] = [
   { icon: <Users className="w-5 h-5" />, label: "Outreach", path: "/outreach", id: "outreach" },
 ];
 
+interface PromoCard {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  cta: string;
+}
+
+const promoCards: PromoCard[] = [
+  {
+    icon: <Sparkles className="w-5 h-5" />,
+    title: "GenAI Lens",
+    description: "AI-powered insights across all your media data",
+    cta: "Try it now"
+  },
+  {
+    icon: <Bot className="w-5 h-5" />,
+    title: "Mira Companion",
+    description: "Your AI assistant for smarter media analysis",
+    cta: "Meet Mira"
+  },
+  {
+    icon: <UsersRound className="w-5 h-5" />,
+    title: "Audience Segments",
+    description: "Deep audience insights powered by intelligence",
+    cta: "Explore"
+  },
+];
+
 interface SidebarProps {
   activePage?: string;
 }
 
 export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
+  const [currentPromo, setCurrentPromo] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPromo((prev) => (prev + 1) % promoCards.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <aside className="w-52 bg-sidebar border-r border-sidebar-border flex flex-col h-screen fixed left-0 top-16">
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4">
+      <nav className="px-3 py-4">
         <ul className="space-y-1">
           {navItems.map((item) => (
             <li key={item.label}>
@@ -45,6 +83,52 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
           ))}
         </ul>
       </nav>
+
+      {/* Promo Area */}
+      <div className="px-3 mt-2">
+        <div className="border border-border rounded-lg bg-background p-3 relative overflow-hidden">
+          {promoCards.map((promo, index) => (
+            <div
+              key={index}
+              className={cn(
+                "transition-all duration-500 ease-in-out",
+                index === currentPromo 
+                  ? "opacity-100 translate-y-0" 
+                  : "opacity-0 absolute inset-3 translate-y-2"
+              )}
+            >
+              <div className="flex items-start gap-2 mb-2">
+                <span className="text-muted-foreground">{promo.icon}</span>
+                <span className="text-sm font-semibold text-foreground">{promo.title}</span>
+              </div>
+              <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+                {promo.description}
+              </p>
+              <button className="text-xs text-primary hover:underline flex items-center gap-1">
+                {promo.cta}
+                <ChevronRight className="w-3 h-3" />
+              </button>
+            </div>
+          ))}
+          
+          {/* Progress dots */}
+          <div className="flex justify-center gap-1.5 mt-3">
+            {promoCards.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentPromo(index)}
+                className={cn(
+                  "w-1.5 h-1.5 rounded-full transition-colors",
+                  index === currentPromo ? "bg-primary" : "bg-border"
+                )}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Spacer */}
+      <div className="flex-1" />
     </aside>
   );
 };
