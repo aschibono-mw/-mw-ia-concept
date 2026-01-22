@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, FileText } from "lucide-react";
+import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, FileText, User } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import {
@@ -327,8 +327,10 @@ const Discover = () => {
                         <td className="p-4 text-sm text-muted-foreground">{item.lastEdited}</td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs">👤</div>
-                            <span className="text-sm text-foreground cursor-pointer hover:text-primary">{item.owner}</span>
+                            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+                              <User className="w-3 h-3 text-muted-foreground" />
+                            </div>
+                            <span className="text-sm font-semibold text-foreground underline cursor-pointer hover:text-primary">{item.owner}</span>
                           </div>
                         </td>
                         <td className="p-4">
