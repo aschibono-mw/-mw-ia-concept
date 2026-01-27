@@ -60,7 +60,7 @@ const categories: CategoryItem[] = [
 
 const templateCategories = [
   {
-    label: "Analytics",
+    label: "Public Relations",
     templates: [
       { icon: LayoutGrid, title: "Custom", description: "Start from scratch with an empty dashboard." },
       { icon: LayoutGrid, title: "Audience", description: "Gain insights into your audience by exploring demographics, trending topics, and key phrases using both social and editorial content." },
