@@ -294,7 +294,6 @@ const Discover = () => {
                                 <DropdownMenuItem className="cursor-pointer">Export</DropdownMenuItem>
                                 <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
                                 <DropdownMenuItem className="cursor-pointer">Create Alert</DropdownMenuItem>
-                                <DropdownMenuItem className="cursor-pointer">Generate Report</DropdownMenuItem>
                                 <DropdownMenuItem className="cursor-pointer">AI Summary</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
