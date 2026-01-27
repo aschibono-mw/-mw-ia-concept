@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ChevronDown, Star, MoreVertical, Plus, Sparkles, FileText, Mail } from "lucide-react";
@@ -19,39 +19,31 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 interface CategoryItem {
   name: string;
   count: number;
 }
 
-interface ReportItem {
+interface NewsletterItem {
   id: number;
   name: string;
-  type: 'insight' | 'digest' | 'newsletter';
   category: string;
   lastEdited: string;
   owner: string;
   starred?: boolean;
 }
 
-const allReportItems: ReportItem[] = [
-  { id: 1, name: "Executive Visibility Report", type: "insight", category: "Leadership", lastEdited: "3 hrs ago", owner: "Rachel Wu", starred: true },
-  { id: 2, name: "Daily Coverage Digest", type: "digest", category: "Brand", lastEdited: "7 hrs ago", owner: "Sophia Patel", starred: true },
-  { id: 3, name: "The Daily Media Brief", type: "newsletter", category: "Media", lastEdited: "Yesterday", owner: "Laura Bennett", starred: true },
-  { id: 4, name: "Brand Risk Assessment", type: "insight", category: "Brand", lastEdited: "2 days ago", owner: "David Kim", starred: false },
-  { id: 5, name: "The Brand Pulse", type: "newsletter", category: "Brand", lastEdited: "2 days ago", owner: "Alex Morgan", starred: true },
-  { id: 6, name: "Narrative Shift Report", type: "insight", category: "Brand", lastEdited: "2 days ago", owner: "Alex Morgan", starred: false },
-  { id: 7, name: "Morning Media Roundup", type: "newsletter", category: "Media", lastEdited: "4 days ago", owner: "Sophia Patel", starred: true },
-  { id: 8, name: "Conversation Trends Analysis", type: "insight", category: "Brand", lastEdited: "5 days ago", owner: "Laura Bennett", starred: false },
-  { id: 9, name: "Weekly Industry Digest", type: "digest", category: "Market", lastEdited: "Nov 20", owner: "Tom Nguyen", starred: true },
-  { id: 10, name: "Competitor Watch Report", type: "insight", category: "Competition", lastEdited: "Nov 18", owner: "David Kim", starred: false },
-  { id: 11, name: "Market Trends Newsletter", type: "newsletter", category: "Market", lastEdited: "Nov 17", owner: "Rachel Wu", starred: true },
-  { id: 12, name: "Social Listening Digest", type: "digest", category: "Social", lastEdited: "Nov 15", owner: "Sophia Patel", starred: false },
-  { id: 13, name: "Leadership Coverage Report", type: "insight", category: "Leadership", lastEdited: "Nov 14", owner: "Alex Morgan", starred: true },
-  { id: 14, name: "Policy Impact Analysis", type: "insight", category: "Policy", lastEdited: "Nov 12", owner: "Tom Nguyen", starred: false },
-  { id: 15, name: "Financial Media Digest", type: "digest", category: "Finance", lastEdited: "Nov 10", owner: "David Kim", starred: true },
+const allNewsletterItems: NewsletterItem[] = [
+  { id: 1, name: "The Daily Media Brief", category: "Media", lastEdited: "Yesterday", owner: "Laura Bennett", starred: true },
+  { id: 2, name: "The Brand Pulse", category: "Brand", lastEdited: "2 days ago", owner: "Alex Morgan", starred: true },
+  { id: 3, name: "Morning Media Roundup", category: "Media", lastEdited: "4 days ago", owner: "Sophia Patel", starred: true },
+  { id: 4, name: "Market Trends Newsletter", category: "Market", lastEdited: "Nov 17", owner: "Rachel Wu", starred: true },
+  { id: 5, name: "Weekly Industry Update", category: "Market", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false },
+  { id: 6, name: "Leadership Insights", category: "Leadership", lastEdited: "Nov 14", owner: "David Kim", starred: true },
+  { id: 7, name: "Competitor Watch Weekly", category: "Competition", lastEdited: "Nov 12", owner: "Laura Bennett", starred: false },
+  { id: 8, name: "Social Trends Digest", category: "Social", lastEdited: "Nov 10", owner: "Sophia Patel", starred: true },
 ];
 
 const initialCategories: CategoryItem[] = [
@@ -71,27 +63,24 @@ const initialCategories: CategoryItem[] = [
 
 const createOptions = [
   { 
-    icon: Sparkles, 
-    title: "Create a insights report", 
-    description: "Start with a flexible report and organize analysis, charts, and commentary into a polished deliverable." 
+    icon: Mail, 
+    title: "Create from scratch", 
+    description: "Start with a blank canvas and build your newsletter exactly how you want it." 
   },
   { 
     icon: FileText, 
-    title: "Create a digest report", 
-    description: "Create a recurring summary that highlights the most important coverage, trends, and activity." 
+    title: "Use a template", 
+    description: "Choose from pre-designed templates to quickly create professional newsletters." 
   },
   { 
-    icon: Mail, 
-    title: "Create a newsletter", 
-    description: "Design and send branded updates that package insights into a shareable email format." 
+    icon: Sparkles, 
+    title: "Generate with AI", 
+    description: "Let AI help you create a newsletter based on your content and preferences." 
   },
 ];
 
 type SortField = 'name' | 'category' | 'lastEdited' | 'owner';
 type SortDirection = 'asc' | 'desc';
-type ReportFilter = 'all' | 'insight' | 'digest' | 'newsletter';
-
-const ITEMS_PER_PAGE = 10;
 
 const Distribute = () => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -100,10 +89,6 @@ const Distribute = () => {
   const [categories, setCategories] = useState<CategoryItem[]>(initialCategories);
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
-  const [displayedItemsCount, setDisplayedItemsCount] = useState(ITEMS_PER_PAGE);
-  const [isLoading, setIsLoading] = useState(false);
-  const [activeFilter, setActiveFilter] = useState<ReportFilter>('all');
-  const loaderRef = useRef<HTMLDivElement>(null);
 
   const toggleItem = (id: number) => {
     setSelectedItems(prev => 
@@ -112,10 +97,10 @@ const Distribute = () => {
   };
 
   const toggleAll = () => {
-    if (selectedItems.length === filteredItems.length) {
+    if (selectedItems.length === allNewsletterItems.length) {
       setSelectedItems([]);
     } else {
-      setSelectedItems(filteredItems.map(item => item.id));
+      setSelectedItems(allNewsletterItems.map(item => item.id));
     }
   };
 
@@ -136,11 +121,7 @@ const Distribute = () => {
     }
   };
 
-  const filteredItems = activeFilter === 'all' 
-    ? allReportItems 
-    : allReportItems.filter(item => item.type === activeFilter);
-
-  const sortedItems = [...filteredItems].sort((a, b) => {
+  const sortedItems = [...allNewsletterItems].sort((a, b) => {
     let comparison = 0;
     if (sortField === 'name') {
       comparison = a.name.localeCompare(b.name);
@@ -154,45 +135,8 @@ const Distribute = () => {
     return sortDirection === 'asc' ? comparison : -comparison;
   });
 
-  const displayedItems = sortedItems.slice(0, displayedItemsCount);
-  const hasMore = displayedItemsCount < sortedItems.length;
-
-  const loadMore = useCallback(() => {
-    if (isLoading || !hasMore) return;
-    setIsLoading(true);
-    setTimeout(() => {
-      setDisplayedItemsCount(prev => Math.min(prev + ITEMS_PER_PAGE, sortedItems.length));
-      setIsLoading(false);
-    }, 300);
-  }, [isLoading, hasMore, sortedItems.length]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !isLoading) {
-          loadMore();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [loadMore, hasMore, isLoading]);
-
-  const getTypeIcon = (type: ReportItem['type']) => {
-    switch (type) {
-      case 'insight':
-        return <Sparkles className="w-4 h-4 text-muted-foreground" />;
-      case 'digest':
-        return <FileText className="w-4 h-4 text-muted-foreground" />;
-      case 'newsletter':
-        return <Mail className="w-4 h-4 text-muted-foreground" />;
-    }
-  };
+  // With only 8 items, no need for pagination - show all
+  const displayedItems = sortedItems;
 
   return (
     <div className="min-h-screen bg-background">
@@ -205,10 +149,10 @@ const Distribute = () => {
             {/* Page Header */}
             <div className="mb-6">
               <h1 className="text-2xl font-semibold text-foreground mb-2">
-                Report your insights
+                Newsletters
               </h1>
               <p className="text-sm text-muted-foreground">
-                Create newsletters and reports to deliver insight to your team and stakeholders.
+                Create and manage newsletters to deliver insights to your team and stakeholders.
               </p>
             </div>
 
@@ -264,36 +208,6 @@ const Distribute = () => {
                   </DropdownMenu>
                 </div>
 
-                {/* Filter Tabs */}
-                <div className="px-4 border-b border-border">
-                  <div className="flex gap-6">
-                    <button 
-                      className={`py-3 text-sm font-medium border-b-2 transition-colors ${activeFilter === 'all' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
-                      onClick={() => setActiveFilter('all')}
-                    >
-                      All
-                    </button>
-                    <button 
-                      className={`py-3 text-sm font-medium border-b-2 transition-colors ${activeFilter === 'insight' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
-                      onClick={() => setActiveFilter('insight')}
-                    >
-                      Insight reports
-                    </button>
-                    <button 
-                      className={`py-3 text-sm font-medium border-b-2 transition-colors ${activeFilter === 'digest' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
-                      onClick={() => setActiveFilter('digest')}
-                    >
-                      Digest reports
-                    </button>
-                    <button 
-                      className={`py-3 text-sm font-medium border-b-2 transition-colors ${activeFilter === 'newsletter' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
-                      onClick={() => setActiveFilter('newsletter')}
-                    >
-                      Newsletters
-                    </button>
-                  </div>
-                </div>
-
                 {/* Table */}
                 <table className="w-full">
                   <thead>
@@ -342,7 +256,7 @@ const Distribute = () => {
                         </td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">
-                            {getTypeIcon(item.type)}
+                            <Mail className="w-4 h-4 text-muted-foreground" />
                             <span className="text-sm font-medium text-foreground underline cursor-pointer hover:text-primary">
                               {item.name}
                             </span>
@@ -389,12 +303,6 @@ const Distribute = () => {
                   </tbody>
                 </table>
 
-                {/* Infinite scroll loader */}
-                {hasMore && (
-                  <div ref={loaderRef} className="p-4 text-center text-sm text-muted-foreground">
-                    {isLoading ? 'Loading...' : 'Scroll for more'}
-                  </div>
-                )}
               </div>
 
               {/* Categories Sidebar */}
