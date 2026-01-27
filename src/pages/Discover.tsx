@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, FileText, User } from "lucide-react";
+import { AISearchBuilder } from "@/components/discover/AISearchBuilder";
+import { Search, ChevronDown, Star, MoreVertical, Plus, LayoutGrid, FileText, User } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import {
@@ -89,9 +90,6 @@ const Discover = () => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [sortField, setSortField] = useState<SortField>('lastEdited');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [searchMode, setSearchMode] = useState('Single Keyword');
   const [categories, setCategories] = useState<CategoryItem[]>(initialCategories);
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
@@ -184,59 +182,8 @@ const Discover = () => {
               </p>
             </div>
 
-            {/* Build a new search */}
-            <div className="bg-card rounded-lg border border-border p-4 mb-6">
-              <button 
-                className="w-full flex items-center justify-between text-left"
-                onClick={() => setIsSearchExpanded(!isSearchExpanded)}
-              >
-                <div className="flex items-center gap-3">
-                  <Search className="w-5 h-5 text-muted-foreground" />
-                  <span className="font-semibold text-card-foreground">Build a new search</span>
-                </div>
-                {isSearchExpanded ? (
-                  <ChevronUp className="w-4 h-4 text-foreground" />
-                ) : (
-                  <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                )}
-              </button>
-              
-              {isSearchExpanded && (
-                <div className="mt-4 pt-4 border-t border-border">
-                  <p className="text-sm text-foreground mb-4">
-                    Enter a keyword. We'll guide you from a single keyword to a fully formed boolean search.
-                  </p>
-                  <div className="flex gap-3">
-                    <Input 
-                      type="text"
-                      placeholder="Enter a keyword to get started"
-                      value={searchKeyword}
-                      onChange={(e) => setSearchKeyword(e.target.value)}
-                      className="flex-1 bg-white border-border"
-                    />
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button className="flex items-center gap-2 px-4 py-2 bg-white border border-border rounded-md text-sm font-medium text-foreground hover:bg-muted whitespace-nowrap">
-                          {searchMode}
-                          <ChevronDown className="w-4 h-4" />
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="bg-card">
-                        <DropdownMenuItem onClick={() => setSearchMode('Single Keyword')}>
-                          Single Keyword
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setSearchMode('Advanced Boolean')}>
-                          Advanced Boolean
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setSearchMode('AI Assisted')}>
-                          AI Assisted
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-              )}
-            </div>
+            {/* AI Search Builder */}
+            <AISearchBuilder />
 
             <div className="flex gap-6 items-start">
               {/* Main Table */}
