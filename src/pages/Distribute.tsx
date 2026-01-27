@@ -205,7 +205,7 @@ const Distribute = () => {
             {/* Page Header */}
             <div className="mb-6">
               <h1 className="text-2xl font-semibold text-foreground mb-2">
-                Distribute your insights
+                Report your insights
               </h1>
               <p className="text-sm text-muted-foreground">
                 Create newsletters and reports to deliver insight to your team and stakeholders.
