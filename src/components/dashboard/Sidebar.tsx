@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Home, Compass, BarChart2, Share2, Users, Sparkles, Bot, UsersRound, ChevronRight } from "lucide-react";
+import { Home, Compass, BarChart2, Mail, Users, Sparkles, Bot, UsersRound, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
@@ -14,7 +14,7 @@ const navItems: NavItem[] = [
   { icon: <Home className="w-5 h-5" />, label: "Home", path: "/", id: "home" },
   { icon: <Compass className="w-5 h-5" />, label: "Explore", path: "/discover", id: "discover" },
   { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze", path: "/analyze", id: "analyze" },
-  { icon: <Share2 className="w-5 h-5" />, label: "Report", path: "/distribute", id: "distribute" },
+  { icon: <Mail className="w-5 h-5" />, label: "Newsletters", path: "/distribute", id: "distribute" },
   { icon: <Users className="w-5 h-5" />, label: "Outreach", path: "/outreach", id: "outreach" },
 ];
 
