@@ -84,51 +84,6 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
           ))}
         </ul>
       </nav>
-
-      {/* Promo Area */}
-      <div className="px-3 mt-2">
-        <div className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1.5 px-1">Spotlight</div>
-        <div className="border border-border rounded-lg bg-card shadow-sm p-3 relative overflow-hidden">
-          {promoCards.map((promo, index) => (
-            <div
-              key={index}
-              className={cn(
-                "transition-all duration-500 ease-in-out",
-                index === currentPromo 
-                  ? "opacity-100 translate-y-0" 
-                  : "opacity-0 absolute inset-3 translate-y-2"
-              )}
-            >
-              <div className="flex items-start gap-2 mb-2">
-                <span className="text-muted-foreground">{promo.icon}</span>
-                <span className="text-sm font-semibold text-foreground">{promo.title}</span>
-              </div>
-              <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
-                {promo.description}
-              </p>
-              <button className="text-xs font-semibold text-foreground underline hover:text-primary flex items-center gap-1">
-                {promo.cta}
-                <ChevronRight className="w-3 h-3" />
-              </button>
-            </div>
-          ))}
-          
-          {/* Progress dots */}
-          <div className="flex justify-center gap-1.5 mt-3">
-            {promoCards.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentPromo(index)}
-                className={cn(
-                  "w-1.5 h-1.5 rounded-full transition-colors",
-                  index === currentPromo ? "bg-foreground" : "bg-border"
-                )}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Spacer */}
       <div className="flex-1" />
     </aside>
