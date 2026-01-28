@@ -18,9 +18,9 @@ interface MonitorStreamProps {
 
 export const MonitorStream = ({ stream, onAnalyze, onRemove }: MonitorStreamProps) => {
   return (
-    <div className="flex flex-col h-full min-w-[320px] max-w-[360px] bg-muted/30 rounded-lg border border-border">
+    <div className="flex flex-col h-[calc(100vh-280px)] min-w-[340px] max-w-[380px] bg-card rounded-lg border border-border shadow-sm">
       {/* Stream Header */}
-      <div className="p-3 border-b border-border bg-card rounded-t-lg">
+      <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-primary" />
@@ -42,7 +42,7 @@ export const MonitorStream = ({ stream, onAnalyze, onRemove }: MonitorStreamProp
                   <MoreVertical className="w-4 h-4 text-muted-foreground" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-48 bg-card">
                 <DropdownMenuItem className="cursor-pointer">
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Refresh feed
@@ -73,9 +73,9 @@ export const MonitorStream = ({ stream, onAnalyze, onRemove }: MonitorStreamProp
         </p>
       </div>
 
-      {/* Feed Items */}
-      <ScrollArea className="flex-1 p-3">
-        <div className="space-y-3">
+      {/* Feed Items - Scrollable */}
+      <ScrollArea className="flex-1">
+        <div className="p-4 space-y-3">
           {stream.items.map((item) => (
             <MonitorFeedItem key={item.id} item={item} />
           ))}
@@ -83,8 +83,8 @@ export const MonitorStream = ({ stream, onAnalyze, onRemove }: MonitorStreamProp
       </ScrollArea>
 
       {/* Stream Footer */}
-      <div className="p-2 border-t border-border text-center">
-        <button className="text-xs text-muted-foreground hover:text-foreground">
+      <div className="p-3 border-t border-border text-center bg-muted/30">
+        <button className="text-xs text-muted-foreground hover:text-foreground hover:underline">
           Load more results
         </button>
       </div>
