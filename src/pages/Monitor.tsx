@@ -126,40 +126,38 @@ const Monitor = () => {
           </div>
 
           {/* Canvas Tabs */}
-          <div className="relative mb-6">
-            {/* Grey baseline */}
-            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-border" />
+          <div className="border-b border-border mb-6">
             <ScrollArea className="flex-1">
               <div className="flex items-center gap-6">
                 {canvases.map((canvas) => (
                   <div
                     key={canvas.id}
-                    className={cn(
-                      'group relative flex items-center gap-2 pb-2 cursor-pointer transition-colors',
-                      activeCanvasId === canvas.id
-                        ? 'text-foreground'
-                        : 'text-muted-foreground hover:text-foreground'
-                    )}
-                    onClick={() => setActiveCanvasId(canvas.id)}
+                    className="group flex items-center"
                   >
-                    <span className="text-sm font-medium">{canvas.name}</span>
-                    <span className="text-xs text-muted-foreground">
-                      ({canvas.streams.length})
-                    </span>
-                    {/* Underline indicator */}
-                    {activeCanvasId === canvas.id && (
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
-                    )}
+                    <button
+                      className={cn(
+                        'py-3 text-sm font-medium border-b-2 transition-colors',
+                        activeCanvasId === canvas.id
+                          ? 'border-primary text-foreground'
+                          : 'border-transparent text-muted-foreground hover:text-foreground'
+                      )}
+                      onClick={() => setActiveCanvasId(canvas.id)}
+                    >
+                      {canvas.name}
+                      <span className="ml-2 text-muted-foreground">
+                        ({canvas.streams.length})
+                      </span>
+                    </button>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button
-                          className="opacity-0 group-hover:opacity-100 p-0.5 hover:bg-muted rounded"
+                          className="opacity-0 group-hover:opacity-100 p-1 ml-1 hover:bg-muted rounded"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          <MoreVertical className="w-3.5 h-3.5" />
+                          <MoreVertical className="w-3.5 h-3.5 text-muted-foreground" />
                         </button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-40">
+                      <DropdownMenuContent align="end" className="w-40 bg-card">
                         <DropdownMenuItem className="cursor-pointer">
                           <Settings className="w-4 h-4 mr-2" />
                           Rename
@@ -178,7 +176,7 @@ const Monitor = () => {
                 ))}
                 <button
                   onClick={() => setIsAddCanvasOpen(true)}
-                  className="flex items-center gap-1 px-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="flex items-center gap-1 py-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   New Canvas
