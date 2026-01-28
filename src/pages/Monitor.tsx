@@ -126,7 +126,9 @@ const Monitor = () => {
           </div>
 
           {/* Canvas Tabs */}
-          <div className="flex items-center gap-2 mb-6">
+          <div className="relative mb-6">
+            {/* Grey baseline */}
+            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-border" />
             <ScrollArea className="flex-1">
               <div className="flex items-center gap-6">
                 {canvases.map((canvas) => (
