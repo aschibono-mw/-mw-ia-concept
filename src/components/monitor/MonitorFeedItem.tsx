@@ -1,10 +1,11 @@
 import { FeedItem } from './types';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, MoreVertical, BarChart2, Eye } from 'lucide-react';
+import { ExternalLink, MoreVertical, BarChart2, Eye, User, FileText, Pin } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
@@ -53,7 +54,7 @@ export const MonitorFeedItem = ({ item }: MonitorFeedItemProps) => {
                 <MoreVertical className="w-4 h-4 text-muted-foreground" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuContent align="end" className="w-48 bg-card">
               <DropdownMenuItem className="cursor-pointer">
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Open source
@@ -61,6 +62,24 @@ export const MonitorFeedItem = ({ item }: MonitorFeedItemProps) => {
               <DropdownMenuItem className="cursor-pointer">
                 <BarChart2 className="w-4 h-4 mr-2" />
                 Analyze
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <User className="w-4 h-4 mr-2" />
+                Open author profile
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <ExternalLink className="w-4 h-4 mr-2" />
+                Open in new tab
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <FileText className="w-4 h-4 mr-2" />
+                View content details
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <Pin className="w-4 h-4 mr-2" />
+                Pin to newsletter
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
