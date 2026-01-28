@@ -126,17 +126,17 @@ const Monitor = () => {
           </div>
 
           {/* Canvas Tabs */}
-          <div className="flex items-center gap-2 mb-4 border-b border-border">
+          <div className="flex items-center gap-2 mb-6">
             <ScrollArea className="flex-1">
-              <div className="flex items-center gap-1 pb-2">
+              <div className="flex items-center gap-6">
                 {canvases.map((canvas) => (
                   <div
                     key={canvas.id}
                     className={cn(
-                      'group flex items-center gap-2 px-4 py-2 rounded-t-lg cursor-pointer transition-colors',
+                      'group relative flex items-center gap-2 pb-2 cursor-pointer transition-colors',
                       activeCanvasId === canvas.id
-                        ? 'bg-card border border-b-0 border-border text-foreground'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                        ? 'text-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
                     )}
                     onClick={() => setActiveCanvasId(canvas.id)}
                   >
@@ -144,6 +144,10 @@ const Monitor = () => {
                     <span className="text-xs text-muted-foreground">
                       ({canvas.streams.length})
                     </span>
+                    {/* Underline indicator */}
+                    {activeCanvasId === canvas.id && (
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                    )}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button
