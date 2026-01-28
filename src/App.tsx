@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import Discover from "./pages/Discover.tsx";
 import Analyze from "./pages/Analyze.tsx";
+import Monitor from "./pages/Monitor.tsx";
 import Distribute from "./pages/Distribute.tsx";
 import Outreach from "./pages/Outreach.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/discover" element={<Discover />} />
           <Route path="/analyze" element={<Analyze />} />
+          <Route path="/monitor" element={<Monitor />} />
           <Route path="/distribute" element={<Distribute />} />
           <Route path="/outreach" element={<Outreach />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
