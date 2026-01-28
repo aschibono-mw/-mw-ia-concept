@@ -149,10 +149,10 @@ const Distribute = () => {
             {/* Page Header */}
             <div className="mb-6">
               <h1 className="text-2xl font-semibold text-foreground mb-2">
-                Newsletters
+                Send
               </h1>
               <p className="text-sm text-muted-foreground">
-                Create and manage newsletters to deliver insights to your team and stakeholders.
+                Create and send newsletters to deliver insights to your team and stakeholders.
               </p>
             </div>
 
