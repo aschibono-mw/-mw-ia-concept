@@ -631,42 +631,32 @@ const Distribute = () => {
                       <h3 className="text-lg font-semibold text-foreground">Saved templates</h3>
                       <p className="text-sm text-muted-foreground">Templates you've customized and saved for reuse.</p>
                     </div>
-                    <div className="grid grid-cols-4 gap-6">
+                    <div className="grid grid-cols-3 gap-5">
                       {/* Saved Template 1 - Based on Daily Snapshot */}
                       <div 
                         className="group cursor-pointer"
                         onClick={() => handleUseTemplate("Monday Market Brief")}
                       >
-                        <div className="relative bg-background rounded-lg border border-border p-4 mb-3 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
-                          <div className="absolute top-3 left-3 w-5 h-5 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
-                          <div className="mt-8 space-y-3">
+                        <div className="relative bg-background rounded-lg border border-border p-3 mb-3 aspect-[5/4] hover:border-primary transition-colors overflow-hidden">
+                          <div className="absolute top-2.5 left-2.5 w-4 h-4 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
+                          <div className="mt-6 space-y-2">
                             <div className="flex gap-2">
-                              <div className="h-10 w-10 bg-muted-foreground/20 rounded" />
-                              <div className="flex-1 space-y-2">
-                                <div className="h-2 bg-muted-foreground/20 rounded w-full" />
-                                <div className="h-2 bg-muted-foreground/20 rounded w-3/4" />
+                              <div className="h-8 w-8 bg-muted-foreground/20 rounded" />
+                              <div className="flex-1 space-y-1.5">
+                                <div className="h-1.5 bg-muted-foreground/20 rounded w-full" />
+                                <div className="h-1.5 bg-muted-foreground/20 rounded w-3/4" />
                               </div>
                             </div>
-                            <div className="grid grid-cols-2 gap-2 mt-4">
-                              <div className="h-12 bg-muted-foreground/10 rounded" />
-                              <div className="h-12 bg-muted-foreground/10 rounded" />
+                            <div className="grid grid-cols-2 gap-1.5 mt-2">
+                              <div className="h-8 bg-muted-foreground/10 rounded" />
+                              <div className="h-8 bg-muted-foreground/10 rounded" />
                             </div>
-                            <div className="h-2 bg-muted-foreground/20 rounded w-1/2" />
+                            <div className="h-1.5 bg-muted-foreground/20 rounded w-1/2" />
                           </div>
                         </div>
-                        <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">Monday Market Brief</h3>
-                        <p className="text-xs text-muted-foreground mb-2">Based on Daily Snapshot</p>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                          <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center">
-                            <User className="w-2.5 h-2.5" />
-                          </div>
-                          <span>Rachel Wu</span>
-                          <span>•</span>
-                          <span>Jan 15, 2026</span>
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          <span className="text-primary font-medium">78.2%</span> avg open rate · Used 12 times
-                        </div>
+                        <h3 className="font-semibold text-sm text-foreground mb-0.5 group-hover:text-primary transition-colors">Monday Market Brief</h3>
+                        <p className="text-xs text-muted-foreground">Based on Daily Snapshot · <span className="text-primary font-medium">78.2%</span> open rate</p>
+                        <p className="text-xs text-muted-foreground">Rachel Wu · Jan 15</p>
                       </div>
 
                       {/* Saved Template 2 - Based on Weekly Brief */}
@@ -674,35 +664,25 @@ const Distribute = () => {
                         className="group cursor-pointer"
                         onClick={() => handleUseTemplate("Team Comms Weekly")}
                       >
-                        <div className="relative bg-background rounded-lg border border-border p-4 mb-3 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
-                          <div className="absolute top-3 left-3 w-5 h-5 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
-                          <div className="mt-8 space-y-3">
-                            <div className="flex justify-center gap-2 mb-4">
-                              <div className="h-8 w-8 bg-muted-foreground/20 rounded-full" />
-                              <div className="h-8 w-8 bg-muted-foreground/30 rounded-full" />
+                        <div className="relative bg-background rounded-lg border border-border p-3 mb-3 aspect-[5/4] hover:border-primary transition-colors overflow-hidden">
+                          <div className="absolute top-2.5 left-2.5 w-4 h-4 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
+                          <div className="mt-6 space-y-2">
+                            <div className="flex justify-center gap-1.5 mb-2">
+                              <div className="h-6 w-6 bg-muted-foreground/20 rounded-full" />
+                              <div className="h-6 w-6 bg-muted-foreground/30 rounded-full" />
                             </div>
-                            <div className="h-2 bg-muted-foreground/20 rounded w-full" />
-                            <div className="h-2 bg-muted-foreground/20 rounded w-4/5" />
-                            <div className="mt-4 space-y-2">
-                              <div className="h-8 bg-muted-foreground/10 rounded" />
-                              <div className="h-8 bg-muted-foreground/10 rounded" />
-                              <div className="h-8 bg-muted-foreground/10 rounded" />
+                            <div className="h-1.5 bg-muted-foreground/20 rounded w-full" />
+                            <div className="h-1.5 bg-muted-foreground/20 rounded w-4/5" />
+                            <div className="mt-2 space-y-1.5">
+                              <div className="h-5 bg-muted-foreground/10 rounded" />
+                              <div className="h-5 bg-muted-foreground/10 rounded" />
+                              <div className="h-5 bg-muted-foreground/10 rounded" />
                             </div>
                           </div>
                         </div>
-                        <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">Team Comms Weekly</h3>
-                        <p className="text-xs text-muted-foreground mb-2">Based on Standard Weekly Brief</p>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                          <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center">
-                            <User className="w-2.5 h-2.5" />
-                          </div>
-                          <span>Tom Nguyen</span>
-                          <span>•</span>
-                          <span>Dec 8, 2025</span>
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          <span className="text-primary font-medium">65.4%</span> avg open rate · Used 24 times
-                        </div>
+                        <h3 className="font-semibold text-sm text-foreground mb-0.5 group-hover:text-primary transition-colors">Team Comms Weekly</h3>
+                        <p className="text-xs text-muted-foreground">Based on Weekly Brief · <span className="text-primary font-medium">65.4%</span> open rate</p>
+                        <p className="text-xs text-muted-foreground">Tom Nguyen · Dec 8</p>
                       </div>
 
                       {/* Saved Template 3 - Based on Minimalist */}
@@ -710,29 +690,19 @@ const Distribute = () => {
                         className="group cursor-pointer"
                         onClick={() => handleUseTemplate("Executive Flash Update")}
                       >
-                        <div className="relative bg-background rounded-lg border border-border p-4 mb-3 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
-                          <div className="absolute top-3 left-3 w-5 h-5 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
-                          <div className="mt-8 space-y-3">
-                            <div className="h-2 bg-muted-foreground/20 rounded w-3/4" />
-                            <div className="h-2 bg-muted-foreground/20 rounded w-full" />
-                            <div className="h-2 bg-muted-foreground/20 rounded w-5/6" />
-                            <div className="mt-4 h-16 bg-muted-foreground/10 rounded" />
-                            <div className="h-2 bg-muted-foreground/20 rounded w-2/3" />
+                        <div className="relative bg-background rounded-lg border border-border p-3 mb-3 aspect-[5/4] hover:border-primary transition-colors overflow-hidden">
+                          <div className="absolute top-2.5 left-2.5 w-4 h-4 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
+                          <div className="mt-6 space-y-2">
+                            <div className="h-1.5 bg-muted-foreground/20 rounded w-3/4" />
+                            <div className="h-1.5 bg-muted-foreground/20 rounded w-full" />
+                            <div className="h-1.5 bg-muted-foreground/20 rounded w-5/6" />
+                            <div className="mt-2 h-10 bg-muted-foreground/10 rounded" />
+                            <div className="h-1.5 bg-muted-foreground/20 rounded w-2/3" />
                           </div>
                         </div>
-                        <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">Executive Flash Update</h3>
-                        <p className="text-xs text-muted-foreground mb-2">Based on Minimalist Template</p>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                          <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center">
-                            <User className="w-2.5 h-2.5" />
-                          </div>
-                          <span>Laura Bennett</span>
-                          <span>•</span>
-                          <span>Jan 22, 2026</span>
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          <span className="text-primary font-medium">82.1%</span> avg open rate · Used 8 times
-                        </div>
+                        <h3 className="font-semibold text-sm text-foreground mb-0.5 group-hover:text-primary transition-colors">Executive Flash Update</h3>
+                        <p className="text-xs text-muted-foreground">Based on Minimalist · <span className="text-primary font-medium">82.1%</span> open rate</p>
+                        <p className="text-xs text-muted-foreground">Laura Bennett · Jan 22</p>
                       </div>
                     </div>
                   </div>
