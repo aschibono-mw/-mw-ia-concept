@@ -62,7 +62,7 @@ const pageTitles: Record<string, string> = {
   "/discover": "Explore",
   "/monitor": "Monitor",
   "/analyze": "Analyze",
-  "/distribute": "Distribute",
+  "/distribute": "Send",
   "/outreach": "Outreach",
 };
 
