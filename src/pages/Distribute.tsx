@@ -119,6 +119,7 @@ const Distribute = () => {
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [shareItemName, setShareItemName] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const [activeTab, setActiveTab] = useState<string>('newsletters');
 
   const handleOpenShare = (itemName: string) => {
     setShareItemName(itemName);
@@ -250,7 +251,7 @@ const Distribute = () => {
 
             {/* Tabbed Interface */}
             <TooltipProvider>
-              <Tabs defaultValue="newsletters" className="w-full">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <div className="flex items-center justify-between border-b border-border mb-6">
                   <TabsList className="bg-transparent w-auto justify-start rounded-none h-auto p-0">
                     <Tooltip>
@@ -286,13 +287,13 @@ const Distribute = () => {
                       </TooltipContent>
                     </Tooltip>
                   </TabsList>
-                  <TabsTrigger 
-                    value="templates" 
-                    className="mb-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-4 py-2 text-sm font-medium flex items-center gap-2"
+                  <Button 
+                    onClick={() => setActiveTab('templates')}
+                    className="mb-2 gap-2"
                   >
                     <Plus className="w-4 h-4" />
                     Start new newsletter
-                  </TabsTrigger>
+                  </Button>
                 </div>
 
                 {/* Newsletters Tab */}
