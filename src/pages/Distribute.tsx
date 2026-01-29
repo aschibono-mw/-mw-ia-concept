@@ -104,7 +104,7 @@ const templates = [
   },
 ];
 
-type SortField = 'name' | 'category' | 'lastEdited' | 'owner' | 'recipients' | 'openRate';
+type SortField = 'name' | 'category' | 'lastEdited' | 'owner' | 'recipients' | 'openRate' | 'clickRate' | 'status';
 type SortDirection = 'asc' | 'desc';
 type StatusFilter = 'all' | 'draft' | 'scheduled' | 'sent';
 
@@ -189,6 +189,11 @@ const Distribute = () => {
       comparison = (a.recipients || 0) - (b.recipients || 0);
     } else if (sortField === 'openRate') {
       comparison = (a.openRate || 0) - (b.openRate || 0);
+    } else if (sortField === 'clickRate') {
+      comparison = (a.clickRate || 0) - (b.clickRate || 0);
+    } else if (sortField === 'status') {
+      const statusOrder = { 'draft': 0, 'scheduled': 1, 'sent': 2 };
+      comparison = (statusOrder[a.status as keyof typeof statusOrder] || 0) - (statusOrder[b.status as keyof typeof statusOrder] || 0);
     }
     return sortDirection === 'asc' ? comparison : -comparison;
   });
@@ -386,7 +391,12 @@ const Distribute = () => {
                                 {sortField === 'name' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
                               </button>
                             </th>
-                            <th className="p-4 text-sm font-bold text-foreground">Status</th>
+                            <th className="p-4 text-sm font-bold text-foreground">
+                              <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('status')}>
+                                Status
+                                {sortField === 'status' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                              </button>
+                            </th>
                             <th className="p-4 text-sm font-bold text-foreground">
                               <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('recipients')}>
                                 Recipients
@@ -399,7 +409,12 @@ const Distribute = () => {
                                 {sortField === 'openRate' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
                               </button>
                             </th>
-                            <th className="p-4 text-sm font-bold text-foreground">Click Rate</th>
+                            <th className="p-4 text-sm font-bold text-foreground">
+                              <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('clickRate')}>
+                                Click Rate
+                                {sortField === 'clickRate' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                              </button>
+                            </th>
                             <th className="p-4 text-sm font-bold text-foreground">
                               <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('owner')}>
                                 Owner
