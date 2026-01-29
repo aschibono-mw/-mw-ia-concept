@@ -27,8 +27,8 @@ const defaultTags: TagItem[] = [
   { name: "Crisis" },
 ];
 
-const FOLDERS_COLLAPSED_COUNT = 6;
-const LABELS_COLLAPSED_COUNT = 5;
+const FOLDERS_COLLAPSED_COUNT = 10;
+const LABELS_COLLAPSED_COUNT = 8;
 
 export const CategoriesPanel = ({ categories, onAddCategory }: CategoriesPanelProps) => {
   const [foldersExpanded, setFoldersExpanded] = useState(false);
@@ -54,12 +54,12 @@ export const CategoriesPanel = ({ categories, onAddCategory }: CategoriesPanelPr
       </div>
       
       {foldersExpanded ? (
-        <ScrollArea className="max-h-48">
-          <ul className="space-y-2 pr-2">
+        <ScrollArea className="h-64">
+          <ul className="space-y-2 pr-3">
             {displayedFolders.map((category) => (
               <li key={category.name}>
                 <button className="flex items-center gap-2 text-sm text-foreground hover:text-primary cursor-pointer">
-                  <Folder className="w-4 h-4 text-muted-foreground" />
+                  <Folder className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                   <span className="underline">{category.name} ({category.count})</span>
                 </button>
               </li>
@@ -71,7 +71,7 @@ export const CategoriesPanel = ({ categories, onAddCategory }: CategoriesPanelPr
           {displayedFolders.map((category) => (
             <li key={category.name}>
               <button className="flex items-center gap-2 text-sm text-foreground hover:text-primary cursor-pointer">
-                <Folder className="w-4 h-4 text-muted-foreground" />
+                <Folder className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                 <span className="underline">{category.name} ({category.count})</span>
               </button>
             </li>
@@ -103,8 +103,8 @@ export const CategoriesPanel = ({ categories, onAddCategory }: CategoriesPanelPr
       </div>
       
       {labelsExpanded ? (
-        <ScrollArea className="max-h-32">
-          <div className="flex flex-wrap gap-2 pr-2">
+        <ScrollArea className="h-40">
+          <div className="flex flex-wrap gap-2 pr-3">
             {displayedLabels.map((tag) => (
               <span 
                 key={tag.name}
