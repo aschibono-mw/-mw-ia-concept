@@ -365,7 +365,7 @@ const Analyze = () => {
             </div>
 
             {/* Main Content */}
-            <div className="flex gap-6 items-start">
+            <div className="flex gap-6 items-start flex-row-reverse">
               <div className="flex-1">
                 {viewMode === 'cards' ? (
                   /* Card View */

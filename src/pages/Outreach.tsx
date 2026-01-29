@@ -291,7 +291,7 @@ const Outreach = () => {
                   ))}
                 </div>
 
-                <div className="flex gap-6 items-start">
+                <div className="flex gap-6 items-start flex-row-reverse">
                   {/* Main Table */}
                   <div className="flex-1 bg-card rounded-lg border border-border">
                     {/* Table Header Controls */}
