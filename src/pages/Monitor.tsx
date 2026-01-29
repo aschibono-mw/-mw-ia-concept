@@ -116,19 +116,13 @@ const Monitor = () => {
       <main className="ml-52 pt-16">
         <div className="p-6">
           {/* Page Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl font-semibold text-foreground mb-1">
-                Track real-time media mentions
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Monitor your searches in customizable streams, or set up alerts to stay informed.
-              </p>
-            </div>
-            <Button onClick={() => setIsAddStreamOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Stream
-            </Button>
+          <div className="mb-6">
+            <h1 className="text-2xl font-semibold text-foreground mb-1">
+              Track real-time media mentions
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Monitor your searches in customizable streams, or set up alerts to stay informed.
+            </p>
           </div>
 
           {/* Canvas Tabs */}
