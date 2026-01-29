@@ -305,17 +305,7 @@ const Analyze = () => {
             </div>
 
             {/* Controls Bar */}
-            <div className="flex items-center justify-between mb-6 gap-4">
-              {/* Search */}
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search dashboards..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9"
-                />
-              </div>
+            <div className="flex items-center justify-end mb-6 gap-4">
 
               <div className="flex items-center gap-3">
                 {/* Sort Dropdown */}
