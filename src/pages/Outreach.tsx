@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
+import { ShareDialog } from "@/components/discover/ShareDialog";
 import { ChevronDown, Star, MoreVertical, Plus, Mail, Users, Megaphone, Radio } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -93,7 +94,14 @@ const Outreach = () => {
   const [displayedItemsCount, setDisplayedItemsCount] = useState(ITEMS_PER_PAGE);
   const [isLoading, setIsLoading] = useState(false);
   const [activeFilter, setActiveFilter] = useState<StatusFilter>('all');
+  const [isShareOpen, setIsShareOpen] = useState(false);
+  const [shareItemName, setShareItemName] = useState('');
   const loaderRef = useRef<HTMLDivElement>(null);
+
+  const handleOpenShare = (itemName: string) => {
+    setShareItemName(itemName);
+    setIsShareOpen(true);
+  };
 
   const toggleItem = (id: number) => {
     setSelectedItems(prev => 
@@ -437,7 +445,7 @@ const Outreach = () => {
                                     <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
                                     <DropdownMenuItem className="cursor-pointer">Duplicate</DropdownMenuItem>
                                     <DropdownMenuItem className="cursor-pointer">Move to Category</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Share</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.subject)}>Share</DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem className="cursor-pointer text-destructive">Delete</DropdownMenuItem>
                                   </DropdownMenuContent>
@@ -558,6 +566,13 @@ const Outreach = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Share Dialog */}
+      <ShareDialog
+        open={isShareOpen}
+        onOpenChange={setIsShareOpen}
+        itemName={shareItemName}
+      />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
+import { ShareDialog } from "@/components/discover/ShareDialog";
 import { Search, ChevronDown, ChevronUp, Star, MoreVertical, Plus, LayoutGrid, Sparkles, Music2, Users, User } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -124,7 +125,14 @@ const Analyze = () => {
   const [categories, setCategories] = useState<CategoryItem[]>(initialCategories);
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
+  const [isShareOpen, setIsShareOpen] = useState(false);
+  const [shareItemName, setShareItemName] = useState('');
   const loaderRef = useRef<HTMLDivElement>(null);
+
+  const handleOpenShare = (itemName: string) => {
+    setShareItemName(itemName);
+    setIsShareOpen(true);
+  };
 
   const handleAddCategory = () => {
     if (newCategoryName.trim()) {
@@ -396,7 +404,7 @@ const Analyze = () => {
                                     <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
                                     <DropdownMenuItem className="cursor-pointer">Duplicate</DropdownMenuItem>
                                     <DropdownMenuItem className="cursor-pointer">Move to Category</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Share</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>Share</DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem className="cursor-pointer text-destructive">Delete</DropdownMenuItem>
                                   </DropdownMenuContent>
@@ -561,6 +569,13 @@ const Analyze = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Share Dialog */}
+      <ShareDialog
+        open={isShareOpen}
+        onOpenChange={setIsShareOpen}
+        itemName={shareItemName}
+      />
     </div>
   );
 };
