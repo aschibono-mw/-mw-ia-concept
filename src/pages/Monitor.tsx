@@ -222,13 +222,9 @@ const Monitor = () => {
                 <h3 className="text-lg font-semibold text-foreground mb-2">
                   No streams yet
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4 max-w-md">
+                <p className="text-sm text-muted-foreground max-w-md">
                   Add streams to this canvas to monitor real-time mentions from your explore searches.
                 </p>
-                <Button onClick={() => setIsAddStreamOpen(true)}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Your First Stream
-                </Button>
               </div>
             )}
           </div>
