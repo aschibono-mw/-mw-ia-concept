@@ -110,10 +110,10 @@ export const AnalyzeStreamDialog = ({
                   key={template.id}
                   onClick={() => toggleTemplate(template.id)}
                   className={cn(
-                    'relative flex flex-col items-start p-4 rounded-lg border text-left transition-all',
+                    'relative flex flex-col items-start p-4 rounded-lg border text-left transition-all bg-white',
                     isSelected
-                      ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                      : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                      ? 'border-primary ring-1 ring-primary'
+                      : 'border-border hover:border-primary/50'
                   )}
                 >
                   {isSelected && (
