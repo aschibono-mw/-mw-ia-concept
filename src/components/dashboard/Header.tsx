@@ -137,13 +137,9 @@ export const Header = () => {
                   </div>
                 ))}
               </div>
-              <div className="p-2 border-t border-border flex flex-col">
-                <DropdownMenuItem className="cursor-pointer">
-                  View more
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
-                  Manage alerts
-                </DropdownMenuItem>
+              <div className="px-4 py-2 border-t border-border flex items-center justify-between">
+                <span className="text-sm text-foreground hover:text-primary cursor-pointer">View more</span>
+                <span className="text-sm text-foreground hover:text-primary cursor-pointer">Manage alerts</span>
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
