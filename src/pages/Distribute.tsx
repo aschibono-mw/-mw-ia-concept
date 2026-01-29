@@ -646,7 +646,10 @@ const Distribute = () => {
                       <tbody>
                         <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Monday Market Brief")}>
                           <td className="py-3">
-                            <span className="text-sm font-medium text-foreground underline hover:text-primary">Monday Market Brief</span>
+                            <div className="flex items-center gap-2">
+                              <FileText className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm font-medium text-foreground underline hover:text-primary">Monday Market Brief</span>
+                            </div>
                           </td>
                           <td className="py-3 text-sm text-muted-foreground">Daily Snapshot</td>
                           <td className="py-3 text-sm"><span className="text-primary font-medium">78.2%</span></td>
@@ -669,7 +672,10 @@ const Distribute = () => {
                         </tr>
                         <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Team Comms Weekly")}>
                           <td className="py-3">
-                            <span className="text-sm font-medium text-foreground underline hover:text-primary">Team Comms Weekly</span>
+                            <div className="flex items-center gap-2">
+                              <FileText className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm font-medium text-foreground underline hover:text-primary">Team Comms Weekly</span>
+                            </div>
                           </td>
                           <td className="py-3 text-sm text-muted-foreground">Standard Weekly Brief</td>
                           <td className="py-3 text-sm"><span className="text-primary font-medium">65.4%</span></td>
@@ -692,7 +698,10 @@ const Distribute = () => {
                         </tr>
                         <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Executive Flash Update")}>
                           <td className="py-3">
-                            <span className="text-sm font-medium text-foreground underline hover:text-primary">Executive Flash Update</span>
+                            <div className="flex items-center gap-2">
+                              <FileText className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm font-medium text-foreground underline hover:text-primary">Executive Flash Update</span>
+                            </div>
                           </td>
                           <td className="py-3 text-sm text-muted-foreground">Minimalist Template</td>
                           <td className="py-3 text-sm"><span className="text-primary font-medium">82.1%</span></td>
@@ -715,7 +724,10 @@ const Distribute = () => {
                         </tr>
                         <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Quarterly Board Update")}>
                           <td className="py-3">
-                            <span className="text-sm font-medium text-foreground underline hover:text-primary">Quarterly Board Update</span>
+                            <div className="flex items-center gap-2">
+                              <FileText className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm font-medium text-foreground underline hover:text-primary">Quarterly Board Update</span>
+                            </div>
                           </td>
                           <td className="py-3 text-sm text-muted-foreground">Deep Dive Analysis</td>
                           <td className="py-3 text-sm"><span className="text-primary font-medium">91.3%</span></td>
@@ -738,7 +750,10 @@ const Distribute = () => {
                         </tr>
                         <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Client News Digest")}>
                           <td className="py-3">
-                            <span className="text-sm font-medium text-foreground underline hover:text-primary">Client News Digest</span>
+                            <div className="flex items-center gap-2">
+                              <FileText className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm font-medium text-foreground underline hover:text-primary">Client News Digest</span>
+                            </div>
                           </td>
                           <td className="py-3 text-sm text-muted-foreground">Daily Snapshot</td>
                           <td className="py-3 text-sm"><span className="text-primary font-medium">69.8%</span></td>
@@ -761,7 +776,10 @@ const Distribute = () => {
                         </tr>
                         <tr className="hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("PR Crisis Brief")}>
                           <td className="py-3">
-                            <span className="text-sm font-medium text-foreground underline hover:text-primary">PR Crisis Brief</span>
+                            <div className="flex items-center gap-2">
+                              <FileText className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm font-medium text-foreground underline hover:text-primary">PR Crisis Brief</span>
+                            </div>
                           </td>
                           <td className="py-3 text-sm text-muted-foreground">Minimalist Template</td>
                           <td className="py-3 text-sm"><span className="text-primary font-medium">88.5%</span></td>
