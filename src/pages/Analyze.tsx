@@ -2,7 +2,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
-import { Search, ChevronDown, Star, MoreVertical, Plus, LayoutGrid, Sparkles, Music2, Users, User, Grid3X3, List, X } from "lucide-react";
+import { CreateDashboardDrawer } from "@/components/analyze/CreateDashboardDrawer";
+import { ChevronDown, Star, MoreVertical, Plus, LayoutGrid, User, Grid3X3, List } from "lucide-react";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -71,46 +72,6 @@ const initialCategories: CategoryItem[] = [
   { name: "Crisis", count: 1 },
 ];
 
-const templateCategories = [
-  {
-    label: "PR & Comms",
-    templates: [
-      { icon: LayoutGrid, title: "Custom", description: "Start from scratch with an empty dashboard." },
-      { icon: LayoutGrid, title: "Audience", description: "Gain insights into your audience by exploring demographics, trending topics, and key phrases using both social and editorial content." },
-      { icon: LayoutGrid, title: "Benchmark", description: "Compare brands, topics, or competitors to understand their share of voice across mentions, reach, sentiment, source type, and markets." },
-      { icon: LayoutGrid, title: "Brand", description: "Understand and report on brand awareness using metrics such as number of mentions, reach, sentiment, coverage by market & key themes." },
-      { icon: LayoutGrid, title: "Campaign", description: "Analyze and report on mentions from your campaign across various media types, engagement levels, and reach. Highlight the key coverage achieved." },
-      { icon: LayoutGrid, title: "Coverage Report", description: "Highlight your coverage from a campaign or a time period in an easy-to-create and beautiful report." },
-      { icon: LayoutGrid, title: "Crisis Management", description: "Monitor and detect emerging risks by tracking sentiment, spikes in mentions, and influential sources using both social and editorial content." },
-      { icon: LayoutGrid, title: "Earned Media Measurement", description: "Measure and understand drivers of earned media metrics using an interactive dashboard template designed for PR teams." },
-    ]
-  },
-  {
-    label: "Social",
-    templates: [
-      { icon: LayoutGrid, title: "Facebook Overview", description: "Analyze your Facebook Page activity to measure your impact." },
-      { icon: LayoutGrid, title: "Instagram Overview", description: "Track your performance, audience growth, views, and engagement." },
-      { icon: LayoutGrid, title: "LinkedIn Overview", description: "Look at your LinkedIn Page data to understand your company's presence." },
-      { icon: LayoutGrid, title: "TikTok Overview", description: "Analyze your profile performance to see your impact on TikTok." },
-      { icon: LayoutGrid, title: "X Overview", description: "Monitor your X presence and track engagement, reach, and audience growth." },
-      { icon: LayoutGrid, title: "YouTube Overview", description: "Track your YouTube channel performance, views, and subscriber engagement." },
-    ]
-  },
-];
-
-const intelligenceDashboards = [
-  { icon: Music2, title: "TikTok Trends", description: "Discover trending topics, creators, and signals shaping conversations on TikTok.", isPremium: true },
-  { icon: Users, title: "Audience Segments", description: "Analyze your audience across demographics, trends, and language.", isPremium: true },
-  { icon: Sparkles, title: "Sentiment AI", description: "Deep sentiment analysis powered by advanced machine learning.", isPremium: true },
-  { icon: Music2, title: "Podcast Monitor", description: "Track brand mentions across podcast content and audio media.", isPremium: true },
-  { icon: Users, title: "Influencer Intel", description: "AI-powered influencer identification and impact analysis.", isPremium: true },
-  { icon: Sparkles, title: "Predictive Trends", description: "Forecast emerging topics before they become mainstream.", isPremium: true },
-  { icon: Music2, title: "Video Analytics", description: "Track performance across YouTube, Reels, and video content.", isPremium: false },
-  { icon: Users, title: "Community Pulse", description: "Monitor Reddit, forums, and community discussions.", isPremium: false },
-  { icon: Sparkles, title: "Crisis Radar", description: "Early detection of potential brand crises using AI.", isPremium: true },
-  { icon: Music2, title: "News Impact", description: "Measure the impact and reach of news coverage.", isPremium: false },
-  { icon: Users, title: "Competitor Intel", description: "AI-driven competitive intelligence and benchmarking.", isPremium: true },
-];
 
 type SortField = 'name' | 'category' | 'lastEdited' | 'owner';
 type SortDirection = 'asc' | 'desc';
@@ -603,118 +564,11 @@ const Analyze = () => {
         </div>
       </main>
 
-      {/* Create Dashboard Drawer - 80% screen takeover */}
-      {isTemplateDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex">
-          {/* Backdrop */}
-          <div 
-            className="fixed inset-0 bg-black/60" 
-            onClick={() => setIsTemplateDrawerOpen(false)} 
-          />
-          
-          {/* Drawer Content - 80% width from right */}
-          <div className="fixed right-0 top-0 bottom-0 w-[80%] bg-background border-l border-border shadow-xl animate-in slide-in-from-right duration-300">
-            <div className="flex flex-col h-full">
-              {/* Drawer Header */}
-              <div className="flex items-center justify-between p-6 border-b border-border">
-                <div>
-                  <h2 className="text-xl font-semibold text-foreground">Create a Dashboard</h2>
-                  <p className="text-sm text-muted-foreground">Choose a template or start from scratch</p>
-                </div>
-                <button 
-                  onClick={() => setIsTemplateDrawerOpen(false)}
-                  className="p-2 hover:bg-muted rounded-full transition-colors"
-                >
-                  <X className="w-5 h-5 text-muted-foreground" />
-                </button>
-              </div>
-
-              {/* Drawer Body */}
-              <ScrollArea className="flex-1 p-6">
-                <div className="space-y-8">
-                  {/* Templates Section */}
-                  <div>
-                    <div className="mb-4">
-                      <h3 className="text-lg font-semibold text-foreground mb-1">Dashboard Templates</h3>
-                      <p className="text-sm text-muted-foreground">Pre-built templates to get you started quickly</p>
-                    </div>
-                    
-                    <div className="space-y-6">
-                      {templateCategories.map((category, categoryIndex) => (
-                        <div key={categoryIndex}>
-                          <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">{category.label}</h4>
-                          <div className="grid grid-cols-4 gap-4">
-                            {category.templates.map((template, index) => (
-                              <div key={index} className="border border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors flex flex-col bg-card">
-                                <div className="flex items-center gap-2 mb-2">
-                                  <template.icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-                                  <span className="font-medium text-card-foreground">{template.title}</span>
-                                </div>
-                                <p className="text-sm text-muted-foreground mb-3 flex-1 line-clamp-3">{template.description}</p>
-                                <button className="text-sm text-foreground underline hover:text-primary self-start">Create &gt;&gt;</button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Intelligence Section */}
-                  <div className="border-t border-border pt-8">
-                    <div className="mb-4">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-lg font-semibold text-foreground">Intelligence Dashboards</h3>
-                        <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded">Premium</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">Always-on dashboards with insights beyond your searches</p>
-                    </div>
-
-                    {/* GenAI Lens Hero Banner */}
-                    <div className="border border-primary/30 rounded-lg p-6 mb-6 flex items-center justify-between bg-primary/5">
-                      <div className="flex-1 max-w-xl">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Sparkles className="w-5 h-5 text-primary" />
-                          <span className="text-xs font-medium text-primary uppercase tracking-wide">Featured Upgrade</span>
-                        </div>
-                        <h4 className="text-lg font-semibold text-card-foreground mb-2">GenAI Lens</h4>
-                        <p className="text-sm text-muted-foreground mb-3">
-                          See how your brand is represented and ranked across leading AI models like ChatGPT, Claude, and Gemini. Understand your AI visibility and competitive positioning in the new era of search.
-                        </p>
-                        <button className="text-sm text-foreground underline hover:text-primary">Get started &gt;&gt;</button>
-                      </div>
-                      <div className="w-56 h-32 bg-muted rounded-lg border border-border flex items-center justify-center ml-6">
-                        <div className="text-center text-muted-foreground">
-                          <Sparkles className="w-8 h-8 mx-auto mb-1 opacity-50" />
-                          <span className="text-xs">Preview</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-4">
-                      {intelligenceDashboards.map((dashboard, index) => (
-                        <div key={index} className={`border rounded-lg p-4 cursor-pointer transition-colors flex flex-col bg-card ${dashboard.isPremium ? 'border-primary/30 hover:border-primary' : 'border-border hover:border-primary'}`}>
-                          <div className="flex items-center gap-2 mb-2">
-                            <dashboard.icon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-                            <span className="font-medium text-card-foreground">{dashboard.title}</span>
-                            {dashboard.isPremium && (
-                              <span className="text-[10px] font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded ml-auto">PRO</span>
-                            )}
-                          </div>
-                          <p className="text-sm text-muted-foreground mb-3 flex-1 line-clamp-2">{dashboard.description}</p>
-                          <button className="text-sm text-foreground underline hover:text-primary self-start">
-                            {dashboard.isPremium ? 'Upgrade &gt;&gt;' : 'Create &gt;&gt;'}
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </ScrollArea>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Create Dashboard Drawer */}
+      <CreateDashboardDrawer 
+        open={isTemplateDrawerOpen} 
+        onClose={() => setIsTemplateDrawerOpen(false)} 
+      />
 
       {/* Add Category Dialog */}
       <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
