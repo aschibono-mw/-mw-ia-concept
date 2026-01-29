@@ -300,7 +300,7 @@ const Analyze = () => {
         <div className="p-6 flex flex-col items-center">
           <div className="w-full max-w-[1100px]">
             {/* Page Header */}
-            <div className="mb-6 flex items-start justify-between">
+            <div className="mb-6 flex items-end justify-between">
               <div>
                 <h1 className="text-2xl font-semibold text-foreground mb-2">
                   Analyze your coverage and performance
