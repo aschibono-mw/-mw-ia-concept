@@ -76,35 +76,31 @@ const initialCategories: CategoryItem[] = [
 const templates = [
   { 
     id: 'scratch',
-    icon: Sparkles, 
-    title: "AI-assisted blank canvas", 
-    description: "Start fresh with AI suggestions for structure, content ideas, and writing assistance as you build.",
-    usageCount: 0,
-    aiLabel: "AI helps you write"
-  },
-  { 
-    id: 'ai-roundup',
-    icon: Sparkles, 
-    title: "Quick AI roundup", 
-    description: "AI automatically summarizes your latest coverage and key mentions into a ready-to-send daily brief.",
-    usageCount: 47,
-    aiLabel: "Auto-generated"
+    title: "Minimalist Template", 
+    description: "Start with a simple, minimalist email layout and fully customize it to your needs.",
+    badge: null,
+    layout: 'minimal' as const
   },
   { 
     id: 'executive',
-    icon: Users, 
-    title: "Executive Overview", 
-    description: "AI crafts a polished leadership brief with key metrics, strategic insights, and trend analysis.",
-    usageCount: 32,
-    aiLabel: "AI-crafted for leadership"
+    title: "Daily Snapshot", 
+    description: "A fast, lightweight format designed to keep executives aligned without adding cognitive load.",
+    badge: "Best for Executives",
+    layout: 'snapshot' as const
+  },
+  { 
+    id: 'weekly',
+    title: "Standard Weekly Brief", 
+    description: "A balanced brief giving teams context and must-reads, serving as the standard update over a week's worth of news.",
+    badge: "Best for Internal Teams",
+    layout: 'weekly' as const
   },
   { 
     id: 'longform',
-    icon: FileText, 
-    title: "Long-form Roundup", 
+    title: "Deep Dive Analysis", 
     description: "AI generates comprehensive analysis with multiple sections, detailed commentary, and deep insights.",
-    usageCount: 28,
-    aiLabel: "AI deep-dive"
+    badge: "Best for Stakeholders",
+    layout: 'detailed' as const
   },
 ];
 
@@ -518,48 +514,95 @@ const Distribute = () => {
 
                 {/* Templates Tab */}
                 <TabsContent value="templates" className="mt-0">
-                  <div className="mb-6">
+                  <div className="text-center mb-8">
+                    <h2 className="text-xl font-semibold text-foreground mb-2">Select a template structure to get started</h2>
                     <p className="text-sm text-muted-foreground">
-                      All templates are powered by AI to help you create professional newsletters faster.
+                      Choose a pre-designed layout or start from scratch. All templates are AI-powered.
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-4 gap-6">
                     {templates.map((template) => (
                       <div 
                         key={template.id} 
-                        className="bg-card border border-border rounded-lg p-5 hover:border-primary cursor-pointer transition-colors group"
+                        className="group cursor-pointer"
+                        onClick={() => handleUseTemplate(template.title)}
                       >
-                        <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
-                            <template.icon className="w-6 h-6 text-primary transition-colors" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <h3 className="font-semibold text-foreground">{template.title}</h3>
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                                <Sparkles className="w-3 h-3" />
-                                {template.aiLabel}
+                        {/* Thumbnail Preview */}
+                        <div className="relative bg-muted rounded-lg border border-border p-4 mb-4 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
+                          {/* Selection circle */}
+                          <div className="absolute top-3 left-3 w-5 h-5 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
+                          
+                          {/* Badge */}
+                          {template.badge && (
+                            <div className="absolute top-3 right-3">
+                              <span className="inline-flex items-center px-2 py-1 rounded text-[10px] font-medium bg-primary text-primary-foreground">
+                                {template.badge}
                               </span>
                             </div>
-                            <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
-                            <div className="flex items-center justify-between">
-                              {template.usageCount > 0 && (
-                                <span className="text-xs text-muted-foreground">Used {template.usageCount} times</span>
-                              )}
-                              {template.usageCount === 0 && <span />}
-                              <Button
-                                size="sm" 
-                                variant="outline" 
-                                className="gap-2"
-                                onClick={() => handleUseTemplate(template.title)}
-                              >
-                                <Plus className="w-3 h-3" />
-                                Use Template
-                              </Button>
-                            </div>
+                          )}
+                          
+                          {/* Schematic layout preview */}
+                          <div className="mt-8 space-y-3">
+                            {template.layout === 'minimal' && (
+                              <>
+                                <div className="h-2 bg-muted-foreground/20 rounded w-3/4" />
+                                <div className="h-2 bg-muted-foreground/20 rounded w-full" />
+                                <div className="h-2 bg-muted-foreground/20 rounded w-5/6" />
+                                <div className="mt-4 h-16 bg-muted-foreground/10 rounded" />
+                                <div className="h-2 bg-muted-foreground/20 rounded w-2/3" />
+                              </>
+                            )}
+                            {template.layout === 'snapshot' && (
+                              <>
+                                <div className="flex gap-2">
+                                  <div className="h-10 w-10 bg-muted-foreground/20 rounded" />
+                                  <div className="flex-1 space-y-2">
+                                    <div className="h-2 bg-muted-foreground/20 rounded w-full" />
+                                    <div className="h-2 bg-muted-foreground/20 rounded w-3/4" />
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2 mt-4">
+                                  <div className="h-12 bg-muted-foreground/10 rounded" />
+                                  <div className="h-12 bg-muted-foreground/10 rounded" />
+                                </div>
+                                <div className="h-2 bg-muted-foreground/20 rounded w-1/2" />
+                              </>
+                            )}
+                            {template.layout === 'weekly' && (
+                              <>
+                                <div className="flex justify-center gap-2 mb-4">
+                                  <div className="h-8 w-8 bg-muted-foreground/20 rounded-full" />
+                                  <div className="h-8 w-8 bg-muted-foreground/30 rounded-full" />
+                                </div>
+                                <div className="h-2 bg-muted-foreground/20 rounded w-full" />
+                                <div className="h-2 bg-muted-foreground/20 rounded w-4/5" />
+                                <div className="mt-4 space-y-2">
+                                  <div className="h-8 bg-muted-foreground/10 rounded" />
+                                  <div className="h-8 bg-muted-foreground/10 rounded" />
+                                  <div className="h-8 bg-muted-foreground/10 rounded" />
+                                </div>
+                              </>
+                            )}
+                            {template.layout === 'detailed' && (
+                              <>
+                                <div className="h-2 bg-muted-foreground/20 rounded w-1/2" />
+                                <div className="h-20 bg-muted-foreground/10 rounded flex items-center justify-center">
+                                  <div className="w-8 h-8 border-2 border-muted-foreground/20 rounded" style={{ borderStyle: 'dashed' }} />
+                                </div>
+                                <div className="space-y-1">
+                                  <div className="h-2 bg-muted-foreground/20 rounded w-full" />
+                                  <div className="h-2 bg-muted-foreground/20 rounded w-full" />
+                                  <div className="h-2 bg-muted-foreground/20 rounded w-3/4" />
+                                </div>
+                              </>
+                            )}
                           </div>
                         </div>
+                        
+                        {/* Title and Description */}
+                        <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{template.title}</h3>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{template.description}</p>
                       </div>
                     ))}
                   </div>
