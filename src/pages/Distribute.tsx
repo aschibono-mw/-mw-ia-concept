@@ -637,7 +637,7 @@ const Distribute = () => {
                         className="group cursor-pointer"
                         onClick={() => handleUseTemplate("Monday Market Brief")}
                       >
-                        <div className="relative bg-background rounded-lg border border-border p-4 mb-4 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
+                        <div className="relative bg-background rounded-lg border border-border p-4 mb-3 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
                           <div className="absolute top-3 left-3 w-5 h-5 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
                           <div className="mt-8 space-y-3">
                             <div className="flex gap-2">
@@ -655,7 +655,18 @@ const Distribute = () => {
                           </div>
                         </div>
                         <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">Monday Market Brief</h3>
-                        <p className="text-xs text-muted-foreground leading-relaxed">Based on Daily Snapshot</p>
+                        <p className="text-xs text-muted-foreground mb-2">Based on Daily Snapshot</p>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
+                          <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center">
+                            <User className="w-2.5 h-2.5" />
+                          </div>
+                          <span>Rachel Wu</span>
+                          <span>•</span>
+                          <span>Jan 15, 2026</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          <span className="text-primary font-medium">78.2%</span> avg open rate · Used 12 times
+                        </div>
                       </div>
 
                       {/* Saved Template 2 - Based on Weekly Brief */}
@@ -663,7 +674,7 @@ const Distribute = () => {
                         className="group cursor-pointer"
                         onClick={() => handleUseTemplate("Team Comms Weekly")}
                       >
-                        <div className="relative bg-background rounded-lg border border-border p-4 mb-4 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
+                        <div className="relative bg-background rounded-lg border border-border p-4 mb-3 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
                           <div className="absolute top-3 left-3 w-5 h-5 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
                           <div className="mt-8 space-y-3">
                             <div className="flex justify-center gap-2 mb-4">
@@ -680,7 +691,18 @@ const Distribute = () => {
                           </div>
                         </div>
                         <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">Team Comms Weekly</h3>
-                        <p className="text-xs text-muted-foreground leading-relaxed">Based on Standard Weekly Brief</p>
+                        <p className="text-xs text-muted-foreground mb-2">Based on Standard Weekly Brief</p>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
+                          <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center">
+                            <User className="w-2.5 h-2.5" />
+                          </div>
+                          <span>Tom Nguyen</span>
+                          <span>•</span>
+                          <span>Dec 8, 2025</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          <span className="text-primary font-medium">65.4%</span> avg open rate · Used 24 times
+                        </div>
                       </div>
 
                       {/* Saved Template 3 - Based on Minimalist */}
@@ -688,7 +710,7 @@ const Distribute = () => {
                         className="group cursor-pointer"
                         onClick={() => handleUseTemplate("Executive Flash Update")}
                       >
-                        <div className="relative bg-background rounded-lg border border-border p-4 mb-4 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
+                        <div className="relative bg-background rounded-lg border border-border p-4 mb-3 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
                           <div className="absolute top-3 left-3 w-5 h-5 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
                           <div className="mt-8 space-y-3">
                             <div className="h-2 bg-muted-foreground/20 rounded w-3/4" />
@@ -699,7 +721,18 @@ const Distribute = () => {
                           </div>
                         </div>
                         <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">Executive Flash Update</h3>
-                        <p className="text-xs text-muted-foreground leading-relaxed">Based on Minimalist Template</p>
+                        <p className="text-xs text-muted-foreground mb-2">Based on Minimalist Template</p>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
+                          <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center">
+                            <User className="w-2.5 h-2.5" />
+                          </div>
+                          <span>Laura Bennett</span>
+                          <span>•</span>
+                          <span>Jan 22, 2026</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          <span className="text-primary font-medium">82.1%</span> avg open rate · Used 8 times
+                        </div>
                       </div>
                     </div>
                   </div>
