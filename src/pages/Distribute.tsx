@@ -529,149 +529,169 @@ const Distribute = () => {
 
                 {/* Templates Tab */}
                 <TabsContent value="templates" className="mt-0">
-                  <div className="text-center mb-8">
-                    <h2 className="text-xl font-semibold text-foreground mb-2">Select a template structure to get started</h2>
-                    <p className="text-sm text-muted-foreground">
-                      Choose a pre-designed layout or start from scratch. All templates are AI-powered.
-                    </p>
-                  </div>
+                  {/* Select a Template Pane */}
+                  <div className="bg-card border border-border rounded-lg p-6 mb-6">
+                    <div className="text-center mb-6">
+                      <h2 className="text-xl font-semibold text-foreground mb-2">Select a template structure to get started</h2>
+                      <p className="text-sm text-muted-foreground">
+                        Choose a pre-designed layout or start from scratch. All templates are AI-powered.
+                      </p>
+                    </div>
 
-                  <div className="grid grid-cols-4 gap-6">
-                    {templates.map((template) => (
-                      <div 
-                        key={template.id} 
-                        className="group cursor-pointer"
-                        onClick={() => handleUseTemplate(template.title)}
-                      >
-                        {/* Thumbnail Preview */}
-                        <div className="relative bg-background rounded-lg border border-border p-4 mb-4 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
-                          {/* Selection circle */}
-                          <div className="absolute top-3 left-3 w-5 h-5 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
-                          
-                          {/* Badge */}
-                          {template.badge && (
-                            <div className="absolute top-3 right-3">
-                              <span className="inline-flex items-center px-2 py-1 rounded text-[10px] font-medium bg-primary text-primary-foreground">
-                                {template.badge}
-                              </span>
-                            </div>
-                          )}
-                          
-                          {/* Schematic layout preview */}
-                          <div className="mt-8 space-y-3">
-                            {template.layout === 'minimal' && (
-                              <>
-                                <div className="h-2 bg-muted-foreground/20 rounded w-3/4" />
-                                <div className="h-2 bg-muted-foreground/20 rounded w-full" />
-                                <div className="h-2 bg-muted-foreground/20 rounded w-5/6" />
-                                <div className="mt-4 h-16 bg-muted-foreground/10 rounded" />
-                                <div className="h-2 bg-muted-foreground/20 rounded w-2/3" />
-                              </>
+                    <div className="grid grid-cols-4 gap-6">
+                      {templates.map((template) => (
+                        <div 
+                          key={template.id} 
+                          className="group cursor-pointer"
+                          onClick={() => handleUseTemplate(template.title)}
+                        >
+                          {/* Thumbnail Preview */}
+                          <div className="relative bg-background rounded-lg border border-border p-4 mb-4 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
+                            {/* Selection circle */}
+                            <div className="absolute top-3 left-3 w-5 h-5 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
+                            
+                            {/* Badge */}
+                            {template.badge && (
+                              <div className="absolute top-3 right-3">
+                                <span className="inline-flex items-center px-2 py-1 rounded text-[10px] font-medium bg-primary text-primary-foreground">
+                                  {template.badge}
+                                </span>
+                              </div>
                             )}
-                            {template.layout === 'snapshot' && (
-                              <>
-                                <div className="flex gap-2">
-                                  <div className="h-10 w-10 bg-muted-foreground/20 rounded" />
-                                  <div className="flex-1 space-y-2">
+                            
+                            {/* Schematic layout preview */}
+                            <div className="mt-8 space-y-3">
+                              {template.layout === 'minimal' && (
+                                <>
+                                  <div className="h-2 bg-muted-foreground/20 rounded w-3/4" />
+                                  <div className="h-2 bg-muted-foreground/20 rounded w-full" />
+                                  <div className="h-2 bg-muted-foreground/20 rounded w-5/6" />
+                                  <div className="mt-4 h-16 bg-muted-foreground/10 rounded" />
+                                  <div className="h-2 bg-muted-foreground/20 rounded w-2/3" />
+                                </>
+                              )}
+                              {template.layout === 'snapshot' && (
+                                <>
+                                  <div className="flex gap-2">
+                                    <div className="h-10 w-10 bg-muted-foreground/20 rounded" />
+                                    <div className="flex-1 space-y-2">
+                                      <div className="h-2 bg-muted-foreground/20 rounded w-full" />
+                                      <div className="h-2 bg-muted-foreground/20 rounded w-3/4" />
+                                    </div>
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-2 mt-4">
+                                    <div className="h-12 bg-muted-foreground/10 rounded" />
+                                    <div className="h-12 bg-muted-foreground/10 rounded" />
+                                  </div>
+                                  <div className="h-2 bg-muted-foreground/20 rounded w-1/2" />
+                                </>
+                              )}
+                              {template.layout === 'weekly' && (
+                                <>
+                                  <div className="flex justify-center gap-2 mb-4">
+                                    <div className="h-8 w-8 bg-muted-foreground/20 rounded-full" />
+                                    <div className="h-8 w-8 bg-muted-foreground/30 rounded-full" />
+                                  </div>
+                                  <div className="h-2 bg-muted-foreground/20 rounded w-full" />
+                                  <div className="h-2 bg-muted-foreground/20 rounded w-4/5" />
+                                  <div className="mt-4 space-y-2">
+                                    <div className="h-8 bg-muted-foreground/10 rounded" />
+                                    <div className="h-8 bg-muted-foreground/10 rounded" />
+                                    <div className="h-8 bg-muted-foreground/10 rounded" />
+                                  </div>
+                                </>
+                              )}
+                              {template.layout === 'detailed' && (
+                                <>
+                                  <div className="h-2 bg-muted-foreground/20 rounded w-1/2" />
+                                  <div className="h-20 bg-muted-foreground/10 rounded flex items-center justify-center">
+                                    <div className="w-8 h-8 border-2 border-muted-foreground/20 rounded" style={{ borderStyle: 'dashed' }} />
+                                  </div>
+                                  <div className="space-y-1">
+                                    <div className="h-2 bg-muted-foreground/20 rounded w-full" />
                                     <div className="h-2 bg-muted-foreground/20 rounded w-full" />
                                     <div className="h-2 bg-muted-foreground/20 rounded w-3/4" />
                                   </div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-2 mt-4">
-                                  <div className="h-12 bg-muted-foreground/10 rounded" />
-                                  <div className="h-12 bg-muted-foreground/10 rounded" />
-                                </div>
-                                <div className="h-2 bg-muted-foreground/20 rounded w-1/2" />
-                              </>
-                            )}
-                            {template.layout === 'weekly' && (
-                              <>
-                                <div className="flex justify-center gap-2 mb-4">
-                                  <div className="h-8 w-8 bg-muted-foreground/20 rounded-full" />
-                                  <div className="h-8 w-8 bg-muted-foreground/30 rounded-full" />
-                                </div>
-                                <div className="h-2 bg-muted-foreground/20 rounded w-full" />
-                                <div className="h-2 bg-muted-foreground/20 rounded w-4/5" />
-                                <div className="mt-4 space-y-2">
-                                  <div className="h-8 bg-muted-foreground/10 rounded" />
-                                  <div className="h-8 bg-muted-foreground/10 rounded" />
-                                  <div className="h-8 bg-muted-foreground/10 rounded" />
-                                </div>
-                              </>
-                            )}
-                            {template.layout === 'detailed' && (
-                              <>
-                                <div className="h-2 bg-muted-foreground/20 rounded w-1/2" />
-                                <div className="h-20 bg-muted-foreground/10 rounded flex items-center justify-center">
-                                  <div className="w-8 h-8 border-2 border-muted-foreground/20 rounded" style={{ borderStyle: 'dashed' }} />
-                                </div>
-                                <div className="space-y-1">
-                                  <div className="h-2 bg-muted-foreground/20 rounded w-full" />
-                                  <div className="h-2 bg-muted-foreground/20 rounded w-full" />
-                                  <div className="h-2 bg-muted-foreground/20 rounded w-3/4" />
-                                </div>
-                              </>
-                            )}
+                                </>
+                              )}
+                            </div>
                           </div>
+                          
+                          {/* Title and Description */}
+                          <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{template.title}</h3>
+                          <p className="text-xs text-muted-foreground leading-relaxed">{template.description}</p>
                         </div>
-                        
-                        {/* Title and Description */}
-                        <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{template.title}</h3>
-                        <p className="text-xs text-muted-foreground leading-relaxed">{template.description}</p>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Saved Templates Section */}
+                  <div className="bg-card border border-border rounded-lg p-6 mb-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-lg font-semibold text-foreground">Saved templates</h3>
+                        <p className="text-sm text-muted-foreground">Templates you've customized and saved for reuse.</p>
                       </div>
-                    ))}
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <Plus className="w-4 h-4" />
+                        Save Current as Template
+                      </Button>
+                    </div>
+                    <div className="text-center py-8 text-muted-foreground">
+                      <FileText className="w-10 h-10 mx-auto mb-3 opacity-40" />
+                      <p className="text-sm">No saved templates yet</p>
+                      <p className="text-xs mt-1">Create a newsletter and save it as a template to reuse later.</p>
+                    </div>
                   </div>
 
                   {/* Recent Newsletters to Reuse */}
-                  <div className="mt-8">
+                  <div className="bg-card border border-border rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-foreground mb-1">Reuse a previous newsletter</h3>
                     <p className="text-sm text-muted-foreground mb-3">
                       Start from a newsletter you've already sent. All content and formatting will be copied.
                     </p>
-                    <div className="bg-card border border-border rounded-lg">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b border-border text-left">
-                            <th className="p-4 text-sm font-bold text-foreground">Newsletter</th>
-                            <th className="p-4 text-sm font-bold text-foreground">Category</th>
-                            <th className="p-4 text-sm font-bold text-foreground">Sent</th>
-                            <th className="p-4 text-sm font-bold text-foreground">Performance</th>
-                            <th className="p-4 w-32"></th>
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-border text-left">
+                          <th className="p-4 text-sm font-bold text-foreground">Newsletter</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Category</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Sent</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Performance</th>
+                          <th className="p-4 w-32"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {allNewsletterItems.filter(i => i.status === 'sent').slice(0, 5).map((item) => (
+                          <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <Mail className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-sm font-medium text-foreground">{item.name}</span>
+                              </div>
+                            </td>
+                            <td className="p-4 text-sm text-muted-foreground">{item.category}</td>
+                            <td className="p-4 text-sm text-muted-foreground">{item.lastEdited}</td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                <span>{item.openRate}% opens</span>
+                                <span>{item.clickRate}% clicks</span>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="gap-2"
+                                onClick={() => handleReuse(item.name)}
+                              >
+                                <RefreshCw className="w-3 h-3" />
+                                Reuse
+                              </Button>
+                            </td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {allNewsletterItems.filter(i => i.status === 'sent').slice(0, 5).map((item) => (
-                            <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
-                              <td className="p-4">
-                                <div className="flex items-center gap-2">
-                                  <Mail className="w-4 h-4 text-muted-foreground" />
-                                  <span className="text-sm font-medium text-foreground">{item.name}</span>
-                                </div>
-                              </td>
-                              <td className="p-4 text-sm text-muted-foreground">{item.category}</td>
-                              <td className="p-4 text-sm text-muted-foreground">{item.lastEdited}</td>
-                              <td className="p-4">
-                                <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                  <span>{item.openRate}% opens</span>
-                                  <span>{item.clickRate}% clicks</span>
-                                </div>
-                              </td>
-                              <td className="p-4">
-                                <Button 
-                                  size="sm" 
-                                  variant="outline" 
-                                  className="gap-2"
-                                  onClick={() => handleReuse(item.name)}
-                                >
-                                  <RefreshCw className="w-3 h-3" />
-                                  Reuse
-                                </Button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </TabsContent>
               </Tabs>
