@@ -631,80 +631,159 @@ const Distribute = () => {
                       <h3 className="text-lg font-semibold text-foreground">Saved templates</h3>
                       <p className="text-sm text-muted-foreground">Templates you've customized and saved for reuse.</p>
                     </div>
-                    <div className="grid grid-cols-3 gap-5">
-                      {/* Saved Template 1 - Based on Daily Snapshot */}
-                      <div 
-                        className="group cursor-pointer"
-                        onClick={() => handleUseTemplate("Monday Market Brief")}
-                      >
-                        <div className="relative bg-background rounded-lg border border-border p-3 mb-3 aspect-[5/4] hover:border-primary transition-colors overflow-hidden">
-                          <div className="absolute top-2.5 left-2.5 w-4 h-4 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
-                          <div className="mt-6 space-y-2">
-                            <div className="flex gap-2">
-                              <div className="h-8 w-8 bg-muted-foreground/20 rounded" />
-                              <div className="flex-1 space-y-1.5">
-                                <div className="h-1.5 bg-muted-foreground/20 rounded w-full" />
-                                <div className="h-1.5 bg-muted-foreground/20 rounded w-3/4" />
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-border text-left">
+                          <th className="pb-3 text-sm font-bold text-foreground">Template Name</th>
+                          <th className="pb-3 text-sm font-bold text-foreground">Based On</th>
+                          <th className="pb-3 text-sm font-bold text-foreground">Open Rate</th>
+                          <th className="pb-3 text-sm font-bold text-foreground">Times Used</th>
+                          <th className="pb-3 text-sm font-bold text-foreground">Created By</th>
+                          <th className="pb-3 text-sm font-bold text-foreground">Date Saved</th>
+                          <th className="pb-3 w-24"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Monday Market Brief")}>
+                          <td className="py-3">
+                            <span className="text-sm font-medium text-foreground underline hover:text-primary">Monday Market Brief</span>
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Daily Snapshot</td>
+                          <td className="py-3 text-sm"><span className="text-primary font-medium">78.2%</span></td>
+                          <td className="py-3 text-sm text-muted-foreground">12</td>
+                          <td className="py-3">
+                            <div className="flex items-center gap-2">
+                              <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+                                <User className="w-3 h-3 text-muted-foreground" />
                               </div>
+                              <span className="text-sm font-bold text-foreground underline hover:text-primary">Rachel Wu</span>
                             </div>
-                            <div className="grid grid-cols-2 gap-1.5 mt-2">
-                              <div className="h-8 bg-muted-foreground/10 rounded" />
-                              <div className="h-8 bg-muted-foreground/10 rounded" />
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Jan 15, 2026</td>
+                          <td className="py-3">
+                            <Button size="sm" variant="outline" className="gap-2">
+                              <Plus className="w-3 h-3" />
+                              Use
+                            </Button>
+                          </td>
+                        </tr>
+                        <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Team Comms Weekly")}>
+                          <td className="py-3">
+                            <span className="text-sm font-medium text-foreground underline hover:text-primary">Team Comms Weekly</span>
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Standard Weekly Brief</td>
+                          <td className="py-3 text-sm"><span className="text-primary font-medium">65.4%</span></td>
+                          <td className="py-3 text-sm text-muted-foreground">24</td>
+                          <td className="py-3">
+                            <div className="flex items-center gap-2">
+                              <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+                                <User className="w-3 h-3 text-muted-foreground" />
+                              </div>
+                              <span className="text-sm font-bold text-foreground underline hover:text-primary">Tom Nguyen</span>
                             </div>
-                            <div className="h-1.5 bg-muted-foreground/20 rounded w-1/2" />
-                          </div>
-                        </div>
-                        <h3 className="font-semibold text-sm text-foreground mb-0.5 group-hover:text-primary transition-colors">Monday Market Brief</h3>
-                        <p className="text-xs text-muted-foreground">Based on Daily Snapshot · <span className="text-primary font-medium">78.2%</span> open rate</p>
-                        <p className="text-xs text-muted-foreground">Rachel Wu · Jan 15</p>
-                      </div>
-
-                      {/* Saved Template 2 - Based on Weekly Brief */}
-                      <div 
-                        className="group cursor-pointer"
-                        onClick={() => handleUseTemplate("Team Comms Weekly")}
-                      >
-                        <div className="relative bg-background rounded-lg border border-border p-3 mb-3 aspect-[5/4] hover:border-primary transition-colors overflow-hidden">
-                          <div className="absolute top-2.5 left-2.5 w-4 h-4 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
-                          <div className="mt-6 space-y-2">
-                            <div className="flex justify-center gap-1.5 mb-2">
-                              <div className="h-6 w-6 bg-muted-foreground/20 rounded-full" />
-                              <div className="h-6 w-6 bg-muted-foreground/30 rounded-full" />
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Dec 8, 2025</td>
+                          <td className="py-3">
+                            <Button size="sm" variant="outline" className="gap-2">
+                              <Plus className="w-3 h-3" />
+                              Use
+                            </Button>
+                          </td>
+                        </tr>
+                        <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Executive Flash Update")}>
+                          <td className="py-3">
+                            <span className="text-sm font-medium text-foreground underline hover:text-primary">Executive Flash Update</span>
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Minimalist Template</td>
+                          <td className="py-3 text-sm"><span className="text-primary font-medium">82.1%</span></td>
+                          <td className="py-3 text-sm text-muted-foreground">8</td>
+                          <td className="py-3">
+                            <div className="flex items-center gap-2">
+                              <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+                                <User className="w-3 h-3 text-muted-foreground" />
+                              </div>
+                              <span className="text-sm font-bold text-foreground underline hover:text-primary">Laura Bennett</span>
                             </div>
-                            <div className="h-1.5 bg-muted-foreground/20 rounded w-full" />
-                            <div className="h-1.5 bg-muted-foreground/20 rounded w-4/5" />
-                            <div className="mt-2 space-y-1.5">
-                              <div className="h-5 bg-muted-foreground/10 rounded" />
-                              <div className="h-5 bg-muted-foreground/10 rounded" />
-                              <div className="h-5 bg-muted-foreground/10 rounded" />
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Jan 22, 2026</td>
+                          <td className="py-3">
+                            <Button size="sm" variant="outline" className="gap-2">
+                              <Plus className="w-3 h-3" />
+                              Use
+                            </Button>
+                          </td>
+                        </tr>
+                        <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Quarterly Board Update")}>
+                          <td className="py-3">
+                            <span className="text-sm font-medium text-foreground underline hover:text-primary">Quarterly Board Update</span>
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Deep Dive Analysis</td>
+                          <td className="py-3 text-sm"><span className="text-primary font-medium">91.3%</span></td>
+                          <td className="py-3 text-sm text-muted-foreground">4</td>
+                          <td className="py-3">
+                            <div className="flex items-center gap-2">
+                              <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+                                <User className="w-3 h-3 text-muted-foreground" />
+                              </div>
+                              <span className="text-sm font-bold text-foreground underline hover:text-primary">Sophia Patel</span>
                             </div>
-                          </div>
-                        </div>
-                        <h3 className="font-semibold text-sm text-foreground mb-0.5 group-hover:text-primary transition-colors">Team Comms Weekly</h3>
-                        <p className="text-xs text-muted-foreground">Based on Weekly Brief · <span className="text-primary font-medium">65.4%</span> open rate</p>
-                        <p className="text-xs text-muted-foreground">Tom Nguyen · Dec 8</p>
-                      </div>
-
-                      {/* Saved Template 3 - Based on Minimalist */}
-                      <div 
-                        className="group cursor-pointer"
-                        onClick={() => handleUseTemplate("Executive Flash Update")}
-                      >
-                        <div className="relative bg-background rounded-lg border border-border p-3 mb-3 aspect-[5/4] hover:border-primary transition-colors overflow-hidden">
-                          <div className="absolute top-2.5 left-2.5 w-4 h-4 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
-                          <div className="mt-6 space-y-2">
-                            <div className="h-1.5 bg-muted-foreground/20 rounded w-3/4" />
-                            <div className="h-1.5 bg-muted-foreground/20 rounded w-full" />
-                            <div className="h-1.5 bg-muted-foreground/20 rounded w-5/6" />
-                            <div className="mt-2 h-10 bg-muted-foreground/10 rounded" />
-                            <div className="h-1.5 bg-muted-foreground/20 rounded w-2/3" />
-                          </div>
-                        </div>
-                        <h3 className="font-semibold text-sm text-foreground mb-0.5 group-hover:text-primary transition-colors">Executive Flash Update</h3>
-                        <p className="text-xs text-muted-foreground">Based on Minimalist · <span className="text-primary font-medium">82.1%</span> open rate</p>
-                        <p className="text-xs text-muted-foreground">Laura Bennett · Jan 22</p>
-                      </div>
-                    </div>
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Nov 30, 2025</td>
+                          <td className="py-3">
+                            <Button size="sm" variant="outline" className="gap-2">
+                              <Plus className="w-3 h-3" />
+                              Use
+                            </Button>
+                          </td>
+                        </tr>
+                        <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Client News Digest")}>
+                          <td className="py-3">
+                            <span className="text-sm font-medium text-foreground underline hover:text-primary">Client News Digest</span>
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Daily Snapshot</td>
+                          <td className="py-3 text-sm"><span className="text-primary font-medium">69.8%</span></td>
+                          <td className="py-3 text-sm text-muted-foreground">31</td>
+                          <td className="py-3">
+                            <div className="flex items-center gap-2">
+                              <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+                                <User className="w-3 h-3 text-muted-foreground" />
+                              </div>
+                              <span className="text-sm font-bold text-foreground underline hover:text-primary">Rachel Wu</span>
+                            </div>
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Oct 12, 2025</td>
+                          <td className="py-3">
+                            <Button size="sm" variant="outline" className="gap-2">
+                              <Plus className="w-3 h-3" />
+                              Use
+                            </Button>
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("PR Crisis Brief")}>
+                          <td className="py-3">
+                            <span className="text-sm font-medium text-foreground underline hover:text-primary">PR Crisis Brief</span>
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Minimalist Template</td>
+                          <td className="py-3 text-sm"><span className="text-primary font-medium">88.5%</span></td>
+                          <td className="py-3 text-sm text-muted-foreground">3</td>
+                          <td className="py-3">
+                            <div className="flex items-center gap-2">
+                              <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+                                <User className="w-3 h-3 text-muted-foreground" />
+                              </div>
+                              <span className="text-sm font-bold text-foreground underline hover:text-primary">Laura Bennett</span>
+                            </div>
+                          </td>
+                          <td className="py-3 text-sm text-muted-foreground">Jan 5, 2026</td>
+                          <td className="py-3">
+                            <Button size="sm" variant="outline" className="gap-2">
+                              <Plus className="w-3 h-3" />
+                              Use
+                            </Button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
 
                   {/* Recent Newsletters to Reuse */}
