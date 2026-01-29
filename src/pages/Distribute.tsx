@@ -251,40 +251,49 @@ const Distribute = () => {
             {/* Tabbed Interface */}
             <TooltipProvider>
               <Tabs defaultValue="newsletters" className="w-full">
-                <TabsList className="bg-transparent border-b border-border w-full justify-start rounded-none h-auto p-0 mb-6">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <span>
-                        <TabsTrigger 
-                          value="newsletters" 
-                          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground flex items-center gap-2"
-                        >
-                          <Mail className="w-4 h-4" />
-                          Newsletters
-                        </TabsTrigger>
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Manage your newsletters - drafts, scheduled, and sent</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <span>
-                        <TabsTrigger 
-                          value="templates" 
-                          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground flex items-center gap-2"
-                        >
-                          <FileText className="w-4 h-4" />
-                          Templates
-                        </TabsTrigger>
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Start from pre-built templates</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TabsList>
+                <div className="flex items-center justify-between border-b border-border mb-6">
+                  <TabsList className="bg-transparent w-auto justify-start rounded-none h-auto p-0">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>
+                          <TabsTrigger 
+                            value="newsletters" 
+                            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground flex items-center gap-2"
+                          >
+                            <Send className="w-4 h-4" />
+                            Sent newsletters
+                          </TabsTrigger>
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>View your sent newsletters and performance</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span>
+                          <TabsTrigger 
+                            value="templates" 
+                            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground flex items-center gap-2"
+                          >
+                            <FileText className="w-4 h-4" />
+                            Templates
+                          </TabsTrigger>
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Start from pre-built templates</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TabsList>
+                  <TabsTrigger 
+                    value="templates" 
+                    className="mb-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-4 py-2 text-sm font-medium flex items-center gap-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Start new newsletter
+                  </TabsTrigger>
+                </div>
 
                 {/* Newsletters Tab */}
                 <TabsContent value="newsletters" className="mt-0">
