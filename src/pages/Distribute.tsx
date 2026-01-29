@@ -253,7 +253,7 @@ const Distribute = () => {
             <TooltipProvider>
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <div className="flex items-center justify-between border-b border-border mb-6">
-                  <TabsList className="bg-transparent w-auto justify-start rounded-none h-auto p-0">
+                  <TabsList className="bg-transparent w-auto justify-start rounded-none h-auto p-0 -mb-px">
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <span>
