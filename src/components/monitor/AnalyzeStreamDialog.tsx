@@ -145,7 +145,7 @@ export const AnalyzeStreamDialog = ({
           </Button>
           <Button onClick={handleAnalyze} disabled={selectedTemplates.length === 0}>
             <BarChart2 className="w-4 h-4 mr-2" />
-            Open in Analyze ({selectedTemplates.length})
+            Analyze
           </Button>
         </DialogFooter>
       </DialogContent>
