@@ -9,9 +9,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ExploreSearch } from './types';
-import { Search, Plus, Check } from 'lucide-react';
+import { Search, Plus, Check, Sparkles, Send, Code } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface AddStreamDialogProps {
@@ -30,20 +31,45 @@ export const AddStreamDialog = ({
   const [activeTab, setActiveTab] = useState('existing');
   const [streamName, setStreamName] = useState('');
   const [selectedSearch, setSelectedSearch] = useState<ExploreSearch | null>(null);
-  const [newSearchName, setNewSearchName] = useState('');
+  const [searchDescription, setSearchDescription] = useState('');
   const [searchFilter, setSearchFilter] = useState('');
+  const [showBoolean, setShowBoolean] = useState(false);
+  const [generatedBoolean, setGeneratedBoolean] = useState('');
+
+  const suggestionChips = ['brand mentions', 'competitor tracking', 'executive coverage', 'industry news'];
 
   const filteredSearches = existingSearches.filter((search) =>
     search.name.toLowerCase().includes(searchFilter.toLowerCase())
   );
 
+  const generateMockBoolean = (input: string): string => {
+    const keywords = input.split(/\s+/).filter(word => word.length > 2);
+    if (keywords.length === 0) return `"${input}"`;
+    
+    if (keywords.length === 1) {
+      return `("${keywords[0]}" OR "${keywords[0]}s" OR "${keywords[0]} news") AND (article OR post OR mention) AND NOT (spam OR "not relevant")`;
+    }
+    
+    const orTerms = keywords.map(k => `"${k}"`).join(' OR ');
+    return `(${orTerms}) AND (news OR social OR online OR article) AND NOT (spam OR advertisement OR "not relevant")`;
+  };
+
+  const handleSearchDescriptionChange = (value: string) => {
+    setSearchDescription(value);
+    if (value.trim()) {
+      setGeneratedBoolean(generateMockBoolean(value));
+    } else {
+      setGeneratedBoolean('');
+    }
+  };
+
   const handleSubmit = () => {
     if (activeTab === 'existing' && selectedSearch && streamName) {
       onAddStream(streamName, selectedSearch);
-    } else if (activeTab === 'new' && newSearchName && streamName) {
+    } else if (activeTab === 'new' && searchDescription && streamName) {
       const newSearch: ExploreSearch = {
         id: `new-${Date.now()}`,
-        name: newSearchName,
+        name: searchDescription.length > 40 ? searchDescription.substring(0, 40) + '...' : searchDescription,
         category: 'Custom',
       };
       onAddStream(streamName, newSearch);
@@ -52,14 +78,16 @@ export const AddStreamDialog = ({
     // Reset state
     setStreamName('');
     setSelectedSearch(null);
-    setNewSearchName('');
+    setSearchDescription('');
     setSearchFilter('');
+    setGeneratedBoolean('');
+    setShowBoolean(false);
     onOpenChange(false);
   };
 
   const isValid = streamName && (
     (activeTab === 'existing' && selectedSearch) ||
-    (activeTab === 'new' && newSearchName)
+    (activeTab === 'new' && searchDescription.trim())
   );
 
   return (
@@ -133,19 +161,85 @@ export const AddStreamDialog = ({
               </div>
             </TabsContent>
 
-            <TabsContent value="new" className="space-y-3 mt-4">
-              <div className="space-y-2">
-                <Label htmlFor="new-search-name">Search Name</Label>
-                <Input
-                  id="new-search-name"
-                  placeholder="e.g., Industry News, Market Trends"
-                  value={newSearchName}
-                  onChange={(e) => setNewSearchName(e.target.value)}
-                />
+            <TabsContent value="new" className="space-y-4 mt-4">
+              {/* View Boolean Toggle */}
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-muted-foreground">
+                  Describe what you want to monitor.
+                </p>
+                <button
+                  onClick={() => setShowBoolean(!showBoolean)}
+                  className="flex items-center gap-1.5 text-xs font-medium text-foreground underline hover:text-primary transition-colors"
+                >
+                  <Code className="w-3.5 h-3.5" />
+                  {showBoolean ? 'Hide boolean' : 'View boolean'}
+                </button>
               </div>
-              <p className="text-xs text-muted-foreground">
-                This will create a new explore search that you can configure later with keywords and filters.
-              </p>
+
+              {/* Boolean Query Display */}
+              {showBoolean && (
+                <div className="rounded-md border border-border bg-muted/30 overflow-hidden">
+                  <div className="flex items-center justify-between px-3 py-2 bg-muted/50 border-b border-border">
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Boolean Query</span>
+                    {generatedBoolean && (
+                      <button 
+                        className="text-xs text-muted-foreground hover:text-foreground underline"
+                        onClick={() => navigator.clipboard.writeText(generatedBoolean)}
+                      >
+                        Copy
+                      </button>
+                    )}
+                  </div>
+                  <div className="p-3 max-h-24 overflow-y-auto">
+                    {generatedBoolean ? (
+                      <code className="text-xs text-foreground font-mono leading-relaxed whitespace-pre-wrap break-all">
+                        {generatedBoolean}
+                      </code>
+                    ) : (
+                      <p className="text-xs text-muted-foreground italic">
+                        Your boolean query will appear here as you build your search.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Input Area */}
+              <div className="flex gap-3 items-end">
+                <div className="flex-1 relative">
+                  <Textarea 
+                    placeholder='e.g., "track mentions of our CEO in tech news" or just "brand crisis"'
+                    value={searchDescription}
+                    onChange={(e) => handleSearchDescriptionChange(e.target.value)}
+                    className="min-h-[70px] max-h-32 resize-none bg-background border-border pr-16"
+                    rows={2}
+                  />
+                  <div className="absolute bottom-2 right-2 text-xs text-muted-foreground">
+                    ⏎ to send
+                  </div>
+                </div>
+                <Button 
+                  size="icon"
+                  className="h-10 w-10 shrink-0"
+                  disabled={!searchDescription.trim()}
+                >
+                  <Send className="w-4 h-4" />
+                </Button>
+              </div>
+
+              {/* Helper chips */}
+              <div className="flex flex-wrap gap-2">
+                <span className="text-xs text-muted-foreground">Try:</span>
+                {suggestionChips.map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    onClick={() => handleSearchDescriptionChange(suggestion)}
+                    className="text-xs px-2 py-1 rounded-full border border-border bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
             </TabsContent>
           </Tabs>
         </div>
