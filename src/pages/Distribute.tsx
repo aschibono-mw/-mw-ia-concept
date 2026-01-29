@@ -560,8 +560,8 @@ const Distribute = () => {
 
                   {/* Recent Newsletters to Reuse */}
                   <div className="mt-8">
-                    <h3 className="text-lg font-semibold text-foreground mb-4">Reuse a previous newsletter</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
+                    <h3 className="text-lg font-semibold text-foreground mb-1">Reuse a previous newsletter</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
                       Start from a newsletter you've already sent. All content and formatting will be copied.
                     </p>
                     <div className="bg-card border border-border rounded-lg">
