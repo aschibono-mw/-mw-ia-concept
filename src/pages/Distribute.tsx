@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
-import { ChevronDown, Star, MoreVertical, Plus, Sparkles, FileText, Mail, Users, Clock, Send, RefreshCw, Copy, User } from "lucide-react";
+import { ChevronDown, Star, MoreVertical, Plus, Sparkles, FileText, Mail, Users, Clock, Send, RefreshCw, Copy, User, Pencil, Link, FolderInput, Share2, Trash2, Calendar } from "lucide-react";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -482,26 +482,50 @@ const Distribute = () => {
                                       </button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="w-48 bg-card">
-                                      <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
+                                      <DropdownMenuItem className="cursor-pointer">
+                                        <Pencil className="w-4 h-4 mr-2" />
+                                        Edit
+                                      </DropdownMenuItem>
                                       <DropdownMenuItem className="cursor-pointer" onClick={() => handleReuse(item.name)}>
                                         <RefreshCw className="w-4 h-4 mr-2" />
                                         Reuse as New
                                       </DropdownMenuItem>
-                                      <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
+                                      <DropdownMenuItem className="cursor-pointer">
+                                        <Link className="w-4 h-4 mr-2" />
+                                        Copy Link
+                                      </DropdownMenuItem>
                                       {item.status === 'draft' && (
                                         <>
-                                          <DropdownMenuItem className="cursor-pointer">Send Now</DropdownMenuItem>
-                                          <DropdownMenuItem className="cursor-pointer">Schedule</DropdownMenuItem>
+                                          <DropdownMenuItem className="cursor-pointer">
+                                            <Send className="w-4 h-4 mr-2" />
+                                            Send Now
+                                          </DropdownMenuItem>
+                                          <DropdownMenuItem className="cursor-pointer">
+                                            <Calendar className="w-4 h-4 mr-2" />
+                                            Schedule
+                                          </DropdownMenuItem>
                                         </>
                                       )}
                                       {item.status === 'scheduled' && (
-                                        <DropdownMenuItem className="cursor-pointer">Reschedule</DropdownMenuItem>
+                                        <DropdownMenuItem className="cursor-pointer">
+                                          <Calendar className="w-4 h-4 mr-2" />
+                                          Reschedule
+                                        </DropdownMenuItem>
                                       )}
                                       <DropdownMenuSeparator />
-                                      <DropdownMenuItem className="cursor-pointer">Move to Category</DropdownMenuItem>
-                                      <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>Share</DropdownMenuItem>
+                                      <DropdownMenuItem className="cursor-pointer">
+                                        <FolderInput className="w-4 h-4 mr-2" />
+                                        Move to Category
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>
+                                        <Share2 className="w-4 h-4 mr-2" />
+                                        Share
+                                      </DropdownMenuItem>
                                       <DropdownMenuSeparator />
-                                      <DropdownMenuItem className="cursor-pointer text-destructive">Delete</DropdownMenuItem>
+                                      <DropdownMenuItem className="cursor-pointer text-destructive">
+                                        <Trash2 className="w-4 h-4 mr-2" />
+                                        Delete
+                                      </DropdownMenuItem>
                                     </DropdownMenuContent>
                                   </DropdownMenu>
                                 </div>
