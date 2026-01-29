@@ -74,7 +74,7 @@ export const BenchmarkDashboardPanel = ({
                   Preview for: {streamName}
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 pr-8">
                 <Button variant="outline" size="sm" onClick={onDelete}>
                   <Trash2 className="w-4 h-4 mr-2" />
                   Delete
