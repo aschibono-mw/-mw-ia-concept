@@ -64,8 +64,10 @@ export const AddStreamDialog = ({
   };
 
   const handleSubmit = () => {
-    if (activeTab === 'existing' && selectedSearch && streamName) {
-      onAddStream(streamName, selectedSearch);
+    if (activeTab === 'existing' && selectedSearch) {
+      // Use stream name if provided, otherwise use the search name
+      const finalStreamName = streamName.trim() || selectedSearch.name;
+      onAddStream(finalStreamName, selectedSearch);
     } else if (activeTab === 'new' && searchDescription.trim()) {
       // Use stream name if provided, otherwise derive from search description
       const finalStreamName = streamName.trim() || searchDescription.trim().substring(0, 50);
@@ -91,9 +93,9 @@ export const AddStreamDialog = ({
     onOpenChange(false);
   };
 
-  // For 'new' tab, only require searchDescription; streamName is optional
+  // streamName is optional for both tabs - will auto-derive from selection
   const isValid = 
-    (activeTab === 'existing' && streamName && selectedSearch) ||
+    (activeTab === 'existing' && selectedSearch) ||
     (activeTab === 'new' && searchDescription.trim());
 
   return (
