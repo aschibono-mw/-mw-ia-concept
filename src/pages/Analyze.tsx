@@ -265,8 +265,14 @@ const Analyze = () => {
                 <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer">Export</DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">Create Alert</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">AI Brief</DropdownMenuItem>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">Duplicate</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">Move to Category</DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>Share</DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem className="cursor-pointer text-destructive">Delete</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
