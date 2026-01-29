@@ -17,7 +17,7 @@ import meltwaterIcon from "@/assets/meltwater-icon.svg";
 
 const createMenuItems = [
   { icon: Search, label: "Search" },
-  { icon: Rows3, label: "Monitor stream" },
+  { icon: Rows3, label: "Monitor" },
   { icon: LayoutGrid, label: "Dashboard" },
   { icon: FileText, label: "Report" },
   { icon: Users, label: "Outreach" },
