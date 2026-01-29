@@ -4,6 +4,8 @@ import { Header } from "@/components/dashboard/Header";
 import { AISearchBuilder } from "@/components/discover/AISearchBuilder";
 import { ShareDialog } from "@/components/discover/ShareDialog";
 import { Search, ChevronDown, Star, MoreVertical, Plus, LayoutGrid, FileText, User } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import {
@@ -383,15 +385,39 @@ const Discover = () => {
                 <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
                   <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                      <DialogTitle>Add New Category</DialogTitle>
+                      <DialogTitle>Add Category</DialogTitle>
                     </DialogHeader>
                     <div className="py-4">
-                      <Input
-                        placeholder="Category name"
-                        value={newCategoryName}
-                        onChange={(e) => setNewCategoryName(e.target.value)}
-                        className="w-full"
-                      />
+                      <div className="space-y-2">
+                        <Label htmlFor="category-name">Category Name</Label>
+                        <Input
+                          id="category-name"
+                          placeholder="e.g., Industry, Partnerships"
+                          value={newCategoryName}
+                          onChange={(e) => setNewCategoryName(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              if (newCategoryName.trim()) {
+                                const exists = categories.some(
+                                  (cat) => cat.name.toLowerCase() === newCategoryName.trim().toLowerCase()
+                                );
+                                if (exists) {
+                                  toast.error('Category already exists');
+                                  return;
+                                }
+                                setCategories(prev => [...prev, { name: newCategoryName.trim(), count: 0 }]);
+                                setNewCategoryName('');
+                                setIsAddCategoryOpen(false);
+                                toast.success(`Category "${newCategoryName.trim()}" added`);
+                              }
+                            }
+                          }}
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Categories help you organize your searches into logical groups.
+                      </p>
                     </div>
                     <DialogFooter>
                       <Button 
@@ -406,13 +432,22 @@ const Discover = () => {
                       <Button 
                         onClick={() => {
                           if (newCategoryName.trim()) {
+                            const exists = categories.some(
+                              (cat) => cat.name.toLowerCase() === newCategoryName.trim().toLowerCase()
+                            );
+                            if (exists) {
+                              toast.error('Category already exists');
+                              return;
+                            }
                             setCategories(prev => [...prev, { name: newCategoryName.trim(), count: 0 }]);
                             setNewCategoryName('');
                             setIsAddCategoryOpen(false);
+                            toast.success(`Category "${newCategoryName.trim()}" added`);
                           }
                         }}
                         disabled={!newCategoryName.trim()}
                       >
+                        <Plus className="w-4 h-4 mr-2" />
                         Add Category
                       </Button>
                     </DialogFooter>
