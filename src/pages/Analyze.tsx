@@ -320,9 +320,9 @@ const Analyze = () => {
                     <div className="flex items-center justify-between p-4 border-b border-border">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <button className="flex items-center gap-1 text-sm font-medium text-foreground hover:text-primary">
+                      <button className="flex items-center gap-1 font-semibold text-card-foreground hover:text-primary">
                             Recent
-                            <ChevronDown className="w-3 h-3" />
+                            <ChevronDown className="w-4 h-4" />
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start" className="w-40 bg-card">
@@ -408,9 +408,9 @@ const Analyze = () => {
                     <div className="flex items-center justify-between p-4 border-b border-border">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <button className="flex items-center gap-1 text-sm font-medium text-foreground hover:text-primary">
+                          <button className="flex items-center gap-1 font-semibold text-card-foreground hover:text-primary">
                             Recent
-                            <ChevronDown className="w-3 h-3" />
+                            <ChevronDown className="w-4 h-4" />
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start" className="w-40 bg-card">
