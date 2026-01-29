@@ -634,27 +634,27 @@ const Distribute = () => {
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-border text-left">
-                          <th className="pb-3 text-sm font-bold text-foreground">Template Name</th>
-                          <th className="pb-3 text-sm font-bold text-foreground">Based On</th>
-                          <th className="pb-3 text-sm font-bold text-foreground">Open Rate</th>
-                          <th className="pb-3 text-sm font-bold text-foreground">Times Used</th>
-                          <th className="pb-3 text-sm font-bold text-foreground">Created By</th>
-                          <th className="pb-3 text-sm font-bold text-foreground">Date Saved</th>
-                          <th className="pb-3 w-24"></th>
+                          <th className="p-4 text-sm font-bold text-foreground">Template Name</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Based On</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Open Rate</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Times Used</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Created By</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Date Saved</th>
+                          <th className="p-4 w-32"></th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Monday Market Brief")}>
-                          <td className="py-3">
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <FileText className="w-4 h-4 text-muted-foreground" />
                               <span className="text-sm font-medium text-foreground underline hover:text-primary">Monday Market Brief</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Daily Snapshot</td>
-                          <td className="py-3 text-sm"><span className="text-primary font-medium">78.2%</span></td>
-                          <td className="py-3 text-sm text-muted-foreground">12</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Daily Snapshot</td>
+                          <td className="p-4 text-sm"><span className="text-primary font-medium">78.2%</span></td>
+                          <td className="p-4 text-sm text-muted-foreground">12</td>
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
                                 <User className="w-3 h-3 text-muted-foreground" />
@@ -662,8 +662,8 @@ const Distribute = () => {
                               <span className="text-sm font-bold text-foreground underline hover:text-primary">Rachel Wu</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Jan 15, 2026</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Jan 15, 2026</td>
+                          <td className="p-4">
                             <Button size="sm" variant="outline" className="gap-2">
                               <Plus className="w-3 h-3" />
                               Use
@@ -671,16 +671,16 @@ const Distribute = () => {
                           </td>
                         </tr>
                         <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Team Comms Weekly")}>
-                          <td className="py-3">
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <FileText className="w-4 h-4 text-muted-foreground" />
                               <span className="text-sm font-medium text-foreground underline hover:text-primary">Team Comms Weekly</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Standard Weekly Brief</td>
-                          <td className="py-3 text-sm"><span className="text-primary font-medium">65.4%</span></td>
-                          <td className="py-3 text-sm text-muted-foreground">24</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Standard Weekly Brief</td>
+                          <td className="p-4 text-sm"><span className="text-primary font-medium">65.4%</span></td>
+                          <td className="p-4 text-sm text-muted-foreground">24</td>
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
                                 <User className="w-3 h-3 text-muted-foreground" />
@@ -688,8 +688,8 @@ const Distribute = () => {
                               <span className="text-sm font-bold text-foreground underline hover:text-primary">Tom Nguyen</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Dec 8, 2025</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Dec 8, 2025</td>
+                          <td className="p-4">
                             <Button size="sm" variant="outline" className="gap-2">
                               <Plus className="w-3 h-3" />
                               Use
@@ -697,16 +697,16 @@ const Distribute = () => {
                           </td>
                         </tr>
                         <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Executive Flash Update")}>
-                          <td className="py-3">
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <FileText className="w-4 h-4 text-muted-foreground" />
                               <span className="text-sm font-medium text-foreground underline hover:text-primary">Executive Flash Update</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Minimalist Template</td>
-                          <td className="py-3 text-sm"><span className="text-primary font-medium">82.1%</span></td>
-                          <td className="py-3 text-sm text-muted-foreground">8</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Minimalist Template</td>
+                          <td className="p-4 text-sm"><span className="text-primary font-medium">82.1%</span></td>
+                          <td className="p-4 text-sm text-muted-foreground">8</td>
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
                                 <User className="w-3 h-3 text-muted-foreground" />
@@ -714,8 +714,8 @@ const Distribute = () => {
                               <span className="text-sm font-bold text-foreground underline hover:text-primary">Laura Bennett</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Jan 22, 2026</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Jan 22, 2026</td>
+                          <td className="p-4">
                             <Button size="sm" variant="outline" className="gap-2">
                               <Plus className="w-3 h-3" />
                               Use
@@ -723,16 +723,16 @@ const Distribute = () => {
                           </td>
                         </tr>
                         <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Quarterly Board Update")}>
-                          <td className="py-3">
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <FileText className="w-4 h-4 text-muted-foreground" />
                               <span className="text-sm font-medium text-foreground underline hover:text-primary">Quarterly Board Update</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Deep Dive Analysis</td>
-                          <td className="py-3 text-sm"><span className="text-primary font-medium">91.3%</span></td>
-                          <td className="py-3 text-sm text-muted-foreground">4</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Deep Dive Analysis</td>
+                          <td className="p-4 text-sm"><span className="text-primary font-medium">91.3%</span></td>
+                          <td className="p-4 text-sm text-muted-foreground">4</td>
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
                                 <User className="w-3 h-3 text-muted-foreground" />
@@ -740,8 +740,8 @@ const Distribute = () => {
                               <span className="text-sm font-bold text-foreground underline hover:text-primary">Sophia Patel</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Nov 30, 2025</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Nov 30, 2025</td>
+                          <td className="p-4">
                             <Button size="sm" variant="outline" className="gap-2">
                               <Plus className="w-3 h-3" />
                               Use
@@ -749,16 +749,16 @@ const Distribute = () => {
                           </td>
                         </tr>
                         <tr className="border-b border-border hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("Client News Digest")}>
-                          <td className="py-3">
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <FileText className="w-4 h-4 text-muted-foreground" />
                               <span className="text-sm font-medium text-foreground underline hover:text-primary">Client News Digest</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Daily Snapshot</td>
-                          <td className="py-3 text-sm"><span className="text-primary font-medium">69.8%</span></td>
-                          <td className="py-3 text-sm text-muted-foreground">31</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Daily Snapshot</td>
+                          <td className="p-4 text-sm"><span className="text-primary font-medium">69.8%</span></td>
+                          <td className="p-4 text-sm text-muted-foreground">31</td>
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
                                 <User className="w-3 h-3 text-muted-foreground" />
@@ -766,25 +766,25 @@ const Distribute = () => {
                               <span className="text-sm font-bold text-foreground underline hover:text-primary">Rachel Wu</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Oct 12, 2025</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Oct 12, 2025</td>
+                          <td className="p-4">
                             <Button size="sm" variant="outline" className="gap-2">
                               <Plus className="w-3 h-3" />
                               Use
                             </Button>
                           </td>
                         </tr>
-                        <tr className="hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("PR Crisis Brief")}>
-                          <td className="py-3">
+                        <tr className="border-b border-border last:border-b-0 hover:bg-muted/50 cursor-pointer" onClick={() => handleUseTemplate("PR Crisis Brief")}>
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <FileText className="w-4 h-4 text-muted-foreground" />
                               <span className="text-sm font-medium text-foreground underline hover:text-primary">PR Crisis Brief</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Minimalist Template</td>
-                          <td className="py-3 text-sm"><span className="text-primary font-medium">88.5%</span></td>
-                          <td className="py-3 text-sm text-muted-foreground">3</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Minimalist Template</td>
+                          <td className="p-4 text-sm"><span className="text-primary font-medium">88.5%</span></td>
+                          <td className="p-4 text-sm text-muted-foreground">3</td>
+                          <td className="p-4">
                             <div className="flex items-center gap-2">
                               <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
                                 <User className="w-3 h-3 text-muted-foreground" />
@@ -792,8 +792,8 @@ const Distribute = () => {
                               <span className="text-sm font-bold text-foreground underline hover:text-primary">Laura Bennett</span>
                             </div>
                           </td>
-                          <td className="py-3 text-sm text-muted-foreground">Jan 5, 2026</td>
-                          <td className="py-3">
+                          <td className="p-4 text-sm text-muted-foreground">Jan 5, 2026</td>
+                          <td className="p-4">
                             <Button size="sm" variant="outline" className="gap-2">
                               <Plus className="w-3 h-3" />
                               Use
