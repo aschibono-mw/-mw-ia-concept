@@ -309,55 +309,6 @@ const Analyze = () => {
               </Button>
             </div>
 
-            {/* Controls Bar */}
-            <div className="flex items-center justify-end mb-6 gap-4">
-
-              <div className="flex items-center gap-3">
-                {/* Sort Dropdown */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="gap-2">
-                      Sort: Recently Viewed
-                      <ChevronDown className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48 bg-card">
-                    <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('lastEdited')}>Recently Viewed</DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('name')}>Alphabetical (A-Z)</DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('owner')}>Owner</DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('category')}>Category</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
-                {/* View Toggle */}
-                <div className="flex items-center border border-border rounded-md">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          onClick={() => setViewMode('cards')}
-                          className={`p-2 transition-colors ${viewMode === 'cards' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-                        >
-                          <Grid3X3 className="w-4 h-4" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>Card view</TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          onClick={() => setViewMode('table')}
-                          className={`p-2 transition-colors ${viewMode === 'table' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-                        >
-                          <List className="w-4 h-4" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>Table view</TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              </div>
-            </div>
 
             {/* Main Content */}
             <div className="flex gap-6 items-start flex-row-reverse">
@@ -380,25 +331,54 @@ const Analyze = () => {
                           <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('category')}>Category</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-                            Owner: {ownerFilter}
-                            <ChevronDown className="w-3 h-3" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48 bg-card">
-                          {owners.map((owner) => (
-                            <DropdownMenuItem 
-                              key={owner} 
-                              className="cursor-pointer"
-                              onClick={() => setOwnerFilter(owner)}
-                            >
-                              {owner}
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <div className="flex items-center gap-3">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+                              Owner: {ownerFilter}
+                              <ChevronDown className="w-3 h-3" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-48 bg-card">
+                            {owners.map((owner) => (
+                              <DropdownMenuItem 
+                                key={owner} 
+                                className="cursor-pointer"
+                                onClick={() => setOwnerFilter(owner)}
+                              >
+                                {owner}
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                        {/* View Toggle */}
+                        <div className="flex items-center border border-border rounded-md">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  onClick={() => setViewMode('cards')}
+                                  className="p-2 transition-colors bg-muted text-foreground"
+                                >
+                                  <Grid3X3 className="w-4 h-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>Card view</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  onClick={() => setViewMode('table')}
+                                  className="p-2 transition-colors text-muted-foreground hover:text-foreground"
+                                >
+                                  <List className="w-4 h-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>Table view</TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+                      </div>
                     </div>
                     <div className="p-4">
                       <div className="grid grid-cols-3 gap-4">
@@ -439,25 +419,54 @@ const Analyze = () => {
                           <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('category')}>Category</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-                            Owner: {ownerFilter}
-                            <ChevronDown className="w-3 h-3" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48 bg-card">
-                          {owners.map((owner) => (
-                            <DropdownMenuItem 
-                              key={owner} 
-                              className="cursor-pointer"
-                              onClick={() => setOwnerFilter(owner)}
-                            >
-                              {owner}
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <div className="flex items-center gap-3">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+                              Owner: {ownerFilter}
+                              <ChevronDown className="w-3 h-3" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-48 bg-card">
+                            {owners.map((owner) => (
+                              <DropdownMenuItem 
+                                key={owner} 
+                                className="cursor-pointer"
+                                onClick={() => setOwnerFilter(owner)}
+                              >
+                                {owner}
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                        {/* View Toggle */}
+                        <div className="flex items-center border border-border rounded-md">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  onClick={() => setViewMode('cards')}
+                                  className="p-2 transition-colors text-muted-foreground hover:text-foreground"
+                                >
+                                  <Grid3X3 className="w-4 h-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>Card view</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  onClick={() => setViewMode('table')}
+                                  className="p-2 transition-colors bg-muted text-foreground"
+                                >
+                                  <List className="w-4 h-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>Table view</TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+                      </div>
                     </div>
                     <table className="w-full">
                       <thead>
