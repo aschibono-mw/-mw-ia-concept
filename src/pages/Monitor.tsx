@@ -4,6 +4,7 @@ import { Header } from '@/components/dashboard/Header';
 import { MonitorStream } from '@/components/monitor/MonitorStream';
 import { AddStreamDialog } from '@/components/monitor/AddStreamDialog';
 import { AddCanvasDialog } from '@/components/monitor/AddCanvasDialog';
+import { AddStreamHover } from '@/components/monitor/AddStreamHover';
 import { AnalyzeStreamDialog } from '@/components/monitor/AnalyzeStreamDialog';
 import { MonitorCanvas, MonitorStream as MonitorStreamType, ExploreSearch } from '@/components/monitor/types';
 import { initialCanvases, existingSearches, generateFeedItems } from '@/components/monitor/mockData';
@@ -75,6 +76,11 @@ const Monitor = () => {
       )
     );
     toast.success(`Stream "${streamName}" added`);
+  };
+
+  // Quick add from hover - uses search name as stream name
+  const handleQuickAddStream = (search: ExploreSearch) => {
+    handleAddStream(search.name, search);
   };
 
   const handleRemoveStream = (streamId: string) => {
@@ -199,16 +205,12 @@ const Monitor = () => {
                       onRemove={handleRemoveStream}
                     />
                   ))}
-                  {/* Add Stream Button */}
-                  <button
-                    onClick={() => setIsAddStreamOpen(true)}
-                    className="flex flex-col items-center justify-center min-w-[280px] h-[calc(100vh-280px)] border-2 border-dashed border-border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-colors"
-                  >
-                    <Plus className="w-8 h-8 text-muted-foreground mb-2" />
-                    <span className="text-sm font-medium text-muted-foreground">
-                      Add Stream
-                    </span>
-                  </button>
+                  {/* Add Stream Hover Card */}
+                  <AddStreamHover
+                    existingSearches={existingSearches}
+                    onSelectSearch={handleQuickAddStream}
+                    onCreateNew={() => setIsAddStreamOpen(true)}
+                  />
                 </div>
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
