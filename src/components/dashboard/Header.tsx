@@ -115,7 +115,7 @@ export const Header = () => {
             <DropdownMenuTrigger asChild>
               <button className="relative w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                 <Bell className="w-5 h-5" />
-                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center justify-center shadow-md">
+                <span className="absolute -top-2 -right-2 w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center justify-center shadow-md">
                   3
                 </span>
               </button>
