@@ -549,8 +549,7 @@ const Analyze = () => {
                                     <DropdownMenuItem className="cursor-pointer">Export</DropdownMenuItem>
                                     <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
                                     <DropdownMenuItem className="cursor-pointer">Create Alert</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Generate Report</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">AI Summary</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer">AI Brief</DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
                                     <DropdownMenuItem className="cursor-pointer">Duplicate</DropdownMenuItem>
