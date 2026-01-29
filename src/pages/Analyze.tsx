@@ -3,7 +3,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
 import { CreateDashboardDrawer } from "@/components/analyze/CreateDashboardDrawer";
-import { ChevronDown, Star, MoreVertical, Plus, LayoutGrid, User, Grid3X3, List } from "lucide-react";
+import { ChevronDown, Star, MoreVertical, Plus, LayoutGrid, User, Grid3X3, List, Folder } from "lucide-react";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -215,7 +215,10 @@ const Analyze = () => {
                 <Star className="w-4 h-4 text-primary fill-primary flex-shrink-0" />
               )}
             </div>
-            <span className="text-xs text-muted-foreground">{item.category}</span>
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <Folder className="w-3 h-3" />
+              <span>{item.category}</span>
+            </div>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
