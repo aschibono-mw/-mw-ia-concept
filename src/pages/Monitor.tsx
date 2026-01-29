@@ -119,10 +119,10 @@ const Monitor = () => {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-2xl font-semibold text-foreground mb-1">
-                Monitor
+                Track real-time media mentions
               </h1>
               <p className="text-sm text-muted-foreground">
-                Track real-time mentions across your explore searches in customizable streams.
+                Monitor your searches in customizable streams, or set up alerts to stay informed.
               </p>
             </div>
             <Button onClick={() => setIsAddStreamOpen(true)}>
