@@ -3,7 +3,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
 import { CreateDashboardDrawer } from "@/components/analyze/CreateDashboardDrawer";
-import { ChevronDown, Star, MoreVertical, Plus, LayoutGrid, User, Grid3X3, List, Folder } from "lucide-react";
+import { ChevronDown, Star, MoreVertical, Plus, LayoutGrid, User, Grid3X3, List, Folder, Pencil, Download, Link, Bell, Sparkles, Copy, FolderInput, Share2, Trash2 } from "lucide-react";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -227,18 +227,18 @@ const Analyze = () => {
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 bg-card">
-              <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">Export</DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">Create Alert</DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">AI Brief</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer"><Pencil className="w-4 h-4 mr-2" />Edit</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer"><Download className="w-4 h-4 mr-2" />Export</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer"><Link className="w-4 h-4 mr-2" />Copy Link</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer"><Bell className="w-4 h-4 mr-2" />Create Alert</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer"><Sparkles className="w-4 h-4 mr-2" />AI Brief</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">Duplicate</DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">Move to Category</DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>Share</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer"><Pencil className="w-4 h-4 mr-2" />Rename</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer"><Copy className="w-4 h-4 mr-2" />Duplicate</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer"><FolderInput className="w-4 h-4 mr-2" />Move to Category</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}><Share2 className="w-4 h-4 mr-2" />Share</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer text-destructive">Delete</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer text-destructive"><Trash2 className="w-4 h-4 mr-2" />Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -515,18 +515,18 @@ const Analyze = () => {
                                     </button>
                                   </DropdownMenuTrigger>
                                   <DropdownMenuContent align="end" className="w-48 bg-card">
-                                    <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Export</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Create Alert</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">AI Brief</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer"><Pencil className="w-4 h-4 mr-2" />Edit</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer"><Download className="w-4 h-4 mr-2" />Export</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer"><Link className="w-4 h-4 mr-2" />Copy Link</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer"><Bell className="w-4 h-4 mr-2" />Create Alert</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer"><Sparkles className="w-4 h-4 mr-2" />AI Brief</DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Duplicate</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">Move to Category</DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>Share</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer"><Pencil className="w-4 h-4 mr-2" />Rename</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer"><Copy className="w-4 h-4 mr-2" />Duplicate</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer"><FolderInput className="w-4 h-4 mr-2" />Move to Category</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}><Share2 className="w-4 h-4 mr-2" />Share</DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem className="cursor-pointer text-destructive">Delete</DropdownMenuItem>
+                                    <DropdownMenuItem className="cursor-pointer text-destructive"><Trash2 className="w-4 h-4 mr-2" />Delete</DropdownMenuItem>
                                   </DropdownMenuContent>
                                 </DropdownMenu>
                               </div>
