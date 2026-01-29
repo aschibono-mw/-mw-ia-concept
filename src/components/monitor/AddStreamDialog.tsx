@@ -66,13 +66,19 @@ export const AddStreamDialog = ({
   const handleSubmit = () => {
     if (activeTab === 'existing' && selectedSearch && streamName) {
       onAddStream(streamName, selectedSearch);
-    } else if (activeTab === 'new' && searchDescription && streamName) {
+    } else if (activeTab === 'new' && searchDescription.trim()) {
+      // Use stream name if provided, otherwise derive from search description
+      const finalStreamName = streamName.trim() || searchDescription.trim().substring(0, 50);
+      const searchName = searchDescription.trim().length > 40 
+        ? searchDescription.trim().substring(0, 40) + '...' 
+        : searchDescription.trim();
+      
       const newSearch: ExploreSearch = {
         id: `new-${Date.now()}`,
-        name: searchDescription.length > 40 ? searchDescription.substring(0, 40) + '...' : searchDescription,
+        name: searchName,
         category: 'Custom',
       };
-      onAddStream(streamName, newSearch);
+      onAddStream(finalStreamName, newSearch);
     }
     
     // Reset state
@@ -85,10 +91,10 @@ export const AddStreamDialog = ({
     onOpenChange(false);
   };
 
-  const isValid = streamName && (
-    (activeTab === 'existing' && selectedSearch) ||
-    (activeTab === 'new' && searchDescription.trim())
-  );
+  // For 'new' tab, only require searchDescription; streamName is optional
+  const isValid = 
+    (activeTab === 'existing' && streamName && selectedSearch) ||
+    (activeTab === 'new' && searchDescription.trim());
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
