@@ -544,7 +544,7 @@ const Distribute = () => {
                         onClick={() => handleUseTemplate(template.title)}
                       >
                         {/* Thumbnail Preview */}
-                        <div className="relative bg-muted rounded-lg border border-border p-4 mb-4 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
+                        <div className="relative bg-background rounded-lg border border-border p-4 mb-4 aspect-[4/5] hover:border-primary transition-colors overflow-hidden">
                           {/* Selection circle */}
                           <div className="absolute top-3 left-3 w-5 h-5 rounded-full border-2 border-muted-foreground/30 bg-background group-hover:border-primary transition-colors" />
                           
