@@ -6,6 +6,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +23,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 interface CategoryItem {
   name: string;
@@ -44,7 +55,7 @@ const allDashboardItems: DashboardItem[] = [
   { id: 13, name: "Investor Sentiment", category: "Finance", lastEdited: "Oct 2", owner: "David Kim", starred: false },
 ];
 
-const categories: CategoryItem[] = [
+const initialCategories: CategoryItem[] = [
   { name: "Brand", count: 24 },
   { name: "Market", count: 20 },
   { name: "Competition", count: 17 },
@@ -110,7 +121,26 @@ const Analyze = () => {
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [displayedItemsCount, setDisplayedItemsCount] = useState(ITEMS_PER_PAGE);
   const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState<CategoryItem[]>(initialCategories);
+  const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState('');
   const loaderRef = useRef<HTMLDivElement>(null);
+
+  const handleAddCategory = () => {
+    if (newCategoryName.trim()) {
+      const exists = categories.some(
+        (cat) => cat.name.toLowerCase() === newCategoryName.trim().toLowerCase()
+      );
+      if (exists) {
+        toast.error('Category already exists');
+        return;
+      }
+      setCategories([...categories, { name: newCategoryName.trim(), count: 0 }]);
+      setNewCategoryName('');
+      setIsAddCategoryOpen(false);
+      toast.success(`Category "${newCategoryName.trim()}" added`);
+    }
+  };
 
   const toggleItem = (id: number) => {
     setSelectedItems(prev => 
@@ -401,7 +431,10 @@ const Analyze = () => {
                     <div className="bg-card rounded-lg border border-border p-4">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="font-semibold text-card-foreground">Categories</h3>
-                        <button className="w-7 h-7 rounded-full border border-border bg-white flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                        <button 
+                          onClick={() => setIsAddCategoryOpen(true)}
+                          className="w-7 h-7 rounded-full border border-border bg-white flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                        >
                           <Plus className="w-4 h-4" />
                         </button>
                       </div>
@@ -495,6 +528,39 @@ const Analyze = () => {
           </div>
         </div>
       </main>
+
+      {/* Add Category Dialog */}
+      <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add Category</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="space-y-2">
+              <Label htmlFor="category-name">Category Name</Label>
+              <Input
+                id="category-name"
+                placeholder="e.g., Industry, Partnerships"
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
+              />
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              Categories help you organize your dashboards into logical groups.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAddCategoryOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleAddCategory} disabled={!newCategoryName.trim()}>
+              <Plus className="w-4 h-4 mr-2" />
+              Add Category
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
