@@ -202,7 +202,7 @@ const Monitor = () => {
                   {/* Add Stream Button */}
                   <button
                     onClick={() => setIsAddStreamOpen(true)}
-                    className="flex flex-col items-center justify-center min-w-[280px] h-[400px] border-2 border-dashed border-border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-colors"
+                    className="flex flex-col items-center justify-center min-w-[280px] h-[calc(100vh-280px)] border-2 border-dashed border-border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-colors"
                   >
                     <Plus className="w-8 h-8 text-muted-foreground mb-2" />
                     <span className="text-sm font-medium text-muted-foreground">
