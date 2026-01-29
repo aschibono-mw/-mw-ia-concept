@@ -1,4 +1,4 @@
-import { Plus, Tag } from "lucide-react";
+import { Plus, Tag, Folder } from "lucide-react";
 
 interface CategoryItem {
   name: string;
@@ -28,9 +28,9 @@ const defaultTags: TagItem[] = [
 export const CategoriesPanel = ({ categories, onAddCategory }: CategoriesPanelProps) => {
   return (
     <div className="bg-card rounded-lg border border-border p-4">
-      {/* Categories Section */}
+      {/* Folders Section */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-card-foreground">Categories</h3>
+        <h3 className="font-semibold text-card-foreground">Folders</h3>
         <button 
           className="w-7 h-7 rounded-full border border-border bg-white flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           onClick={onAddCategory}
@@ -41,8 +41,9 @@ export const CategoriesPanel = ({ categories, onAddCategory }: CategoriesPanelPr
       <ul className="space-y-2">
         {categories.map((category) => (
           <li key={category.name}>
-            <button className="text-sm text-foreground underline hover:text-primary cursor-pointer">
-              {category.name} ({category.count})
+            <button className="flex items-center gap-2 text-sm text-foreground hover:text-primary cursor-pointer">
+              <Folder className="w-4 h-4 text-muted-foreground" />
+              <span className="underline">{category.name} ({category.count})</span>
             </button>
           </li>
         ))}
@@ -51,9 +52,9 @@ export const CategoriesPanel = ({ categories, onAddCategory }: CategoriesPanelPr
       {/* Divider */}
       <div className="border-t border-border my-4" />
 
-      {/* Tags Section */}
+      {/* Labels Section */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="font-semibold text-card-foreground">Tags</h3>
+        <h3 className="font-semibold text-card-foreground">Labels</h3>
         <button 
           className="w-7 h-7 rounded-full border border-border bg-white flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         >
