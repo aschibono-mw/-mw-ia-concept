@@ -627,15 +627,9 @@ const Distribute = () => {
 
                   {/* Saved Templates Section */}
                   <div className="bg-card border border-border rounded-lg p-6 mb-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <h3 className="text-lg font-semibold text-foreground">Saved templates</h3>
-                        <p className="text-sm text-muted-foreground">Templates you've customized and saved for reuse.</p>
-                      </div>
-                      <Button variant="outline" size="sm" className="gap-2">
-                        <Plus className="w-4 h-4" />
-                        Save Current as Template
-                      </Button>
+                    <div className="mb-4">
+                      <h3 className="text-lg font-semibold text-foreground">Saved templates</h3>
+                      <p className="text-sm text-muted-foreground">Templates you've customized and saved for reuse.</p>
                     </div>
                     <div className="text-center py-8 text-muted-foreground">
                       <FileText className="w-10 h-10 mx-auto mb-3 opacity-40" />
