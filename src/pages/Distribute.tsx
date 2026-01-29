@@ -3,6 +3,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
 import { ChevronDown, Star, MoreVertical, Plus, Sparkles, FileText, Mail, Users, Clock, Send, RefreshCw, Copy, User } from "lucide-react";
+import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -503,26 +504,10 @@ const Distribute = () => {
 
                     {/* Categories Sidebar */}
                     <div className="w-64 sticky top-20 space-y-4">
-                      <div className="bg-card rounded-lg border border-border p-4">
-                        <div className="flex items-center justify-between mb-4">
-                          <h3 className="font-semibold text-card-foreground">Categories</h3>
-                          <button 
-                            className="w-7 h-7 rounded-full border border-border bg-white flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                            onClick={() => setIsAddCategoryOpen(true)}
-                          >
-                            <Plus className="w-4 h-4" />
-                          </button>
-                        </div>
-                        <ul className="space-y-2">
-                          {categories.map((category) => (
-                            <li key={category.name}>
-                              <button className="text-sm text-foreground underline hover:text-primary cursor-pointer">
-                                {category.name} ({category.count})
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                      <CategoriesPanel 
+                        categories={categories} 
+                        onAddCategory={() => setIsAddCategoryOpen(true)} 
+                      />
                     </div>
                   </div>
                 </TabsContent>
