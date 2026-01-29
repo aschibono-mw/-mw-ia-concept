@@ -132,7 +132,10 @@ const Analyze = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<ViewMode>('cards');
   const [isTemplateDrawerOpen, setIsTemplateDrawerOpen] = useState(false);
+  const [ownerFilter, setOwnerFilter] = useState<string>('Anyone');
   const loaderRef = useRef<HTMLDivElement>(null);
+
+  const owners = ['Anyone', ...Array.from(new Set(allDashboardItems.map(item => item.owner)))];
 
   const handleOpenShare = (itemName: string) => {
     setShareItemName(itemName);
@@ -178,12 +181,14 @@ const Analyze = () => {
     }
   };
 
-  // Filter items by search query
-  const filteredItems = allDashboardItems.filter(item => 
-    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.owner.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter items by search query and owner
+  const filteredItems = allDashboardItems.filter(item => {
+    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.owner.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesOwner = ownerFilter === 'Anyone' || item.owner === ownerFilter;
+    return matchesSearch && matchesOwner;
+  });
 
   const sortedItems = [...filteredItems].sort((a, b) => {
     let comparison = 0;
@@ -359,11 +364,48 @@ const Analyze = () => {
               <div className="flex-1">
                 {viewMode === 'cards' ? (
                   /* Card View */
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-3 gap-4">
-                      {displayedItems.map((item) => (
-                        <DashboardCard key={item.id} item={item} />
-                      ))}
+                  <div className="bg-card rounded-lg border border-border">
+                    {/* Card View Header Controls */}
+                    <div className="flex items-center justify-between p-4 border-b border-border">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="flex items-center gap-1 text-sm font-medium text-foreground hover:text-primary">
+                            Recent
+                            <ChevronDown className="w-3 h-3" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-40 bg-card">
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('lastEdited')}>Recent</DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('name')}>Alphabetical</DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('category')}>Category</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+                            Owner: {ownerFilter}
+                            <ChevronDown className="w-3 h-3" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48 bg-card">
+                          {owners.map((owner) => (
+                            <DropdownMenuItem 
+                              key={owner} 
+                              className="cursor-pointer"
+                              onClick={() => setOwnerFilter(owner)}
+                            >
+                              {owner}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                    <div className="p-4">
+                      <div className="grid grid-cols-3 gap-4">
+                        {displayedItems.map((item) => (
+                          <DashboardCard key={item.id} item={item} />
+                        ))}
+                      </div>
                     </div>
                     
                     {/* Load More */}
@@ -382,6 +424,41 @@ const Analyze = () => {
                 ) : (
                   /* Table View */
                   <div className="bg-card rounded-lg border border-border">
+                    {/* Table Header Controls */}
+                    <div className="flex items-center justify-between p-4 border-b border-border">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="flex items-center gap-1 text-sm font-medium text-foreground hover:text-primary">
+                            Recent
+                            <ChevronDown className="w-3 h-3" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-40 bg-card">
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('lastEdited')}>Recent</DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('name')}>Alphabetical</DropdownMenuItem>
+                          <DropdownMenuItem className="cursor-pointer" onClick={() => handleSort('category')}>Category</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+                            Owner: {ownerFilter}
+                            <ChevronDown className="w-3 h-3" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48 bg-card">
+                          {owners.map((owner) => (
+                            <DropdownMenuItem 
+                              key={owner} 
+                              className="cursor-pointer"
+                              onClick={() => setOwnerFilter(owner)}
+                            >
+                              {owner}
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-border text-left">
