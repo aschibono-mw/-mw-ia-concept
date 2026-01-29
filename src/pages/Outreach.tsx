@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 interface CategoryItem {
   name: string;
@@ -118,9 +120,17 @@ const Outreach = () => {
 
   const handleAddCategory = () => {
     if (newCategoryName.trim()) {
+      const exists = categories.some(
+        (cat) => cat.name.toLowerCase() === newCategoryName.trim().toLowerCase()
+      );
+      if (exists) {
+        toast.error('Category already exists');
+        return;
+      }
       setCategories(prev => [...prev, { name: newCategoryName.trim(), count: 0 }]);
       setNewCategoryName('');
       setIsAddCategoryOpen(false);
+      toast.success(`Category "${newCategoryName.trim()}" added`);
     }
   };
 
@@ -518,24 +528,32 @@ const Outreach = () => {
 
       {/* Add Category Dialog */}
       <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
-        <DialogContent className="sm:max-w-[400px]">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Create New Category</DialogTitle>
+            <DialogTitle>Add Category</DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <Input
-              placeholder="Category name"
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
-            />
+            <div className="space-y-2">
+              <Label htmlFor="outreach-category-name">Category Name</Label>
+              <Input
+                id="outreach-category-name"
+                placeholder="e.g., Industry, Partnerships"
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleAddCategory()}
+              />
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              Categories help you organize your outreach into logical groups.
+            </p>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsAddCategoryOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleAddCategory}>
-              Create
+            <Button onClick={handleAddCategory} disabled={!newCategoryName.trim()}>
+              <Plus className="w-4 h-4 mr-2" />
+              Add Category
             </Button>
           </DialogFooter>
         </DialogContent>
