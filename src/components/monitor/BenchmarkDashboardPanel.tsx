@@ -81,11 +81,7 @@ export const BenchmarkDashboardPanel = ({
                 </Button>
                 <Button variant="outline" size="sm" onClick={onSave}>
                   <Save className="w-4 h-4 mr-2" />
-                  Save
-                </Button>
-                <Button size="sm" onClick={onCreateDashboard}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Dashboard
+                  Save dashboard
                 </Button>
               </div>
             </div>
