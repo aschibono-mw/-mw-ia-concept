@@ -137,13 +137,12 @@ export const Header = () => {
                   </div>
                 ))}
               </div>
-              <div className="p-2 border-t border-border flex items-center justify-between gap-2">
-                <DropdownMenuItem className="cursor-pointer justify-center flex-1">
-                  View More
+              <div className="p-2 border-t border-border flex flex-col">
+                <DropdownMenuItem className="cursor-pointer">
+                  View more
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer justify-center text-primary flex-1">
-                  <Plus className="w-3 h-3 mr-1" />
-                  Create Alert
+                <DropdownMenuItem className="cursor-pointer">
+                  Manage alerts
                 </DropdownMenuItem>
               </div>
             </DropdownMenuContent>
