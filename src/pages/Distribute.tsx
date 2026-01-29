@@ -461,10 +461,6 @@ const Distribute = () => {
                                         <RefreshCw className="w-4 h-4 mr-2" />
                                         Reuse as New
                                       </DropdownMenuItem>
-                                      <DropdownMenuItem className="cursor-pointer">
-                                        <Copy className="w-4 h-4 mr-2" />
-                                        Duplicate
-                                      </DropdownMenuItem>
                                       <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
                                       {item.status === 'draft' && (
                                         <>
