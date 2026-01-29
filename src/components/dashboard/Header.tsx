@@ -137,8 +137,9 @@ export const Header = () => {
                   </div>
                 ))}
               </div>
-              <div className="px-4 py-2 border-t border-border flex items-center justify-between">
+              <div className="px-4 py-2 border-t border-border flex items-center justify-center gap-4">
                 <span className="text-sm text-foreground hover:text-primary cursor-pointer">View more</span>
+                <span className="h-4 w-px bg-border" />
                 <span className="text-sm text-foreground hover:text-primary cursor-pointer">Manage alerts</span>
               </div>
             </DropdownMenuContent>
