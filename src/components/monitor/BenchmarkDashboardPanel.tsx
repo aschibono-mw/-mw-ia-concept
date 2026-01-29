@@ -1,10 +1,20 @@
+import { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { X, Plus, Trash2, Save, Info, MoreVertical, TrendingUp, TrendingDown } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell, ScatterChart, Scatter, ZAxis, Legend } from 'recharts';
 import { cn } from '@/lib/utils';
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 // Mock data for charts
 const mentionsOverTimeData = [
   { date: 'Jan 22', brand1: 50, brand2: 30 },
@@ -61,12 +71,29 @@ export const BenchmarkDashboardPanel = ({
   onSave,
   onDelete,
 }: BenchmarkDashboardPanelProps) => {
+  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      // User is trying to close - show confirmation
+      setShowCloseConfirm(true);
+    } else {
+      onOpenChange(isOpen);
+    }
+  };
+
+  const handleConfirmClose = () => {
+    setShowCloseConfirm(false);
+    onOpenChange(false);
+  };
+
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-full sm:max-w-4xl p-0 overflow-hidden">
-        <div className="flex flex-col h-full">
-          {/* Header */}
-          <SheetHeader className="px-6 py-4 border-b border-border bg-background">
+    <>
+      <Sheet open={open} onOpenChange={handleOpenChange}>
+        <SheetContent side="right" className="w-full sm:max-w-4xl p-0 overflow-hidden">
+          <div className="flex flex-col h-full">
+            {/* Header */}
+            <SheetHeader className="px-6 py-4 border-b border-border bg-white">
             <div className="flex items-center justify-between">
               <div>
                 <SheetTitle className="text-lg font-semibold">{templateName} Dashboard</SheetTitle>
@@ -296,7 +323,23 @@ export const BenchmarkDashboardPanel = ({
             </div>
           </div>
         </div>
-      </SheetContent>
-    </Sheet>
+        </SheetContent>
+      </Sheet>
+
+      <AlertDialog open={showCloseConfirm} onOpenChange={setShowCloseConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Close without saving?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to close this dashboard without saving? It will be deleted.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmClose}>Close</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
