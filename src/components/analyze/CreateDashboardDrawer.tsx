@@ -118,13 +118,13 @@ export const CreateDashboardDrawer = ({ open, onClose }: CreateDashboardDrawerPr
             <TabsList className="h-auto p-0 bg-transparent border-b border-border rounded-none w-full justify-start gap-6">
               <TabsTrigger 
                 value="templates" 
-                className="px-0 pb-2.5 mb-[-1px] rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none text-muted-foreground data-[state=active]:text-foreground font-medium"
+                className="px-0 py-0 pb-2.5 mb-[-1px] rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none text-muted-foreground data-[state=active]:text-foreground font-medium"
               >
                 Dashboard Templates
               </TabsTrigger>
               <TabsTrigger 
                 value="intelligence" 
-                className="px-0 pb-2.5 mb-[-1px] rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none text-muted-foreground data-[state=active]:text-foreground font-medium flex items-center gap-2"
+                className="px-0 py-0 pb-2.5 mb-[-1px] rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none text-muted-foreground data-[state=active]:text-foreground font-medium flex items-center gap-2"
               >
                 Intelligence Add-ons
                 <span className="text-[10px] font-semibold bg-primary text-primary-foreground px-1.5 py-0.5 rounded">PRO</span>
