@@ -119,11 +119,12 @@ export const MonitorStream = ({ stream, onAnalyze, onRemove }: MonitorStreamProp
             <button className="p-1.5 hover:bg-muted rounded" title="Filter">
               <Filter className="w-4 h-4 text-muted-foreground" />
             </button>
-            <button className="p-1.5 hover:bg-muted rounded" title="Analyze">
-              <BarChart2 
-                className="w-4 h-4 text-muted-foreground hover:text-primary cursor-pointer" 
-                onClick={() => onAnalyze(stream.id)}
-              />
+            <button 
+              className="p-1.5 hover:bg-muted rounded" 
+              title="Analyze"
+              onClick={() => onAnalyze(stream.id)}
+            >
+              <BarChart2 className="w-4 h-4 text-muted-foreground hover:text-primary" />
             </button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
