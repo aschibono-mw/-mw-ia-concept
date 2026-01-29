@@ -113,8 +113,11 @@ export const Header = () => {
           </button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+              <button className="relative w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                 <Bell className="w-5 h-5" />
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center justify-center">
+                  3
+                </span>
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-80 bg-card p-0">
@@ -122,20 +125,23 @@ export const Header = () => {
                 <h3 className="font-semibold text-sm">Alerts</h3>
               </div>
               <div className="max-h-96 overflow-y-auto">
-                {alertsData.map((alert, index) => (
-                  <div key={index} className="px-4 py-3 border-b border-border hover:bg-muted/50 cursor-pointer">
-                    <div className="flex items-center gap-3">
-                      <alert.icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs text-muted-foreground">{alert.source}</span>
-                          <span className="text-xs text-muted-foreground">{alert.time}</span>
+                {alertsData.map((alert, index) => {
+                  const isNew = index < 3;
+                  return (
+                    <div key={index} className="px-4 py-3 border-b border-border hover:bg-muted/50 cursor-pointer">
+                      <div className="flex items-center gap-3">
+                        <alert.icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className={`text-xs text-muted-foreground ${isNew ? 'font-semibold' : ''}`}>{alert.source}</span>
+                            <span className="text-xs text-muted-foreground">{alert.time}</span>
+                          </div>
+                          <p className={`text-sm text-foreground truncate ${isNew ? 'font-semibold' : ''}`}>{alert.description}</p>
                         </div>
-                        <p className="text-sm text-foreground truncate">{alert.description}</p>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               <div className="px-4 py-3 border-t border-border flex items-center justify-center gap-4">
                 <span className="text-sm text-foreground hover:text-primary cursor-pointer">View more</span>
