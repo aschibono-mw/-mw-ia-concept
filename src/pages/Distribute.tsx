@@ -76,31 +76,35 @@ const initialCategories: CategoryItem[] = [
 const templates = [
   { 
     id: 'scratch',
-    icon: Mail, 
-    title: "Start from scratch", 
-    description: "Begin with a blank canvas and build your newsletter exactly how you want it.",
-    usageCount: 0
+    icon: Sparkles, 
+    title: "AI-assisted blank canvas", 
+    description: "Start fresh with AI suggestions for structure, content ideas, and writing assistance as you build.",
+    usageCount: 0,
+    aiLabel: "AI helps you write"
   },
   { 
     id: 'ai-roundup',
     icon: Sparkles, 
     title: "Quick AI roundup", 
-    description: "AI-generated summary of recent coverage and key mentions, perfect for daily updates.",
-    usageCount: 47
+    description: "AI automatically summarizes your latest coverage and key mentions into a ready-to-send daily brief.",
+    usageCount: 47,
+    aiLabel: "Auto-generated"
   },
   { 
     id: 'executive',
     icon: Users, 
     title: "Executive Overview", 
-    description: "Polished format designed for leadership with key metrics and strategic insights.",
-    usageCount: 32
+    description: "AI crafts a polished leadership brief with key metrics, strategic insights, and trend analysis.",
+    usageCount: 32,
+    aiLabel: "AI-crafted for leadership"
   },
   { 
     id: 'longform',
     icon: FileText, 
     title: "Long-form Roundup", 
-    description: "Comprehensive newsletter with in-depth analysis, multiple sections, and detailed commentary.",
-    usageCount: 28
+    description: "AI generates comprehensive analysis with multiple sections, detailed commentary, and deep insights.",
+    usageCount: 28,
+    aiLabel: "AI deep-dive"
   },
 ];
 
@@ -516,7 +520,7 @@ const Distribute = () => {
                 <TabsContent value="templates" className="mt-0">
                   <div className="mb-6">
                     <p className="text-sm text-muted-foreground">
-                      Choose a template to quickly create professional newsletters with pre-designed layouts and structures.
+                      All templates are powered by AI to help you create professional newsletters faster.
                     </p>
                   </div>
 
@@ -527,18 +531,24 @@ const Distribute = () => {
                         className="bg-card border border-border rounded-lg p-5 hover:border-primary cursor-pointer transition-colors group"
                       >
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 transition-colors">
-                            <template.icon className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                          <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                            <template.icon className="w-6 h-6 text-primary transition-colors" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-foreground mb-1">{template.title}</h3>
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-semibold text-foreground">{template.title}</h3>
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                                <Sparkles className="w-3 h-3" />
+                                {template.aiLabel}
+                              </span>
+                            </div>
                             <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
                             <div className="flex items-center justify-between">
                               {template.usageCount > 0 && (
                                 <span className="text-xs text-muted-foreground">Used {template.usageCount} times</span>
                               )}
                               {template.usageCount === 0 && <span />}
-                              <Button 
+                              <Button
                                 size="sm" 
                                 variant="outline" 
                                 className="gap-2"
