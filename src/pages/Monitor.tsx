@@ -6,6 +6,7 @@ import { AddStreamDialog } from '@/components/monitor/AddStreamDialog';
 import { AddCanvasDialog } from '@/components/monitor/AddCanvasDialog';
 import { AddStreamHover } from '@/components/monitor/AddStreamHover';
 import { AnalyzeStreamDialog } from '@/components/monitor/AnalyzeStreamDialog';
+import { BenchmarkDashboardPanel } from '@/components/monitor/BenchmarkDashboardPanel';
 import { MonitorCanvas, MonitorStream as MonitorStreamType, ExploreSearch } from '@/components/monitor/types';
 import { initialCanvases, existingSearches, generateFeedItems } from '@/components/monitor/mockData';
 import { Plus, MoreVertical, X, Settings, Trash2 } from 'lucide-react';
@@ -30,7 +31,9 @@ const Monitor = () => {
   const [isAddStreamOpen, setIsAddStreamOpen] = useState(false);
   const [isAddCanvasOpen, setIsAddCanvasOpen] = useState(false);
   const [isAnalyzeOpen, setIsAnalyzeOpen] = useState(false);
+  const [isDashboardPanelOpen, setIsDashboardPanelOpen] = useState(false);
   const [selectedStreamForAnalysis, setSelectedStreamForAnalysis] = useState<MonitorStreamType | null>(null);
+  const [selectedTemplateName, setSelectedTemplateName] = useState<string>('Benchmark');
 
   const activeCanvas = canvases.find((c) => c.id === activeCanvasId);
 
@@ -102,10 +105,38 @@ const Monitor = () => {
     }
   };
 
-  const handleOpenAnalyze = (selectedWidgets: string[]) => {
-    // In a real app, this would pass the stream data and widgets to the Analyze page
-    toast.success(`Opening analysis with ${selectedWidgets.length} widgets`);
+  const handleOpenAnalyze = (selectedTemplates: string[]) => {
+    // Close the template selection dialog and open the dashboard panel
+    setIsAnalyzeOpen(false);
+    // Use the first selected template name (capitalize it)
+    const templateNames: Record<string, string> = {
+      'audience': 'Audience',
+      'benchmark': 'Benchmark',
+      'brand': 'Brand',
+      'campaign': 'Campaign',
+      'coverage-report': 'Coverage Report',
+      'crisis-management': 'Crisis Management',
+      'earned-media': 'Earned Media',
+    };
+    setSelectedTemplateName(templateNames[selectedTemplates[0]] || 'Benchmark');
+    setIsDashboardPanelOpen(true);
+  };
+
+  const handleCreateDashboard = () => {
+    setIsDashboardPanelOpen(false);
+    toast.success('Opening dashboard in Analyze for editing...');
     navigate('/analyze');
+  };
+
+  const handleSaveDashboard = () => {
+    toast.success('Dashboard saved successfully');
+    setIsDashboardPanelOpen(false);
+    navigate('/analyze');
+  };
+
+  const handleDeleteDashboard = () => {
+    toast.success('Dashboard discarded');
+    setIsDashboardPanelOpen(false);
   };
 
   return (
@@ -240,12 +271,23 @@ const Monitor = () => {
       />
 
       {selectedStreamForAnalysis && (
-        <AnalyzeStreamDialog
-          open={isAnalyzeOpen}
-          onOpenChange={setIsAnalyzeOpen}
-          streamName={selectedStreamForAnalysis.name}
-          onAnalyze={handleOpenAnalyze}
-        />
+        <>
+          <AnalyzeStreamDialog
+            open={isAnalyzeOpen}
+            onOpenChange={setIsAnalyzeOpen}
+            streamName={selectedStreamForAnalysis.name}
+            onAnalyze={handleOpenAnalyze}
+          />
+          <BenchmarkDashboardPanel
+            open={isDashboardPanelOpen}
+            onOpenChange={setIsDashboardPanelOpen}
+            streamName={selectedStreamForAnalysis.name}
+            templateName={selectedTemplateName}
+            onCreateDashboard={handleCreateDashboard}
+            onSave={handleSaveDashboard}
+            onDelete={handleDeleteDashboard}
+          />
+        </>
       )}
     </div>
   );
