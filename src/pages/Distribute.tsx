@@ -252,7 +252,7 @@ const Distribute = () => {
             {/* Tabbed Interface */}
             <TooltipProvider>
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <div className="flex items-center justify-between border-b border-border mb-6">
+                <div className="border-b border-border mb-6">
                   <TabsList className="bg-transparent w-auto justify-start rounded-none h-auto p-0 -mb-px">
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -286,14 +286,14 @@ const Distribute = () => {
                         <p>Start from pre-built templates</p>
                       </TooltipContent>
                     </Tooltip>
+                    <button
+                      onClick={() => setActiveTab('templates')}
+                      className="ml-2 px-2 py-1 text-xs font-medium text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+                    >
+                      <Plus className="w-3 h-3" />
+                      Start new
+                    </button>
                   </TabsList>
-                  <Button 
-                    onClick={() => setActiveTab('templates')}
-                    className="mb-2 gap-2"
-                  >
-                    <Plus className="w-4 h-4" />
-                    Start new newsletter
-                  </Button>
                 </div>
 
                 {/* Newsletters Tab */}
