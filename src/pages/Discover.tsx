@@ -241,7 +241,7 @@ const Discover = () => {
                       </th>
                       <th className="p-4 text-sm font-bold text-foreground">
                         <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('category')}>
-                          Category
+                          Folder
                           {sortField === 'category' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
                         </button>
                       </th>
