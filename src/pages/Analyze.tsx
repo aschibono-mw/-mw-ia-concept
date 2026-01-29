@@ -241,51 +241,51 @@ const Analyze = () => {
   const DashboardCard = ({ item }: { item: DashboardItem }) => (
     <Card className="hover:border-primary transition-colors cursor-pointer group">
       <CardContent className="p-4">
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-              <LayoutGrid className="w-5 h-5 text-muted-foreground" />
-            </div>
-            <div>
-              <h3 className="font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
+        <div className="flex items-start gap-3 mb-3">
+          <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+            <LayoutGrid className="w-5 h-5 text-muted-foreground" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <h3 className="font-medium text-foreground group-hover:text-primary transition-colors truncate">
                 {item.name}
               </h3>
-              <span className="text-xs text-muted-foreground">{item.category}</span>
+              {item.starred && (
+                <Star className="w-4 h-4 text-primary fill-primary flex-shrink-0" />
+              )}
             </div>
+            <span className="text-xs text-muted-foreground">{item.category}</span>
           </div>
-          <div className="flex items-center gap-1">
-            <Star className={`w-4 h-4 cursor-pointer ${item.starred ? 'text-primary fill-primary' : 'text-muted-foreground hover:text-primary opacity-0 group-hover:opacity-100'}`} />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="p-1 hover:bg-muted rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                  <MoreVertical className="w-4 h-4 text-muted-foreground" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-card">
-                <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">Export</DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">Create Alert</DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">AI Brief</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">Duplicate</DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">Move to Category</DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>Share</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer text-destructive">Delete</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="p-1 hover:bg-muted rounded opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                <MoreVertical className="w-4 h-4 text-muted-foreground" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 bg-card">
+              <DropdownMenuItem className="cursor-pointer">Edit</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">Export</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">Copy Link</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">Create Alert</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">AI Brief</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">Rename</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">Duplicate</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">Move to Category</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>Share</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer text-destructive">Delete</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 rounded-full bg-muted flex items-center justify-center">
-              <User className="w-2.5 h-2.5 text-muted-foreground" />
+          <div className="flex items-center gap-1.5">
+            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+              <User className="w-3 h-3 text-muted-foreground" />
             </div>
-            <span>{item.owner}</span>
+            <span className="truncate">{item.owner}</span>
           </div>
-          <span>{item.lastEdited}</span>
+          <span className="flex-shrink-0">{item.lastEdited}</span>
         </div>
       </CardContent>
     </Card>
