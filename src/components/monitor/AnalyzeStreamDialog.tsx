@@ -122,15 +122,15 @@ export const AnalyzeStreamDialog = ({
                     </div>
                   )}
                   <div className={cn(
-                    'w-10 h-10 rounded-lg bg-muted flex items-center justify-center mb-3',
-                    isSelected ? 'text-primary' : 'text-muted-foreground'
+                    'w-10 h-10 rounded-lg flex items-center justify-center mb-3',
+                    isSelected ? 'bg-primary/10 text-primary' : 'bg-muted text-foreground'
                   )}>
                     {template.icon}
                   </div>
-                  <div className="font-medium text-sm text-foreground">
+                  <div className="font-semibold text-sm text-foreground">
                     {template.name}
                   </div>
-                  <div className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                  <div className="text-xs text-muted-foreground/80 mt-1 line-clamp-2">
                     {template.description}
                   </div>
                 </button>
