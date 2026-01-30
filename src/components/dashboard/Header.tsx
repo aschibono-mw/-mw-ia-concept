@@ -20,6 +20,7 @@ const createMenuItems = [
   { icon: Rows3, label: "Monitor" },
   { icon: LayoutGrid, label: "Dashboard" },
   { icon: FileText, label: "Brief" },
+  { icon: Mail, label: "Pitch" },
   { icon: Users, label: "Outreach" },
   { icon: Mail, label: "Newsletter" },
   { icon: AlertCircle, label: "Alert" },
