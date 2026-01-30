@@ -21,7 +21,6 @@ const createMenuItems = [
   { icon: LayoutGrid, label: "Dashboard" },
   { icon: FileText, label: "Brief" },
   { icon: Send, label: "Pitch" },
-  { icon: Users, label: "Outreach" },
   { icon: Mail, label: "Newsletter" },
   { icon: AlertCircle, label: "Alert" },
 ];
