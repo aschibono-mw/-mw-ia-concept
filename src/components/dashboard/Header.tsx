@@ -180,15 +180,15 @@ export const Header = () => {
                         return (
                           <div 
                             key={notification.id} 
-                            className={`px-4 py-3 border-b border-border hover:bg-muted/50 cursor-pointer ${!notification.isRead ? 'bg-primary/5' : ''}`}
+                            className={`px-4 py-3 border-b border-border hover:bg-muted/50 cursor-pointer ${!notification.isRead ? 'bg-notification/5' : ''}`}
                           >
                             <div className="flex items-start gap-3">
-                              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${!notification.isRead ? 'bg-primary/10' : 'bg-muted'}`}>
-                                <NotifIcon className={`w-4 h-4 ${!notification.isRead ? 'text-primary' : 'text-muted-foreground'}`} />
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${!notification.isRead ? 'bg-notification/10' : 'bg-muted'}`}>
+                                <NotifIcon className={`w-4 h-4 ${!notification.isRead ? 'text-notification' : 'text-muted-foreground'}`} />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between gap-2 mb-0.5">
-                                  <span className={`text-xs ${!notification.isRead ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                                  <span className={`text-xs ${!notification.isRead ? 'text-notification font-medium' : 'text-muted-foreground'}`}>
                                     {notificationTypeLabels[notification.type]}
                                   </span>
                                   <span className="text-xs text-muted-foreground">{notification.timestamp}</span>
@@ -200,7 +200,7 @@ export const Header = () => {
                                   {notification.description}
                                 </p>
                                 {notification.actionLabel && (
-                                  <span className="text-xs text-primary font-medium mt-1.5 inline-block hover:underline">
+                                  <span className="text-xs text-notification font-medium mt-1.5 inline-block hover:underline">
                                     {notification.actionLabel}
                                   </span>
                                 )}
