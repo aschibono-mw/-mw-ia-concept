@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, LayoutGrid, Sparkles, Music2, Users, Zap, TrendingUp, Crown } from "lucide-react";
+import { X, LayoutGrid, Sparkles, Music2, Users, Zap, TrendingUp, Crown, GitCompare, Award, Megaphone, FileText, AlertTriangle, Facebook, Instagram, Linkedin, Youtube, Twitter } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -15,25 +15,25 @@ const templateCategories = [
     label: "PR & Comms",
     templates: [
       { icon: LayoutGrid, title: "Custom", description: "Start from scratch with an empty dashboard." },
-      { icon: LayoutGrid, title: "Audience", description: "Gain insights into your audience by exploring demographics, trending topics, and key phrases." },
-      { icon: LayoutGrid, title: "Benchmark", description: "Compare brands, topics, or competitors to understand their share of voice across mentions." },
-      { icon: LayoutGrid, title: "Brand", description: "Understand and report on brand awareness using metrics such as mentions, reach, and sentiment." },
-      { icon: LayoutGrid, title: "Campaign", description: "Analyze and report on mentions from your campaign across various media types." },
-      { icon: LayoutGrid, title: "Coverage Report", description: "Highlight your coverage from a campaign in an easy-to-create and beautiful report." },
-      { icon: LayoutGrid, title: "Crisis Management", description: "Monitor and detect emerging risks by tracking sentiment and influential sources." },
-      { icon: LayoutGrid, title: "Earned Media", description: "Measure and understand drivers of earned media metrics using an interactive dashboard." },
+      { icon: Users, title: "Audience", description: "Gain insights into your audience by exploring demographics, trending topics, and key phrases." },
+      { icon: GitCompare, title: "Benchmark", description: "Compare brands, topics, or competitors to understand their share of voice across mentions." },
+      { icon: Award, title: "Brand", description: "Understand and report on brand awareness using metrics such as mentions, reach, and sentiment." },
+      { icon: Megaphone, title: "Campaign", description: "Analyze and report on mentions from your campaign across various media types." },
+      { icon: FileText, title: "Coverage Report", description: "Highlight your coverage from a campaign in an easy-to-create and beautiful report." },
+      { icon: AlertTriangle, title: "Crisis Management", description: "Monitor and detect emerging risks by tracking sentiment and influential sources." },
+      { icon: TrendingUp, title: "Earned Media", description: "Measure and understand drivers of earned media metrics using an interactive dashboard." },
     ]
   },
   {
     id: "social",
     label: "Social",
     templates: [
-      { icon: LayoutGrid, title: "Facebook Overview", description: "Analyze your Facebook Page activity to measure your impact." },
-      { icon: LayoutGrid, title: "Instagram Overview", description: "Track your performance, audience growth, views, and engagement." },
-      { icon: LayoutGrid, title: "LinkedIn Overview", description: "Look at your LinkedIn Page data to understand your company's presence." },
-      { icon: LayoutGrid, title: "TikTok Overview", description: "Analyze your profile performance to see your impact on TikTok." },
-      { icon: LayoutGrid, title: "X Overview", description: "Monitor your X presence and track engagement, reach, and audience growth." },
-      { icon: LayoutGrid, title: "YouTube Overview", description: "Track your YouTube channel performance, views, and subscriber engagement." },
+      { icon: Facebook, title: "Facebook Overview", description: "Analyze your Facebook Page activity to measure your impact." },
+      { icon: Instagram, title: "Instagram Overview", description: "Track your performance, audience growth, views, and engagement." },
+      { icon: Linkedin, title: "LinkedIn Overview", description: "Look at your LinkedIn Page data to understand your company's presence." },
+      { icon: Music2, title: "TikTok Overview", description: "Analyze your profile performance to see your impact on TikTok." },
+      { icon: Twitter, title: "X Overview", description: "Monitor your X presence and track engagement, reach, and audience growth." },
+      { icon: Youtube, title: "YouTube Overview", description: "Track your YouTube channel performance, views, and subscriber engagement." },
     ]
   },
 ];
