@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, AlertCircle, Settings, ShieldCheck, LogOut, TrendingUp, Plus, Building2, UserCircle, FolderOpen, Users, FileStack, Eye, MessageSquare, Activity, BarChart3, Rows3, type LucideIcon } from "lucide-react";
+import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, AlertCircle, Settings, ShieldCheck, LogOut, TrendingUp, Plus, Building2, UserCircle, FolderOpen, Users, FileStack, Eye, MessageSquare, Activity, BarChart3, Rows3, Send, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "./SearchBar";
 import {
@@ -20,7 +20,7 @@ const createMenuItems = [
   { icon: Rows3, label: "Monitor" },
   { icon: LayoutGrid, label: "Dashboard" },
   { icon: FileText, label: "Brief" },
-  { icon: Mail, label: "Pitch" },
+  { icon: Send, label: "Pitch" },
   { icon: Users, label: "Outreach" },
   { icon: Mail, label: "Newsletter" },
   { icon: AlertCircle, label: "Alert" },
