@@ -19,7 +19,7 @@ const createMenuItems = [
   { icon: Search, label: "Search" },
   { icon: Rows3, label: "Monitor" },
   { icon: LayoutGrid, label: "Dashboard" },
-  { icon: FileText, label: "Report" },
+  { icon: FileText, label: "Brief" },
   { icon: Users, label: "Outreach" },
   { icon: Mail, label: "Newsletter" },
   { icon: AlertCircle, label: "Alert" },
