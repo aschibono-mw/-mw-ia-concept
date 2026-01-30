@@ -3,7 +3,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
 import { CreateDashboardDrawer } from "@/components/analyze/CreateDashboardDrawer";
-import { ChevronDown, Star, MoreVertical, Plus, LayoutGrid, User, Grid3X3, List, Folder, Pencil, Download, Link, Bell, Sparkles, Copy, FolderInput, Share2, Trash2 } from "lucide-react";
+import { ChevronDown, Star, MoreVertical, Plus, LayoutGrid, User, Grid3X3, List, Folder, Pencil, Download, Link, Bell, Sparkles, Copy, FolderInput, Share2, Trash2, TrendingUp, TrendingDown, ThumbsUp, PieChart, Users, Eye, ShieldCheck, Globe, Zap, Scale, type LucideIcon } from "lucide-react";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -41,22 +41,23 @@ interface DashboardItem {
   owner: string;
   starred?: boolean;
   insight: string;
+  insightIcon: LucideIcon;
 }
 
 const allDashboardItems: DashboardItem[] = [
-  { id: 1, name: "Executive Visibility Report", category: "Leadership", lastEdited: "3 hrs ago", owner: "Rachel Wu", starred: true, insight: "CEO mentions: Up 34% this week" },
-  { id: 2, name: "Brand Health Dashboard", category: "Brand", lastEdited: "7 hrs ago", owner: "Sophia Patel", starred: true, insight: "Sentiment: 72% positive" },
-  { id: 3, name: "Competitor Benchmark", category: "Competition", lastEdited: "Yesterday", owner: "Tom Nguyen", starred: true, insight: "Share of voice: 28% (+3%)" },
-  { id: 4, name: "Audience Insights", category: "Audience", lastEdited: "2 days ago", owner: "David Kim", starred: false, insight: "18-34 segment: Engagement +12%" },
-  { id: 5, name: "Campaign Performance", category: "Brand", lastEdited: "2 days ago", owner: "Alex Morgan", starred: false, insight: "Impressions: 1.2M, CTR 3.4%" },
-  { id: 6, name: "Crisis Monitor", category: "Crisis", lastEdited: "2 days ago", owner: "Rachel Wu", starred: false, insight: "Status: No active alerts" },
-  { id: 7, name: "Influencer Watch", category: "Social", lastEdited: "4 days ago", owner: "Sophia Patel", starred: false, insight: "Top creator reach: 2.1M" },
-  { id: 8, name: "Sentiment Tracker", category: "Brand", lastEdited: "5 days ago", owner: "Laura Burn..", starred: false, insight: "Negative mentions: Down 8%" },
-  { id: 9, name: "Global Coverage", category: "Crisis", lastEdited: "Nov 20", owner: "Tom Nguyen", starred: false, insight: "Markets covered: 12 regions" },
-  { id: 10, name: "Usage Signals", category: "Product", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false, insight: "Feature adoption: 67%" },
-  { id: 11, name: "Public Affairs Monitor", category: "Policy", lastEdited: "Oct 12", owner: "Sophia Patel", starred: false, insight: "Regulatory mentions: 3 tracked" },
-  { id: 12, name: "Risk Monitor", category: "Risk", lastEdited: "Oct 5", owner: "Rachel Wu", starred: false, insight: "Risk score: Low (2/10)" },
-  { id: 13, name: "Investor Sentiment", category: "Finance", lastEdited: "Oct 2", owner: "David Kim", starred: false, insight: "Analyst outlook: Bullish" },
+  { id: 1, name: "Executive Visibility Report", category: "Leadership", lastEdited: "3 hrs ago", owner: "Rachel Wu", starred: true, insight: "CEO mentions: Up 34% this week", insightIcon: TrendingUp },
+  { id: 2, name: "Brand Health Dashboard", category: "Brand", lastEdited: "7 hrs ago", owner: "Sophia Patel", starred: true, insight: "Sentiment: 72% positive", insightIcon: ThumbsUp },
+  { id: 3, name: "Competitor Benchmark", category: "Competition", lastEdited: "Yesterday", owner: "Tom Nguyen", starred: true, insight: "Share of voice: 28% (+3%)", insightIcon: PieChart },
+  { id: 4, name: "Audience Insights", category: "Audience", lastEdited: "2 days ago", owner: "David Kim", starred: false, insight: "18-34 segment: Engagement +12%", insightIcon: Users },
+  { id: 5, name: "Campaign Performance", category: "Brand", lastEdited: "2 days ago", owner: "Alex Morgan", starred: false, insight: "Impressions: 1.2M, CTR 3.4%", insightIcon: Eye },
+  { id: 6, name: "Crisis Monitor", category: "Crisis", lastEdited: "2 days ago", owner: "Rachel Wu", starred: false, insight: "Status: No active alerts", insightIcon: ShieldCheck },
+  { id: 7, name: "Influencer Watch", category: "Social", lastEdited: "4 days ago", owner: "Sophia Patel", starred: false, insight: "Top creator reach: 2.1M", insightIcon: Users },
+  { id: 8, name: "Sentiment Tracker", category: "Brand", lastEdited: "5 days ago", owner: "Laura Burn..", starred: false, insight: "Negative mentions: Down 8%", insightIcon: TrendingDown },
+  { id: 9, name: "Global Coverage", category: "Crisis", lastEdited: "Nov 20", owner: "Tom Nguyen", starred: false, insight: "Markets covered: 12 regions", insightIcon: Globe },
+  { id: 10, name: "Usage Signals", category: "Product", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false, insight: "Feature adoption: 67%", insightIcon: Zap },
+  { id: 11, name: "Public Affairs Monitor", category: "Policy", lastEdited: "Oct 12", owner: "Sophia Patel", starred: false, insight: "Regulatory mentions: 3 tracked", insightIcon: Scale },
+  { id: 12, name: "Risk Monitor", category: "Risk", lastEdited: "Oct 5", owner: "Rachel Wu", starred: false, insight: "Risk score: Low (2/10)", insightIcon: ShieldCheck },
+  { id: 13, name: "Investor Sentiment", category: "Finance", lastEdited: "Oct 2", owner: "David Kim", starred: false, insight: "Analyst outlook: Bullish", insightIcon: TrendingUp },
 ];
 
 const initialCategories: CategoryItem[] = [
@@ -245,7 +246,7 @@ const Analyze = () => {
         </div>
         {/* Performance Insight */}
         <div className="flex items-center gap-1.5 mb-3 pl-[52px]">
-          <Sparkles className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+          <item.insightIcon className="w-3 h-3 text-muted-foreground flex-shrink-0" />
           <p className="text-xs text-foreground line-clamp-1">
             {item.insight.includes(':') ? (
               <>
