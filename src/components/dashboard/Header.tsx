@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, AlertCircle, Settings, ShieldCheck, LogOut, TrendingUp, Plus, Building2, UserCircle, FolderOpen, Users, FileStack, Eye, MessageSquare, Activity, BarChart3, Rows3, Send, type LucideIcon } from "lucide-react";
+import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, AlertCircle, ShieldCheck, LogOut, Building2, UserCircle, FolderOpen, Users, FileStack, Rows3, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "./SearchBar";
 import {
@@ -9,11 +9,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import meltwaterIcon from "@/assets/meltwater-icon.svg";
+import { mockAlerts } from "@/components/alerts/mockData";
+import { getAlertIcon } from "@/components/alerts/alertIcons";
+import { alertTypeLabels } from "@/components/alerts/types";
 
 const createMenuItems = [
   { icon: Search, label: "Search" },
@@ -23,39 +23,6 @@ const createMenuItems = [
   { icon: Send, label: "Pitch" },
   { icon: Mail, label: "Newsletter" },
   { icon: AlertCircle, label: "Alert" },
-];
-
-const alertsData: { source: string; description: string; icon: LucideIcon; time: string }[] = [
-  {
-    source: "Industry News Search",
-    description: "Surge in Discussions on AI Market Trends",
-    icon: TrendingUp,
-    time: "2m ago"
-  },
-  {
-    source: "Competitor Monitoring",
-    description: "Increased Mentions of Product Launch",
-    icon: Eye,
-    time: "15m ago"
-  },
-  {
-    source: "Brand Mentions",
-    description: "Social Media Buzz Around Campaign",
-    icon: MessageSquare,
-    time: "1h ago"
-  },
-  {
-    source: "Crisis Watch",
-    description: "Rising Sentiment on Customer Feedback",
-    icon: Activity,
-    time: "3h ago"
-  },
-  {
-    source: "Market Analysis",
-    description: "Trending Topics in Tech Industry",
-    icon: BarChart3,
-    time: "5h ago"
-  }
 ];
 
 const pageTitles: Record<string, string> = {
@@ -121,35 +88,50 @@ export const Header = () => {
                 </span>
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80 bg-card p-0">
-              <div className="p-3 border-b border-border">
-                <h3 className="font-semibold text-sm">Alerts</h3>
-              </div>
-              <div className="max-h-96 overflow-y-auto">
-                {alertsData.map((alert, index) => {
-                  const isNew = index < 3;
-                  return (
-                    <div key={index} className={`px-4 py-3 border-b border-border hover:bg-muted/50 cursor-pointer ${isNew ? 'bg-primary/5' : ''}`}>
-                      <div className="flex items-center gap-3">
-                        <alert.icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between gap-2">
-                            <span className={`text-xs text-muted-foreground ${isNew ? 'font-semibold' : ''}`}>{alert.source}</span>
-                            <span className="text-xs text-muted-foreground">{alert.time}</span>
+              <DropdownMenuContent align="end" className="w-96 bg-card p-0">
+                <div className="p-3 border-b border-border">
+                  <h3 className="font-semibold text-sm">Alerts</h3>
+                </div>
+                <div className="max-h-[28rem] overflow-y-auto">
+                  {mockAlerts.map((alert) => {
+                    const AlertIcon = getAlertIcon(alert.type);
+                    return (
+                      <div 
+                        key={alert.id} 
+                        className={`px-4 py-3 border-b border-border hover:bg-muted/50 cursor-pointer ${!alert.isRead ? 'bg-primary/5' : ''}`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${!alert.isRead ? 'bg-primary/10' : 'bg-muted'}`}>
+                            <AlertIcon className={`w-4 h-4 ${!alert.isRead ? 'text-primary' : 'text-muted-foreground'}`} />
                           </div>
-                          <p className={`text-sm text-foreground truncate ${isNew ? 'font-semibold' : ''}`}>{alert.description}</p>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2 mb-0.5">
+                              <span className={`text-xs ${!alert.isRead ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                                {alertTypeLabels[alert.type]}
+                              </span>
+                              <span className="text-xs text-muted-foreground">{alert.timestamp}</span>
+                            </div>
+                            <p className={`text-sm text-foreground ${!alert.isRead ? 'font-semibold' : ''}`}>
+                              {alert.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                              {alert.description}
+                            </p>
+                            <span className="text-xs text-muted-foreground/70 mt-1 block">
+                              {alert.source}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="px-4 py-3 border-t border-border flex items-center justify-center gap-4">
-                <span className="text-sm text-foreground hover:text-primary cursor-pointer">View more</span>
-                <span className="h-4 w-px bg-border" />
-                <span className="text-sm text-foreground hover:text-primary cursor-pointer">Manage alerts</span>
-              </div>
-            </DropdownMenuContent>
+                    );
+                  })}
+                </div>
+                <div className="px-4 py-3 border-t border-border flex items-center justify-center gap-4">
+                  <span className="text-sm text-foreground hover:text-primary cursor-pointer">View all alerts</span>
+                  <span className="h-4 w-px bg-border" />
+                  <span className="text-sm text-foreground hover:text-primary cursor-pointer">Manage alerts</span>
+                </div>
+              </DropdownMenuContent>
           </DropdownMenu>
           <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
             <HelpCircle className="w-5 h-5" />
