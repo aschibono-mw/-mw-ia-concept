@@ -34,6 +34,9 @@
 
     --radius: 0.5rem;
 
+    --notification: 312 64% 43%;
+    --gradient-badge: linear-gradient(135deg, hsl(180, 65%, 45%), hsl(312, 64%, 43%));
+
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 35%;
     --sidebar-primary: 180 65% 45%;
@@ -72,6 +75,9 @@
     --border: 0 0% 20%;
     --input: 0 0% 20%;
     --ring: 180 65% 50%;
+
+    --notification: 312 64% 50%;
+    --gradient-badge: linear-gradient(135deg, hsl(180, 65%, 50%), hsl(312, 64%, 50%));
 
     --sidebar-background: 0 0% 12%;
     --sidebar-foreground: 0 0% 70%;
