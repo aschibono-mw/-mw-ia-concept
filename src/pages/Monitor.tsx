@@ -241,7 +241,7 @@ const Monitor = () => {
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
           ) : (
-            <div className="flex items-center justify-center h-[calc(100vh-280px)] p-6">
+            <div className="flex items-start p-4 pl-6">
               <AddStreamHover
                 existingSearches={existingSearches}
                 onSelectSearch={handleQuickAddStream}
