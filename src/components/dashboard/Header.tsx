@@ -167,7 +167,9 @@ export const Header = () => {
                       })}
                     </div>
                     <div className="px-4 py-3 border-t border-border flex items-center justify-center gap-4">
-                      <span className="text-sm text-foreground hover:text-primary cursor-pointer">View all alerts</span>
+                      <span className="text-sm text-foreground hover:text-primary cursor-pointer">View all</span>
+                      <span className="h-4 w-px bg-border" />
+                      <span className="text-sm text-foreground hover:text-primary cursor-pointer">Mark all as read</span>
                       <span className="h-4 w-px bg-border" />
                       <span className="text-sm text-foreground hover:text-primary cursor-pointer">Manage alerts</span>
                     </div>
