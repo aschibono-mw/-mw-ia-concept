@@ -145,7 +145,7 @@ const Monitor = () => {
       <Header />
 
       <main className="ml-52 pt-16">
-        <div className="p-6">
+        <div className="px-6 pt-6">
           {/* Page Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-semibold text-foreground mb-1">
@@ -157,7 +157,7 @@ const Monitor = () => {
           </div>
 
           {/* Canvas Tabs */}
-          <div className="border-b border-border mb-6">
+          <div className="border-b border-border">
             <ScrollArea className="flex-1">
               <div className="flex items-center gap-6">
                 {canvases.map((canvas) => (
@@ -216,43 +216,43 @@ const Monitor = () => {
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
           </div>
+        </div>
 
-          {/* Streams Container */}
-          <div className="min-h-[calc(100vh-240px)]">
-            {activeCanvas && activeCanvas.streams.length > 0 ? (
-              <ScrollArea className="w-full">
-                <div className="flex gap-4 p-4">
-                  {activeCanvas.streams.map((stream) => (
-                    <MonitorStream
-                      key={stream.id}
-                      stream={stream}
-                      onAnalyze={handleAnalyzeStream}
-                      onRemove={handleRemoveStream}
-                    />
-                  ))}
-                  {/* Add Stream Hover Card */}
-                  <AddStreamHover
-                    existingSearches={existingSearches}
-                    onSelectSearch={handleQuickAddStream}
-                    onCreateNew={() => setIsAddStreamOpen(true)}
+        {/* Streams Container - Full width, no horizontal padding */}
+        <div className="min-h-[calc(100vh-240px)]">
+          {activeCanvas && activeCanvas.streams.length > 0 ? (
+            <ScrollArea className="w-full">
+              <div className="flex gap-4 p-4 pl-6">
+                {activeCanvas.streams.map((stream) => (
+                  <MonitorStream
+                    key={stream.id}
+                    stream={stream}
+                    onAnalyze={handleAnalyzeStream}
+                    onRemove={handleRemoveStream}
                   />
-                </div>
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-[calc(100vh-280px)] text-center p-8">
-                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                  <Plus className="w-8 h-8 text-muted-foreground" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
-                  No streams yet
-                </h3>
-                <p className="text-sm text-muted-foreground max-w-md">
-                  Add streams to this canvas to monitor real-time mentions from your explore searches.
-                </p>
+                ))}
+                {/* Add Stream Hover Card */}
+                <AddStreamHover
+                  existingSearches={existingSearches}
+                  onSelectSearch={handleQuickAddStream}
+                  onCreateNew={() => setIsAddStreamOpen(true)}
+                />
               </div>
-            )}
-          </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[calc(100vh-280px)] text-center p-8">
+              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+                <Plus className="w-8 h-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground mb-2">
+                No streams yet
+              </h3>
+              <p className="text-sm text-muted-foreground max-w-md">
+                Add streams to this canvas to monitor real-time mentions from your explore searches.
+              </p>
+            </div>
+          )}
         </div>
       </main>
 
