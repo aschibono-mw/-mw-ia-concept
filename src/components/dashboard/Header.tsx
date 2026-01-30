@@ -10,10 +10,14 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import meltwaterIcon from "@/assets/meltwater-icon.svg";
 import { mockAlerts } from "@/components/alerts/mockData";
 import { getAlertIcon } from "@/components/alerts/alertIcons";
 import { alertTypeLabels } from "@/components/alerts/types";
+import { mockNotifications } from "@/components/notifications/mockData";
+import { getNotificationIcon } from "@/components/notifications/notificationIcons";
+import { notificationTypeLabels } from "@/components/notifications/types";
 
 const createMenuItems = [
   { icon: Search, label: "Search" },
@@ -34,8 +38,13 @@ const pageTitles: Record<string, string> = {
   "/outreach": "Outreach",
 };
 
+const unreadAlertsCount = mockAlerts.filter(a => !a.isRead).length;
+const unreadNotificationsCount = mockNotifications.filter(n => !n.isRead).length;
+const totalUnreadCount = unreadAlertsCount + unreadNotificationsCount;
+
 export const Header = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [bellTab, setBellTab] = useState<string>("alerts");
   const location = useLocation();
   const pageTitle = pageTitles[location.pathname] || "Meltwater";
   
@@ -83,54 +92,128 @@ export const Header = () => {
             <DropdownMenuTrigger asChild>
               <button className="relative w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                 <Bell className="w-5 h-5" />
-                <span className="absolute -top-2 -right-2 w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center justify-center shadow-md">
-                  3
-                </span>
+                {totalUnreadCount > 0 && (
+                  <span className="absolute -top-2 -right-2 w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center justify-center shadow-md">
+                    {totalUnreadCount}
+                  </span>
+                )}
               </button>
             </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-96 bg-card p-0">
-                <div className="p-3 border-b border-border">
-                  <h3 className="font-semibold text-sm">Alerts</h3>
-                </div>
-                <div className="max-h-[28rem] overflow-y-auto">
-                  {mockAlerts.map((alert) => {
-                    const AlertIcon = getAlertIcon(alert.type);
-                    return (
-                      <div 
-                        key={alert.id} 
-                        className={`px-4 py-3 border-b border-border hover:bg-muted/50 cursor-pointer ${!alert.isRead ? 'bg-primary/5' : ''}`}
+                <Tabs value={bellTab} onValueChange={setBellTab} className="w-full">
+                  <div className="border-b border-border">
+                    <TabsList className="w-full h-auto p-0 bg-transparent rounded-none">
+                      <TabsTrigger 
+                        value="alerts" 
+                        className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none py-3 text-sm font-medium"
                       >
-                        <div className="flex items-start gap-3">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${!alert.isRead ? 'bg-primary/10' : 'bg-muted'}`}>
-                            <AlertIcon className={`w-4 h-4 ${!alert.isRead ? 'text-primary' : 'text-muted-foreground'}`} />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between gap-2 mb-0.5">
-                              <span className={`text-xs ${!alert.isRead ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
-                                {alertTypeLabels[alert.type]}
-                              </span>
-                              <span className="text-xs text-muted-foreground">{alert.timestamp}</span>
+                        Alerts
+                        {unreadAlertsCount > 0 && (
+                          <span className="ml-1.5 w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full inline-flex items-center justify-center">
+                            {unreadAlertsCount}
+                          </span>
+                        )}
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="notifications" 
+                        className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none py-3 text-sm font-medium"
+                      >
+                        Notifications
+                        {unreadNotificationsCount > 0 && (
+                          <span className="ml-1.5 w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full inline-flex items-center justify-center">
+                            {unreadNotificationsCount}
+                          </span>
+                        )}
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
+                  
+                  <TabsContent value="alerts" className="m-0">
+                    <div className="max-h-[24rem] overflow-y-auto">
+                      {mockAlerts.map((alert) => {
+                        const AlertIcon = getAlertIcon(alert.type);
+                        return (
+                          <div 
+                            key={alert.id} 
+                            className={`px-4 py-3 border-b border-border hover:bg-muted/50 cursor-pointer ${!alert.isRead ? 'bg-primary/5' : ''}`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${!alert.isRead ? 'bg-primary/10' : 'bg-muted'}`}>
+                                <AlertIcon className={`w-4 h-4 ${!alert.isRead ? 'text-primary' : 'text-muted-foreground'}`} />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-2 mb-0.5">
+                                  <span className={`text-xs ${!alert.isRead ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                                    {alertTypeLabels[alert.type]}
+                                  </span>
+                                  <span className="text-xs text-muted-foreground">{alert.timestamp}</span>
+                                </div>
+                                <p className={`text-sm text-foreground ${!alert.isRead ? 'font-semibold' : ''}`}>
+                                  {alert.title}
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                                  {alert.description}
+                                </p>
+                                <span className="text-xs text-muted-foreground/70 mt-1 block">
+                                  {alert.source}
+                                </span>
+                              </div>
                             </div>
-                            <p className={`text-sm text-foreground ${!alert.isRead ? 'font-semibold' : ''}`}>
-                              {alert.title}
-                            </p>
-                            <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-                              {alert.description}
-                            </p>
-                            <span className="text-xs text-muted-foreground/70 mt-1 block">
-                              {alert.source}
-                            </span>
                           </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="px-4 py-3 border-t border-border flex items-center justify-center gap-4">
-                  <span className="text-sm text-foreground hover:text-primary cursor-pointer">View all alerts</span>
-                  <span className="h-4 w-px bg-border" />
-                  <span className="text-sm text-foreground hover:text-primary cursor-pointer">Manage alerts</span>
-                </div>
+                        );
+                      })}
+                    </div>
+                    <div className="px-4 py-3 border-t border-border flex items-center justify-center gap-4">
+                      <span className="text-sm text-foreground hover:text-primary cursor-pointer">View all alerts</span>
+                      <span className="h-4 w-px bg-border" />
+                      <span className="text-sm text-foreground hover:text-primary cursor-pointer">Manage alerts</span>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="notifications" className="m-0">
+                    <div className="max-h-[24rem] overflow-y-auto">
+                      {mockNotifications.map((notification) => {
+                        const NotifIcon = getNotificationIcon(notification.type);
+                        return (
+                          <div 
+                            key={notification.id} 
+                            className={`px-4 py-3 border-b border-border hover:bg-muted/50 cursor-pointer ${!notification.isRead ? 'bg-primary/5' : ''}`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${!notification.isRead ? 'bg-primary/10' : 'bg-muted'}`}>
+                                <NotifIcon className={`w-4 h-4 ${!notification.isRead ? 'text-primary' : 'text-muted-foreground'}`} />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-2 mb-0.5">
+                                  <span className={`text-xs ${!notification.isRead ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                                    {notificationTypeLabels[notification.type]}
+                                  </span>
+                                  <span className="text-xs text-muted-foreground">{notification.timestamp}</span>
+                                </div>
+                                <p className={`text-sm text-foreground ${!notification.isRead ? 'font-semibold' : ''}`}>
+                                  {notification.title}
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
+                                  {notification.description}
+                                </p>
+                                {notification.actionLabel && (
+                                  <span className="text-xs text-primary font-medium mt-1.5 inline-block hover:underline">
+                                    {notification.actionLabel}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="px-4 py-3 border-t border-border flex items-center justify-center gap-4">
+                      <span className="text-sm text-foreground hover:text-primary cursor-pointer">View all</span>
+                      <span className="h-4 w-px bg-border" />
+                      <span className="text-sm text-foreground hover:text-primary cursor-pointer">Mark all as read</span>
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </DropdownMenuContent>
           </DropdownMenu>
           <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
