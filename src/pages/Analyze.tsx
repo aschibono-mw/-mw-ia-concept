@@ -40,22 +40,23 @@ interface DashboardItem {
   lastEdited: string;
   owner: string;
   starred?: boolean;
+  insight: string;
 }
 
 const allDashboardItems: DashboardItem[] = [
-  { id: 1, name: "Executive Visibility Report", category: "Leadership", lastEdited: "3 hrs ago", owner: "Rachel Wu", starred: true },
-  { id: 2, name: "Brand Health Dashboard", category: "Brand", lastEdited: "7 hrs ago", owner: "Sophia Patel", starred: true },
-  { id: 3, name: "Competitor Benchmark", category: "Competition", lastEdited: "Yesterday", owner: "Tom Nguyen", starred: true },
-  { id: 4, name: "Audience Insights", category: "Audience", lastEdited: "2 days ago", owner: "David Kim", starred: false },
-  { id: 5, name: "Campaign Performance", category: "Brand", lastEdited: "2 days ago", owner: "Alex Morgan", starred: false },
-  { id: 6, name: "Crisis Monitor", category: "Crisis", lastEdited: "2 days ago", owner: "Rachel Wu", starred: false },
-  { id: 7, name: "Influencer Watch", category: "Social", lastEdited: "4 days ago", owner: "Sophia Patel", starred: false },
-  { id: 8, name: "Sentiment Tracker", category: "Brand", lastEdited: "5 days ago", owner: "Laura Burn..", starred: false },
-  { id: 9, name: "Global Coverage", category: "Crisis", lastEdited: "Nov 20", owner: "Tom Nguyen", starred: false },
-  { id: 10, name: "Usage Signals", category: "Product", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false },
-  { id: 11, name: "Public Affairs Monitor", category: "Policy", lastEdited: "Oct 12", owner: "Sophia Patel", starred: false },
-  { id: 12, name: "Risk Monitor", category: "Risk", lastEdited: "Oct 5", owner: "Rachel Wu", starred: false },
-  { id: 13, name: "Investor Sentiment", category: "Finance", lastEdited: "Oct 2", owner: "David Kim", starred: false },
+  { id: 1, name: "Executive Visibility Report", category: "Leadership", lastEdited: "3 hrs ago", owner: "Rachel Wu", starred: true, insight: "CEO mentions up 34% this week" },
+  { id: 2, name: "Brand Health Dashboard", category: "Brand", lastEdited: "7 hrs ago", owner: "Sophia Patel", starred: true, insight: "Sentiment score: 72% positive" },
+  { id: 3, name: "Competitor Benchmark", category: "Competition", lastEdited: "Yesterday", owner: "Tom Nguyen", starred: true, insight: "Share of voice: 28% (+3%)" },
+  { id: 4, name: "Audience Insights", category: "Audience", lastEdited: "2 days ago", owner: "David Kim", starred: false, insight: "18-34 segment engagement +12%" },
+  { id: 5, name: "Campaign Performance", category: "Brand", lastEdited: "2 days ago", owner: "Alex Morgan", starred: false, insight: "1.2M impressions, 3.4% CTR" },
+  { id: 6, name: "Crisis Monitor", category: "Crisis", lastEdited: "2 days ago", owner: "Rachel Wu", starred: false, insight: "No active alerts detected" },
+  { id: 7, name: "Influencer Watch", category: "Social", lastEdited: "4 days ago", owner: "Sophia Patel", starred: false, insight: "Top creator reach: 2.1M" },
+  { id: 8, name: "Sentiment Tracker", category: "Brand", lastEdited: "5 days ago", owner: "Laura Burn..", starred: false, insight: "Negative mentions down 8%" },
+  { id: 9, name: "Global Coverage", category: "Crisis", lastEdited: "Nov 20", owner: "Tom Nguyen", starred: false, insight: "Coverage in 12 markets" },
+  { id: 10, name: "Usage Signals", category: "Product", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false, insight: "Feature adoption: 67%" },
+  { id: 11, name: "Public Affairs Monitor", category: "Policy", lastEdited: "Oct 12", owner: "Sophia Patel", starred: false, insight: "3 regulatory mentions tracked" },
+  { id: 12, name: "Risk Monitor", category: "Risk", lastEdited: "Oct 5", owner: "Rachel Wu", starred: false, insight: "Risk score: Low (2/10)" },
+  { id: 13, name: "Investor Sentiment", category: "Finance", lastEdited: "Oct 2", owner: "David Kim", starred: false, insight: "Analyst sentiment: Bullish" },
 ];
 
 const initialCategories: CategoryItem[] = [
@@ -202,7 +203,7 @@ const Analyze = () => {
   const DashboardCard = ({ item }: { item: DashboardItem }) => (
     <Card className="hover:border-primary transition-colors cursor-pointer group">
       <CardContent className="p-4">
-        <div className="flex items-start gap-3 mb-3">
+        <div className="flex items-start gap-3 mb-2">
           <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
             <LayoutGrid className="w-5 h-5 text-muted-foreground" />
           </div>
@@ -242,6 +243,10 @@ const Analyze = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+        {/* Performance Insight */}
+        <p className="text-xs text-muted-foreground mb-3 pl-[52px] line-clamp-1">
+          {item.insight}
+        </p>
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
