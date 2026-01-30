@@ -97,7 +97,7 @@ export const CreateDashboardDrawer = ({ open, onClose }: CreateDashboardDrawerPr
       />
       
       {/* Drawer Content */}
-      <div className="fixed right-0 top-0 bottom-0 w-[80%] bg-muted/30 shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col">
+      <div className="fixed right-0 top-0 bottom-0 w-[80%] bg-[#f5f5f5] shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col">
         {/* Header */}
         <div className="flex items-start justify-between px-6 py-4 border-b border-border bg-white">
           <div>
