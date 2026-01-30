@@ -244,9 +244,19 @@ const Analyze = () => {
           </DropdownMenu>
         </div>
         {/* Performance Insight */}
-        <p className="text-xs text-primary font-medium mb-3 pl-[52px] line-clamp-1">
-          {item.insight}
-        </p>
+        <div className="flex items-center gap-1.5 mb-3 pl-[52px]">
+          <Sparkles className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+          <p className="text-xs text-foreground line-clamp-1">
+            {item.insight.includes(':') ? (
+              <>
+                <span className="font-semibold">{item.insight.split(':')[0]}:</span>
+                {item.insight.split(':').slice(1).join(':')}
+              </>
+            ) : (
+              item.insight
+            )}
+          </p>
+        </div>
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
