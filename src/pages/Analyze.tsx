@@ -244,7 +244,7 @@ const Analyze = () => {
           </DropdownMenu>
         </div>
         {/* Performance Insight */}
-        <p className="text-xs text-muted-foreground mb-3 pl-[52px] line-clamp-1">
+        <p className="text-xs text-primary font-medium mb-3 pl-[52px] line-clamp-1">
           {item.insight}
         </p>
         <div className="flex items-center justify-between text-xs text-muted-foreground">
