@@ -44,19 +44,19 @@ interface DashboardItem {
 }
 
 const allDashboardItems: DashboardItem[] = [
-  { id: 1, name: "Executive Visibility Report", category: "Leadership", lastEdited: "3 hrs ago", owner: "Rachel Wu", starred: true, insight: "CEO mentions up 34% this week" },
-  { id: 2, name: "Brand Health Dashboard", category: "Brand", lastEdited: "7 hrs ago", owner: "Sophia Patel", starred: true, insight: "Sentiment score: 72% positive" },
+  { id: 1, name: "Executive Visibility Report", category: "Leadership", lastEdited: "3 hrs ago", owner: "Rachel Wu", starred: true, insight: "CEO mentions: Up 34% this week" },
+  { id: 2, name: "Brand Health Dashboard", category: "Brand", lastEdited: "7 hrs ago", owner: "Sophia Patel", starred: true, insight: "Sentiment: 72% positive" },
   { id: 3, name: "Competitor Benchmark", category: "Competition", lastEdited: "Yesterday", owner: "Tom Nguyen", starred: true, insight: "Share of voice: 28% (+3%)" },
-  { id: 4, name: "Audience Insights", category: "Audience", lastEdited: "2 days ago", owner: "David Kim", starred: false, insight: "18-34 segment engagement +12%" },
-  { id: 5, name: "Campaign Performance", category: "Brand", lastEdited: "2 days ago", owner: "Alex Morgan", starred: false, insight: "1.2M impressions, 3.4% CTR" },
-  { id: 6, name: "Crisis Monitor", category: "Crisis", lastEdited: "2 days ago", owner: "Rachel Wu", starred: false, insight: "No active alerts detected" },
+  { id: 4, name: "Audience Insights", category: "Audience", lastEdited: "2 days ago", owner: "David Kim", starred: false, insight: "18-34 segment: Engagement +12%" },
+  { id: 5, name: "Campaign Performance", category: "Brand", lastEdited: "2 days ago", owner: "Alex Morgan", starred: false, insight: "Impressions: 1.2M, CTR 3.4%" },
+  { id: 6, name: "Crisis Monitor", category: "Crisis", lastEdited: "2 days ago", owner: "Rachel Wu", starred: false, insight: "Status: No active alerts" },
   { id: 7, name: "Influencer Watch", category: "Social", lastEdited: "4 days ago", owner: "Sophia Patel", starred: false, insight: "Top creator reach: 2.1M" },
-  { id: 8, name: "Sentiment Tracker", category: "Brand", lastEdited: "5 days ago", owner: "Laura Burn..", starred: false, insight: "Negative mentions down 8%" },
-  { id: 9, name: "Global Coverage", category: "Crisis", lastEdited: "Nov 20", owner: "Tom Nguyen", starred: false, insight: "Coverage in 12 markets" },
+  { id: 8, name: "Sentiment Tracker", category: "Brand", lastEdited: "5 days ago", owner: "Laura Burn..", starred: false, insight: "Negative mentions: Down 8%" },
+  { id: 9, name: "Global Coverage", category: "Crisis", lastEdited: "Nov 20", owner: "Tom Nguyen", starred: false, insight: "Markets covered: 12 regions" },
   { id: 10, name: "Usage Signals", category: "Product", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false, insight: "Feature adoption: 67%" },
-  { id: 11, name: "Public Affairs Monitor", category: "Policy", lastEdited: "Oct 12", owner: "Sophia Patel", starred: false, insight: "3 regulatory mentions tracked" },
+  { id: 11, name: "Public Affairs Monitor", category: "Policy", lastEdited: "Oct 12", owner: "Sophia Patel", starred: false, insight: "Regulatory mentions: 3 tracked" },
   { id: 12, name: "Risk Monitor", category: "Risk", lastEdited: "Oct 5", owner: "Rachel Wu", starred: false, insight: "Risk score: Low (2/10)" },
-  { id: 13, name: "Investor Sentiment", category: "Finance", lastEdited: "Oct 2", owner: "David Kim", starred: false, insight: "Analyst sentiment: Bullish" },
+  { id: 13, name: "Investor Sentiment", category: "Finance", lastEdited: "Oct 2", owner: "David Kim", starred: false, insight: "Analyst outlook: Bullish" },
 ];
 
 const initialCategories: CategoryItem[] = [
