@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -39,9 +40,18 @@ const managedAlerts = [
 ];
 
 const Alerts = () => {
-  const [activeTab, setActiveTab] = useState("all");
+  const [searchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get("tab");
+  const [activeTab, setActiveTab] = useState(tabFromUrl === "manage" ? "manage" : "all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAlerts, setSelectedAlerts] = useState<string[]>([]);
+
+  // Sync tab with URL parameter
+  useEffect(() => {
+    if (tabFromUrl === "manage") {
+      setActiveTab("manage");
+    }
+  }, [tabFromUrl]);
 
   const unreadCount = mockAlerts.filter(a => !a.isRead).length;
 
