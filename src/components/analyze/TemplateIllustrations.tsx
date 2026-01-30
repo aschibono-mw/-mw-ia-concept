@@ -255,6 +255,154 @@ export const YouTubeIllustration = ({ className }: IllustrationProps) => (
   </svg>
 );
 
+// Intelligence Product Illustrations
+
+// TikTok Trends - Trending chart with music notes
+export const TikTokTrendsIllustration = ({ className }: IllustrationProps) => (
+  <svg viewBox="0 0 200 120" className={className} fill="none">
+    <rect width="200" height="120" fill="#f5f5f5" rx="4" />
+    {/* Trending line */}
+    <polyline
+      points="20,90 50,75 80,80 110,50 140,55 170,30"
+      stroke="#9ca3af"
+      strokeWidth="3"
+      fill="none"
+      strokeLinecap="round"
+    />
+    {/* Music notes */}
+    <circle cx="170" cy="30" r="6" fill="#6b7280" />
+    <rect x="175" y="15" width="2" height="20" fill="#6b7280" />
+    <circle cx="50" cy="75" r="4" fill="#d1d5db" />
+    <rect x="53" y="62" width="2" height="16" fill="#d1d5db" />
+    {/* Hashtags */}
+    <rect x="25" y="100" width="30" height="10" rx="5" fill="#d1d5db" />
+    <rect x="60" y="100" width="40" height="10" rx="5" fill="#9ca3af" />
+    <rect x="105" y="100" width="35" height="10" rx="5" fill="#d1d5db" />
+  </svg>
+);
+
+// Audience Segments - Pie with demographics
+export const AudienceSegmentsIllustration = ({ className }: IllustrationProps) => (
+  <svg viewBox="0 0 200 120" className={className} fill="none">
+    <rect width="200" height="120" fill="#f5f5f5" rx="4" />
+    {/* Pie chart */}
+    <circle cx="70" cy="60" r="40" fill="#e5e7eb" />
+    <path d="M70 60 L70 20 A40 40 0 0 1 110 60 Z" fill="#9ca3af" />
+    <path d="M70 60 L110 60 A40 40 0 0 1 70 100 Z" fill="#6b7280" />
+    <path d="M70 60 L70 100 A40 40 0 0 1 30 60 Z" fill="#d1d5db" />
+    {/* User icons */}
+    <circle cx="145" cy="35" r="8" fill="#9ca3af" />
+    <rect x="138" y="45" width="14" height="10" rx="3" fill="#9ca3af" />
+    <circle cx="170" cy="60" r="8" fill="#6b7280" />
+    <rect x="163" y="70" width="14" height="10" rx="3" fill="#6b7280" />
+    <circle cx="145" cy="90" r="8" fill="#d1d5db" />
+    <rect x="138" y="100" width="14" height="10" rx="3" fill="#d1d5db" />
+  </svg>
+);
+
+// Predictive Trends - Crystal ball / forecast chart
+export const PredictiveTrendsIllustration = ({ className }: IllustrationProps) => (
+  <svg viewBox="0 0 200 120" className={className} fill="none">
+    <rect width="200" height="120" fill="#f5f5f5" rx="4" />
+    {/* Solid line */}
+    <polyline
+      points="20,80 50,70 80,75 100,60"
+      stroke="#6b7280"
+      strokeWidth="2.5"
+      fill="none"
+      strokeLinecap="round"
+    />
+    {/* Dashed prediction line */}
+    <polyline
+      points="100,60 130,40 160,35 180,25"
+      stroke="#9ca3af"
+      strokeWidth="2.5"
+      fill="none"
+      strokeLinecap="round"
+      strokeDasharray="6 4"
+    />
+    {/* Prediction cone */}
+    <path d="M100,60 L180,15 L180,50 Z" fill="#e5e7eb" opacity="0.5" />
+    {/* Lightning bolt */}
+    <polygon points="170,70 155,85 165,85 150,105 165,90 155,90" fill="#9ca3af" />
+  </svg>
+);
+
+// Competitor Intel - Comparison bars
+export const CompetitorIntelIllustration = ({ className }: IllustrationProps) => (
+  <svg viewBox="0 0 200 120" className={className} fill="none">
+    <rect width="200" height="120" fill="#f5f5f5" rx="4" />
+    {/* Comparison bars */}
+    <rect x="30" y="20" width="60" height="16" rx="2" fill="#6b7280" />
+    <rect x="30" y="20" width="45" height="16" rx="2" fill="#9ca3af" />
+    
+    <rect x="30" y="45" width="80" height="16" rx="2" fill="#6b7280" />
+    <rect x="30" y="45" width="55" height="16" rx="2" fill="#9ca3af" />
+    
+    <rect x="30" y="70" width="50" height="16" rx="2" fill="#6b7280" />
+    <rect x="30" y="70" width="70" height="16" rx="2" fill="#9ca3af" />
+    
+    <rect x="30" y="95" width="90" height="16" rx="2" fill="#6b7280" />
+    <rect x="30" y="95" width="60" height="16" rx="2" fill="#9ca3af" />
+    
+    {/* Legend */}
+    <rect x="140" y="40" width="10" height="10" rx="2" fill="#9ca3af" />
+    <rect x="155" y="42" width="25" height="6" rx="1" fill="#d1d5db" />
+    <rect x="140" y="55" width="10" height="10" rx="2" fill="#6b7280" />
+    <rect x="155" y="57" width="30" height="6" rx="1" fill="#d1d5db" />
+  </svg>
+);
+
+// Podcast Monitor - Audio waveform
+export const PodcastMonitorIllustration = ({ className }: IllustrationProps) => (
+  <svg viewBox="0 0 200 120" className={className} fill="none">
+    <rect width="200" height="120" fill="#f5f5f5" rx="4" />
+    {/* Waveform */}
+    <rect x="25" y="45" width="6" height="30" rx="3" fill="#d1d5db" />
+    <rect x="37" y="35" width="6" height="50" rx="3" fill="#9ca3af" />
+    <rect x="49" y="50" width="6" height="20" rx="3" fill="#d1d5db" />
+    <rect x="61" y="30" width="6" height="60" rx="3" fill="#6b7280" />
+    <rect x="73" y="40" width="6" height="40" rx="3" fill="#9ca3af" />
+    <rect x="85" y="45" width="6" height="30" rx="3" fill="#d1d5db" />
+    <rect x="97" y="35" width="6" height="50" rx="3" fill="#9ca3af" />
+    <rect x="109" y="50" width="6" height="20" rx="3" fill="#d1d5db" />
+    <rect x="121" y="38" width="6" height="44" rx="3" fill="#6b7280" />
+    <rect x="133" y="45" width="6" height="30" rx="3" fill="#9ca3af" />
+    <rect x="145" y="40" width="6" height="40" rx="3" fill="#d1d5db" />
+    <rect x="157" y="48" width="6" height="24" rx="3" fill="#9ca3af" />
+    <rect x="169" y="42" width="6" height="36" rx="3" fill="#6b7280" />
+    {/* Microphone icon */}
+    <circle cx="100" cy="105" r="8" fill="#9ca3af" />
+    <rect x="97" y="95" width="6" height="10" rx="3" fill="#9ca3af" />
+  </svg>
+);
+
+// GenAI Lens - AI brain visualization
+export const GenAILensIllustration = ({ className }: IllustrationProps) => (
+  <svg viewBox="0 0 200 120" className={className} fill="none">
+    <rect width="200" height="120" fill="#f5f5f5" rx="4" />
+    {/* Neural network */}
+    <circle cx="40" cy="40" r="8" fill="#9ca3af" />
+    <circle cx="40" cy="80" r="8" fill="#9ca3af" />
+    <circle cx="100" cy="30" r="8" fill="#6b7280" />
+    <circle cx="100" cy="60" r="8" fill="#6b7280" />
+    <circle cx="100" cy="90" r="8" fill="#6b7280" />
+    <circle cx="160" cy="50" r="8" fill="#9ca3af" />
+    <circle cx="160" cy="80" r="8" fill="#9ca3af" />
+    {/* Connections */}
+    <line x1="48" y1="40" x2="92" y2="30" stroke="#d1d5db" strokeWidth="1.5" />
+    <line x1="48" y1="40" x2="92" y2="60" stroke="#d1d5db" strokeWidth="1.5" />
+    <line x1="48" y1="80" x2="92" y2="60" stroke="#d1d5db" strokeWidth="1.5" />
+    <line x1="48" y1="80" x2="92" y2="90" stroke="#d1d5db" strokeWidth="1.5" />
+    <line x1="108" y1="30" x2="152" y2="50" stroke="#d1d5db" strokeWidth="1.5" />
+    <line x1="108" y1="60" x2="152" y2="50" stroke="#d1d5db" strokeWidth="1.5" />
+    <line x1="108" y1="60" x2="152" y2="80" stroke="#d1d5db" strokeWidth="1.5" />
+    <line x1="108" y1="90" x2="152" y2="80" stroke="#d1d5db" strokeWidth="1.5" />
+    {/* Sparkle */}
+    <polygon points="160,20 163,27 170,27 165,32 167,40 160,35 153,40 155,32 150,27 157,27" fill="#9ca3af" />
+  </svg>
+);
+
 // Map template titles to illustrations
 export const getTemplateIllustration = (title: string) => {
   const illustrations: Record<string, React.FC<IllustrationProps>> = {
@@ -275,4 +423,18 @@ export const getTemplateIllustration = (title: string) => {
   };
   
   return illustrations[title] || CustomIllustration;
+};
+
+// Map intelligence product titles to illustrations
+export const getIntelligenceIllustration = (title: string) => {
+  const illustrations: Record<string, React.FC<IllustrationProps>> = {
+    "GenAI Lens": GenAILensIllustration,
+    "TikTok Trends": TikTokTrendsIllustration,
+    "Audience Segments": AudienceSegmentsIllustration,
+    "Predictive Trends": PredictiveTrendsIllustration,
+    "Competitor Intel": CompetitorIntelIllustration,
+    "Podcast Monitor": PodcastMonitorIllustration,
+  };
+  
+  return illustrations[title] || GenAILensIllustration;
 };
