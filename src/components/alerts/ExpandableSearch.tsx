@@ -19,6 +19,7 @@ export const ExpandableSearch = ({
 }: ExpandableSearchProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const resetTimer = () => {
@@ -46,6 +47,25 @@ export const ExpandableSearch = ({
     };
   }, [isExpanded]);
 
+  // Close on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        if (!value) {
+          setIsExpanded(false);
+        }
+      }
+    };
+
+    if (isExpanded) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isExpanded, value]);
+
   const handleExpand = () => {
     setIsExpanded(true);
   };
@@ -65,7 +85,7 @@ export const ExpandableSearch = ({
   };
 
   return (
-    <div className="relative flex items-center">
+    <div ref={containerRef} className="relative flex items-center">
       <div
         className={cn(
           "flex items-center overflow-hidden transition-all duration-300 ease-in-out",
