@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
-import { ChevronDown, Star, MoreVertical, Plus, Mail, Users, Megaphone, Radio } from "lucide-react";
+import { ChevronDown, Star, MoreVertical, Plus, Send, Users, Megaphone, Radio } from "lucide-react";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -219,7 +219,7 @@ const Outreach = () => {
                           value="pitches" 
                           className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground flex items-center gap-2"
                         >
-                          <Mail className="w-4 h-4" />
+                          <Send className="w-4 h-4" />
                           Pitches
                         </TabsTrigger>
                       </span>
@@ -408,7 +408,7 @@ const Outreach = () => {
                             </td>
                             <td className="p-4">
                               <div className="flex items-center gap-2">
-                                <Mail className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <Send className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                                 <div>
                                   <span className="text-sm font-medium text-foreground underline cursor-pointer hover:text-primary block">
                                     {item.subject}
