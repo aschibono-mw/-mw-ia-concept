@@ -93,7 +93,10 @@ export const Header = () => {
               <button className="relative w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
                 <Bell className="w-5 h-5" />
                 {totalUnreadCount > 0 && (
-                  <span className="absolute -top-2 -right-2 w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full flex items-center justify-center shadow-md">
+                  <span 
+                    className="absolute -top-2 -right-2 w-5 h-5 text-white text-xs font-medium rounded-full flex items-center justify-center shadow-md"
+                    style={{ background: 'var(--gradient-badge)' }}
+                  >
                     {totalUnreadCount}
                   </span>
                 )}
@@ -116,11 +119,11 @@ export const Header = () => {
                       </TabsTrigger>
                       <TabsTrigger 
                         value="notifications" 
-                        className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none py-3 text-sm font-medium"
+                        className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-notification data-[state=active]:bg-transparent data-[state=active]:shadow-none py-3 text-sm font-medium"
                       >
                         Notifications
                         {unreadNotificationsCount > 0 && (
-                          <span className="ml-1.5 w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full inline-flex items-center justify-center">
+                          <span className="ml-1.5 w-5 h-5 bg-notification text-white text-xs font-medium rounded-full inline-flex items-center justify-center">
                             {unreadNotificationsCount}
                           </span>
                         )}
