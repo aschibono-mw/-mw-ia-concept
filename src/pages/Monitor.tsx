@@ -241,16 +241,12 @@ const Monitor = () => {
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
           ) : (
-            <div className="flex flex-col items-center justify-center h-[calc(100vh-280px)] text-center p-8">
-              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                <Plus className="w-8 h-8 text-muted-foreground" />
-              </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">
-                No streams yet
-              </h3>
-              <p className="text-sm text-muted-foreground max-w-md">
-                Add streams to this canvas to monitor real-time mentions from your explore searches.
-              </p>
+            <div className="flex items-center justify-center h-[calc(100vh-280px)] p-6">
+              <AddStreamHover
+                existingSearches={existingSearches}
+                onSelectSearch={handleQuickAddStream}
+                onCreateNew={() => setIsAddStreamOpen(true)}
+              />
             </div>
           )}
         </div>
