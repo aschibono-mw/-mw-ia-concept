@@ -24,7 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
+import { ExpandableSearch } from "@/components/alerts/ExpandableSearch";
 
 // Mock data for managed alerts (alert configurations)
 const managedAlerts = [
@@ -90,15 +90,12 @@ const Alerts = () => {
 
                 {/* Search & Filter */}
                 <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input 
-                      placeholder="Search alerts..." 
-                      className="pl-9 w-64"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
+                  <ExpandableSearch
+                    value={searchQuery}
+                    onChange={setSearchQuery}
+                    placeholder="Search alerts..."
+                    inactivityTimeout={5000}
+                  />
                   <Button variant="outline" size="icon">
                     <Filter className="w-4 h-4" />
                   </Button>
