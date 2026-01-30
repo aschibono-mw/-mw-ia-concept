@@ -3,7 +3,7 @@ import { X, LayoutGrid, Sparkles, Music2, Users, Zap, TrendingUp, Crown, GitComp
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { getTemplateIllustration } from "./TemplateIllustrations";
+import { getTemplateIllustration, getIntelligenceIllustration } from "./TemplateIllustrations";
 
 interface CreateDashboardDrawerProps {
   open: boolean;
@@ -222,37 +222,40 @@ export const CreateDashboardDrawer = ({ open, onClose }: CreateDashboardDrawerPr
                 <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
                   More Intelligence Products
                 </h3>
-                <div className="grid grid-cols-3 gap-4">
-                  {intelligenceProducts.filter(p => !p.featured).map((product, index) => (
-                    <div 
-                      key={index} 
-                      className="group border border-border rounded-xl p-5 hover:border-primary/50 hover:shadow-md cursor-pointer transition-all bg-white relative overflow-hidden"
-                    >
-                      <div className="absolute top-0 right-0 w-20 h-20 bg-primary/5 rounded-full blur-2xl translate-x-1/2 -translate-y-1/2 group-hover:bg-primary/10 transition-colors" />
-                      <div className="relative">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                            <product.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="font-semibold text-foreground">{product.title}</span>
-                              {product.tag && (
-                                <span className="text-[10px] font-medium bg-muted text-muted-foreground px-1.5 py-0.5 rounded">
-                                  {product.tag}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          <Crown className="w-4 h-4 text-primary/60" />
+                <div className="grid grid-cols-4 gap-4">
+                  {intelligenceProducts.filter(p => !p.featured).map((product, index) => {
+                    const Illustration = getIntelligenceIllustration(product.title);
+                    return (
+                      <div 
+                        key={index} 
+                        className="group border border-border rounded-xl overflow-hidden hover:border-primary/50 hover:shadow-md cursor-pointer transition-all bg-white"
+                      >
+                        {/* Illustration */}
+                        <div className="w-full h-28 overflow-hidden">
+                          <Illustration className="w-full h-full" />
                         </div>
-                        <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">{product.description}</p>
-                        <Button variant="link" className="p-0 h-auto text-primary hover:text-primary/80 font-medium">
-                          Upgrade to Access →
-                        </Button>
+                        {/* Content */}
+                        <div className="p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="w-6 h-6 rounded bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                              <product.icon className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
+                            </div>
+                            <span className="font-semibold text-sm text-foreground">{product.title}</span>
+                            {product.tag && (
+                              <span className="text-[10px] font-medium bg-muted text-muted-foreground px-1.5 py-0.5 rounded">
+                                {product.tag}
+                              </span>
+                            )}
+                            <Crown className="w-3.5 h-3.5 text-primary/60 ml-auto" />
+                          </div>
+                          <p className="text-xs text-muted-foreground mb-3 line-clamp-2 leading-relaxed">{product.description}</p>
+                          <Button variant="link" className="p-0 h-auto text-primary hover:text-primary/80 font-medium text-sm">
+                            Upgrade to Access
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </TabsContent>
