@@ -218,7 +218,7 @@ const Monitor = () => {
           </div>
 
           {/* Streams Container */}
-          <div className="bg-muted/20 rounded-lg border border-border min-h-[calc(100vh-240px)]">
+          <div className="min-h-[calc(100vh-240px)]">
             {activeCanvas && activeCanvas.streams.length > 0 ? (
               <ScrollArea className="w-full">
                 <div className="flex gap-4 p-4">
