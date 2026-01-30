@@ -370,13 +370,13 @@ const Discover = () => {
                 <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
                   <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                      <DialogTitle>Add Category</DialogTitle>
+                      <DialogTitle>Add New Folder</DialogTitle>
                     </DialogHeader>
                     <div className="py-4">
                       <div className="space-y-2">
-                        <Label htmlFor="category-name">Category Name</Label>
+                        <Label htmlFor="folder-name">Folder Name</Label>
                         <Input
-                          id="category-name"
+                          id="folder-name"
                           placeholder="e.g., Industry, Partnerships"
                           value={newCategoryName}
                           onChange={(e) => setNewCategoryName(e.target.value)}
@@ -388,20 +388,20 @@ const Discover = () => {
                                   (cat) => cat.name.toLowerCase() === newCategoryName.trim().toLowerCase()
                                 );
                                 if (exists) {
-                                  toast.error('Category already exists');
+                                  toast.error('Folder already exists');
                                   return;
                                 }
                                 setCategories(prev => [...prev, { name: newCategoryName.trim(), count: 0 }]);
                                 setNewCategoryName('');
                                 setIsAddCategoryOpen(false);
-                                toast.success(`Category "${newCategoryName.trim()}" added`);
+                                toast.success(`Folder "${newCategoryName.trim()}" added`);
                               }
                             }
                           }}
                         />
                       </div>
                       <p className="text-xs text-muted-foreground mt-2">
-                        Categories help you organize your searches into logical groups.
+                        Folders help you organize your searches into logical groups.
                       </p>
                     </div>
                     <DialogFooter>
@@ -421,19 +421,19 @@ const Discover = () => {
                               (cat) => cat.name.toLowerCase() === newCategoryName.trim().toLowerCase()
                             );
                             if (exists) {
-                              toast.error('Category already exists');
+                              toast.error('Folder already exists');
                               return;
                             }
                             setCategories(prev => [...prev, { name: newCategoryName.trim(), count: 0 }]);
                             setNewCategoryName('');
                             setIsAddCategoryOpen(false);
-                            toast.success(`Category "${newCategoryName.trim()}" added`);
+                            toast.success(`Folder "${newCategoryName.trim()}" added`);
                           }
                         }}
                         disabled={!newCategoryName.trim()}
                       >
                         <Plus className="w-4 h-4 mr-2" />
-                        Add Category
+                        Add Folder
                       </Button>
                     </DialogFooter>
                   </DialogContent>
