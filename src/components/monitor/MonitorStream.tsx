@@ -107,7 +107,7 @@ export const MonitorStream = ({ stream, onAnalyze, onRemove }: MonitorStreamProp
   }, [stream.items]);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-280px)] min-w-[340px] max-w-[380px] bg-card rounded-lg border border-border shadow-sm">
+    <div className="flex flex-col h-[calc(100vh-280px)] min-w-[340px] max-w-[380px] bg-card rounded-lg">
       {/* Stream Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between mb-1">
