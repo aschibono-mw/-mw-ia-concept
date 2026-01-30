@@ -115,7 +115,7 @@ export const CreateDashboardDrawer = ({ open, onClose }: CreateDashboardDrawerPr
         {/* Tabs Navigation */}
         <div className="px-6 pt-4 bg-white">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="h-auto p-0 bg-transparent border-b border-border rounded-none w-full justify-start gap-6">
+            <TabsList className="h-auto p-0 bg-transparent rounded-none w-full justify-start gap-6">
               <TabsTrigger 
                 value="templates" 
                 className="px-0 py-0 pb-2.5 mb-[-1px] rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none text-muted-foreground data-[state=active]:text-foreground font-medium"
