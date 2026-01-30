@@ -181,6 +181,10 @@ export const Header = () => {
                 Asset Manager
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
+                <FileText className="w-4 h-4 mr-2" />
+                Saved Documents
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
                 <FileStack className="w-4 h-4 mr-2" />
                 Content Manager
               </DropdownMenuItem>
