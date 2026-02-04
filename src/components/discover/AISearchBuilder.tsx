@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Sparkles, ChevronUp, ChevronDown, Code, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,6 +21,16 @@ export const AISearchBuilder = ({ initialExpanded = false }: AISearchBuilderProp
   const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [booleanQuery, setBooleanQuery] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (initialExpanded && isExpanded) {
+      // Small delay to ensure the component is rendered
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 100);
+    }
+  }, [initialExpanded, isExpanded]);
 
   const handleSubmit = () => {
     if (!inputValue.trim()) return;
@@ -174,6 +184,7 @@ export const AISearchBuilder = ({ initialExpanded = false }: AISearchBuilderProp
           <div className="flex gap-3 items-end">
             <div className="flex-1 relative">
               <Textarea 
+                ref={textareaRef}
                 placeholder="e.g., &quot;track mentions of our CEO in tech news&quot; or just &quot;brand crisis&quot;"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
