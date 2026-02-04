@@ -51,7 +51,12 @@ export const Header = () => {
 
   const handleCreateMenuClick = (label: string) => {
     if (label === "Search") {
-      navigate("/discover?openBuilder=true");
+      // If already on Explore page, dispatch event to open builder
+      if (location.pathname === "/discover") {
+        window.dispatchEvent(new CustomEvent('openSearchBuilder'));
+      } else {
+        navigate("/discover?openBuilder=true");
+      }
       setIsCreateOpen(false);
     }
   };
