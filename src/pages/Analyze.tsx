@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
@@ -82,6 +83,7 @@ type ViewMode = 'cards' | 'table';
 const ITEMS_PER_PAGE = 6;
 
 const Analyze = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [sortField, setSortField] = useState<SortField>('lastEdited');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
@@ -97,6 +99,24 @@ const Analyze = () => {
   const [isTemplateDrawerOpen, setIsTemplateDrawerOpen] = useState(false);
   const [ownerFilter, setOwnerFilter] = useState<string>('Anyone');
   const loaderRef = useRef<HTMLDivElement>(null);
+
+  // Open drawer from URL param or custom event
+  useEffect(() => {
+    if (searchParams.get('openDrawer') === 'true') {
+      setIsTemplateDrawerOpen(true);
+      // Clear the param to avoid reopening on refresh
+      searchParams.delete('openDrawer');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
+
+  useEffect(() => {
+    const handleOpenDashboardDrawer = () => {
+      setIsTemplateDrawerOpen(true);
+    };
+    window.addEventListener('openDashboardDrawer', handleOpenDashboardDrawer);
+    return () => window.removeEventListener('openDashboardDrawer', handleOpenDashboardDrawer);
+  }, []);
 
   const owners = ['Anyone', ...Array.from(new Set(allDashboardItems.map(item => item.owner)))];
 

@@ -58,6 +58,14 @@ export const Header = () => {
         navigate("/discover?openBuilder=true");
       }
       setIsCreateOpen(false);
+    } else if (label === "Dashboard") {
+      // If already on Analyze page, dispatch event to open drawer
+      if (location.pathname === "/analyze") {
+        window.dispatchEvent(new CustomEvent('openDashboardDrawer'));
+      } else {
+        navigate("/analyze?openDrawer=true");
+      }
+      setIsCreateOpen(false);
     }
   };
   
