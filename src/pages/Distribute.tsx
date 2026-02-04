@@ -250,7 +250,7 @@ const Distribute = () => {
         }`}>
           <Eye className="w-3 h-3" />{statusCounts.readyForReview} Review
         </span>
-        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${
           statusCounts.scheduled > 0 ? 'bg-amber-500/10 text-amber-600' : 'bg-muted/50 text-muted-foreground/50'
         }`}>
           <Clock className="w-3 h-3" />{statusCounts.scheduled} Scheduled
