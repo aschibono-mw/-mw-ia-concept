@@ -11,8 +11,12 @@ interface Message {
 
 const sampleBooleanQuery = `("brand monitoring" OR "brand tracking" OR "brand mention") AND (social OR news OR online) AND NOT (spam OR advertisement)`;
 
-export const AISearchBuilder = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+interface AISearchBuilderProps {
+  initialExpanded?: boolean;
+}
+
+export const AISearchBuilder = ({ initialExpanded = false }: AISearchBuilderProps) => {
+  const [isExpanded, setIsExpanded] = useState(initialExpanded);
   const [showBoolean, setShowBoolean] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
