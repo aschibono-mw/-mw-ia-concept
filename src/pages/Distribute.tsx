@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
-import { ChevronDown, Star, MoreVertical, Plus, Sparkles, FileText, Mail, Users, Clock, Send, RefreshCw, Copy, User, Pencil, Link, FolderInput, Share2, Trash2, Calendar, Grid3X3, List, Folder } from "lucide-react";
+import { ChevronDown, Star, MoreVertical, Plus, Sparkles, FileText, Mail, Users, Clock, Send, RefreshCw, Copy, User, Pencil, Link, FolderInput, Share2, Trash2, Calendar, Grid3X3, List, Folder, Eye } from "lucide-react";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -32,11 +32,18 @@ interface CategoryItem {
   count: number;
 }
 
+interface NewsletterStatusCounts {
+  sent: number;
+  draft: number;
+  readyForReview: number;
+  scheduled: number;
+}
+
 interface NewsletterItem {
   id: number;
   name: string;
   category: string;
-  status: 'draft' | 'scheduled' | 'sent';
+  statusCounts: NewsletterStatusCounts;
   automationType: 'automated' | 'automated_review' | 'manual';
   lastEdited: string;
   owner: string;
@@ -49,16 +56,16 @@ interface NewsletterItem {
 }
 
 const allNewsletterItems: NewsletterItem[] = [
-  { id: 1, name: "The Daily Media Brief", category: "Media", status: "sent", automationType: "automated", lastEdited: "Yesterday", owner: "Laura Bennett", starred: true, recipients: 156, openRate: 72.4, clickRate: 4.2 },
-  { id: 2, name: "The Brand Pulse", category: "Brand", status: "sent", automationType: "automated_review", lastEdited: "2 days ago", owner: "Alex Morgan", starred: true, recipients: 89, openRate: 68.1, clickRate: 3.8 },
-  { id: 3, name: "Morning Media Roundup", category: "Media", status: "scheduled", automationType: "automated", lastEdited: "4 days ago", owner: "Sophia Patel", starred: true, scheduledFor: "Tomorrow, 8:00 AM" },
-  { id: 4, name: "Market Trends Newsletter", category: "Market", status: "draft", automationType: "manual", lastEdited: "Nov 17", owner: "Rachel Wu", starred: true },
-  { id: 5, name: "Weekly Industry Update", category: "Market", status: "sent", automationType: "automated_review", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false, recipients: 234, openRate: 65.2, clickRate: 2.9 },
-  { id: 6, name: "Leadership Insights", category: "Leadership", status: "draft", automationType: "manual", lastEdited: "Nov 14", owner: "David Kim", starred: true },
-  { id: 7, name: "Competitor Watch Weekly", category: "Competition", status: "sent", automationType: "automated", lastEdited: "Nov 12", owner: "Laura Bennett", starred: false, recipients: 178, openRate: 71.8, clickRate: 5.1 },
-  { id: 8, name: "Social Trends Digest", category: "Social", status: "scheduled", automationType: "automated_review", lastEdited: "Nov 10", owner: "Sophia Patel", starred: true, scheduledFor: "Nov 25, 9:00 AM" },
-  { id: 9, name: "Executive Summary Q4", category: "Leadership", status: "sent", automationType: "manual", lastEdited: "Nov 8", owner: "Rachel Wu", starred: true, recipients: 45, openRate: 82.3, clickRate: 6.7 },
-  { id: 10, name: "Crisis Update Brief", category: "Crisis", status: "sent", automationType: "automated", lastEdited: "Nov 5", owner: "Tom Nguyen", starred: false, recipients: 312, openRate: 78.9, clickRate: 4.5 },
+  { id: 1, name: "The Daily Media Brief", category: "Media", statusCounts: { sent: 24, draft: 1, readyForReview: 0, scheduled: 1 }, automationType: "automated", lastEdited: "Yesterday", owner: "Laura Bennett", starred: true, recipients: 156, openRate: 72.4, clickRate: 4.2 },
+  { id: 2, name: "The Brand Pulse", category: "Brand", statusCounts: { sent: 12, draft: 0, readyForReview: 2, scheduled: 0 }, automationType: "automated_review", lastEdited: "2 days ago", owner: "Alex Morgan", starred: true, recipients: 89, openRate: 68.1, clickRate: 3.8 },
+  { id: 3, name: "Morning Media Roundup", category: "Media", statusCounts: { sent: 8, draft: 0, readyForReview: 0, scheduled: 1 }, automationType: "automated", lastEdited: "4 days ago", owner: "Sophia Patel", starred: true, scheduledFor: "Tomorrow, 8:00 AM" },
+  { id: 4, name: "Market Trends Newsletter", category: "Market", statusCounts: { sent: 0, draft: 1, readyForReview: 0, scheduled: 0 }, automationType: "manual", lastEdited: "Nov 17", owner: "Rachel Wu", starred: true },
+  { id: 5, name: "Weekly Industry Update", category: "Market", statusCounts: { sent: 45, draft: 2, readyForReview: 1, scheduled: 0 }, automationType: "automated_review", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false, recipients: 234, openRate: 65.2, clickRate: 2.9 },
+  { id: 6, name: "Leadership Insights", category: "Leadership", statusCounts: { sent: 0, draft: 3, readyForReview: 0, scheduled: 0 }, automationType: "manual", lastEdited: "Nov 14", owner: "David Kim", starred: true },
+  { id: 7, name: "Competitor Watch Weekly", category: "Competition", statusCounts: { sent: 52, draft: 0, readyForReview: 0, scheduled: 2 }, automationType: "automated", lastEdited: "Nov 12", owner: "Laura Bennett", starred: false, recipients: 178, openRate: 71.8, clickRate: 5.1 },
+  { id: 8, name: "Social Trends Digest", category: "Social", statusCounts: { sent: 16, draft: 1, readyForReview: 1, scheduled: 1 }, automationType: "automated_review", lastEdited: "Nov 10", owner: "Sophia Patel", starred: true, scheduledFor: "Nov 25, 9:00 AM" },
+  { id: 9, name: "Executive Summary Q4", category: "Leadership", statusCounts: { sent: 4, draft: 0, readyForReview: 0, scheduled: 0 }, automationType: "manual", lastEdited: "Nov 8", owner: "Rachel Wu", starred: true, recipients: 45, openRate: 82.3, clickRate: 6.7 },
+  { id: 10, name: "Crisis Update Brief", category: "Crisis", statusCounts: { sent: 28, draft: 0, readyForReview: 0, scheduled: 1 }, automationType: "automated", lastEdited: "Nov 5", owner: "Tom Nguyen", starred: false, recipients: 312, openRate: 78.9, clickRate: 4.5 },
 ];
 
 const initialCategories: CategoryItem[] = [
@@ -107,9 +114,9 @@ const templates = [
   },
 ];
 
-type SortField = 'name' | 'category' | 'lastEdited' | 'owner' | 'recipients' | 'openRate' | 'clickRate' | 'status' | 'automationType';
+type SortField = 'name' | 'category' | 'lastEdited' | 'owner' | 'recipients' | 'openRate' | 'clickRate' | 'statusCounts' | 'automationType';
 type SortDirection = 'asc' | 'desc';
-type StatusFilter = 'all' | 'draft' | 'scheduled' | 'sent';
+type StatusFilter = 'all' | 'draft' | 'scheduled' | 'sent' | 'readyForReview';
 type ViewMode = 'cards' | 'table';
 
 const Distribute = () => {
@@ -179,7 +186,13 @@ const Distribute = () => {
 
   const filteredItems = statusFilter === 'all' 
     ? allNewsletterItems 
-    : allNewsletterItems.filter(item => item.status === statusFilter);
+    : allNewsletterItems.filter(item => {
+        if (statusFilter === 'sent') return item.statusCounts.sent > 0;
+        if (statusFilter === 'draft') return item.statusCounts.draft > 0;
+        if (statusFilter === 'scheduled') return item.statusCounts.scheduled > 0;
+        if (statusFilter === 'readyForReview') return item.statusCounts.readyForReview > 0;
+        return true;
+      });
 
   const sortedItems = [...filteredItems].sort((a, b) => {
     let comparison = 0;
@@ -197,9 +210,10 @@ const Distribute = () => {
       comparison = (a.openRate || 0) - (b.openRate || 0);
     } else if (sortField === 'clickRate') {
       comparison = (a.clickRate || 0) - (b.clickRate || 0);
-    } else if (sortField === 'status') {
-      const statusOrder = { 'draft': 0, 'scheduled': 1, 'sent': 2 };
-      comparison = (statusOrder[a.status as keyof typeof statusOrder] || 0) - (statusOrder[b.status as keyof typeof statusOrder] || 0);
+    } else if (sortField === 'statusCounts') {
+      const totalA = a.statusCounts.sent + a.statusCounts.draft + a.statusCounts.readyForReview + a.statusCounts.scheduled;
+      const totalB = b.statusCounts.sent + b.statusCounts.draft + b.statusCounts.readyForReview + b.statusCounts.scheduled;
+      comparison = totalA - totalB;
     } else if (sortField === 'automationType') {
       const automationOrder = { 'automated': 0, 'automated_review': 1, 'manual': 2 };
       comparison = (automationOrder[a.automationType as keyof typeof automationOrder] || 0) - (automationOrder[b.automationType as keyof typeof automationOrder] || 0);
@@ -210,32 +224,50 @@ const Distribute = () => {
   const displayedItems = sortedItems;
 
   // Stats
-  const totalSent = allNewsletterItems.filter(i => i.status === 'sent').length;
-  const avgOpenRate = allNewsletterItems
-    .filter(i => i.openRate)
-    .reduce((acc, i) => acc + (i.openRate || 0), 0) / totalSent || 0;
-  const avgClickRate = allNewsletterItems
-    .filter(i => i.clickRate)
-    .reduce((acc, i) => acc + (i.clickRate || 0), 0) / totalSent || 0;
+  const totalSentNewsletters = allNewsletterItems.reduce((acc, i) => acc + i.statusCounts.sent, 0);
+  const itemsWithStats = allNewsletterItems.filter(i => i.openRate);
+  const avgOpenRate = itemsWithStats.length > 0 
+    ? itemsWithStats.reduce((acc, i) => acc + (i.openRate || 0), 0) / itemsWithStats.length 
+    : 0;
+  const avgClickRate = itemsWithStats.length > 0 
+    ? itemsWithStats.reduce((acc, i) => acc + (i.clickRate || 0), 0) / itemsWithStats.length 
+    : 0;
+  const totalDrafts = allNewsletterItems.reduce((acc, i) => acc + i.statusCounts.draft, 0);
+  const totalScheduled = allNewsletterItems.reduce((acc, i) => acc + i.statusCounts.scheduled, 0);
+  const totalReadyForReview = allNewsletterItems.reduce((acc, i) => acc + i.statusCounts.readyForReview, 0);
 
-  const getStatusBadge = (status: string, scheduledFor?: string) => {
-    switch (status) {
-      case 'sent':
-        return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary"><Send className="w-3 h-3" />Sent</span>;
-      case 'scheduled':
-        return (
-          <Tooltip>
-            <TooltipTrigger>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-600"><Clock className="w-3 h-3" />Scheduled</span>
-            </TooltipTrigger>
-            <TooltipContent>{scheduledFor}</TooltipContent>
-          </Tooltip>
-        );
-      case 'draft':
-        return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground"><FileText className="w-3 h-3" />Draft</span>;
-      default:
-        return null;
+  // Render status counts as inline badges
+  const renderStatusCounts = (statusCounts: NewsletterStatusCounts) => {
+    const badges = [];
+    if (statusCounts.sent > 0) {
+      badges.push(
+        <span key="sent" className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+          <Send className="w-3 h-3" />{statusCounts.sent} Sent
+        </span>
+      );
     }
+    if (statusCounts.draft > 0) {
+      badges.push(
+        <span key="draft" className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
+          <FileText className="w-3 h-3" />{statusCounts.draft} Draft
+        </span>
+      );
+    }
+    if (statusCounts.readyForReview > 0) {
+      badges.push(
+        <span key="review" className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-600">
+          <Eye className="w-3 h-3" />{statusCounts.readyForReview} Review
+        </span>
+      );
+    }
+    if (statusCounts.scheduled > 0) {
+      badges.push(
+        <span key="scheduled" className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-600">
+          <Clock className="w-3 h-3" />{statusCounts.scheduled} Scheduled
+        </span>
+      );
+    }
+    return <div className="flex flex-wrap gap-1">{badges}</div>;
   };
 
   return (
@@ -309,7 +341,7 @@ const Distribute = () => {
                   <div className="grid grid-cols-4 gap-4 mb-6">
                     <div className="bg-card border border-border rounded-lg p-4">
                       <p className="text-sm text-muted-foreground mb-1">Total Sent</p>
-                      <p className="text-2xl font-semibold text-foreground">{totalSent}</p>
+                      <p className="text-2xl font-semibold text-foreground">{totalSentNewsletters}</p>
                     </div>
                     <div className="bg-card border border-border rounded-lg p-4">
                       <p className="text-sm text-muted-foreground mb-1">Avg. Open Rate</p>
@@ -321,7 +353,7 @@ const Distribute = () => {
                     </div>
                     <div className="bg-card border border-border rounded-lg p-4">
                       <p className="text-sm text-muted-foreground mb-1">Drafts</p>
-                      <p className="text-2xl font-semibold text-foreground">{allNewsletterItems.filter(i => i.status === 'draft').length}</p>
+                      <p className="text-2xl font-semibold text-foreground">{totalDrafts}</p>
                     </div>
                   </div>
 
@@ -392,7 +424,7 @@ const Distribute = () => {
 
                       {/* Status Filter Tabs */}
                       <div className="px-4 border-b border-border">
-                        <div className="flex gap-6">
+                      <div className="flex gap-6">
                           <button 
                             className={`py-3 text-sm font-medium border-b-2 transition-colors ${statusFilter === 'all' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                             onClick={() => setStatusFilter('all')}
@@ -403,19 +435,25 @@ const Distribute = () => {
                             className={`py-3 text-sm font-medium border-b-2 transition-colors ${statusFilter === 'draft' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                             onClick={() => setStatusFilter('draft')}
                           >
-                            Drafts ({allNewsletterItems.filter(i => i.status === 'draft').length})
+                            Drafts ({totalDrafts})
+                          </button>
+                          <button 
+                            className={`py-3 text-sm font-medium border-b-2 transition-colors ${statusFilter === 'readyForReview' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
+                            onClick={() => setStatusFilter('readyForReview')}
+                          >
+                            Ready for Review ({totalReadyForReview})
                           </button>
                           <button 
                             className={`py-3 text-sm font-medium border-b-2 transition-colors ${statusFilter === 'scheduled' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                             onClick={() => setStatusFilter('scheduled')}
                           >
-                            Scheduled ({allNewsletterItems.filter(i => i.status === 'scheduled').length})
+                            Scheduled ({totalScheduled})
                           </button>
                           <button 
                             className={`py-3 text-sm font-medium border-b-2 transition-colors ${statusFilter === 'sent' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                             onClick={() => setStatusFilter('sent')}
                           >
-                            Sent ({allNewsletterItems.filter(i => i.status === 'sent').length})
+                            Sent ({totalSentNewsletters})
                           </button>
                         </div>
                       </div>
@@ -463,9 +501,9 @@ const Distribute = () => {
                                   </DropdownMenu>
                                 </div>
                                 {/* Status and Type Badges */}
-                                <div className="flex items-center gap-2 mb-3 pl-[52px]">
-                                  {getStatusBadge(item.status, item.scheduledFor)}
-                                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                                <div className="flex flex-col gap-2 mb-3 pl-[52px]">
+                                  {renderStatusCounts(item.statusCounts)}
+                                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium w-fit ${
                                     item.automationType === 'automated' 
                                       ? 'bg-emerald-500/10 text-emerald-600' 
                                       : item.automationType === 'automated_review' 
@@ -478,7 +516,7 @@ const Distribute = () => {
                                   </span>
                                 </div>
                                 {/* Stats */}
-                                {item.status === 'sent' && (
+                                {item.statusCounts.sent > 0 && (
                                   <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3 pl-[52px]">
                                     <span>{item.recipients?.toLocaleString()} recipients</span>
                                     <span>{item.openRate}% open</span>
@@ -516,9 +554,9 @@ const Distribute = () => {
                                 </button>
                               </th>
                               <th className="p-4 text-sm font-bold text-foreground">
-                                <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('status')}>
+                                <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('statusCounts')}>
                                   Status
-                                  {sortField === 'status' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                                  {sortField === 'statusCounts' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
                                 </button>
                               </th>
                               <th className="p-4 text-sm font-bold text-foreground">
@@ -572,7 +610,7 @@ const Distribute = () => {
                                   </div>
                                 </td>
                                 <td className="p-4">
-                                  {getStatusBadge(item.status, item.scheduledFor)}
+                                  {renderStatusCounts(item.statusCounts)}
                                 </td>
                                 <td className="p-4">
                                   <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
@@ -626,7 +664,7 @@ const Distribute = () => {
                                           <Link className="w-4 h-4 mr-2" />
                                           Copy Link
                                         </DropdownMenuItem>
-                                        {item.status === 'draft' && (
+                                        {item.statusCounts.draft > 0 && (
                                           <>
                                             <DropdownMenuItem className="cursor-pointer">
                                               <Send className="w-4 h-4 mr-2" />
@@ -638,7 +676,7 @@ const Distribute = () => {
                                             </DropdownMenuItem>
                                           </>
                                         )}
-                                        {item.status === 'scheduled' && (
+                                        {item.statusCounts.scheduled > 0 && (
                                           <DropdownMenuItem className="cursor-pointer">
                                             <Calendar className="w-4 h-4 mr-2" />
                                             Reschedule
@@ -973,7 +1011,7 @@ const Distribute = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {allNewsletterItems.filter(i => i.status === 'sent').slice(0, 5).map((item) => (
+                        {allNewsletterItems.filter(i => i.statusCounts.sent > 0).slice(0, 5).map((item) => (
                           <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
                             <td className="p-4">
                               <div className="flex items-center gap-2">
