@@ -32,6 +32,19 @@ export const AISearchBuilder = ({ initialExpanded = false }: AISearchBuilderProp
     }
   }, [initialExpanded, isExpanded]);
 
+  // Listen for custom event when user clicks Create > Search while on Explore page
+  useEffect(() => {
+    const handleOpenSearchBuilder = () => {
+      setIsExpanded(true);
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 100);
+    };
+
+    window.addEventListener('openSearchBuilder', handleOpenSearchBuilder);
+    return () => window.removeEventListener('openSearchBuilder', handleOpenSearchBuilder);
+  }, []);
+
   const handleSubmit = () => {
     if (!inputValue.trim()) return;
 
