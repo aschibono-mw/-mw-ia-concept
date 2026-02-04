@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
-import { ChevronDown, Star, MoreVertical, Plus, Sparkles, FileText, Mail, Users, Clock, Send, RefreshCw, Copy, User, Pencil, Link, FolderInput, Share2, Trash2, Calendar } from "lucide-react";
+import { ChevronDown, Star, MoreVertical, Plus, Sparkles, FileText, Mail, Users, Clock, Send, RefreshCw, Copy, User, Pencil, Link, FolderInput, Share2, Trash2, Calendar, Grid3X3, List, Folder } from "lucide-react";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface CategoryItem {
   name: string;
@@ -109,6 +110,7 @@ const templates = [
 type SortField = 'name' | 'category' | 'lastEdited' | 'owner' | 'recipients' | 'openRate' | 'clickRate' | 'status' | 'automationType';
 type SortDirection = 'asc' | 'desc';
 type StatusFilter = 'all' | 'draft' | 'scheduled' | 'sent';
+type ViewMode = 'cards' | 'table';
 
 const Distribute = () => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -121,6 +123,7 @@ const Distribute = () => {
   const [shareItemName, setShareItemName] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [activeTab, setActiveTab] = useState<string>('newsletters');
+  const [viewMode, setViewMode] = useState<ViewMode>('table');
 
   const handleOpenShare = (itemName: string) => {
     setShareItemName(itemName);
@@ -343,21 +346,48 @@ const Distribute = () => {
                             <DropdownMenuItem className="cursor-pointer">Last Edited</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
-                              Owner: Anyone
-                              <ChevronDown className="w-4 h-4" />
-                            </button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48 bg-card">
-                            <DropdownMenuItem className="cursor-pointer">Anyone</DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">Me</DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">Rachel Wu</DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">Sophia Patel</DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">Tom Nguyen</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <div className="flex items-center gap-3">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary">
+                                Owner: Anyone
+                                <ChevronDown className="w-4 h-4" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-48 bg-card">
+                              <DropdownMenuItem className="cursor-pointer">Anyone</DropdownMenuItem>
+                              <DropdownMenuItem className="cursor-pointer">Me</DropdownMenuItem>
+                              <DropdownMenuItem className="cursor-pointer">Rachel Wu</DropdownMenuItem>
+                              <DropdownMenuItem className="cursor-pointer">Sophia Patel</DropdownMenuItem>
+                              <DropdownMenuItem className="cursor-pointer">Tom Nguyen</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                          {/* View Toggle */}
+                          <div className="flex items-center border border-border rounded-md">
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  onClick={() => setViewMode('cards')}
+                                  className={`p-2 transition-colors ${viewMode === 'cards' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                                >
+                                  <Grid3X3 className="w-4 h-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>Card view</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  onClick={() => setViewMode('table')}
+                                  className={`p-2 transition-colors ${viewMode === 'table' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                                >
+                                  <List className="w-4 h-4" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>Table view</TooltipContent>
+                            </Tooltip>
+                          </div>
+                        </div>
                       </div>
 
                       {/* Status Filter Tabs */}
@@ -390,173 +420,253 @@ const Distribute = () => {
                         </div>
                       </div>
 
-                      {/* Table */}
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b border-border text-left">
-                            <th className="p-4 w-10">
-                              <Checkbox 
-                                checked={selectedItems.length === displayedItems.length && displayedItems.length > 0}
-                                onCheckedChange={toggleAll}
-                              />
-                            </th>
-                            <th className="p-4 text-sm font-bold text-foreground">
-                              <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('name')}>
-                                Name
-                                {sortField === 'name' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
-                              </button>
-                            </th>
-                            <th className="p-4 text-sm font-bold text-foreground">
-                              <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('status')}>
-                                Status
-                                {sortField === 'status' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
-                              </button>
-                            </th>
-                            <th className="p-4 text-sm font-bold text-foreground">
-                              <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('automationType')}>
-                                Type
-                                {sortField === 'automationType' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
-                              </button>
-                            </th>
-                            <th className="p-4 text-sm font-bold text-foreground">
-                              <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('recipients')}>
-                                Recipients
-                                {sortField === 'recipients' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
-                              </button>
-                            </th>
-                            <th className="p-4 text-sm font-bold text-foreground">
-                              <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('openRate')}>
-                                Open Rate
-                                {sortField === 'openRate' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
-                              </button>
-                            </th>
-                            <th className="p-4 text-sm font-bold text-foreground">
-                              <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('clickRate')}>
-                                Click Rate
-                                {sortField === 'clickRate' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
-                              </button>
-                            </th>
-                            <th className="p-4 text-sm font-bold text-foreground">
-                              <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('owner')}>
-                                Owner
-                                {sortField === 'owner' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
-                              </button>
-                            </th>
-                            <th className="p-4 w-20"></th>
-                          </tr>
-                        </thead>
-                        <tbody>
+                      {/* Card View */}
+                      {viewMode === 'cards' ? (
+                        <div className="grid grid-cols-2 gap-4 p-4">
                           {displayedItems.map((item) => (
-                            <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
-                              <td className="p-4">
-                                <Checkbox 
-                                  checked={selectedItems.includes(item.id)}
-                                  onCheckedChange={() => toggleItem(item.id)}
-                                />
-                              </td>
-                              <td className="p-4">
-                                <div className="flex items-center gap-2">
-                                  <Mail className="w-4 h-4 text-muted-foreground" />
-                                  <span className="text-sm font-medium text-foreground underline cursor-pointer hover:text-primary">
-                                    {item.name}
-                                  </span>
-                                </div>
-                              </td>
-                              <td className="p-4">
-                                {getStatusBadge(item.status, item.scheduledFor)}
-                              </td>
-                              <td className="p-4">
-                                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
-                                  item.automationType === 'automated' 
-                                    ? 'bg-emerald-500/10 text-emerald-600' 
-                                    : item.automationType === 'automated_review' 
-                                      ? 'bg-blue-500/10 text-blue-600' 
-                                      : 'bg-muted text-muted-foreground'
-                                }`}>
-                                  {item.automationType === 'automated' && <><Sparkles className="w-3 h-3" />Automated</>}
-                                  {item.automationType === 'automated_review' && <><Sparkles className="w-3 h-3" />For Review</>}
-                                  {item.automationType === 'manual' && 'Manual'}
-                                </span>
-                              </td>
-                              <td className="p-4 text-sm text-muted-foreground">
-                                {item.recipients ? item.recipients.toLocaleString() : '—'}
-                              </td>
-                              <td className="p-4 text-sm text-muted-foreground">
-                                {item.openRate ? `${item.openRate}%` : '—'}
-                              </td>
-                              <td className="p-4 text-sm text-muted-foreground">
-                                {item.clickRate ? `${item.clickRate}%` : '—'}
-                              </td>
-                              <td className="p-4">
-                                <div className="flex items-center gap-2">
-                                  <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
-                                    <User className="w-3 h-3 text-muted-foreground" />
+                            <Card key={item.id} className="hover:border-primary transition-colors cursor-pointer group">
+                              <CardContent className="p-4">
+                                <div className="flex items-start gap-3 mb-2">
+                                  <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                                    <Mail className="w-5 h-5 text-muted-foreground" />
                                   </div>
-                                  <span className="text-sm font-bold text-foreground underline cursor-pointer hover:text-primary">{item.owner}</span>
-                                </div>
-                              </td>
-                              <td className="p-4">
-                                <div className="flex items-center gap-2">
-                                  <Star className={`w-4 h-4 cursor-pointer ${item.starred ? 'text-primary fill-primary' : 'text-muted-foreground hover:text-primary'}`} />
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2">
+                                      <h3 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors truncate">
+                                        {item.name}
+                                      </h3>
+                                      {item.starred && (
+                                        <Star className="w-4 h-4 text-primary fill-primary flex-shrink-0" />
+                                      )}
+                                    </div>
+                                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                      <Folder className="w-3 h-3" />
+                                      <span>{item.category}</span>
+                                    </div>
+                                  </div>
                                   <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                      <button className="p-1 hover:bg-muted rounded">
-                                        <MoreVertical className="w-4 h-4 text-muted-foreground hover:text-foreground cursor-pointer" />
+                                      <button className="p-1 hover:bg-muted rounded opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                                        <MoreVertical className="w-4 h-4 text-muted-foreground" />
                                       </button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="w-48 bg-card">
-                                      <DropdownMenuItem className="cursor-pointer">
-                                        <Pencil className="w-4 h-4 mr-2" />
-                                        Edit
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem className="cursor-pointer" onClick={() => handleReuse(item.name)}>
-                                        <RefreshCw className="w-4 h-4 mr-2" />
-                                        Reuse as New
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem className="cursor-pointer">
-                                        <Link className="w-4 h-4 mr-2" />
-                                        Copy Link
-                                      </DropdownMenuItem>
-                                      {item.status === 'draft' && (
-                                        <>
-                                          <DropdownMenuItem className="cursor-pointer">
-                                            <Send className="w-4 h-4 mr-2" />
-                                            Send Now
-                                          </DropdownMenuItem>
-                                          <DropdownMenuItem className="cursor-pointer">
-                                            <Calendar className="w-4 h-4 mr-2" />
-                                            Schedule
-                                          </DropdownMenuItem>
-                                        </>
-                                      )}
-                                      {item.status === 'scheduled' && (
-                                        <DropdownMenuItem className="cursor-pointer">
-                                          <Calendar className="w-4 h-4 mr-2" />
-                                          Reschedule
-                                        </DropdownMenuItem>
-                                      )}
+                                      <DropdownMenuItem className="cursor-pointer"><Pencil className="w-4 h-4 mr-2" />Edit</DropdownMenuItem>
+                                      <DropdownMenuItem className="cursor-pointer" onClick={() => handleReuse(item.name)}><RefreshCw className="w-4 h-4 mr-2" />Reuse as New</DropdownMenuItem>
+                                      <DropdownMenuItem className="cursor-pointer"><Link className="w-4 h-4 mr-2" />Copy Link</DropdownMenuItem>
                                       <DropdownMenuSeparator />
-                                      <DropdownMenuItem className="cursor-pointer">
-                                        <FolderInput className="w-4 h-4 mr-2" />
-                                        Move to Category
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>
-                                        <Share2 className="w-4 h-4 mr-2" />
-                                        Share
-                                      </DropdownMenuItem>
+                                      <DropdownMenuItem className="cursor-pointer"><FolderInput className="w-4 h-4 mr-2" />Move to Category</DropdownMenuItem>
+                                      <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}><Share2 className="w-4 h-4 mr-2" />Share</DropdownMenuItem>
                                       <DropdownMenuSeparator />
-                                      <DropdownMenuItem className="cursor-pointer text-destructive">
-                                        <Trash2 className="w-4 h-4 mr-2" />
-                                        Delete
-                                      </DropdownMenuItem>
+                                      <DropdownMenuItem className="cursor-pointer text-destructive"><Trash2 className="w-4 h-4 mr-2" />Delete</DropdownMenuItem>
                                     </DropdownMenuContent>
                                   </DropdownMenu>
                                 </div>
-                              </td>
-                            </tr>
+                                {/* Status and Type Badges */}
+                                <div className="flex items-center gap-2 mb-3 pl-[52px]">
+                                  {getStatusBadge(item.status, item.scheduledFor)}
+                                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                                    item.automationType === 'automated' 
+                                      ? 'bg-emerald-500/10 text-emerald-600' 
+                                      : item.automationType === 'automated_review' 
+                                        ? 'bg-blue-500/10 text-blue-600' 
+                                        : 'bg-muted text-muted-foreground'
+                                  }`}>
+                                    {item.automationType === 'automated' && <><Sparkles className="w-3 h-3" />Automated</>}
+                                    {item.automationType === 'automated_review' && <><Sparkles className="w-3 h-3" />For Review</>}
+                                    {item.automationType === 'manual' && 'Manual'}
+                                  </span>
+                                </div>
+                                {/* Stats */}
+                                {item.status === 'sent' && (
+                                  <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3 pl-[52px]">
+                                    <span>{item.recipients?.toLocaleString()} recipients</span>
+                                    <span>{item.openRate}% open</span>
+                                    <span>{item.clickRate}% click</span>
+                                  </div>
+                                )}
+                                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                  <div className="flex items-center gap-1.5">
+                                    <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                                      <User className="w-3 h-3 text-muted-foreground" />
+                                    </div>
+                                    <span className="truncate">{item.owner}</span>
+                                  </div>
+                                  <span className="flex-shrink-0">{item.lastEdited}</span>
+                                </div>
+                              </CardContent>
+                            </Card>
                           ))}
-                        </tbody>
-                      </table>
+                        </div>
+                      ) : (
+                        /* Table View */
+                        <table className="w-full">
+                          <thead>
+                            <tr className="border-b border-border text-left">
+                              <th className="p-4 w-10">
+                                <Checkbox 
+                                  checked={selectedItems.length === displayedItems.length && displayedItems.length > 0}
+                                  onCheckedChange={toggleAll}
+                                />
+                              </th>
+                              <th className="p-4 text-sm font-bold text-foreground">
+                                <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('name')}>
+                                  Name
+                                  {sortField === 'name' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                                </button>
+                              </th>
+                              <th className="p-4 text-sm font-bold text-foreground">
+                                <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('status')}>
+                                  Status
+                                  {sortField === 'status' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                                </button>
+                              </th>
+                              <th className="p-4 text-sm font-bold text-foreground">
+                                <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('automationType')}>
+                                  Type
+                                  {sortField === 'automationType' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                                </button>
+                              </th>
+                              <th className="p-4 text-sm font-bold text-foreground">
+                                <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('recipients')}>
+                                  Recipients
+                                  {sortField === 'recipients' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                                </button>
+                              </th>
+                              <th className="p-4 text-sm font-bold text-foreground">
+                                <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('openRate')}>
+                                  Open Rate
+                                  {sortField === 'openRate' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                                </button>
+                              </th>
+                              <th className="p-4 text-sm font-bold text-foreground">
+                                <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('clickRate')}>
+                                  Click Rate
+                                  {sortField === 'clickRate' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                                </button>
+                              </th>
+                              <th className="p-4 text-sm font-bold text-foreground">
+                                <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('owner')}>
+                                  Owner
+                                  {sortField === 'owner' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                                </button>
+                              </th>
+                              <th className="p-4 w-20"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {displayedItems.map((item) => (
+                              <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
+                                <td className="p-4">
+                                  <Checkbox 
+                                    checked={selectedItems.includes(item.id)}
+                                    onCheckedChange={() => toggleItem(item.id)}
+                                  />
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-2">
+                                    <Mail className="w-4 h-4 text-muted-foreground" />
+                                    <span className="text-sm font-medium text-foreground underline cursor-pointer hover:text-primary">
+                                      {item.name}
+                                    </span>
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  {getStatusBadge(item.status, item.scheduledFor)}
+                                </td>
+                                <td className="p-4">
+                                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                                    item.automationType === 'automated' 
+                                      ? 'bg-emerald-500/10 text-emerald-600' 
+                                      : item.automationType === 'automated_review' 
+                                        ? 'bg-blue-500/10 text-blue-600' 
+                                        : 'bg-muted text-muted-foreground'
+                                  }`}>
+                                    {item.automationType === 'automated' && <><Sparkles className="w-3 h-3" />Automated</>}
+                                    {item.automationType === 'automated_review' && <><Sparkles className="w-3 h-3" />For Review</>}
+                                    {item.automationType === 'manual' && 'Manual'}
+                                  </span>
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {item.recipients ? item.recipients.toLocaleString() : '—'}
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {item.openRate ? `${item.openRate}%` : '—'}
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {item.clickRate ? `${item.clickRate}%` : '—'}
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+                                      <User className="w-3 h-3 text-muted-foreground" />
+                                    </div>
+                                    <span className="text-sm font-bold text-foreground underline cursor-pointer hover:text-primary">{item.owner}</span>
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-2">
+                                    <Star className={`w-4 h-4 cursor-pointer ${item.starred ? 'text-primary fill-primary' : 'text-muted-foreground hover:text-primary'}`} />
+                                    <DropdownMenu>
+                                      <DropdownMenuTrigger asChild>
+                                        <button className="p-1 hover:bg-muted rounded">
+                                          <MoreVertical className="w-4 h-4 text-muted-foreground hover:text-foreground cursor-pointer" />
+                                        </button>
+                                      </DropdownMenuTrigger>
+                                      <DropdownMenuContent align="end" className="w-48 bg-card">
+                                        <DropdownMenuItem className="cursor-pointer">
+                                          <Pencil className="w-4 h-4 mr-2" />
+                                          Edit
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="cursor-pointer" onClick={() => handleReuse(item.name)}>
+                                          <RefreshCw className="w-4 h-4 mr-2" />
+                                          Reuse as New
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="cursor-pointer">
+                                          <Link className="w-4 h-4 mr-2" />
+                                          Copy Link
+                                        </DropdownMenuItem>
+                                        {item.status === 'draft' && (
+                                          <>
+                                            <DropdownMenuItem className="cursor-pointer">
+                                              <Send className="w-4 h-4 mr-2" />
+                                              Send Now
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer">
+                                              <Calendar className="w-4 h-4 mr-2" />
+                                              Schedule
+                                            </DropdownMenuItem>
+                                          </>
+                                        )}
+                                        {item.status === 'scheduled' && (
+                                          <DropdownMenuItem className="cursor-pointer">
+                                            <Calendar className="w-4 h-4 mr-2" />
+                                            Reschedule
+                                          </DropdownMenuItem>
+                                        )}
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem className="cursor-pointer">
+                                          <FolderInput className="w-4 h-4 mr-2" />
+                                          Move to Category
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>
+                                          <Share2 className="w-4 h-4 mr-2" />
+                                          Share
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem className="cursor-pointer text-destructive">
+                                          <Trash2 className="w-4 h-4 mr-2" />
+                                          Delete
+                                        </DropdownMenuItem>
+                                      </DropdownMenuContent>
+                                    </DropdownMenu>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      )}
                     </div>
 
                     {/* Categories Sidebar */}
