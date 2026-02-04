@@ -2,9 +2,8 @@ import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
-import { ChevronDown, ChevronRight, Star, MoreVertical, Plus, Sparkles, FileText, Mail, Users, Clock, Send, RefreshCw, Copy, User, Pencil, Link, FolderInput, Share2, Trash2, Calendar, Grid3X3, List, Folder, Eye } from "lucide-react";
+import { ChevronDown, Star, MoreVertical, Plus, Sparkles, FileText, Mail, Users, Clock, Send, RefreshCw, Copy, User, Pencil, Link, FolderInput, Share2, Trash2, Calendar, Grid3X3, List, Folder } from "lucide-react";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -33,104 +32,33 @@ interface CategoryItem {
   count: number;
 }
 
-interface NewsletterVersion {
-  id: string;
-  status: 'sent' | 'draft' | 'ready_for_review' | 'scheduled';
-  date: string;
+interface NewsletterItem {
+  id: number;
+  name: string;
+  category: string;
+  status: 'draft' | 'scheduled' | 'sent';
+  automationType: 'automated' | 'automated_review' | 'manual';
+  lastEdited: string;
+  owner: string;
+  starred?: boolean;
+  // Stats for sent newsletters
   recipients?: number;
   openRate?: number;
   clickRate?: number;
   scheduledFor?: string;
 }
 
-interface NewsletterItem {
-  id: number;
-  name: string;
-  category: string;
-  automationType: 'automated' | 'automated_review' | 'manual';
-  lastEdited: string;
-  owner: string;
-  starred?: boolean;
-  versions: NewsletterVersion[];
-}
-
 const allNewsletterItems: NewsletterItem[] = [
-  { 
-    id: 1, name: "The Daily Media Brief", category: "Media", automationType: "automated", lastEdited: "7/2/2025 11:00 AM", owner: "Laura Bennett", starred: true,
-    versions: [
-      { id: "1a", status: "sent", date: "7/2/2025", recipients: 156, openRate: 72.4, clickRate: 4.2 },
-      { id: "1b", status: "sent", date: "7/1/2025", recipients: 148, openRate: 68.1, clickRate: 3.9 },
-      { id: "1c", status: "draft", date: "7/3/2025" },
-      { id: "1d", status: "ready_for_review", date: "7/3/2025" },
-    ]
-  },
-  { 
-    id: 2, name: "The Brand Pulse", category: "Brand", automationType: "automated_review", lastEdited: "2 days ago", owner: "Alex Morgan", starred: true,
-    versions: [
-      { id: "2a", status: "sent", date: "6/28/2025", recipients: 89, openRate: 68.1, clickRate: 3.8 },
-      { id: "2b", status: "ready_for_review", date: "7/1/2025" },
-      { id: "2c", status: "draft", date: "7/2/2025" },
-    ]
-  },
-  { 
-    id: 3, name: "Morning Media Roundup", category: "Media", automationType: "automated", lastEdited: "4 days ago", owner: "Sophia Patel", starred: true,
-    versions: [
-      { id: "3a", status: "scheduled", date: "7/5/2025", scheduledFor: "Tomorrow, 8:00 AM" },
-      { id: "3b", status: "sent", date: "7/1/2025", recipients: 120, openRate: 75.2, clickRate: 4.8 },
-    ]
-  },
-  { 
-    id: 4, name: "Market Trends Newsletter", category: "Market", automationType: "manual", lastEdited: "Nov 17", owner: "Rachel Wu", starred: true,
-    versions: [
-      { id: "4a", status: "draft", date: "Nov 17" },
-      { id: "4b", status: "draft", date: "Nov 15" },
-    ]
-  },
-  { 
-    id: 5, name: "Weekly Industry Update", category: "Market", automationType: "automated_review", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false,
-    versions: [
-      { id: "5a", status: "sent", date: "Nov 15", recipients: 234, openRate: 65.2, clickRate: 2.9 },
-      { id: "5b", status: "sent", date: "Nov 8", recipients: 228, openRate: 63.1, clickRate: 2.7 },
-      { id: "5c", status: "ready_for_review", date: "Nov 22" },
-    ]
-  },
-  { 
-    id: 6, name: "Leadership Insights", category: "Leadership", automationType: "manual", lastEdited: "Nov 14", owner: "David Kim", starred: true,
-    versions: [
-      { id: "6a", status: "draft", date: "Nov 14" },
-    ]
-  },
-  { 
-    id: 7, name: "Competitor Watch Weekly", category: "Competition", automationType: "automated", lastEdited: "Nov 12", owner: "Laura Bennett", starred: false,
-    versions: [
-      { id: "7a", status: "sent", date: "Nov 12", recipients: 178, openRate: 71.8, clickRate: 5.1 },
-      { id: "7b", status: "scheduled", date: "Nov 19", scheduledFor: "Nov 19, 9:00 AM" },
-    ]
-  },
-  { 
-    id: 8, name: "Social Trends Digest", category: "Social", automationType: "automated_review", lastEdited: "Nov 10", owner: "Sophia Patel", starred: true,
-    versions: [
-      { id: "8a", status: "scheduled", date: "Nov 25", scheduledFor: "Nov 25, 9:00 AM" },
-      { id: "8b", status: "ready_for_review", date: "Nov 24" },
-      { id: "8c", status: "draft", date: "Nov 23" },
-    ]
-  },
-  { 
-    id: 9, name: "Executive Summary Q4", category: "Leadership", automationType: "manual", lastEdited: "Nov 8", owner: "Rachel Wu", starred: true,
-    versions: [
-      { id: "9a", status: "sent", date: "Nov 8", recipients: 45, openRate: 82.3, clickRate: 6.7 },
-    ]
-  },
-  { 
-    id: 10, name: "Crisis Update Brief", category: "Crisis", automationType: "automated", lastEdited: "Nov 5", owner: "Tom Nguyen", starred: false,
-    versions: [
-      { id: "10a", status: "sent", date: "Nov 5", recipients: 312, openRate: 78.9, clickRate: 4.5 },
-      { id: "10b", status: "sent", date: "Oct 29", recipients: 298, openRate: 76.2, clickRate: 4.1 },
-      { id: "10c", status: "draft", date: "Nov 12" },
-      { id: "10d", status: "ready_for_review", date: "Nov 11" },
-      { id: "10e", status: "scheduled", date: "Nov 15", scheduledFor: "Nov 15, 10:00 AM" },
-    ]
-  },
+  { id: 1, name: "The Daily Media Brief", category: "Media", status: "sent", automationType: "automated", lastEdited: "Yesterday", owner: "Laura Bennett", starred: true, recipients: 156, openRate: 72.4, clickRate: 4.2 },
+  { id: 2, name: "The Brand Pulse", category: "Brand", status: "sent", automationType: "automated_review", lastEdited: "2 days ago", owner: "Alex Morgan", starred: true, recipients: 89, openRate: 68.1, clickRate: 3.8 },
+  { id: 3, name: "Morning Media Roundup", category: "Media", status: "scheduled", automationType: "automated", lastEdited: "4 days ago", owner: "Sophia Patel", starred: true, scheduledFor: "Tomorrow, 8:00 AM" },
+  { id: 4, name: "Market Trends Newsletter", category: "Market", status: "draft", automationType: "manual", lastEdited: "Nov 17", owner: "Rachel Wu", starred: true },
+  { id: 5, name: "Weekly Industry Update", category: "Market", status: "sent", automationType: "automated_review", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false, recipients: 234, openRate: 65.2, clickRate: 2.9 },
+  { id: 6, name: "Leadership Insights", category: "Leadership", status: "draft", automationType: "manual", lastEdited: "Nov 14", owner: "David Kim", starred: true },
+  { id: 7, name: "Competitor Watch Weekly", category: "Competition", status: "sent", automationType: "automated", lastEdited: "Nov 12", owner: "Laura Bennett", starred: false, recipients: 178, openRate: 71.8, clickRate: 5.1 },
+  { id: 8, name: "Social Trends Digest", category: "Social", status: "scheduled", automationType: "automated_review", lastEdited: "Nov 10", owner: "Sophia Patel", starred: true, scheduledFor: "Nov 25, 9:00 AM" },
+  { id: 9, name: "Executive Summary Q4", category: "Leadership", status: "sent", automationType: "manual", lastEdited: "Nov 8", owner: "Rachel Wu", starred: true, recipients: 45, openRate: 82.3, clickRate: 6.7 },
+  { id: 10, name: "Crisis Update Brief", category: "Crisis", status: "sent", automationType: "automated", lastEdited: "Nov 5", owner: "Tom Nguyen", starred: false, recipients: 312, openRate: 78.9, clickRate: 4.5 },
 ];
 
 const initialCategories: CategoryItem[] = [
@@ -249,40 +177,9 @@ const Distribute = () => {
     }
   };
 
-  const [expandedItems, setExpandedItems] = useState<number[]>([]);
-
-  const toggleExpand = (id: number) => {
-    setExpandedItems(prev => 
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
-    );
-  };
-
-  // Helper functions for version counts
-  const getVersionCounts = (versions: NewsletterVersion[]) => ({
-    sent: versions.filter(v => v.status === 'sent').length,
-    draft: versions.filter(v => v.status === 'draft').length,
-    ready_for_review: versions.filter(v => v.status === 'ready_for_review').length,
-    scheduled: versions.filter(v => v.status === 'scheduled').length,
-  });
-
-  const getAggregatedStats = (versions: NewsletterVersion[]) => {
-    const sentVersions = versions.filter(v => v.status === 'sent');
-    const totalRecipients = sentVersions.reduce((acc, v) => acc + (v.recipients || 0), 0);
-    const avgOpenRate = sentVersions.length > 0 
-      ? sentVersions.reduce((acc, v) => acc + (v.openRate || 0), 0) / sentVersions.length 
-      : 0;
-    const avgClickRate = sentVersions.length > 0 
-      ? sentVersions.reduce((acc, v) => acc + (v.clickRate || 0), 0) / sentVersions.length 
-      : 0;
-    return { totalRecipients, avgOpenRate, avgClickRate };
-  };
-
-  // Filter newsletters based on whether any version matches the status
   const filteredItems = statusFilter === 'all' 
     ? allNewsletterItems 
-    : allNewsletterItems.filter(item => 
-        item.versions.some(v => v.status === statusFilter)
-      );
+    : allNewsletterItems.filter(item => item.status === statusFilter);
 
   const sortedItems = [...filteredItems].sort((a, b) => {
     let comparison = 0;
@@ -295,11 +192,14 @@ const Distribute = () => {
     } else if (sortField === 'lastEdited') {
       comparison = a.lastEdited.localeCompare(b.lastEdited);
     } else if (sortField === 'recipients') {
-      comparison = getAggregatedStats(a.versions).totalRecipients - getAggregatedStats(b.versions).totalRecipients;
+      comparison = (a.recipients || 0) - (b.recipients || 0);
     } else if (sortField === 'openRate') {
-      comparison = getAggregatedStats(a.versions).avgOpenRate - getAggregatedStats(b.versions).avgOpenRate;
+      comparison = (a.openRate || 0) - (b.openRate || 0);
     } else if (sortField === 'clickRate') {
-      comparison = getAggregatedStats(a.versions).avgClickRate - getAggregatedStats(b.versions).avgClickRate;
+      comparison = (a.clickRate || 0) - (b.clickRate || 0);
+    } else if (sortField === 'status') {
+      const statusOrder = { 'draft': 0, 'scheduled': 1, 'sent': 2 };
+      comparison = (statusOrder[a.status as keyof typeof statusOrder] || 0) - (statusOrder[b.status as keyof typeof statusOrder] || 0);
     } else if (sortField === 'automationType') {
       const automationOrder = { 'automated': 0, 'automated_review': 1, 'manual': 2 };
       comparison = (automationOrder[a.automationType as keyof typeof automationOrder] || 0) - (automationOrder[b.automationType as keyof typeof automationOrder] || 0);
@@ -309,68 +209,33 @@ const Distribute = () => {
 
   const displayedItems = sortedItems;
 
-  // Stats - count all sent versions across all newsletters
-  const allSentVersions = allNewsletterItems.flatMap(i => i.versions.filter(v => v.status === 'sent'));
-  const totalSent = allSentVersions.length;
-  const avgOpenRate = totalSent > 0 
-    ? allSentVersions.reduce((acc, v) => acc + (v.openRate || 0), 0) / totalSent 
-    : 0;
-  const avgClickRate = totalSent > 0 
-    ? allSentVersions.reduce((acc, v) => acc + (v.clickRate || 0), 0) / totalSent 
-    : 0;
-  const totalDrafts = allNewsletterItems.reduce((acc, i) => acc + i.versions.filter(v => v.status === 'draft').length, 0);
+  // Stats
+  const totalSent = allNewsletterItems.filter(i => i.status === 'sent').length;
+  const avgOpenRate = allNewsletterItems
+    .filter(i => i.openRate)
+    .reduce((acc, i) => acc + (i.openRate || 0), 0) / totalSent || 0;
+  const avgClickRate = allNewsletterItems
+    .filter(i => i.clickRate)
+    .reduce((acc, i) => acc + (i.clickRate || 0), 0) / totalSent || 0;
 
-  const getVersionStatusBadge = (status: string, scheduledFor?: string) => {
+  const getStatusBadge = (status: string, scheduledFor?: string) => {
     switch (status) {
       case 'sent':
         return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary"><Send className="w-3 h-3" />Sent</span>;
       case 'scheduled':
-        return scheduledFor ? (
+        return (
           <Tooltip>
             <TooltipTrigger>
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-600"><Clock className="w-3 h-3" />Scheduled</span>
             </TooltipTrigger>
             <TooltipContent>{scheduledFor}</TooltipContent>
           </Tooltip>
-        ) : (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-600"><Clock className="w-3 h-3" />Scheduled</span>
         );
       case 'draft':
         return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground"><FileText className="w-3 h-3" />Draft</span>;
-      case 'ready_for_review':
-        return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-600"><Eye className="w-3 h-3" />Ready for review</span>;
       default:
         return null;
     }
-  };
-
-  const renderStatusSummary = (versions: NewsletterVersion[]) => {
-    const counts = getVersionCounts(versions);
-    const parts: React.ReactNode[] = [];
-    
-    if (counts.sent > 0) {
-      parts.push(<span key="sent" className="text-primary font-medium">{counts.sent} Sent</span>);
-    }
-    if (counts.draft > 0) {
-      parts.push(<span key="draft" className="text-muted-foreground">{counts.draft} Draft</span>);
-    }
-    if (counts.ready_for_review > 0) {
-      parts.push(<span key="review" className="text-blue-600">{counts.ready_for_review} Ready for review</span>);
-    }
-    if (counts.scheduled > 0) {
-      parts.push(<span key="scheduled" className="text-amber-600">{counts.scheduled} Scheduled</span>);
-    }
-
-    return (
-      <div className="flex items-center gap-1 text-xs flex-wrap">
-        {parts.map((part, i) => (
-          <span key={i} className="flex items-center gap-1">
-            {part}
-            {i < parts.length - 1 && <span className="text-muted-foreground">,</span>}
-          </span>
-        ))}
-      </div>
-    );
   };
 
   return (
@@ -456,7 +321,7 @@ const Distribute = () => {
                     </div>
                     <div className="bg-card border border-border rounded-lg p-4">
                       <p className="text-sm text-muted-foreground mb-1">Drafts</p>
-                      <p className="text-2xl font-semibold text-foreground">{totalDrafts}</p>
+                      <p className="text-2xl font-semibold text-foreground">{allNewsletterItems.filter(i => i.status === 'draft').length}</p>
                     </div>
                   </div>
 
@@ -538,19 +403,19 @@ const Distribute = () => {
                             className={`py-3 text-sm font-medium border-b-2 transition-colors ${statusFilter === 'draft' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                             onClick={() => setStatusFilter('draft')}
                           >
-                            Drafts ({allNewsletterItems.reduce((acc, i) => acc + i.versions.filter(v => v.status === 'draft').length, 0)})
+                            Drafts ({allNewsletterItems.filter(i => i.status === 'draft').length})
                           </button>
                           <button 
                             className={`py-3 text-sm font-medium border-b-2 transition-colors ${statusFilter === 'scheduled' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                             onClick={() => setStatusFilter('scheduled')}
                           >
-                            Scheduled ({allNewsletterItems.reduce((acc, i) => acc + i.versions.filter(v => v.status === 'scheduled').length, 0)})
+                            Scheduled ({allNewsletterItems.filter(i => i.status === 'scheduled').length})
                           </button>
                           <button 
                             className={`py-3 text-sm font-medium border-b-2 transition-colors ${statusFilter === 'sent' ? 'border-primary text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                             onClick={() => setStatusFilter('sent')}
                           >
-                            Sent ({allNewsletterItems.reduce((acc, i) => acc + i.versions.filter(v => v.status === 'sent').length, 0)})
+                            Sent ({allNewsletterItems.filter(i => i.status === 'sent').length})
                           </button>
                         </div>
                       </div>
@@ -597,10 +462,10 @@ const Distribute = () => {
                                     </DropdownMenuContent>
                                   </DropdownMenu>
                                 </div>
-                                {/* Status Summary and Type Badge */}
-                                <div className="flex flex-col gap-2 mb-3 pl-[52px]">
-                                  {renderStatusSummary(item.versions)}
-                                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium w-fit ${
+                                {/* Status and Type Badges */}
+                                <div className="flex items-center gap-2 mb-3 pl-[52px]">
+                                  {getStatusBadge(item.status, item.scheduledFor)}
+                                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
                                     item.automationType === 'automated' 
                                       ? 'bg-emerald-500/10 text-emerald-600' 
                                       : item.automationType === 'automated_review' 
@@ -612,6 +477,14 @@ const Distribute = () => {
                                     {item.automationType === 'manual' && 'Manual'}
                                   </span>
                                 </div>
+                                {/* Stats */}
+                                {item.status === 'sent' && (
+                                  <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3 pl-[52px]">
+                                    <span>{item.recipients?.toLocaleString()} recipients</span>
+                                    <span>{item.openRate}% open</span>
+                                    <span>{item.clickRate}% click</span>
+                                  </div>
+                                )}
                                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                                   <div className="flex items-center gap-1.5">
                                     <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
@@ -682,182 +555,115 @@ const Distribute = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {displayedItems.map((item) => {
-                              const isExpanded = expandedItems.includes(item.id);
-                              const stats = getAggregatedStats(item.versions);
-                              return (
-                                <Collapsible key={item.id} open={isExpanded} onOpenChange={() => toggleExpand(item.id)}>
-                                  <tr className="border-b border-border hover:bg-muted/50">
-                                    <td className="p-4">
-                                      <Checkbox 
-                                        checked={selectedItems.includes(item.id)}
-                                        onCheckedChange={() => toggleItem(item.id)}
-                                      />
-                                    </td>
-                                    <td className="p-4">
-                                      <CollapsibleTrigger asChild>
-                                        <div className="flex items-center gap-2 cursor-pointer">
-                                          {isExpanded ? (
-                                            <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                                          ) : (
-                                            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                                          )}
-                                          <Mail className="w-4 h-4 text-muted-foreground" />
-                                          <span className="text-sm font-medium text-foreground underline hover:text-primary">
-                                            {item.name}
-                                          </span>
-                                        </div>
-                                      </CollapsibleTrigger>
-                                    </td>
-                                    <td className="p-4">
-                                      {renderStatusSummary(item.versions)}
-                                    </td>
-                                    <td className="p-4">
-                                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
-                                        item.automationType === 'automated' 
-                                          ? 'bg-emerald-500/10 text-emerald-600' 
-                                          : item.automationType === 'automated_review' 
-                                            ? 'bg-blue-500/10 text-blue-600' 
-                                            : 'bg-muted text-muted-foreground'
-                                      }`}>
-                                        {item.automationType === 'automated' && <><Sparkles className="w-3 h-3" />Automated</>}
-                                        {item.automationType === 'automated_review' && <><Sparkles className="w-3 h-3" />For Review</>}
-                                        {item.automationType === 'manual' && 'Manual'}
-                                      </span>
-                                    </td>
-                                    <td className="p-4 text-sm text-muted-foreground">
-                                      {stats.totalRecipients > 0 ? stats.totalRecipients.toLocaleString() : '—'}
-                                    </td>
-                                    <td className="p-4 text-sm text-muted-foreground">
-                                      {stats.avgOpenRate > 0 ? `${stats.avgOpenRate.toFixed(1)}%` : '—'}
-                                    </td>
-                                    <td className="p-4 text-sm text-muted-foreground">
-                                      {stats.avgClickRate > 0 ? `${stats.avgClickRate.toFixed(1)}%` : '—'}
-                                    </td>
-                                    <td className="p-4">
-                                      <div className="flex items-center gap-2">
-                                        <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
-                                          <User className="w-3 h-3 text-muted-foreground" />
-                                        </div>
-                                        <span className="text-sm font-bold text-foreground underline cursor-pointer hover:text-primary">{item.owner}</span>
-                                      </div>
-                                    </td>
-                                    <td className="p-4">
-                                      <div className="flex items-center gap-2">
-                                        <Star className={`w-4 h-4 cursor-pointer ${item.starred ? 'text-primary fill-primary' : 'text-muted-foreground hover:text-primary'}`} />
-                                        <DropdownMenu>
-                                          <DropdownMenuTrigger asChild>
-                                            <button className="p-1 hover:bg-muted rounded">
-                                              <MoreVertical className="w-4 h-4 text-muted-foreground hover:text-foreground cursor-pointer" />
-                                            </button>
-                                          </DropdownMenuTrigger>
-                                          <DropdownMenuContent align="end" className="w-48 bg-card">
+                            {displayedItems.map((item) => (
+                              <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
+                                <td className="p-4">
+                                  <Checkbox 
+                                    checked={selectedItems.includes(item.id)}
+                                    onCheckedChange={() => toggleItem(item.id)}
+                                  />
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-2">
+                                    <Mail className="w-4 h-4 text-muted-foreground" />
+                                    <span className="text-sm font-medium text-foreground underline cursor-pointer hover:text-primary">
+                                      {item.name}
+                                    </span>
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  {getStatusBadge(item.status, item.scheduledFor)}
+                                </td>
+                                <td className="p-4">
+                                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                                    item.automationType === 'automated' 
+                                      ? 'bg-emerald-500/10 text-emerald-600' 
+                                      : item.automationType === 'automated_review' 
+                                        ? 'bg-blue-500/10 text-blue-600' 
+                                        : 'bg-muted text-muted-foreground'
+                                  }`}>
+                                    {item.automationType === 'automated' && <><Sparkles className="w-3 h-3" />Automated</>}
+                                    {item.automationType === 'automated_review' && <><Sparkles className="w-3 h-3" />For Review</>}
+                                    {item.automationType === 'manual' && 'Manual'}
+                                  </span>
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {item.recipients ? item.recipients.toLocaleString() : '—'}
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {item.openRate ? `${item.openRate}%` : '—'}
+                                </td>
+                                <td className="p-4 text-sm text-muted-foreground">
+                                  {item.clickRate ? `${item.clickRate}%` : '—'}
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center">
+                                      <User className="w-3 h-3 text-muted-foreground" />
+                                    </div>
+                                    <span className="text-sm font-bold text-foreground underline cursor-pointer hover:text-primary">{item.owner}</span>
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-2">
+                                    <Star className={`w-4 h-4 cursor-pointer ${item.starred ? 'text-primary fill-primary' : 'text-muted-foreground hover:text-primary'}`} />
+                                    <DropdownMenu>
+                                      <DropdownMenuTrigger asChild>
+                                        <button className="p-1 hover:bg-muted rounded">
+                                          <MoreVertical className="w-4 h-4 text-muted-foreground hover:text-foreground cursor-pointer" />
+                                        </button>
+                                      </DropdownMenuTrigger>
+                                      <DropdownMenuContent align="end" className="w-48 bg-card">
+                                        <DropdownMenuItem className="cursor-pointer">
+                                          <Pencil className="w-4 h-4 mr-2" />
+                                          Edit
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="cursor-pointer" onClick={() => handleReuse(item.name)}>
+                                          <RefreshCw className="w-4 h-4 mr-2" />
+                                          Reuse as New
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="cursor-pointer">
+                                          <Link className="w-4 h-4 mr-2" />
+                                          Copy Link
+                                        </DropdownMenuItem>
+                                        {item.status === 'draft' && (
+                                          <>
                                             <DropdownMenuItem className="cursor-pointer">
-                                              <Pencil className="w-4 h-4 mr-2" />
-                                              Edit
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer" onClick={() => handleReuse(item.name)}>
-                                              <RefreshCw className="w-4 h-4 mr-2" />
-                                              Reuse as New
+                                              <Send className="w-4 h-4 mr-2" />
+                                              Send Now
                                             </DropdownMenuItem>
                                             <DropdownMenuItem className="cursor-pointer">
-                                              <Link className="w-4 h-4 mr-2" />
-                                              Copy Link
+                                              <Calendar className="w-4 h-4 mr-2" />
+                                              Schedule
                                             </DropdownMenuItem>
-                                            {item.versions.some(v => v.status === 'draft') && (
-                                              <>
-                                                <DropdownMenuItem className="cursor-pointer">
-                                                  <Send className="w-4 h-4 mr-2" />
-                                                  Send Now
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer">
-                                                  <Calendar className="w-4 h-4 mr-2" />
-                                                  Schedule
-                                                </DropdownMenuItem>
-                                              </>
-                                            )}
-                                            {item.versions.some(v => v.status === 'scheduled') && (
-                                              <DropdownMenuItem className="cursor-pointer">
-                                                <Calendar className="w-4 h-4 mr-2" />
-                                                Reschedule
-                                              </DropdownMenuItem>
-                                            )}
-                                            <DropdownMenuSeparator />
-                                            <DropdownMenuItem className="cursor-pointer">
-                                              <FolderInput className="w-4 h-4 mr-2" />
-                                              Move to Category
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>
-                                              <Share2 className="w-4 h-4 mr-2" />
-                                              Share
-                                            </DropdownMenuItem>
-                                            <DropdownMenuSeparator />
-                                            <DropdownMenuItem className="cursor-pointer text-destructive">
-                                              <Trash2 className="w-4 h-4 mr-2" />
-                                              Delete
-                                            </DropdownMenuItem>
-                                          </DropdownMenuContent>
-                                        </DropdownMenu>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <CollapsibleContent asChild>
-                                    <>
-                                      {item.versions.map((version) => (
-                                        <tr key={version.id} className="bg-muted/30 border-b border-border last:border-b-0">
-                                          <td className="p-4"></td>
-                                          <td className="p-4 pl-12">
-                                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                              <FileText className="w-3 h-3" />
-                                              <span>{version.date}</span>
-                                            </div>
-                                          </td>
-                                          <td className="p-4">
-                                            {getVersionStatusBadge(version.status, version.scheduledFor)}
-                                          </td>
-                                          <td className="p-4"></td>
-                                          <td className="p-4 text-sm text-muted-foreground">
-                                            {version.recipients ? version.recipients.toLocaleString() : '—'}
-                                          </td>
-                                          <td className="p-4 text-sm text-muted-foreground">
-                                            {version.openRate ? `${version.openRate}%` : '—'}
-                                          </td>
-                                          <td className="p-4 text-sm text-muted-foreground">
-                                            {version.clickRate ? `${version.clickRate}%` : '—'}
-                                          </td>
-                                          <td className="p-4"></td>
-                                          <td className="p-4">
-                                            <DropdownMenu>
-                                              <DropdownMenuTrigger asChild>
-                                                <button className="p-1 hover:bg-muted rounded">
-                                                  <MoreVertical className="w-4 h-4 text-muted-foreground hover:text-foreground cursor-pointer" />
-                                                </button>
-                                              </DropdownMenuTrigger>
-                                              <DropdownMenuContent align="end" className="w-48 bg-card">
-                                                <DropdownMenuItem className="cursor-pointer">
-                                                  <Pencil className="w-4 h-4 mr-2" />
-                                                  Edit
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer" onClick={() => handleReuse(item.name)}>
-                                                  <RefreshCw className="w-4 h-4 mr-2" />
-                                                  Reuse as New
-                                                </DropdownMenuItem>
-                                                {version.status === 'sent' && (
-                                                  <DropdownMenuItem className="cursor-pointer">
-                                                    <Link className="w-4 h-4 mr-2" />
-                                                    View in Browser
-                                                  </DropdownMenuItem>
-                                                )}
-                                              </DropdownMenuContent>
-                                            </DropdownMenu>
-                                          </td>
-                                        </tr>
-                                      ))}
-                                    </>
-                                  </CollapsibleContent>
-                                </Collapsible>
-                              );
-                            })}
+                                          </>
+                                        )}
+                                        {item.status === 'scheduled' && (
+                                          <DropdownMenuItem className="cursor-pointer">
+                                            <Calendar className="w-4 h-4 mr-2" />
+                                            Reschedule
+                                          </DropdownMenuItem>
+                                        )}
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem className="cursor-pointer">
+                                          <FolderInput className="w-4 h-4 mr-2" />
+                                          Move to Category
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem className="cursor-pointer" onClick={() => handleOpenShare(item.name)}>
+                                          <Share2 className="w-4 h-4 mr-2" />
+                                          Share
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem className="cursor-pointer text-destructive">
+                                          <Trash2 className="w-4 h-4 mr-2" />
+                                          Delete
+                                        </DropdownMenuItem>
+                                      </DropdownMenuContent>
+                                    </DropdownMenu>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       )}
@@ -1167,41 +973,35 @@ const Distribute = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {allNewsletterItems.filter(i => i.versions.some(v => v.status === 'sent')).slice(0, 5).map((item) => {
-                          const sentVersions = item.versions.filter(v => v.status === 'sent');
-                          const latestSent = sentVersions[0];
-                          const avgOpenRate = sentVersions.reduce((acc, v) => acc + (v.openRate || 0), 0) / sentVersions.length;
-                          const avgClickRate = sentVersions.reduce((acc, v) => acc + (v.clickRate || 0), 0) / sentVersions.length;
-                          return (
-                            <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
-                              <td className="p-4">
-                                <div className="flex items-center gap-2">
-                                  <Mail className="w-4 h-4 text-muted-foreground" />
-                                  <span className="text-sm font-medium text-foreground">{item.name}</span>
-                                </div>
-                              </td>
-                              <td className="p-4 text-sm text-muted-foreground">{item.category}</td>
-                              <td className="p-4 text-sm text-muted-foreground">{latestSent?.date || item.lastEdited}</td>
-                              <td className="p-4">
-                                <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                  <span>{avgOpenRate.toFixed(1)}% opens</span>
-                                  <span>{avgClickRate.toFixed(1)}% clicks</span>
-                                </div>
-                              </td>
-                              <td className="p-4">
-                                <Button 
-                                  size="sm" 
-                                  variant="outline" 
-                                  className="gap-2"
-                                  onClick={() => handleReuse(item.name)}
-                                >
-                                  <RefreshCw className="w-3 h-3" />
-                                  Reuse
-                                </Button>
-                              </td>
-                            </tr>
-                          );
-                        })}
+                        {allNewsletterItems.filter(i => i.status === 'sent').slice(0, 5).map((item) => (
+                          <tr key={item.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <Mail className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-sm font-medium text-foreground">{item.name}</span>
+                              </div>
+                            </td>
+                            <td className="p-4 text-sm text-muted-foreground">{item.category}</td>
+                            <td className="p-4 text-sm text-muted-foreground">{item.lastEdited}</td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                <span>{item.openRate}% opens</span>
+                                <span>{item.clickRate}% clicks</span>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="gap-2"
+                                onClick={() => handleReuse(item.name)}
+                              >
+                                <RefreshCw className="w-3 h-3" />
+                                Reuse
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
