@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { AISearchBuilder } from "@/components/discover/AISearchBuilder";
@@ -91,6 +92,9 @@ type SortDirection = 'asc' | 'desc';
 const ITEMS_PER_PAGE = 10;
 
 const Discover = () => {
+  const [searchParams] = useSearchParams();
+  const openBuilder = searchParams.get('openBuilder') === 'true';
+  
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [sortField, setSortField] = useState<SortField>('lastEdited');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
@@ -194,7 +198,7 @@ const Discover = () => {
             </div>
 
             {/* AI Search Builder */}
-            <AISearchBuilder />
+            <AISearchBuilder initialExpanded={openBuilder} />
 
             <div className="flex gap-6 items-start flex-row-reverse">
               {/* Main Table */}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, AlertCircle, ShieldCheck, LogOut, Building2, UserCircle, FolderOpen, Users, FileStack, Rows3, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "./SearchBar";
@@ -46,7 +46,15 @@ export const Header = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [bellTab, setBellTab] = useState<string>("alerts");
   const location = useLocation();
+  const navigate = useNavigate();
   const pageTitle = pageTitles[location.pathname] || "Meltwater";
+
+  const handleCreateMenuClick = (label: string) => {
+    if (label === "Search") {
+      navigate("/discover?openBuilder=true");
+      setIsCreateOpen(false);
+    }
+  };
   
   return (
     <header className="h-16 bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-10">
@@ -73,7 +81,11 @@ export const Header = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 bg-card border border-border shadow-lg z-50">
             {createMenuItems.map((item) => (
-              <DropdownMenuItem key={item.label} className="cursor-pointer group">
+              <DropdownMenuItem 
+                key={item.label} 
+                className="cursor-pointer group"
+                onClick={() => handleCreateMenuClick(item.label)}
+              >
                 <item.icon className="w-4 h-4 mr-2 text-muted-foreground group-hover:text-white" />
                 {item.label}
               </DropdownMenuItem>
