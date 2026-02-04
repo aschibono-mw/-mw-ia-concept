@@ -233,7 +233,7 @@ const Distribute = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Sidebar activePage="distribute" />
+      <Sidebar activePage="newsletters" />
       <Header />
       
       <main className="ml-52 pt-16">
