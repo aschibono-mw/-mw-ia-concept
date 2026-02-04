@@ -36,6 +36,7 @@ interface NewsletterItem {
   name: string;
   category: string;
   status: 'draft' | 'scheduled' | 'sent';
+  automationType: 'automated' | 'automated_review' | 'manual';
   lastEdited: string;
   owner: string;
   starred?: boolean;
@@ -47,16 +48,16 @@ interface NewsletterItem {
 }
 
 const allNewsletterItems: NewsletterItem[] = [
-  { id: 1, name: "The Daily Media Brief", category: "Media", status: "sent", lastEdited: "Yesterday", owner: "Laura Bennett", starred: true, recipients: 156, openRate: 72.4, clickRate: 4.2 },
-  { id: 2, name: "The Brand Pulse", category: "Brand", status: "sent", lastEdited: "2 days ago", owner: "Alex Morgan", starred: true, recipients: 89, openRate: 68.1, clickRate: 3.8 },
-  { id: 3, name: "Morning Media Roundup", category: "Media", status: "scheduled", lastEdited: "4 days ago", owner: "Sophia Patel", starred: true, scheduledFor: "Tomorrow, 8:00 AM" },
-  { id: 4, name: "Market Trends Newsletter", category: "Market", status: "draft", lastEdited: "Nov 17", owner: "Rachel Wu", starred: true },
-  { id: 5, name: "Weekly Industry Update", category: "Market", status: "sent", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false, recipients: 234, openRate: 65.2, clickRate: 2.9 },
-  { id: 6, name: "Leadership Insights", category: "Leadership", status: "draft", lastEdited: "Nov 14", owner: "David Kim", starred: true },
-  { id: 7, name: "Competitor Watch Weekly", category: "Competition", status: "sent", lastEdited: "Nov 12", owner: "Laura Bennett", starred: false, recipients: 178, openRate: 71.8, clickRate: 5.1 },
-  { id: 8, name: "Social Trends Digest", category: "Social", status: "scheduled", lastEdited: "Nov 10", owner: "Sophia Patel", starred: true, scheduledFor: "Nov 25, 9:00 AM" },
-  { id: 9, name: "Executive Summary Q4", category: "Leadership", status: "sent", lastEdited: "Nov 8", owner: "Rachel Wu", starred: true, recipients: 45, openRate: 82.3, clickRate: 6.7 },
-  { id: 10, name: "Crisis Update Brief", category: "Crisis", status: "sent", lastEdited: "Nov 5", owner: "Tom Nguyen", starred: false, recipients: 312, openRate: 78.9, clickRate: 4.5 },
+  { id: 1, name: "The Daily Media Brief", category: "Media", status: "sent", automationType: "automated", lastEdited: "Yesterday", owner: "Laura Bennett", starred: true, recipients: 156, openRate: 72.4, clickRate: 4.2 },
+  { id: 2, name: "The Brand Pulse", category: "Brand", status: "sent", automationType: "automated_review", lastEdited: "2 days ago", owner: "Alex Morgan", starred: true, recipients: 89, openRate: 68.1, clickRate: 3.8 },
+  { id: 3, name: "Morning Media Roundup", category: "Media", status: "scheduled", automationType: "automated", lastEdited: "4 days ago", owner: "Sophia Patel", starred: true, scheduledFor: "Tomorrow, 8:00 AM" },
+  { id: 4, name: "Market Trends Newsletter", category: "Market", status: "draft", automationType: "manual", lastEdited: "Nov 17", owner: "Rachel Wu", starred: true },
+  { id: 5, name: "Weekly Industry Update", category: "Market", status: "sent", automationType: "automated_review", lastEdited: "Nov 15", owner: "Tom Nguyen", starred: false, recipients: 234, openRate: 65.2, clickRate: 2.9 },
+  { id: 6, name: "Leadership Insights", category: "Leadership", status: "draft", automationType: "manual", lastEdited: "Nov 14", owner: "David Kim", starred: true },
+  { id: 7, name: "Competitor Watch Weekly", category: "Competition", status: "sent", automationType: "automated", lastEdited: "Nov 12", owner: "Laura Bennett", starred: false, recipients: 178, openRate: 71.8, clickRate: 5.1 },
+  { id: 8, name: "Social Trends Digest", category: "Social", status: "scheduled", automationType: "automated_review", lastEdited: "Nov 10", owner: "Sophia Patel", starred: true, scheduledFor: "Nov 25, 9:00 AM" },
+  { id: 9, name: "Executive Summary Q4", category: "Leadership", status: "sent", automationType: "manual", lastEdited: "Nov 8", owner: "Rachel Wu", starred: true, recipients: 45, openRate: 82.3, clickRate: 6.7 },
+  { id: 10, name: "Crisis Update Brief", category: "Crisis", status: "sent", automationType: "automated", lastEdited: "Nov 5", owner: "Tom Nguyen", starred: false, recipients: 312, openRate: 78.9, clickRate: 4.5 },
 ];
 
 const initialCategories: CategoryItem[] = [
@@ -105,7 +106,7 @@ const templates = [
   },
 ];
 
-type SortField = 'name' | 'category' | 'lastEdited' | 'owner' | 'recipients' | 'openRate' | 'clickRate' | 'status';
+type SortField = 'name' | 'category' | 'lastEdited' | 'owner' | 'recipients' | 'openRate' | 'clickRate' | 'status' | 'automationType';
 type SortDirection = 'asc' | 'desc';
 type StatusFilter = 'all' | 'draft' | 'scheduled' | 'sent';
 
@@ -196,6 +197,9 @@ const Distribute = () => {
     } else if (sortField === 'status') {
       const statusOrder = { 'draft': 0, 'scheduled': 1, 'sent': 2 };
       comparison = (statusOrder[a.status as keyof typeof statusOrder] || 0) - (statusOrder[b.status as keyof typeof statusOrder] || 0);
+    } else if (sortField === 'automationType') {
+      const automationOrder = { 'automated': 0, 'automated_review': 1, 'manual': 2 };
+      comparison = (automationOrder[a.automationType as keyof typeof automationOrder] || 0) - (automationOrder[b.automationType as keyof typeof automationOrder] || 0);
     }
     return sortDirection === 'asc' ? comparison : -comparison;
   });
@@ -409,6 +413,12 @@ const Distribute = () => {
                               </button>
                             </th>
                             <th className="p-4 text-sm font-bold text-foreground">
+                              <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('automationType')}>
+                                Type
+                                {sortField === 'automationType' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
+                              </button>
+                            </th>
+                            <th className="p-4 text-sm font-bold text-foreground">
                               <button className="flex items-center gap-1 hover:text-primary" onClick={() => handleSort('recipients')}>
                                 Recipients
                                 {sortField === 'recipients' && <ChevronDown className={`w-3 h-3 transition-transform ${sortDirection === 'asc' ? 'rotate-180' : ''}`} />}
@@ -454,6 +464,19 @@ const Distribute = () => {
                               </td>
                               <td className="p-4">
                                 {getStatusBadge(item.status, item.scheduledFor)}
+                              </td>
+                              <td className="p-4">
+                                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                                  item.automationType === 'automated' 
+                                    ? 'bg-emerald-500/10 text-emerald-600' 
+                                    : item.automationType === 'automated_review' 
+                                      ? 'bg-blue-500/10 text-blue-600' 
+                                      : 'bg-muted text-muted-foreground'
+                                }`}>
+                                  {item.automationType === 'automated' && <><Sparkles className="w-3 h-3" />Automated</>}
+                                  {item.automationType === 'automated_review' && <><Sparkles className="w-3 h-3" />For Review</>}
+                                  {item.automationType === 'manual' && 'Manual'}
+                                </span>
                               </td>
                               <td className="p-4 text-sm text-muted-foreground">
                                 {item.recipients ? item.recipients.toLocaleString() : '—'}
