@@ -25,10 +25,10 @@ export const AISearchBuilder = ({ initialExpanded = false }: AISearchBuilderProp
 
   useEffect(() => {
     if (initialExpanded && isExpanded) {
-      // Small delay to ensure the component is rendered
+      // Longer delay to ensure dropdown menu has fully closed
       setTimeout(() => {
         textareaRef.current?.focus();
-      }, 100);
+      }, 200);
     }
   }, [initialExpanded, isExpanded]);
 
@@ -36,9 +36,10 @@ export const AISearchBuilder = ({ initialExpanded = false }: AISearchBuilderProp
   useEffect(() => {
     const handleOpenSearchBuilder = () => {
       setIsExpanded(true);
+      // Longer delay to ensure dropdown menu has fully closed before focusing
       setTimeout(() => {
         textareaRef.current?.focus();
-      }, 100);
+      }, 250);
     };
 
     window.addEventListener('openSearchBuilder', handleOpenSearchBuilder);
