@@ -236,38 +236,32 @@ const Distribute = () => {
   const totalScheduled = allNewsletterItems.reduce((acc, i) => acc + i.statusCounts.scheduled, 0);
   const totalReadyForReview = allNewsletterItems.reduce((acc, i) => acc + i.statusCounts.readyForReview, 0);
 
-  // Render status counts as inline badges
+  // Render status counts as inline badges - always show all statuses
   const renderStatusCounts = (statusCounts: NewsletterStatusCounts) => {
-    const badges = [];
-    if (statusCounts.sent > 0) {
-      badges.push(
-        <span key="sent" className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+    return (
+      <div className="flex flex-wrap gap-1.5">
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+          statusCounts.sent > 0 ? 'bg-primary/10 text-primary' : 'bg-muted/50 text-muted-foreground/50'
+        }`}>
           <Send className="w-3 h-3" />{statusCounts.sent} Sent
         </span>
-      );
-    }
-    if (statusCounts.draft > 0) {
-      badges.push(
-        <span key="draft" className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
-          <FileText className="w-3 h-3" />{statusCounts.draft} Draft
-        </span>
-      );
-    }
-    if (statusCounts.readyForReview > 0) {
-      badges.push(
-        <span key="review" className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-600">
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+          statusCounts.readyForReview > 0 ? 'bg-blue-500/10 text-blue-600' : 'bg-muted/50 text-muted-foreground/50'
+        }`}>
           <Eye className="w-3 h-3" />{statusCounts.readyForReview} Review
         </span>
-      );
-    }
-    if (statusCounts.scheduled > 0) {
-      badges.push(
-        <span key="scheduled" className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-600">
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+          statusCounts.scheduled > 0 ? 'bg-amber-500/10 text-amber-600' : 'bg-muted/50 text-muted-foreground/50'
+        }`}>
           <Clock className="w-3 h-3" />{statusCounts.scheduled} Scheduled
         </span>
-      );
-    }
-    return <div className="flex flex-wrap gap-1">{badges}</div>;
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+          statusCounts.draft > 0 ? 'bg-muted text-muted-foreground' : 'bg-muted/50 text-muted-foreground/50'
+        }`}>
+          <FileText className="w-3 h-3" />{statusCounts.draft} Draft
+        </span>
+      </div>
+    );
   };
 
   return (
