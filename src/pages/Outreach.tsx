@@ -3,6 +3,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
 import { ChevronDown, Star, MoreVertical, Plus, Send, Users, Megaphone, Radio } from "lucide-react";
+import { JournalistsOutletsTab } from "@/components/outreach/JournalistsOutletsTab";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -481,14 +482,7 @@ const Outreach = () => {
 
               {/* Journalists & Outlets Tab */}
               <TabsContent value="journalists" className="mt-0">
-                <div className="bg-card rounded-lg border border-border p-6">
-                  <div className="text-center py-12">
-                    <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <h2 className="font-semibold text-card-foreground mb-2">Journalists & Outlets</h2>
-                    <p className="text-sm text-muted-foreground mb-4">Discover and manage your media contacts database.</p>
-                    <button className="text-sm text-foreground underline hover:text-primary">Get started &gt;&gt;</button>
-                  </div>
-                </div>
+                <JournalistsOutletsTab />
               </TabsContent>
 
               {/* PR Studio Tab */}
