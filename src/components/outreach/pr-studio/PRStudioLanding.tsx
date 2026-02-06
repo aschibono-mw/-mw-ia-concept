@@ -162,8 +162,25 @@ export const PRStudioLanding = ({
 
       {/* Main Content */}
       <div className="flex-1 space-y-4">
-      {/* Header with Create Button */}
-      <div className="flex items-center justify-end">
+      {/* Header with Search, Filter & Create */}
+      <div className="flex items-center justify-end gap-2">
+        <ExpandableSearch
+          value={searchQuery}
+          onChange={setSearchQuery}
+          placeholder="Search pitches..."
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon">
+              <Filter className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setTypeFilter("all")}>All Types</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTypeFilter("media-pitch")}>Media Pitches</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTypeFilter("press-release")}>Press Releases</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <Button onClick={onCreateNew} className="gap-2">
           <Plus className="w-4 h-4" />
           Create New
@@ -172,46 +189,25 @@ export const PRStudioLanding = ({
 
       {/* Table Card */}
       <div className="bg-card rounded-lg border border-border">
-        {/* Status Filter Tabs + Search/Filter icons */}
-        <div className="px-4 pt-1 flex items-center justify-between border-b border-border">
-          <div className="flex items-center gap-1">
-            {(["all", "draft", "generated", "sent"] as StatusFilter[]).map((status) => (
-              <button
-                key={status}
-                onClick={() => setStatusFilter(status)}
-                className={cn(
-                  "px-3 py-2 text-sm font-medium capitalize transition-colors relative",
-                  statusFilter === status
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {status === "all" ? "All" : status} ({statusCounts[status]})
-                {statusFilter === status && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
-                )}
-              </button>
-            ))}
-          </div>
-          <div className="flex items-center gap-1">
-            <ExpandableSearch
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="Search pitches..."
-            />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Filter className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTypeFilter("all")}>All Types</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTypeFilter("media-pitch")}>Media Pitches</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTypeFilter("press-release")}>Press Releases</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+        {/* Status Filter Tabs */}
+        <div className="px-4 pt-1 flex items-center border-b border-border">
+          {(["all", "draft", "generated", "sent"] as StatusFilter[]).map((status) => (
+            <button
+              key={status}
+              onClick={() => setStatusFilter(status)}
+              className={cn(
+                "px-3 py-2 text-sm font-medium capitalize transition-colors relative",
+                statusFilter === status
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {status === "all" ? "All" : status} ({statusCounts[status]})
+              {statusFilter === status && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
+              )}
+            </button>
+          ))}
         </div>
 
         {/* Table */}
