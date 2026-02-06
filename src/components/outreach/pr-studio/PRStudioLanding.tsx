@@ -148,20 +148,6 @@ export const PRStudioLanding = ({
 
   return (
     <div className="space-y-4">
-      {/* Hero */}
-      <div className="bg-card rounded-lg border border-border p-6 text-center">
-        <h2 className="text-lg font-semibold text-foreground mb-1">
-          Generate, edit, and copy pitches and press releases in moments
-        </h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Use AI to create compelling media content, then refine and send.
-        </p>
-        <Button onClick={onCreateNew} className="gap-2">
-          <Plus className="w-4 h-4" />
-          Create New Pitch
-        </Button>
-      </div>
-
       {/* Stats Row */}
       <div className="grid grid-cols-4 gap-3">
         {(["all", "generated", "draft", "sent"] as StatusFilter[]).map((status) => (
