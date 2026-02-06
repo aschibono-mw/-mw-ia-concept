@@ -154,65 +154,65 @@ export const PRStudioLanding = ({
   ];
 
   return (
-    <div className="space-y-4">
-      {/* Header with Create Button */}
-      <div className="flex items-center justify-end">
-        <Button onClick={onCreateNew} className="gap-2">
-          <Plus className="w-4 h-4" />
-          Create New
-        </Button>
+    <div className="flex gap-4 items-start">
+      {/* Sidebar */}
+      <div className="w-56 flex-shrink-0">
+        <CategoriesPanel categories={pitchFolders} onAddCategory={() => {}} />
       </div>
 
-      <div className="flex gap-4">
-        {/* Sidebar */}
-        <div className="w-56 flex-shrink-0">
-          <CategoriesPanel categories={pitchFolders} onAddCategory={() => {}} />
+      {/* Main Content */}
+      <div className="flex-1 space-y-3">
+        {/* Top bar: Create New button */}
+        <div className="flex items-center justify-end">
+          <Button onClick={onCreateNew} className="gap-2">
+            <Plus className="w-4 h-4" />
+            Create New
+          </Button>
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1">
-          <div className="bg-card rounded-lg border border-border">
-            {/* Status Filter Tabs + Search/Filter */}
-            <div className="px-4 pt-1 flex items-center justify-between border-b border-border">
-              <div className="flex items-center gap-1">
-                {(["all", "draft", "generated", "sent"] as StatusFilter[]).map((status) => (
-                  <button
-                    key={status}
-                    onClick={() => setStatusFilter(status)}
-                    className={cn(
-                      "px-3 py-2 text-sm font-medium capitalize transition-colors relative",
-                      statusFilter === status
-                        ? "text-primary"
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {status === "all" ? "All" : status} ({statusCounts[status]})
-                    {statusFilter === status && (
-                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
-                    )}
-                  </button>
-                ))}
-              </div>
-              <div className="flex items-center gap-1">
-                <ExpandableSearch
-                  value={searchQuery}
-                  onChange={setSearchQuery}
-                  placeholder="Search pitches..."
-                />
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon">
-                      <Filter className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => setTypeFilter("all")}>All Types</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setTypeFilter("media-pitch")}>Media Pitches</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setTypeFilter("press-release")}>Press Releases</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+        {/* Table Card */}
+        <div className="bg-card rounded-lg border border-border">
+          {/* Status Filter Tabs + Search/Filter */}
+          <div className="px-4 pt-1 flex items-center justify-between border-b border-border">
+            <div className="flex items-center gap-1">
+              {(["all", "draft", "generated", "sent"] as StatusFilter[]).map((status) => (
+                <button
+                  key={status}
+                  onClick={() => setStatusFilter(status)}
+                  className={cn(
+                    "px-3 py-2 text-sm font-medium capitalize transition-colors relative",
+                    statusFilter === status
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {status === "all" ? "All" : status} ({statusCounts[status]})
+                  {statusFilter === status && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                  )}
+                </button>
+              ))}
             </div>
+            <div className="flex items-center gap-1">
+              <ExpandableSearch
+                value={searchQuery}
+                onChange={setSearchQuery}
+                placeholder="Search pitches..."
+              />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Filter className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setTypeFilter("all")}>All Types</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTypeFilter("media-pitch")}>Media Pitches</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTypeFilter("press-release")}>Press Releases</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
           <table className="w-full">
             <thead>
               <tr className="border-b border-border text-left">
@@ -320,54 +320,53 @@ export const PRStudioLanding = ({
               <span>{filteredPitches.length} of {pitches.length} pitches</span>
             </div>
           </div>
-        </div>
+
+          {/* Bulk Actions */}
+          {selectedItems.length > 0 && (
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background rounded-lg shadow-lg px-4 py-3 flex items-center gap-4 z-50">
+              <span className="text-sm font-medium">{selectedItems.length} selected</span>
+              <div className="h-4 w-px bg-background/20" />
+              <Button
+                size="sm"
+                variant="secondary"
+                className="h-8 gap-2 text-destructive"
+                onClick={handleBulkDelete}
+              >
+                <Trash2 className="w-4 h-4" />
+                Delete
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 text-background/70 hover:text-background hover:bg-background/10"
+                onClick={() => setSelectedItems([])}
+              >
+                ✕
+              </Button>
+            </div>
+          )}
+
+          {/* Delete Confirmation */}
+          <AlertDialog open={!!deleteConfirmId} onOpenChange={() => setDeleteConfirmId(null)}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete this pitch?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. The pitch and its generated content will be permanently removed.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => deleteConfirmId && handleDelete(deleteConfirmId)}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
       </div>
-
-      {/* Bulk Actions */}
-      {selectedItems.length > 0 && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background rounded-lg shadow-lg px-4 py-3 flex items-center gap-4 z-50">
-          <span className="text-sm font-medium">{selectedItems.length} selected</span>
-          <div className="h-4 w-px bg-background/20" />
-          <Button
-            size="sm"
-            variant="secondary"
-            className="h-8 gap-2 text-destructive"
-            onClick={handleBulkDelete}
-          >
-            <Trash2 className="w-4 h-4" />
-            Delete
-          </Button>
-          <Button
-            size="sm"
-            variant="ghost"
-            className="h-8 text-background/70 hover:text-background hover:bg-background/10"
-            onClick={() => setSelectedItems([])}
-          >
-            ✕
-          </Button>
-        </div>
-      )}
-
-      {/* Delete Confirmation */}
-      <AlertDialog open={!!deleteConfirmId} onOpenChange={() => setDeleteConfirmId(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete this pitch?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. The pitch and its generated content will be permanently removed.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => deleteConfirmId && handleDelete(deleteConfirmId)}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 };
