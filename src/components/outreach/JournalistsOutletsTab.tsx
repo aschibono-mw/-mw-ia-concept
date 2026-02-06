@@ -40,6 +40,10 @@ import {
 } from "@/components/ui/collapsible";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { MediaList } from "./mediaListTypes";
+import { AddToListDialog } from "./AddToListDialog";
+import { CreateListDialog } from "./CreateListDialog";
+import { toast } from "sonner";
 
 interface Journalist {
   id: number;
@@ -145,13 +149,22 @@ const filterSections: FilterSection[] = [
   },
 ];
 
-export const JournalistsOutletsTab = () => {
+interface JournalistsOutletsTabProps {
+  mediaLists: MediaList[];
+  onCreateList: (name: string, description: string, color: string) => void;
+  onAddToLists: (listIds: string[], journalistIds: number[], outletIds: number[]) => void;
+}
+
+export const JournalistsOutletsTab = ({ mediaLists, onCreateList, onAddToLists }: JournalistsOutletsTabProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<"journalists" | "outlets">("journalists");
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
   const [expandedFilters, setExpandedFilters] = useState<string[]>(["topics"]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [showFilters, setShowFilters] = useState(true);
+  const [isAddToListOpen, setIsAddToListOpen] = useState(false);
+  const [isCreateListOpen, setIsCreateListOpen] = useState(false);
+  const [addToListSingleId, setAddToListSingleId] = useState<{ id: number; type: "journalist" | "outlet" } | null>(null);
 
   const toggleFilter = (sectionId: string, value: string) => {
     setSelectedFilters(prev => {
@@ -195,12 +208,46 @@ export const JournalistsOutletsTab = () => {
     }
   };
 
+  const handleAddToListFromBulk = () => {
+    setAddToListSingleId(null);
+    setIsAddToListOpen(true);
+  };
+
+  const handleAddToListFromCard = (id: number, type: "journalist" | "outlet") => {
+    setAddToListSingleId({ id, type });
+    setIsAddToListOpen(true);
+  };
+
+  const handleConfirmAddToLists = (listIds: string[]) => {
+    if (addToListSingleId) {
+      // Single item add
+      const journalistIds = addToListSingleId.type === "journalist" ? [addToListSingleId.id] : [];
+      const outletIds = addToListSingleId.type === "outlet" ? [addToListSingleId.id] : [];
+      onAddToLists(listIds, journalistIds, outletIds);
+      toast.success(`Added to ${listIds.length} ${listIds.length === 1 ? "list" : "lists"}`);
+    } else {
+      // Bulk add from selected items
+      const journalistIds = selectedItems.filter(id => id < 100);
+      const outletIds = selectedItems.filter(id => id >= 100).map(id => id - 100);
+      onAddToLists(listIds, journalistIds, outletIds);
+      toast.success(`Added ${selectedItems.length} contacts to ${listIds.length} ${listIds.length === 1 ? "list" : "lists"}`);
+      setSelectedItems([]);
+    }
+    setAddToListSingleId(null);
+  };
+
+  const handleCreateListFromDialog = (name: string, description: string, color: string) => {
+    onCreateList(name, description, color);
+    toast.success(`List "${name}" created`);
+  };
+
+  const selectedCount = addToListSingleId ? 1 : selectedItems.length;
+
   return (
     <div className="space-y-4">
       {/* Search & Actions Bar */}
       <div className="bg-card rounded-lg border border-border p-4">
         <div className="flex items-center gap-3">
-          {/* Main Search */}
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
@@ -211,7 +258,6 @@ export const JournalistsOutletsTab = () => {
             />
           </div>
 
-          {/* Filter Toggle */}
           <Button
             variant={showFilters ? "secondary" : "outline"}
             onClick={() => setShowFilters(!showFilters)}
@@ -226,13 +272,11 @@ export const JournalistsOutletsTab = () => {
             )}
           </Button>
 
-          {/* Add to List */}
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2" onClick={() => setIsCreateListOpen(true)}>
             <Plus className="w-4 h-4" />
             Create List
           </Button>
 
-          {/* Primary Action */}
           <Button className="gap-2">
             <Mail className="w-4 h-4" />
             Start Pitch
@@ -345,7 +389,6 @@ export const JournalistsOutletsTab = () => {
 
         {/* Results Area */}
         <div className="flex-1 min-w-0">
-          {/* Tabs for Journalists/Outlets */}
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "journalists" | "outlets")}>
             <div className="flex items-center justify-between mb-4">
               <TabsList className="bg-muted/50">
@@ -393,14 +436,12 @@ export const JournalistsOutletsTab = () => {
                     className="p-4 hover:bg-muted/30 transition-colors"
                   >
                     <div className="flex items-start gap-4">
-                      {/* Selection */}
                       <Checkbox
                         checked={selectedItems.includes(journalist.id)}
                         onCheckedChange={() => toggleSelectItem(journalist.id)}
                         className="mt-1"
                       />
 
-                      {/* Avatar */}
                       <Avatar className="h-12 w-12 shrink-0">
                         <AvatarImage src="" />
                         <AvatarFallback className="bg-muted text-muted-foreground">
@@ -408,7 +449,6 @@ export const JournalistsOutletsTab = () => {
                         </AvatarFallback>
                       </Avatar>
 
-                      {/* Main Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-4">
                           <div>
@@ -428,7 +468,6 @@ export const JournalistsOutletsTab = () => {
                             </p>
                           </div>
 
-                          {/* Actions */}
                           <div className="flex items-center gap-1 shrink-0">
                             <Button
                               variant="ghost"
@@ -448,7 +487,9 @@ export const JournalistsOutletsTab = () => {
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
                                 <DropdownMenuItem>View Full Profile</DropdownMenuItem>
-                                <DropdownMenuItem>Add to List</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleAddToListFromCard(journalist.id, "journalist")}>
+                                  Add to List
+                                </DropdownMenuItem>
                                 <DropdownMenuItem>Create Pitch</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>View Recent Articles</DropdownMenuItem>
@@ -457,7 +498,6 @@ export const JournalistsOutletsTab = () => {
                           </div>
                         </div>
 
-                        {/* Meta Info */}
                         <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <MapPin className="w-3.5 h-3.5" />
@@ -466,7 +506,6 @@ export const JournalistsOutletsTab = () => {
                           <span>{journalist.recentArticles} articles this year</span>
                         </div>
 
-                        {/* Topics */}
                         <div className="flex items-center gap-1.5 mt-2">
                           {journalist.topics.map((topic) => (
                             <Badge key={topic} variant="secondary" className="text-xs font-normal">
@@ -475,7 +514,6 @@ export const JournalistsOutletsTab = () => {
                           ))}
                         </div>
 
-                        {/* Contact Methods */}
                         <div className="flex items-center gap-3 mt-3">
                           {journalist.email && (
                             <button className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary">
@@ -512,19 +550,16 @@ export const JournalistsOutletsTab = () => {
                     className="p-4 hover:bg-muted/30 transition-colors"
                   >
                     <div className="flex items-start gap-4">
-                      {/* Selection */}
                       <Checkbox
                         checked={selectedItems.includes(outlet.id + 100)}
                         onCheckedChange={() => toggleSelectItem(outlet.id + 100)}
                         className="mt-1"
                       />
 
-                      {/* Logo */}
                       <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center shrink-0">
                         <Building2 className="w-6 h-6 text-muted-foreground" />
                       </div>
 
-                      {/* Main Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-4">
                           <div>
@@ -536,7 +571,6 @@ export const JournalistsOutletsTab = () => {
                             </p>
                           </div>
 
-                          {/* Actions */}
                           <div className="flex items-center gap-1 shrink-0">
                             <Button
                               variant="ghost"
@@ -557,13 +591,14 @@ export const JournalistsOutletsTab = () => {
                               <DropdownMenuContent align="end">
                                 <DropdownMenuItem>View Full Profile</DropdownMenuItem>
                                 <DropdownMenuItem>View Journalists</DropdownMenuItem>
-                                <DropdownMenuItem>Add to List</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleAddToListFromCard(outlet.id, "outlet")}>
+                                  Add to List
+                                </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </div>
                         </div>
 
-                        {/* Meta Info */}
                         <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <Globe className="w-3.5 h-3.5" />
@@ -575,7 +610,6 @@ export const JournalistsOutletsTab = () => {
                           </span>
                         </div>
 
-                        {/* Topics */}
                         <div className="flex items-center gap-1.5 mt-2">
                           {outlet.topics.map((topic) => (
                             <Badge key={topic} variant="secondary" className="text-xs font-normal">
@@ -593,12 +627,12 @@ export const JournalistsOutletsTab = () => {
         </div>
       </div>
 
-      {/* Bulk Actions Bar (when items selected) */}
+      {/* Bulk Actions Bar */}
       {selectedItems.length > 0 && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background rounded-lg shadow-lg px-4 py-3 flex items-center gap-4 z-50">
           <span className="text-sm font-medium">{selectedItems.length} selected</span>
           <div className="h-4 w-px bg-background/20" />
-          <Button size="sm" variant="secondary" className="h-8 gap-2">
+          <Button size="sm" variant="secondary" className="h-8 gap-2" onClick={handleAddToListFromBulk}>
             <Plus className="w-4 h-4" />
             Add to List
           </Button>
@@ -616,6 +650,26 @@ export const JournalistsOutletsTab = () => {
           </Button>
         </div>
       )}
+
+      {/* Add to List Dialog */}
+      <AddToListDialog
+        open={isAddToListOpen}
+        onOpenChange={setIsAddToListOpen}
+        mediaLists={mediaLists}
+        selectedCount={selectedCount}
+        onAddToLists={handleConfirmAddToLists}
+        onCreateNewList={() => {
+          setIsAddToListOpen(false);
+          setIsCreateListOpen(true);
+        }}
+      />
+
+      {/* Create List Dialog */}
+      <CreateListDialog
+        open={isCreateListOpen}
+        onOpenChange={setIsCreateListOpen}
+        onCreateList={handleCreateListFromDialog}
+      />
     </div>
   );
 };

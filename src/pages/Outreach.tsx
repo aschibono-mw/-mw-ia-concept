@@ -2,8 +2,10 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
-import { ChevronDown, Star, MoreVertical, Plus, Send, Users, Megaphone, Radio } from "lucide-react";
+import { ChevronDown, Star, MoreVertical, Plus, Send, Users, Megaphone, Radio, FolderOpen } from "lucide-react";
 import { JournalistsOutletsTab } from "@/components/outreach/JournalistsOutletsTab";
+import { MediaListsTab } from "@/components/outreach/MediaListsTab";
+import { MediaList, mockMediaLists } from "@/components/outreach/mediaListTypes";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -99,6 +101,52 @@ const Outreach = () => {
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [shareItemName, setShareItemName] = useState('');
   const loaderRef = useRef<HTMLDivElement>(null);
+  const [mediaLists, setMediaLists] = useState<MediaList[]>(mockMediaLists);
+
+  const handleCreateList = (name: string, description: string, color: string) => {
+    const newList: MediaList = {
+      id: `list-${Date.now()}`,
+      name,
+      description,
+      journalistIds: [],
+      outletIds: [],
+      createdAt: new Date().toISOString().split('T')[0],
+      updatedAt: new Date().toISOString().split('T')[0],
+      owner: "You",
+      color,
+    };
+    setMediaLists(prev => [newList, ...prev]);
+  };
+
+  const handleDeleteList = (listId: string) => {
+    setMediaLists(prev => prev.filter(l => l.id !== listId));
+  };
+
+  const handleUpdateList = (listId: string, updates: Partial<MediaList>) => {
+    setMediaLists(prev => prev.map(l => l.id === listId ? { ...l, ...updates, updatedAt: new Date().toISOString().split('T')[0] } : l));
+  };
+
+  const handleRemoveFromList = (listId: string, type: "journalist" | "outlet", itemId: number) => {
+    setMediaLists(prev => prev.map(l => {
+      if (l.id !== listId) return l;
+      if (type === "journalist") {
+        return { ...l, journalistIds: l.journalistIds.filter(id => id !== itemId), updatedAt: new Date().toISOString().split('T')[0] };
+      }
+      return { ...l, outletIds: l.outletIds.filter(id => id !== itemId), updatedAt: new Date().toISOString().split('T')[0] };
+    }));
+  };
+
+  const handleAddToLists = (listIds: string[], journalistIds: number[], outletIds: number[]) => {
+    setMediaLists(prev => prev.map(l => {
+      if (!listIds.includes(l.id)) return l;
+      return {
+        ...l,
+        journalistIds: [...new Set([...l.journalistIds, ...journalistIds])],
+        outletIds: [...new Set([...l.outletIds, ...outletIds])],
+        updatedAt: new Date().toISOString().split('T')[0],
+      };
+    }));
+  };
 
   const handleOpenShare = (itemName: string) => {
     setShareItemName(itemName);
@@ -243,6 +291,22 @@ const Outreach = () => {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Discover and manage media contacts</p>
+                    </TooltipContent>
+                   </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span>
+                        <TabsTrigger 
+                          value="media-lists" 
+                          className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground flex items-center gap-2"
+                        >
+                          <FolderOpen className="w-4 h-4" />
+                          Media Lists
+                        </TabsTrigger>
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Create and manage media contact lists</p>
                     </TooltipContent>
                   </Tooltip>
                   <Tooltip>
@@ -482,7 +546,22 @@ const Outreach = () => {
 
               {/* Journalists & Outlets Tab */}
               <TabsContent value="journalists" className="mt-0">
-                <JournalistsOutletsTab />
+                <JournalistsOutletsTab
+                  mediaLists={mediaLists}
+                  onCreateList={handleCreateList}
+                  onAddToLists={handleAddToLists}
+                />
+              </TabsContent>
+
+              {/* Media Lists Tab */}
+              <TabsContent value="media-lists" className="mt-0">
+                <MediaListsTab
+                  mediaLists={mediaLists}
+                  onCreateList={handleCreateList}
+                  onDeleteList={handleDeleteList}
+                  onUpdateList={handleUpdateList}
+                  onRemoveFromList={handleRemoveFromList}
+                />
               </TabsContent>
 
               {/* PR Studio Tab */}
