@@ -18,7 +18,8 @@ import {
   Share2,
   MoreHorizontal,
   Sparkles,
-  ListFilter
+  ListFilter,
+  FolderOpen
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -520,7 +521,7 @@ export const JournalistsOutletsTab = ({ mediaLists, onCreateList, onAddToLists }
                           if (memberLists.length === 0) return null;
                           return (
                             <div className="flex items-center gap-1.5 mt-2">
-                              <ListFilter className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                              <FolderOpen className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                               {memberLists.map((list) => (
                                 <Badge
                                   key={list.id}
