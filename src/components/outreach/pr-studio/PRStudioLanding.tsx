@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import {
   Search,
   Plus,
@@ -146,8 +147,23 @@ export const PRStudioLanding = ({
     sent: pitches.filter((p) => p.status === "sent").length,
   };
 
+  const pitchFolders = [
+    { name: "Brand", count: 3 },
+    { name: "Product", count: 2 },
+    { name: "Executive", count: 2 },
+    { name: "Crisis", count: 1 },
+    { name: "Events", count: 1 },
+  ];
+
   return (
-    <div className="space-y-4">
+    <div className="flex gap-4">
+      {/* Sidebar */}
+      <div className="w-56 flex-shrink-0">
+        <CategoriesPanel categories={pitchFolders} onAddCategory={() => {}} />
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 space-y-4">
       {/* Search & Filters */}
       <div className="bg-card rounded-lg border border-border">
         {/* Search & Actions */}
@@ -358,6 +374,7 @@ export const PRStudioLanding = ({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      </div>
     </div>
   );
 };
