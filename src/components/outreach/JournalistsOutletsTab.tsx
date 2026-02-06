@@ -514,6 +514,30 @@ export const JournalistsOutletsTab = ({ mediaLists, onCreateList, onAddToLists }
                           ))}
                         </div>
 
+                        {/* Media Lists */}
+                        {(() => {
+                          const memberLists = mediaLists.filter(list => list.journalistIds.includes(journalist.id));
+                          if (memberLists.length === 0) return null;
+                          return (
+                            <div className="flex items-center gap-1.5 mt-2">
+                              <ListFilter className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                              {memberLists.map((list) => (
+                                <Badge
+                                  key={list.id}
+                                  variant="outline"
+                                  className="text-xs font-normal gap-1"
+                                >
+                                  <span
+                                    className="w-2 h-2 rounded-full shrink-0"
+                                    style={{ backgroundColor: list.color }}
+                                  />
+                                  {list.name}
+                                </Badge>
+                              ))}
+                            </div>
+                          );
+                        })()}
+
                         <div className="flex items-center gap-3 mt-3">
                           {journalist.email && (
                             <button className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary">
