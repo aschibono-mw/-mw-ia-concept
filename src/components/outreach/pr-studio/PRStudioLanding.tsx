@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
-import { ExpandableSearch } from "@/components/alerts/ExpandableSearch";
 import {
+  Search,
   Plus,
   MoreHorizontal,
   Star,
   FileText,
   Mail,
+  ChevronDown,
   Trash2,
   Copy,
   Pencil,
   Send,
   Filter,
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -154,65 +156,70 @@ export const PRStudioLanding = ({
   ];
 
   return (
-    <div className="flex gap-4 items-start">
+    <div className="flex gap-4">
       {/* Sidebar */}
       <div className="w-56 flex-shrink-0">
         <CategoriesPanel categories={pitchFolders} onAddCategory={() => {}} />
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 space-y-3">
-        {/* Top bar: Create New button */}
-        <div className="flex items-center justify-end">
+      <div className="flex-1 space-y-4">
+      {/* Search & Filters */}
+      <div className="bg-card rounded-lg border border-border">
+        {/* Search & Actions */}
+        <div className="p-4 flex items-center gap-3">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search pitches..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="gap-2">
+                <Filter className="w-4 h-4" />
+                {typeFilter === "all" ? "All Types" : typeFilter === "media-pitch" ? "Media Pitches" : "Press Releases"}
+                <ChevronDown className="w-3 h-3" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setTypeFilter("all")}>All Types</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTypeFilter("media-pitch")}>Media Pitches</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTypeFilter("press-release")}>Press Releases</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button onClick={onCreateNew} className="gap-2">
             <Plus className="w-4 h-4" />
             Create New
           </Button>
         </div>
 
-        {/* Table Card */}
-        <div className="bg-card rounded-lg border border-border">
-          {/* Status Filter Tabs + Search/Filter */}
-          <div className="px-4 pt-1 flex items-center justify-between border-b border-border">
-            <div className="flex items-center gap-1">
-              {(["all", "draft", "generated", "sent"] as StatusFilter[]).map((status) => (
-                <button
-                  key={status}
-                  onClick={() => setStatusFilter(status)}
-                  className={cn(
-                    "px-3 py-2 text-sm font-medium capitalize transition-colors relative",
-                    statusFilter === status
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  {status === "all" ? "All" : status} ({statusCounts[status]})
-                  {statusFilter === status && (
-                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
-                  )}
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center gap-1">
-              <ExpandableSearch
-                value={searchQuery}
-                onChange={setSearchQuery}
-                placeholder="Search pitches..."
-              />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <Filter className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setTypeFilter("all")}>All Types</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTypeFilter("media-pitch")}>Media Pitches</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTypeFilter("press-release")}>Press Releases</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
+        {/* Status Filter Tabs */}
+        <div className="px-4 flex items-center gap-1 border-b border-border">
+          {(["all", "draft", "generated", "sent"] as StatusFilter[]).map((status) => (
+            <button
+              key={status}
+              onClick={() => setStatusFilter(status)}
+              className={cn(
+                "px-3 py-2 text-sm font-medium capitalize transition-colors relative",
+                statusFilter === status
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {status === "all" ? "All" : status} ({statusCounts[status]})
+              {statusFilter === status && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Table */}
+        <div className="border-t border-border">
           <table className="w-full">
             <thead>
               <tr className="border-b border-border text-left">
@@ -314,58 +321,59 @@ export const PRStudioLanding = ({
               )}
             </tbody>
           </table>
+        </div>
 
-            {/* Footer */}
-            <div className="p-3 border-t border-border flex items-center justify-between text-sm text-muted-foreground">
-              <span>{filteredPitches.length} of {pitches.length} pitches</span>
-            </div>
-          </div>
+        {/* Footer */}
+        <div className="p-3 border-t border-border flex items-center justify-between text-sm text-muted-foreground">
+          <span>{filteredPitches.length} of {pitches.length} pitches</span>
+        </div>
+      </div>
 
-          {/* Bulk Actions */}
-          {selectedItems.length > 0 && (
-            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background rounded-lg shadow-lg px-4 py-3 flex items-center gap-4 z-50">
-              <span className="text-sm font-medium">{selectedItems.length} selected</span>
-              <div className="h-4 w-px bg-background/20" />
-              <Button
-                size="sm"
-                variant="secondary"
-                className="h-8 gap-2 text-destructive"
-                onClick={handleBulkDelete}
-              >
-                <Trash2 className="w-4 h-4" />
-                Delete
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="h-8 text-background/70 hover:text-background hover:bg-background/10"
-                onClick={() => setSelectedItems([])}
-              >
-                ✕
-              </Button>
-            </div>
-          )}
+      {/* Bulk Actions */}
+      {selectedItems.length > 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-foreground text-background rounded-lg shadow-lg px-4 py-3 flex items-center gap-4 z-50">
+          <span className="text-sm font-medium">{selectedItems.length} selected</span>
+          <div className="h-4 w-px bg-background/20" />
+          <Button
+            size="sm"
+            variant="secondary"
+            className="h-8 gap-2 text-destructive"
+            onClick={handleBulkDelete}
+          >
+            <Trash2 className="w-4 h-4" />
+            Delete
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="h-8 text-background/70 hover:text-background hover:bg-background/10"
+            onClick={() => setSelectedItems([])}
+          >
+            ✕
+          </Button>
+        </div>
+      )}
 
-          {/* Delete Confirmation */}
-          <AlertDialog open={!!deleteConfirmId} onOpenChange={() => setDeleteConfirmId(null)}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Delete this pitch?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. The pitch and its generated content will be permanently removed.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={() => deleteConfirmId && handleDelete(deleteConfirmId)}
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                >
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteConfirmId} onOpenChange={() => setDeleteConfirmId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this pitch?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. The pitch and its generated content will be permanently removed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteConfirmId && handleDelete(deleteConfirmId)}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       </div>
     </div>
   );
