@@ -391,7 +391,7 @@ export const JournalistsOutletsTab = ({ mediaLists, onCreateList, onAddToLists }
         <div className="flex-1 min-w-0">
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "journalists" | "outlets")}>
             <div className="flex items-center justify-between mb-4">
-              <TabsList className="bg-muted/50">
+              <TabsList className="bg-muted">
                 <TabsTrigger value="journalists" className="gap-2">
                   <Users className="w-4 h-4" />
                   Journalists
