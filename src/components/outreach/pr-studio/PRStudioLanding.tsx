@@ -148,29 +148,28 @@ export const PRStudioLanding = ({
 
   return (
     <div className="space-y-4">
-      {/* Stats Row */}
-      <div className="grid grid-cols-4 gap-3">
-        {(["all", "generated", "draft", "sent"] as StatusFilter[]).map((status) => (
-          <button
-            key={status}
-            onClick={() => setStatusFilter(status)}
-            className={cn(
-              "bg-card rounded-lg border p-3 text-left transition-colors",
-              statusFilter === status
-                ? "border-primary bg-primary/5"
-                : "border-border hover:border-primary/40"
-            )}
-          >
-            <p className="text-xs text-muted-foreground capitalize mb-0.5">
-              {status === "all" ? "Total" : status}
-            </p>
-            <p className="text-xl font-semibold text-foreground">{statusCounts[status]}</p>
-          </button>
-        ))}
-      </div>
-
       {/* Search & Filters */}
       <div className="bg-card rounded-lg border border-border">
+        {/* Status Filter Tabs */}
+        <div className="px-4 pt-3 flex items-center gap-1 border-b border-border">
+          {(["all", "draft", "generated", "sent"] as StatusFilter[]).map((status) => (
+            <button
+              key={status}
+              onClick={() => setStatusFilter(status)}
+              className={cn(
+                "px-3 py-2 text-sm font-medium capitalize transition-colors relative",
+                statusFilter === status
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {status === "all" ? "All" : status} ({statusCounts[status]})
+              {statusFilter === status && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
+              )}
+            </button>
+          ))}
+        </div>
         <div className="p-4 flex items-center gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
