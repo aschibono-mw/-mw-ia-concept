@@ -267,21 +267,16 @@ export const Header = () => {
                 </div>
               </div>
               
+              <div className="px-2 pt-2 pb-1">
+                <span className="text-xs font-medium text-muted-foreground px-2">Personal</span>
+              </div>
               <DropdownMenuItem className="cursor-pointer">
                 <UserCircle className="w-4 h-4 mr-2" />
                 Profile
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
-                <FolderOpen className="w-4 h-4 mr-2" />
-                Asset Manager
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
                 <FileText className="w-4 h-4 mr-2" />
                 Saved Documents
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <FileStack className="w-4 h-4 mr-2" />
-                Content Manager
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
                 <Users className="w-4 h-4 mr-2" />
@@ -289,7 +284,24 @@ export const Header = () => {
               </DropdownMenuItem>
               
               <DropdownMenuSeparator />
+
+              <div className="px-2 pt-1 pb-1">
+                <span className="text-xs font-medium text-muted-foreground px-2">Workspace</span>
+              </div>
+              <DropdownMenuItem className="cursor-pointer">
+                <FolderOpen className="w-4 h-4 mr-2" />
+                Asset Manager
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <FileStack className="w-4 h-4 mr-2" />
+                Content Manager
+              </DropdownMenuItem>
               
+              <DropdownMenuSeparator />
+
+              <div className="px-2 pt-1 pb-1">
+                <span className="text-xs font-medium text-muted-foreground px-2">Administration</span>
+              </div>
               <DropdownMenuItem className="cursor-pointer">
                 <Building2 className="w-4 h-4 mr-2" />
                 Account Settings
