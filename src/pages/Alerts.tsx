@@ -19,7 +19,9 @@ import {
   Pencil, 
   Trash2, 
   Plus,
-  ChevronDown
+  ChevronDown,
+  FolderOpen,
+  Link2
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -58,13 +60,20 @@ const urgencyColors: Record<string, string> = {
   All: "bg-gray-100 text-gray-500",
 };
 
-const viewCategories = [
-  { label: "All", count: 8, color: "text-primary" },
-  { label: "Urgent", count: 2, color: "text-red-500" },
-  { label: "Paused", count: 1, color: "text-muted-foreground" },
-  { label: "Needs attention", count: 1, color: "text-orange-500" },
-  { label: "My alerts", count: 5, color: "text-muted-foreground" },
-  { label: "Team alerts", count: 3, color: "text-muted-foreground" },
+const viewFolders = [
+  { label: "All", count: 8 },
+  { label: "Urgent", count: 2 },
+  { label: "Paused", count: 1 },
+  { label: "Needs attention", count: 1 },
+  { label: "My alerts", count: 5 },
+  { label: "Team alerts", count: 3 },
+];
+
+const viewLabels = [
+  { label: "Crisis" },
+  { label: "Competitor" },
+  { label: "Executive" },
+  { label: "Campaign" },
 ];
 
 const Alerts = () => {
@@ -240,19 +249,44 @@ const Alerts = () => {
               <TabsContent value="manage" className="mt-0">
                 <div className="flex gap-6">
                   {/* Views Sidebar */}
-                  <div className="w-40 flex-shrink-0">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Views</p>
-                    <div className="space-y-1">
-                      {viewCategories.map((cat) => (
+                  <div className="w-48 flex-shrink-0 bg-card rounded-lg border border-border p-4">
+                    {/* Folders */}
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-sm font-semibold text-foreground">Folders</h3>
+                      <button className="w-6 h-6 rounded-full border border-border flex items-center justify-center hover:bg-muted">
+                        <Plus className="w-3 h-3 text-muted-foreground" />
+                      </button>
+                    </div>
+                    <div className="space-y-1 h-48 overflow-y-auto">
+                      {viewFolders.map((folder) => (
                         <button
-                          key={cat.label}
-                          className={`flex items-center justify-between w-full px-2 py-1.5 rounded text-sm hover:bg-muted/50 ${cat.label === "All" ? "font-medium" : ""}`}
+                          key={folder.label}
+                          className="flex items-center gap-2 w-full px-1 py-1.5 rounded text-sm hover:bg-muted/50"
                         >
-                          <span className={cat.label === "All" || cat.label === "Urgent" || cat.label === "Needs attention" ? cat.color : "text-foreground"}>
-                            {cat.label}
+                          <FolderOpen className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                          <span className="text-foreground underline underline-offset-2 decoration-muted-foreground/40">
+                            {folder.label} ({folder.count})
                           </span>
-                          <span className={`text-xs ${cat.label === "All" ? cat.color : "text-muted-foreground"}`}>{cat.count}</span>
                         </button>
+                      ))}
+                    </div>
+
+                    {/* Labels */}
+                    <div className="flex items-center justify-between mt-5 mb-3">
+                      <h3 className="text-sm font-semibold text-foreground">Labels</h3>
+                      <button className="w-6 h-6 rounded-full border border-border flex items-center justify-center hover:bg-muted">
+                        <Plus className="w-3 h-3 text-muted-foreground" />
+                      </button>
+                    </div>
+                    <div className="space-y-1 h-32 overflow-y-auto">
+                      {viewLabels.map((label) => (
+                        <div
+                          key={label.label}
+                          className="flex items-center gap-2 px-1 py-1.5"
+                        >
+                          <Link2 className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                          <span className="text-sm text-foreground bg-muted/60 px-2 py-0.5 rounded">{label.label}</span>
+                        </div>
                       ))}
                     </div>
                   </div>
