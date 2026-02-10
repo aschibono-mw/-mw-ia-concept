@@ -74,7 +74,7 @@ const nonSearchAlertTypes: AlertType[] = [...eventAlertTypes, ...socialAlertType
 const isSearchRelatedType = (type: AlertType) => searchAlertTypes.includes(type);
 
 export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps) => {
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedType, setSelectedType] = useState<AlertType | null>(null);
   const [searchType, setSearchType] = useState<'optimized' | 'standard' | 'custom'>('standard');
   const [selectedSearches, setSelectedSearches] = useState<string[]>([]);
@@ -107,21 +107,14 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
     onOpenChange(val);
   };
 
-  const handleNextFromType = () => {
+  const handleNextFromStep1 = () => {
     if (!selectedType) return;
-    if (isSearchRelatedType(selectedType)) {
-      setStep(2);
-    } else {
-      setStep(3);
-    }
-  };
-
-  const handleNextFromSearch = () => {
-    if (selectedSearches.length > 0) setStep(3);
+    if (isSearchRelatedType(selectedType) && selectedSearches.length === 0) return;
+    setStep(2);
   };
 
   const handleNextFromDetails = () => {
-    setStep(4);
+    setStep(3);
   };
 
   const handleSave = () => {
@@ -184,70 +177,112 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             Type
           </button>
 
-          {/* Step 2: Search (conditional) */}
-          {selectedType && isSearchRelatedType(selectedType) && (
-            <button
-              onClick={() => step > 2 && setStep(2)}
-              className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
-                step === 2 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
-              } ${step < 2 ? 'cursor-default' : 'hover:text-foreground'}`}
-              disabled={step < 2}
-            >
-              {step > 2 ? (
-                <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                  <Check className="w-3 h-3 text-primary-foreground" />
-                </div>
-              ) : (
-                <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
-                  step === 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                }`}>2</div>
-              )}
-              Search
-            </button>
-          )}
-
-          {/* Step 3: Details */}
+          {/* Step 2: Details */}
           <button
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
-              step === 3 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
-            } ${step < 3 ? 'cursor-default' : 'hover:text-foreground'}`}
-            disabled={step < 3}
-            onClick={() => step > 3 && setStep(3)}
+              step === 2 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
+            } ${step < 2 ? 'cursor-default' : 'hover:text-foreground'}`}
+            disabled={step < 2}
+            onClick={() => step > 2 && setStep(2)}
           >
-            {step > 3 ? (
+            {step > 2 ? (
               <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
                 <Check className="w-3 h-3 text-primary-foreground" />
               </div>
             ) : (
               <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
-                step === 3 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-              }`}>
-                {selectedType && isSearchRelatedType(selectedType) ? '3' : '2'}
-              </div>
+                step === 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+              }`}>2</div>
             )}
             Details
           </button>
 
-          {/* Step 4: Preview */}
+          {/* Step 3: Preview */}
           <button
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
-              step === 4 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
+              step === 3 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
             } cursor-default`}
-            disabled={step < 4}
+            disabled={step < 3}
           >
             <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
-              step === 4 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-            }`}>
-              {selectedType && isSearchRelatedType(selectedType) ? '4' : '3'}
-            </div>
+              step === 3 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+            }`}>3</div>
             Preview
           </button>
         </div>
 
-        {/* Step 1: Type Selection */}
+        {/* Step 1: Search + Type Selection (combined) */}
         {step === 1 && (
           <div className="px-6 pb-6 bg-card mx-0">
             <p className="text-sm font-medium text-muted-foreground py-4">Select the type of alert you want to create.</p>
+
+            {/* Search selection - shown first when a search-related type is selected */}
+            {selectedType && isSearchRelatedType(selectedType) && (
+              <>
+                <div className="border-b border-border pb-4 mb-4 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-sm font-bold text-foreground">Search type</Label>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent>Choose how searches are applied to this alert</TooltipContent>
+                    </Tooltip>
+                  </div>
+                  <div className="flex gap-2">
+                    {(['optimized', 'standard'] as const).map((t) => (
+                      <button
+                        key={t}
+                        onClick={() => setSearchType(t)}
+                        className={`px-3 py-1.5 text-sm rounded-md border transition-colors ${
+                          searchType === t
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'bg-background text-foreground border-border hover:bg-muted'
+                        }`}
+                      >
+                        {t === 'optimized' ? 'Optimized searches' : 'Standard searches'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border-b border-border pb-4 mb-4 space-y-3">
+                  <div>
+                    <Label className="text-sm font-bold text-foreground">Searches</Label>
+                    <p className="text-xs text-muted-foreground mt-0.5">Select searches</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{selectedSearches.length}/10</p>
+                  {selectedSearches.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedSearches.map((s) => (
+                        <Badge key={s} variant="secondary" className="gap-1 text-xs">
+                          {s}
+                          <X className="w-3 h-3 cursor-pointer" onClick={() => toggleSearch(s)} />
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                  <button
+                    className="text-sm text-primary hover:underline flex items-center gap-1"
+                    onClick={() => {}}
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    Add search
+                  </button>
+                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                    {mockSearches.filter(s => !selectedSearches.includes(s)).map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => toggleSearch(s)}
+                        className="w-full text-left text-sm px-2 py-1.5 rounded hover:bg-muted text-foreground"
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
 
             {/* Search-based alerts */}
             <div className="border-b border-border pb-5">
@@ -410,94 +445,18 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             <div className="flex justify-center pt-4 border-t border-border mt-4">
-              <Button onClick={handleNextFromType} disabled={!selectedType}>
-                Next
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Search Selection (only for search-related types) */}
-        {step === 2 && (
-          <div className="px-6 pb-6 bg-card mx-0">
-            <p className="text-sm font-medium text-muted-foreground py-4 border-b border-border">Select the searches to attach to this alert.</p>
-
-            <div className="py-4 border-b border-border space-y-3">
-              <div className="flex items-center gap-2">
-                <Label className="text-sm font-bold text-foreground">Search type</Label>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>Choose how searches are applied to this alert</TooltipContent>
-                </Tooltip>
-              </div>
-              <div className="flex gap-2">
-                {(['optimized', 'standard'] as const).map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setSearchType(t)}
-                    className={`px-3 py-1.5 text-sm rounded-md border transition-colors ${
-                      searchType === t
-                        ? 'bg-primary text-primary-foreground border-primary'
-                        : 'bg-background text-foreground border-border hover:bg-muted'
-                    }`}
-                  >
-                    {t === 'optimized' ? 'Optimized searches' : 'Standard searches'}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="py-4 space-y-3">
-              <div>
-                <Label className="text-sm font-bold text-foreground">Searches</Label>
-                <p className="text-xs text-muted-foreground mt-0.5">Select searches</p>
-              </div>
-              <p className="text-xs text-muted-foreground">{selectedSearches.length}/10</p>
-              {selectedSearches.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedSearches.map((s) => (
-                    <Badge key={s} variant="secondary" className="gap-1 text-xs">
-                      {s}
-                      <X className="w-3 h-3 cursor-pointer" onClick={() => toggleSearch(s)} />
-                    </Badge>
-                  ))}
-                </div>
-              )}
-              <button
-                className="text-sm text-primary hover:underline flex items-center gap-1"
-                onClick={() => {}}
+              <Button
+                onClick={handleNextFromStep1}
+                disabled={!selectedType || (isSearchRelatedType(selectedType) && selectedSearches.length === 0)}
               >
-                <Plus className="w-3.5 h-3.5" />
-                Add search
-              </button>
-              <div className="space-y-1 max-h-32 overflow-y-auto">
-                {mockSearches.filter(s => !selectedSearches.includes(s)).map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => toggleSearch(s)}
-                    className="w-full text-left text-sm px-2 py-1.5 rounded hover:bg-muted text-foreground"
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between pt-4 border-t border-border">
-              <Button variant="ghost" onClick={() => setStep(1)}>
-                Back
-              </Button>
-              <Button onClick={handleNextFromSearch} disabled={selectedSearches.length === 0}>
                 Next
               </Button>
             </div>
           </div>
         )}
 
-        {/* Step 3: Details */}
-        {step === 3 && selectedType && (
+        {/* Step 2: Details */}
+        {step === 2 && selectedType && (
           <div className="px-6 pb-6 bg-card">
             <h3 className="text-base font-semibold text-foreground py-4 border-b border-border">
               Configure details for {alertTypeLabels[selectedType]} alert
@@ -648,7 +607,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
             {/* Footer */}
             <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
-              <Button variant="ghost" onClick={() => selectedType && isSearchRelatedType(selectedType) ? setStep(2) : setStep(1)}>
+              <Button variant="ghost" onClick={() => setStep(1)}>
                 Back
               </Button>
               <Button onClick={handleNextFromDetails}>
@@ -658,8 +617,8 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
           </div>
         )}
 
-        {/* Step 4: Preview */}
-        {step === 4 && selectedType && (
+        {/* Step 3: Preview */}
+        {step === 3 && selectedType && (
           <div className="px-6 pb-6 bg-card">
             {/* Estimated Alert Volume */}
             <div className={`py-4 border-b border-border space-y-2 ${
@@ -688,12 +647,12 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                       This configuration will generate a large number of emails. Consider these changes:
                     </p>
                     <ul className="text-xs text-destructive/80 list-disc pl-4 space-y-0.5">
-                      <li>Switch to <button className="underline font-medium" onClick={() => { setNotifyMode('daily'); setStep(3); }}>Daily threshold</button> instead of immediate notifications</li>
+                      <li>Switch to <button className="underline font-medium" onClick={() => { setNotifyMode('daily'); setStep(2); }}>Daily threshold</button> instead of immediate notifications</li>
                       {selectedSearches.length > 2 && (
                         <li>Reduce the number of attached searches (currently {selectedSearches.length})</li>
                       )}
                       {!relevanceBoost && (
-                        <li>Enable <button className="underline font-medium" onClick={() => { setRelevanceBoost(true); setStep(3); }}>Relevance Boost</button> to filter noise</li>
+                        <li>Enable <button className="underline font-medium" onClick={() => { setRelevanceBoost(true); setStep(2); }}>Relevance Boost</button> to filter noise</li>
                       )}
                       <li>Use a more specific alert type like Spike Detection or Top Reach</li>
                     </ul>
@@ -803,7 +762,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
             {/* Footer */}
             <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
-              <Button variant="ghost" onClick={() => setStep(3)}>
+              <Button variant="ghost" onClick={() => setStep(2)}>
                 Back
               </Button>
               <Button onClick={handleSave}>
