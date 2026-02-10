@@ -391,7 +391,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 </Tooltip>
               </div>
               <div className="flex gap-2">
-                {(['optimized', 'standard', 'custom'] as const).map((t) => (
+                {(['optimized', 'standard'] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setSearchType(t)}
@@ -401,7 +401,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                         : 'bg-background text-foreground border-border hover:bg-muted'
                     }`}
                   >
-                    {t === 'optimized' ? 'Optimized searches' : t === 'standard' ? 'Standard searches' : 'Custom fields'}
+                    {t === 'optimized' ? 'Optimized searches' : 'Standard searches'}
                   </button>
                 ))}
               </div>
