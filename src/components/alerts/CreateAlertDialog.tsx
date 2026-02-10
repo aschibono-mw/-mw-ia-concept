@@ -119,7 +119,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto p-0">
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto p-0 bg-card">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="flex items-center gap-2 text-lg">
             <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
@@ -169,11 +169,11 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
         {/* Step 1: Type Selection */}
         {step === 1 && (
-          <div className="px-6 pb-6 space-y-6">
-            <p className="text-sm text-muted-foreground">Select the type of alert you want to create.</p>
+          <div className="px-6 pb-6 space-y-6 bg-background/60 mx-0">
+            <p className="text-sm text-foreground/70">Select the type of alert you want to create.</p>
             {alertTypeCategories.map((category) => (
               <div key={category.label}>
-                <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                <h4 className="text-xs font-bold text-foreground/60 uppercase tracking-wider mb-3">
                   {category.label}
                 </h4>
                 <div className="grid grid-cols-2 gap-2">
@@ -186,8 +186,8 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                         onClick={() => setSelectedType(type)}
                         className={`flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
                           isSelected
-                            ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                            : 'border-border hover:border-primary/40 hover:bg-muted/50'
+                            ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-sm'
+                            : 'border-border/80 bg-card hover:border-primary/40 hover:bg-muted/50 shadow-sm'
                         }`}
                       >
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
@@ -220,15 +220,15 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
         {/* Step 2: Details */}
         {step === 2 && selectedType && (
-          <div className="px-6 pb-6 space-y-5">
+          <div className="px-6 pb-6 space-y-5 bg-background/60">
             <h3 className="text-base font-semibold text-foreground">
               Configure details for {alertTypeLabels[selectedType]} alert
             </h3>
 
             {/* Search Type */}
-            <div className="border border-border rounded-lg p-4 space-y-3">
+            <div className="border border-border/80 rounded-lg p-4 space-y-3 bg-card shadow-sm">
               <div className="flex items-center gap-2">
-                <Label className="text-sm font-semibold">Search type</Label>
+                <Label className="text-sm font-bold text-foreground">Search type</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
@@ -254,9 +254,9 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Searches */}
-            <div className="border border-border rounded-lg p-4 space-y-3">
+            <div className="border border-border/80 rounded-lg p-4 space-y-3 bg-card shadow-sm">
               <div>
-                <Label className="text-sm font-semibold">Searches</Label>
+                <Label className="text-sm font-bold text-foreground">Searches</Label>
                 <p className="text-xs text-muted-foreground mt-0.5">Select searches</p>
               </div>
               <p className="text-xs text-muted-foreground">{selectedSearches.length}/10</p>
@@ -294,10 +294,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Relevance Boost */}
-            <div className="border border-primary/30 rounded-lg p-4 space-y-3 bg-primary/5">
+            <div className="border border-primary/40 rounded-lg p-4 space-y-3 bg-primary/5 shadow-sm">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <Label className="text-sm font-semibold">Relevance Boost</Label>
+                <Label className="text-sm font-bold text-foreground">Relevance Boost</Label>
                 <Badge variant="secondary" className="text-[10px] px-1.5 py-0">Beta</Badge>
               </div>
               <p className="text-xs text-muted-foreground">
@@ -310,9 +310,9 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Settings */}
-            <div className="border border-border rounded-lg p-4 space-y-4">
+            <div className="border border-border/80 rounded-lg p-4 space-y-4 bg-card shadow-sm">
               <div className="flex items-center gap-2">
-                <Label className="text-sm font-semibold">Settings</Label>
+                <Label className="text-sm font-bold text-foreground">Settings</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
@@ -321,7 +321,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 </Tooltip>
               </div>
               <div className="space-y-1">
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Similar Mentions</span>
+                <span className="text-xs font-bold text-foreground/60 uppercase tracking-wider">Similar Mentions</span>
                 <Select value={similarMentions} onValueChange={setSimilarMentions}>
                   <SelectTrigger className="w-full">
                     <SelectValue />
@@ -334,7 +334,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 </Select>
               </div>
               <div className="space-y-2">
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Display</span>
+                <span className="text-xs font-bold text-foreground/60 uppercase tracking-wider">Display</span>
                 <div className="flex items-center gap-2">
                   <Checkbox checked={showImages} onCheckedChange={(v) => setShowImages(!!v)} />
                   <span className="text-sm text-foreground">Images</span>
@@ -343,9 +343,9 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* When to notify */}
-            <div className="border border-border rounded-lg p-4 space-y-3">
+            <div className="border border-border/80 rounded-lg p-4 space-y-3 bg-card shadow-sm">
               <div className="flex items-center gap-2">
-                <Label className="text-sm font-semibold">When to notify me</Label>
+                <Label className="text-sm font-bold text-foreground">When to notify me</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
@@ -380,9 +380,9 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Recipients */}
-            <div className="border border-border rounded-lg p-4 space-y-3">
+            <div className="border border-border/80 rounded-lg p-4 space-y-3 bg-card shadow-sm">
               <div>
-                <Label className="text-sm font-semibold">Recipients</Label>
+                <Label className="text-sm font-bold text-foreground">Recipients</Label>
                 <p className="text-xs text-muted-foreground mt-0.5">Send alerts to the following people</p>
               </div>
               <div className="relative">
@@ -397,7 +397,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               <p className="text-xs text-muted-foreground">{recipients.length}/10</p>
               <div className="space-y-2">
                 {recipients.map((r) => (
-                  <div key={r.email} className="flex items-center justify-between px-3 py-2 rounded-md bg-muted/50">
+                  <div key={r.email} className="flex items-center justify-between px-3 py-2 rounded-md bg-muted border border-border/50">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">
                         {r.name.split(' ').map(n => n[0]).join('')}
@@ -416,9 +416,9 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Delivery Method */}
-            <div className="border border-border rounded-lg p-4 space-y-3">
+            <div className="border border-border/80 rounded-lg p-4 space-y-3 bg-card shadow-sm">
               <div className="flex items-center gap-2">
-                <Label className="text-sm font-semibold">Delivery method</Label>
+                <Label className="text-sm font-bold text-foreground">Delivery method</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
@@ -428,7 +428,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
               <p className="text-xs text-muted-foreground">How would you like to receive alerts?</p>
               <div className="space-y-1">
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Standard</span>
+                <span className="text-xs font-bold text-foreground/60 uppercase tracking-wider">Standard</span>
                 <div className="flex items-center gap-2">
                   <Checkbox checked={deliveryEmail} onCheckedChange={(v) => setDeliveryEmail(!!v)} />
                   <span className="text-sm text-foreground">Email</span>
