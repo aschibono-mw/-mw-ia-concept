@@ -240,20 +240,22 @@ const Alerts = () => {
               <TabsContent value="manage" className="mt-0">
                 <div className="flex gap-6">
                   {/* Views Sidebar */}
-                  <div className="w-40 flex-shrink-0">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Views</p>
-                    <div className="space-y-1">
-                      {viewCategories.map((cat) => (
-                        <button
-                          key={cat.label}
-                          className={`flex items-center justify-between w-full px-2 py-1.5 rounded text-sm hover:bg-muted/50 ${cat.label === "All" ? "font-medium" : ""}`}
-                        >
-                          <span className={cat.label === "All" || cat.label === "Urgent" || cat.label === "Needs attention" ? cat.color : "text-foreground"}>
-                            {cat.label}
-                          </span>
-                          <span className={`text-xs ${cat.label === "All" ? cat.color : "text-muted-foreground"}`}>{cat.count}</span>
-                        </button>
-                      ))}
+                  <div className="w-48 flex-shrink-0">
+                    <div className="bg-card rounded-lg border border-border p-4">
+                      <h3 className="font-semibold text-card-foreground mb-3">Views</h3>
+                      <div className="space-y-1">
+                        {viewCategories.map((cat) => (
+                          <button
+                            key={cat.label}
+                            className={`flex items-center justify-between w-full px-2 py-1.5 rounded text-sm hover:bg-muted/50 ${cat.label === "All" ? "font-medium" : ""}`}
+                          >
+                            <span className={cat.label === "All" || cat.label === "Urgent" || cat.label === "Needs attention" ? cat.color : "text-foreground"}>
+                              {cat.label}
+                            </span>
+                            <span className={`text-xs ${cat.label === "All" ? cat.color : "text-muted-foreground"}`}>{cat.count}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
