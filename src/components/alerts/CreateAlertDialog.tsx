@@ -316,52 +316,52 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            {/* Alert type selection - multi-select */}
-            <div className="mb-4">
-              <div className="flex items-center gap-2 mb-1">
-                <Label className="text-sm font-bold text-foreground">Alert types</Label>
-                {selectedTypes.length > 0 && (
-                  <Badge variant="secondary" className="text-xs">{selectedTypes.length} selected</Badge>
-                )}
-              </div>
-              <p className="text-xs text-muted-foreground mb-4">Select one or more alert types to create.</p>
-            </div>
+            {/* Alert type selection - only shown after searches are selected */}
+            {selectedSearches.length > 0 && (
+              <>
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Label className="text-sm font-bold text-foreground">Alert types</Label>
+                    {selectedTypes.length > 0 && (
+                      <Badge variant="secondary" className="text-xs">{selectedTypes.length} selected</Badge>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-4">Select one or more alert types to create.</p>
+                </div>
 
-            {/* Search-based alerts */}
-            <div className="border-b border-border pb-5">
-              <h4 className="text-sm font-bold text-foreground mb-3">Search alerts</h4>
-              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted">
-                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
-                <p className="text-xs text-muted-foreground font-medium">These alerts require attaching a search</p>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {searchAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
-              </div>
-            </div>
+                {/* Search-based alerts */}
+                <div className="border-b border-border pb-5">
+                  <h4 className="text-sm font-bold text-foreground mb-3">Search alerts</h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {searchAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
+                  </div>
+                </div>
 
-            {/* Event alerts */}
-            <div className="border-b border-border py-5">
-              <h4 className="text-sm font-bold text-foreground mb-3">Event alerts</h4>
-              <div className="space-y-2">
-                {eventAlertTypes.map((type) => renderTypeCard(type, 'list'))}
-              </div>
-            </div>
+                {/* Event alerts */}
+                <div className="border-b border-border py-5">
+                  <h4 className="text-sm font-bold text-foreground mb-3">Event alerts</h4>
+                  <div className="space-y-2">
+                    {eventAlertTypes.map((type) => renderTypeCard(type, 'list'))}
+                  </div>
+                </div>
 
-            {/* Social alerts */}
-            <div className="border-b border-border py-5">
-              <h4 className="text-sm font-bold text-foreground mb-3">Social alerts</h4>
-              <div className="space-y-2">
-                {socialAlertTypes.map((type) => renderTypeCard(type, 'list'))}
-              </div>
-            </div>
+                {/* Social alerts */}
+                <div className="border-b border-border py-5">
+                  <h4 className="text-sm font-bold text-foreground mb-3">Social alerts</h4>
+                  <div className="space-y-2">
+                    {socialAlertTypes.map((type) => renderTypeCard(type, 'list'))}
+                  </div>
+                </div>
 
-            {/* RSS alerts */}
-            <div className="pt-5">
-              <h4 className="text-sm font-bold text-foreground mb-3">RSS alerts</h4>
-              <div className="space-y-2">
-                {rssAlertTypes.map((type) => renderTypeCard(type, 'list'))}
-              </div>
-            </div>
+                {/* RSS alerts */}
+                <div className="pt-5">
+                  <h4 className="text-sm font-bold text-foreground mb-3">RSS alerts</h4>
+                  <div className="space-y-2">
+                    {rssAlertTypes.map((type) => renderTypeCard(type, 'list'))}
+                  </div>
+                </div>
+              </>
+            )}
 
             <div className="flex justify-center pt-4 border-t border-border mt-4">
               <Button
