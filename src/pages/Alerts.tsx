@@ -76,6 +76,7 @@ const Alerts = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAlerts, setSelectedAlerts] = useState<string[]>([]);
   const [createAlertOpen, setCreateAlertOpen] = useState(false);
+  const [selectedView, setSelectedView] = useState("All");
 
   // Sync tab with URL parameter
   useEffect(() => {
@@ -243,16 +244,17 @@ const Alerts = () => {
                   <div className="w-48 flex-shrink-0">
                     <div className="bg-card rounded-lg border border-border p-4">
                       <h3 className="font-semibold text-card-foreground mb-3">Views</h3>
-                      <div className="space-y-1">
+                      <div className="divide-y divide-border">
                         {viewCategories.map((cat) => (
                           <button
                             key={cat.label}
-                            className={`flex items-center justify-between w-full px-2 py-1.5 rounded text-sm hover:bg-muted/50 ${cat.label === "All" ? "font-medium" : ""}`}
+                            onClick={() => setSelectedView(cat.label)}
+                            className={`flex items-center justify-between w-full px-2 py-2 text-sm hover:bg-muted/50 transition-colors ${selectedView === cat.label ? "bg-muted font-medium" : ""}`}
                           >
-                            <span className={cat.label === "All" || cat.label === "Urgent" || cat.label === "Needs attention" ? cat.color : "text-foreground"}>
+                            <span className={cat.label === "Urgent" || cat.label === "Needs attention" ? cat.color : "text-foreground"}>
                               {cat.label}
                             </span>
-                            <span className={`text-xs ${cat.label === "All" ? cat.color : "text-muted-foreground"}`}>{cat.count}</span>
+                            <span className={`text-xs ${selectedView === cat.label ? "text-primary" : "text-muted-foreground"}`}>{cat.count}</span>
                           </button>
                         ))}
                       </div>
@@ -262,7 +264,15 @@ const Alerts = () => {
                   {/* Table */}
                   <div className="flex-1 bg-card rounded-lg border border-border">
                     <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-                      <span className="text-sm font-medium text-foreground">All <span className="text-muted-foreground">({managedAlerts.length} alerts)</span></span>
+                      <span className="text-sm font-medium text-foreground">{selectedView} <span className="text-muted-foreground">({managedAlerts.filter(a => {
+                        if (selectedView === "All") return true;
+                        if (selectedView === "Urgent") return a.urgency === "Urgent";
+                        if (selectedView === "Paused") return !a.enabled;
+                        if (selectedView === "Needs attention") return a.urgency === "Important";
+                        if (selectedView === "My alerts") return ["1","3","5","6","8"].includes(a.id);
+                        if (selectedView === "Team alerts") return ["2","4","7"].includes(a.id);
+                        return true;
+                      }).length} alerts)</span></span>
                       <ExpandableSearch value={searchQuery} onChange={setSearchQuery} placeholder="Search alerts..." inactivityTimeout={5000} />
                     </div>
                     <table className="w-full">
@@ -278,7 +288,15 @@ const Alerts = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {managedAlerts.map((alert) => (
+                        {managedAlerts.filter(a => {
+                          if (selectedView === "All") return true;
+                          if (selectedView === "Urgent") return a.urgency === "Urgent";
+                          if (selectedView === "Paused") return !a.enabled;
+                          if (selectedView === "Needs attention") return a.urgency === "Important";
+                          if (selectedView === "My alerts") return ["1","3","5","6","8"].includes(a.id);
+                          if (selectedView === "Team alerts") return ["2","4","7"].includes(a.id);
+                          return true;
+                        }).map((alert) => (
                           <tr key={alert.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
                             <td className="px-4 py-3.5">
                               <div>
