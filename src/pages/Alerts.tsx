@@ -34,14 +34,37 @@ import { ManageNotificationsTab } from "@/components/alerts/ManageNotificationsT
 
 // Mock data for managed alerts (alert configurations)
 const managedAlerts = [
-  { id: "1", name: "Brand Mentions Alert", type: "spike_detection" as AlertType, search: "Brand Mentions Search", enabled: true, frequency: "Real-time" },
-  { id: "2", name: "Executive Coverage", type: "top_reach" as AlertType, search: "Executive Leadership Coverage", enabled: true, frequency: "Daily digest" },
-  { id: "3", name: "Competitor Watch", type: "sentiment_shift" as AlertType, search: "Competitor Analysis", enabled: false, frequency: "Real-time" },
-  { id: "4", name: "Industry News", type: "industry_events" as AlertType, search: "Industry News Search", enabled: true, frequency: "Weekly digest" },
-  { id: "5", name: "Social Influencers", type: "x_influencer" as AlertType, search: "Influencer Mentions Tracker", enabled: true, frequency: "Real-time" },
-  { id: "6", name: "Crisis Monitor", type: "every_mention" as AlertType, search: "Crisis & Reputation Risk", enabled: true, frequency: "Real-time" },
-  { id: "7", name: "Product Launches", type: "company_events" as AlertType, search: "Competitor Product Launches", enabled: false, frequency: "Daily digest" },
-  { id: "8", name: "Earnings Coverage", type: "top_reach" as AlertType, search: "Earnings Call Mentions", enabled: true, frequency: "Real-time" },
+  { id: "1", name: "Brand Crisis Monitor", subtitle: "Brand Coverage, Crisis Keywords", purpose: "Crisis", urgency: "Urgent", delivery: "Email, Slack", enabled: true, lastTriggered: "2 hours ago", type: "spike_detection" as AlertType },
+  { id: "2", name: "Competitor Launch Tracker", subtitle: "Competitor A, Product Launches", purpose: "Competitor", urgency: "Important", delivery: "Email", enabled: true, lastTriggered: "Yesterday", type: "sentiment_shift" as AlertType },
+  { id: "3", name: "Campaign Performance", subtitle: "Summer Campaign 2026", purpose: "Campaign", urgency: "All", delivery: "Slack", enabled: true, lastTriggered: "3 days ago", type: "company_events" as AlertType },
+  { id: "4", name: "CEO Mentions", subtitle: "CEO Name, Executive Team", purpose: "Executive", urgency: "Important", delivery: "Email, In-app", enabled: false, lastTriggered: "1 week ago", type: "top_reach" as AlertType },
+  { id: "5", name: "Industry News Daily", subtitle: "Industry Keywords", purpose: "Custom", urgency: "All", delivery: "Email", enabled: true, lastTriggered: "Today", type: "industry_events" as AlertType },
+  { id: "6", name: "Social Influencers", subtitle: "Influencer Mentions Tracker", purpose: "Executive", urgency: "Urgent", delivery: "Email, Slack", enabled: true, lastTriggered: "5 hours ago", type: "x_influencer" as AlertType },
+  { id: "7", name: "Product Launches", subtitle: "Competitor Product Launches", purpose: "Competitor", urgency: "All", delivery: "In-app", enabled: false, lastTriggered: "2 weeks ago", type: "company_events" as AlertType },
+  { id: "8", name: "Earnings Coverage", subtitle: "Earnings Call Mentions", purpose: "Campaign", urgency: "Important", delivery: "Email", enabled: true, lastTriggered: "Yesterday", type: "top_reach" as AlertType },
+];
+
+const purposeColors: Record<string, string> = {
+  Crisis: "bg-red-100 text-red-700",
+  Competitor: "bg-blue-100 text-blue-700",
+  Campaign: "bg-green-100 text-green-700",
+  Executive: "bg-teal-100 text-teal-700",
+  Custom: "bg-gray-100 text-gray-600",
+};
+
+const urgencyColors: Record<string, string> = {
+  Urgent: "bg-orange-100 text-orange-700",
+  Important: "bg-yellow-100 text-yellow-700",
+  All: "bg-gray-100 text-gray-500",
+};
+
+const viewCategories = [
+  { label: "All", count: 8, color: "text-primary" },
+  { label: "Urgent", count: 2, color: "text-red-500" },
+  { label: "Paused", count: 1, color: "text-muted-foreground" },
+  { label: "Needs attention", count: 1, color: "text-orange-500" },
+  { label: "My alerts", count: 5, color: "text-muted-foreground" },
+  { label: "Team alerts", count: 3, color: "text-muted-foreground" },
 ];
 
 const Alerts = () => {
@@ -215,64 +238,72 @@ const Alerts = () => {
 
               {/* Manage Alerts Tab */}
               <TabsContent value="manage" className="mt-0">
-                <div className="bg-card rounded-lg border border-border">
+                <div className="flex gap-6">
+                  {/* Views Sidebar */}
+                  <div className="w-40 flex-shrink-0">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Views</p>
+                    <div className="space-y-1">
+                      {viewCategories.map((cat) => (
+                        <button
+                          key={cat.label}
+                          className={`flex items-center justify-between w-full px-2 py-1.5 rounded text-sm hover:bg-muted/50 ${cat.label === "All" ? "font-medium" : ""}`}
+                        >
+                          <span className={cat.label === "All" || cat.label === "Urgent" || cat.label === "Needs attention" ? cat.color : "text-foreground"}>
+                            {cat.label}
+                          </span>
+                          <span className={`text-xs ${cat.label === "All" ? cat.color : "text-muted-foreground"}`}>{cat.count}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* Table */}
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-border text-left">
-                        <th className="p-4 w-10">
-                          <Checkbox />
-                        </th>
-                        <th className="p-4 text-sm font-bold text-foreground">Alert Name</th>
-                        <th className="p-4 text-sm font-bold text-foreground">Type</th>
-                        <th className="p-4 text-sm font-bold text-foreground">Connected Search</th>
-                        <th className="p-4 text-sm font-bold text-foreground">Frequency</th>
-                        <th className="p-4 text-sm font-bold text-foreground">Enabled</th>
-                        <th className="p-4 w-16"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {managedAlerts.map((alert) => {
-                        const AlertIcon = getAlertIcon(alert.type);
-                        return (
+                  <div className="flex-1 bg-card rounded-lg border border-border">
+                    <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                      <span className="text-sm font-medium text-foreground">All <span className="text-muted-foreground">({managedAlerts.length} alerts)</span></span>
+                      <ExpandableSearch value={searchQuery} onChange={setSearchQuery} placeholder="Search alerts..." inactivityTimeout={5000} />
+                    </div>
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-border text-left">
+                          <th className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Name</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Purpose</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Urgency</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Delivery</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Status</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Last Triggered</th>
+                          <th className="px-4 py-3 w-10"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {managedAlerts.map((alert) => (
                           <tr key={alert.id} className="border-b border-border last:border-b-0 hover:bg-muted/50">
-                            <td className="p-4">
-                              <Checkbox 
-                                checked={selectedAlerts.includes(alert.id)}
-                                onCheckedChange={() => toggleAlertSelection(alert.id)}
-                              />
-                            </td>
-                            <td className="p-4">
-                              <div className="flex items-center gap-2">
-                                <Bell className="w-4 h-4 text-muted-foreground" />
-                                <span className="text-sm font-medium text-foreground hover:text-primary cursor-pointer">
-                                  {alert.name}
-                                </span>
+                            <td className="px-4 py-3.5">
+                              <div>
+                                <p className="text-sm font-medium text-foreground">{alert.name}</p>
+                                <p className="text-xs text-muted-foreground">{alert.subtitle}</p>
                               </div>
                             </td>
-                            <td className="p-4">
-                              <div className="flex items-center gap-2">
-                                <AlertIcon className="w-4 h-4 text-primary" />
-                                <span className="text-sm text-foreground">
-                                  {alertTypeLabels[alert.type]}
-                                </span>
-                              </div>
+                            <td className="px-4 py-3.5">
+                              <span className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${purposeColors[alert.purpose] || "bg-muted text-muted-foreground"}`}>
+                                {alert.purpose}
+                              </span>
                             </td>
-                            <td className="p-4">
-                              <div className="flex items-center gap-2">
-                                <Search className="w-4 h-4 text-muted-foreground" />
-                                <span className="text-sm text-foreground underline cursor-pointer hover:text-primary">
-                                  {alert.search}
-                                </span>
-                              </div>
+                            <td className="px-4 py-3.5">
+                              <span className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${urgencyColors[alert.urgency] || "bg-muted text-muted-foreground"}`}>
+                                {alert.urgency}
+                              </span>
                             </td>
-                            <td className="p-4">
-                              <span className="text-sm text-muted-foreground">{alert.frequency}</span>
+                            <td className="px-4 py-3.5">
+                              <span className="text-sm text-muted-foreground">{alert.delivery}</span>
                             </td>
-                            <td className="p-4">
+                            <td className="px-4 py-3.5">
                               <Switch checked={alert.enabled} />
                             </td>
-                            <td className="p-4">
+                            <td className="px-4 py-3.5">
+                              <span className="text-sm text-muted-foreground">{alert.lastTriggered}</span>
+                            </td>
+                            <td className="px-4 py-3.5">
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                   <button className="p-1 hover:bg-muted rounded">
@@ -292,30 +323,12 @@ const Alerts = () => {
                               </DropdownMenu>
                             </td>
                           </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Alert Type Descriptions */}
-                <div className="mt-6">
-                  <h3 className="text-sm font-semibold text-foreground mb-3">Alert Types</h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {Object.entries(alertTypeDescriptions).slice(0, 6).map(([type, description]) => {
-                      const AlertIcon = getAlertIcon(type as AlertType);
-                      return (
-                        <div key={type} className="flex items-start gap-3 p-3 bg-card rounded-lg border border-border">
-                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                            <AlertIcon className="w-4 h-4 text-primary" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-foreground">{alertTypeLabels[type as AlertType]}</p>
-                            <p className="text-xs text-muted-foreground line-clamp-2">{description}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="px-4 py-2.5 border-t border-border text-right">
+                      <span className="text-xs text-muted-foreground">1-{managedAlerts.length} of {managedAlerts.length}</span>
+                    </div>
                   </div>
                 </div>
               </TabsContent>
