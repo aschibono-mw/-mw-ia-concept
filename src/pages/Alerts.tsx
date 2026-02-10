@@ -264,7 +264,7 @@ const Alerts = () => {
                   {/* Table */}
                   <div className="flex-1 bg-card rounded-lg border border-border">
                     <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-                      <span className="text-sm font-medium text-foreground">{selectedView} <span className="text-muted-foreground">({managedAlerts.filter(a => {
+                      <span className="text-sm text-foreground">{selectedView} <span className="text-muted-foreground">({managedAlerts.filter(a => {
                         if (selectedView === "All") return true;
                         if (selectedView === "Urgent") return a.urgency === "Urgent";
                         if (selectedView === "Paused") return !a.enabled;
@@ -273,7 +273,6 @@ const Alerts = () => {
                         if (selectedView === "Team alerts") return ["2","4","7"].includes(a.id);
                         return true;
                       }).length} alerts)</span></span>
-                      <ExpandableSearch value={searchQuery} onChange={setSearchQuery} placeholder="Search alerts..." inactivityTimeout={5000} />
                     </div>
                     <table className="w-full">
                       <thead>
