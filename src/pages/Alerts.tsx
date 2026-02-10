@@ -163,7 +163,7 @@ const Alerts = () => {
                   {/* Header */}
                   <div className="flex items-center justify-between px-4 py-3 border-b border-border">
                     <div className="flex items-center gap-4">
-                      <span className="text-sm font-medium text-foreground">
+                      <span className="text-base font-semibold text-foreground">
                         {mockAlerts.length} alerts
                       </span>
                       <DropdownMenu>
@@ -356,7 +356,7 @@ const Alerts = () => {
               <TabsContent value="all-notifications" className="mt-0">
                 <div className="bg-card rounded-lg border border-border">
                   <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-                    <span className="text-sm font-medium text-foreground">
+                    <span className="text-base font-semibold text-foreground">
                       {mockNotifications.length} notifications
                     </span>
                     <button className="text-sm text-primary hover:underline">
