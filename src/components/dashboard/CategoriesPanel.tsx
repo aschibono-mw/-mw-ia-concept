@@ -48,7 +48,7 @@ export const CategoriesPanel = ({ categories, onAddCategory }: CategoriesPanelPr
         </button>
       </div>
       
-      <ScrollArea className="h-56">
+      <ScrollArea className="max-h-56">
         <ul className="space-y-2 pr-3">
           {categories.map((category) => (
             <li key={category.name}>
