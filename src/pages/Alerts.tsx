@@ -4,6 +4,9 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mockAlerts } from "@/components/alerts/mockData";
+import { mockNotifications } from "@/components/notifications/mockData";
+import { notificationTypeLabels } from "@/components/notifications/types";
+import { getNotificationIcon } from "@/components/notifications/notificationIcons";
 import { getAlertIcon } from "@/components/alerts/alertIcons";
 import { alertTypeLabels, alertTypeDescriptions, AlertType } from "@/components/alerts/types";
 import { Button } from "@/components/ui/button";
@@ -44,7 +47,9 @@ const managedAlerts = [
 const Alerts = () => {
   const [searchParams] = useSearchParams();
   const tabFromUrl = searchParams.get("tab");
-  const [activeTab, setActiveTab] = useState(tabFromUrl === "manage" ? "manage" : tabFromUrl === "notifications" ? "notifications" : "all");
+  const [activeTab, setActiveTab] = useState(
+    tabFromUrl === "manage" ? "manage" : tabFromUrl === "notifications" ? "notifications" : tabFromUrl === "all-notifications" ? "all-notifications" : "all"
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAlerts, setSelectedAlerts] = useState<string[]>([]);
   const [createAlertOpen, setCreateAlertOpen] = useState(false);
@@ -55,6 +60,8 @@ const Alerts = () => {
       setActiveTab("manage");
     } else if (tabFromUrl === "notifications") {
       setActiveTab("notifications");
+    } else if (tabFromUrl === "all-notifications") {
+      setActiveTab("all-notifications");
     }
   }, [tabFromUrl]);
 
@@ -97,6 +104,14 @@ const Alerts = () => {
                     {unreadCount > 0 && (
                       <span className="w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full inline-flex items-center justify-center">
                         {unreadCount}
+                      </span>
+                    )}
+                  </TabsTrigger>
+                  <TabsTrigger value="all-notifications" className="gap-2">
+                    All Notifications
+                    {mockNotifications.filter(n => !n.isRead).length > 0 && (
+                      <span className="w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full inline-flex items-center justify-center">
+                        {mockNotifications.filter(n => !n.isRead).length}
                       </span>
                     )}
                   </TabsTrigger>
@@ -297,6 +312,56 @@ const Alerts = () => {
                           <div>
                             <p className="text-sm font-medium text-foreground">{alertTypeLabels[type as AlertType]}</p>
                             <p className="text-xs text-muted-foreground line-clamp-2">{description}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* All Notifications Tab */}
+              <TabsContent value="all-notifications" className="mt-0">
+                <div className="bg-card rounded-lg border border-border">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                    <span className="text-sm font-medium text-foreground">
+                      {mockNotifications.length} notifications
+                    </span>
+                    <button className="text-sm text-primary hover:underline">
+                      Mark all as read
+                    </button>
+                  </div>
+                  <div className="divide-y divide-border">
+                    {mockNotifications.map((notification) => {
+                      const NotifIcon = getNotificationIcon(notification.type);
+                      return (
+                        <div
+                          key={notification.id}
+                          className={`px-4 py-4 hover:bg-muted/50 cursor-pointer ${!notification.isRead ? 'bg-primary/5' : ''}`}
+                        >
+                          <div className="flex items-start gap-4">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${!notification.isRead ? 'bg-primary/10' : 'bg-muted'}`}>
+                              <NotifIcon className={`w-5 h-5 ${!notification.isRead ? 'text-primary' : 'text-muted-foreground'}`} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between gap-2 mb-1">
+                                <span className={`text-xs ${!notification.isRead ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                                  {notificationTypeLabels[notification.type]}
+                                </span>
+                                <span className="text-xs text-muted-foreground">{notification.timestamp}</span>
+                              </div>
+                              <p className={`text-sm text-foreground mb-1 ${!notification.isRead ? 'font-semibold' : ''}`}>
+                                {notification.title}
+                              </p>
+                              <p className="text-sm text-muted-foreground line-clamp-2">
+                                {notification.description}
+                              </p>
+                              {notification.actionLabel && (
+                                <button className="text-sm text-primary hover:underline mt-1.5">
+                                  {notification.actionLabel}
+                                </button>
+                              )}
+                            </div>
                           </div>
                         </div>
                       );
