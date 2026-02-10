@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
+import { CategoriesPanel } from "@/components/dashboard/CategoriesPanel";
 import { Header } from "@/components/dashboard/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mockAlerts } from "@/components/alerts/mockData";
@@ -66,6 +67,14 @@ const viewCategories = [
   { label: "Needs attention", count: 1, color: "text-orange-500" },
   { label: "My alerts", count: 5, color: "text-muted-foreground" },
   { label: "Team alerts", count: 3, color: "text-muted-foreground" },
+];
+
+const alertFolders = [
+  { name: "Crisis", count: 1 },
+  { name: "Competitor", count: 2 },
+  { name: "Campaign", count: 2 },
+  { name: "Executive", count: 2 },
+  { name: "Custom", count: 1 },
 ];
 
 const Alerts = () => {
@@ -244,35 +253,10 @@ const Alerts = () => {
 
               {/* Manage Alerts Tab */}
               <TabsContent value="manage" className="mt-0">
-                <div className="flex gap-6">
-                  {/* Views Sidebar */}
-                  <div className="w-48 flex-shrink-0">
-                    <div className="bg-card rounded-lg border border-border p-4">
-                      <h3 className="font-semibold text-card-foreground mb-3">Views</h3>
-                      <div className="space-y-1">
-                        {viewCategories.map((cat) => (
-                          <button
-                            key={cat.label}
-                            onClick={() => setSelectedView(cat.label)}
-                            className={cn(
-                              "flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-sm transition-colors",
-                              selectedView === cat.label
-                                ? "bg-sidebar-accent text-foreground font-medium"
-                                : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-                            )}
-                          >
-                            <span className={cat.label === "Urgent" || cat.label === "Needs attention" ? cat.color : ""}>
-                              {cat.label}
-                            </span>
-                            <span className={`text-xs ${selectedView === cat.label ? "text-foreground" : "text-muted-foreground"}`}>{cat.count}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Table */}
+                <div className="flex gap-6 flex-row-reverse">
+                  {/* Main Table */}
                   <div className="flex-1 bg-card rounded-lg border border-border">
+                    {/* Header with sort/owner controls */}
                     <div className="flex items-center justify-between px-4 py-3 border-b border-border">
                       <span className="text-base font-semibold text-foreground">{selectedView} <span className="text-foreground font-normal">({managedAlerts.filter(a => {
                         if (selectedView === "All") return true;
@@ -283,6 +267,23 @@ const Alerts = () => {
                         if (selectedView === "Team alerts") return ["2","4","7"].includes(a.id);
                         return true;
                       }).length} alerts)</span></span>
+                    </div>
+                    {/* Horizontal View Filters */}
+                    <div className="flex items-center gap-1 px-4 py-2 border-b border-border">
+                      {viewCategories.map((cat) => (
+                        <button
+                          key={cat.label}
+                          onClick={() => setSelectedView(cat.label)}
+                          className={cn(
+                            "px-3 py-1.5 text-sm transition-colors border-b-2 -mb-[2px]",
+                            selectedView === cat.label
+                              ? "border-primary text-foreground font-medium"
+                              : "border-transparent text-muted-foreground hover:text-foreground"
+                          )}
+                        >
+                          {cat.label} ({cat.count})
+                        </button>
+                      ))}
                     </div>
                     <table className="w-full">
                       <thead>
@@ -359,6 +360,9 @@ const Alerts = () => {
                       <span className="text-xs text-muted-foreground">1-{managedAlerts.length} of {managedAlerts.length}</span>
                     </div>
                   </div>
+
+                  {/* Categories Panel */}
+                  <CategoriesPanel categories={alertFolders} onAddCategory={() => {}} />
                 </div>
               </TabsContent>
 
