@@ -60,7 +60,7 @@ const availableAlertTypes: AlertType[] = [
 ];
 
 export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps) => {
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedType, setSelectedType] = useState<AlertType | null>(null);
   const [searchType, setSearchType] = useState<'optimized' | 'standard' | 'custom'>('standard');
   const [selectedSearches, setSelectedSearches] = useState<string[]>([]);
@@ -93,8 +93,12 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
     onOpenChange(val);
   };
 
-  const handleNext = () => {
-    if (selectedType) setStep(2);
+  const handleNextFromSearch = () => {
+    if (selectedSearches.length > 0) setStep(2);
+  };
+
+  const handleNextFromType = () => {
+    if (selectedType) setStep(3);
   };
 
   const handleSave = () => {
@@ -126,14 +130,14 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         {/* Step Indicators */}
         <div className="flex items-center gap-6 px-6 pt-4 pb-2">
           <button
-            onClick={() => step === 2 && setStep(1)}
+            onClick={() => (step === 2 || step === 3) && setStep(1)}
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
               step === 1
                 ? 'border-primary text-primary'
                 : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
-            {step === 2 ? (
+            {step > 1 ? (
               <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
                 <Check className="w-3 h-3 text-primary-foreground" />
               </div>
@@ -142,80 +146,51 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 1
               </div>
             )}
-            Type
+            Search
           </button>
           <button
+            onClick={() => step === 3 && setStep(2)}
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
               step === 2
                 ? 'border-primary text-primary'
                 : 'border-transparent text-muted-foreground'
-            }`}
-            disabled={step === 1}
+            } ${step < 2 ? 'cursor-default' : 'hover:text-foreground'}`}
+            disabled={step < 2}
+          >
+            {step > 2 ? (
+              <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                <Check className="w-3 h-3 text-primary-foreground" />
+              </div>
+            ) : (
+              <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
+                step === 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+              }`}>
+                2
+              </div>
+            )}
+            Type
+          </button>
+          <button
+            className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
+              step === 3
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground'
+            } cursor-default`}
+            disabled={step < 3}
           >
             <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
-              step === 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+              step === 3 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
             }`}>
-              2
+              3
             </div>
             Details
           </button>
         </div>
 
-        {/* Step 1: Type Selection */}
+        {/* Step 1: Search Selection */}
         {step === 1 && (
           <div className="px-6 pb-6 space-y-6 bg-background/60 mx-0">
-            <p className="text-sm text-foreground/70">Select the type of alert you want to create.</p>
-            <div>
-              <h4 className="text-xs font-bold text-foreground/60 uppercase tracking-wider mb-3">
-                Alert Types
-              </h4>
-              <div className="grid grid-cols-2 gap-2">
-                {availableAlertTypes.map((type) => {
-                  const Icon = getAlertIcon(type);
-                  const isSelected = selectedType === type;
-                  return (
-                    <button
-                      key={type}
-                      onClick={() => setSelectedType(type)}
-                      className={`flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
-                        isSelected
-                          ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-sm'
-                          : 'border-border/80 bg-card hover:border-primary/40 hover:bg-muted/50 shadow-sm'
-                      }`}
-                    >
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                        isSelected ? 'bg-primary/10' : 'bg-muted'
-                      }`}>
-                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
-                      </div>
-                      <div className="min-w-0">
-                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
-                          {alertTypeLabels[type]}
-                        </p>
-                        <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
-                          {alertTypeDescriptions[type]}
-                        </p>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="flex justify-end pt-2">
-              <Button onClick={handleNext} disabled={!selectedType}>
-                Next
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Details */}
-        {step === 2 && selectedType && (
-          <div className="px-6 pb-6 space-y-5 bg-background/60">
-            <h3 className="text-base font-semibold text-foreground">
-              Configure details for {alertTypeLabels[selectedType]} alert
-            </h3>
+            <p className="text-sm text-foreground/70">Select the searches to attach to this alert.</p>
 
             {/* Search Type */}
             <div className="border border-border/80 rounded-lg p-4 space-y-3 bg-card shadow-sm">
@@ -264,14 +239,11 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               )}
               <button
                 className="text-sm text-primary hover:underline flex items-center gap-1"
-                onClick={() => {
-                  // Show a simple list for demo
-                }}
+                onClick={() => {}}
               >
                 <Plus className="w-3.5 h-3.5" />
                 Add search
               </button>
-              {/* Simple search picker */}
               <div className="space-y-1 max-h-32 overflow-y-auto">
                 {mockSearches.filter(s => !selectedSearches.includes(s)).map((s) => (
                   <button
@@ -284,6 +256,73 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 ))}
               </div>
             </div>
+
+            <div className="flex justify-end pt-2">
+              <Button onClick={handleNextFromSearch} disabled={selectedSearches.length === 0}>
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 2: Type Selection */}
+        {step === 2 && (
+          <div className="px-6 pb-6 space-y-6 bg-background/60 mx-0">
+            <p className="text-sm text-foreground/70">Select the type of alert you want to create.</p>
+            <div>
+              <h4 className="text-xs font-bold text-foreground/60 uppercase tracking-wider mb-3">
+                Alert Types
+              </h4>
+              <div className="grid grid-cols-2 gap-2">
+                {availableAlertTypes.map((type) => {
+                  const Icon = getAlertIcon(type);
+                  const isSelected = selectedType === type;
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedType(type)}
+                      className={`flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
+                        isSelected
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-sm'
+                          : 'border-border/80 bg-card hover:border-primary/40 hover:bg-muted/50 shadow-sm'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                        isSelected ? 'bg-primary/10' : 'bg-muted'
+                      }`}>
+                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+                          {alertTypeLabels[type]}
+                        </p>
+                        <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
+                          {alertTypeDescriptions[type]}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <Button variant="ghost" onClick={() => setStep(1)}>
+                Back
+              </Button>
+              <Button onClick={handleNextFromType} disabled={!selectedType}>
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 3: Details */}
+        {step === 3 && selectedType && (
+          <div className="px-6 pb-6 space-y-5 bg-background/60">
+            <h3 className="text-base font-semibold text-foreground">
+              Configure details for {alertTypeLabels[selectedType]} alert
+            </h3>
 
             {/* Relevance Boost */}
             <div className="border border-primary/40 rounded-lg p-4 space-y-3 bg-primary/5 shadow-sm">
@@ -430,7 +469,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
             {/* Footer */}
             <div className="flex items-center justify-center gap-3 pt-2">
-              <Button variant="ghost" onClick={() => setStep(1)}>
+              <Button variant="ghost" onClick={() => setStep(2)}>
                 Back
               </Button>
               <Button onClick={handleSave}>
