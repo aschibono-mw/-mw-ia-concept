@@ -187,7 +187,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto p-0 bg-card border-border">
+      <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto p-0 bg-card border-border">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="flex items-center gap-2 text-lg font-bold text-foreground">
             <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center">
@@ -249,11 +249,11 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
         {/* Step 1: Search + Type Selection */}
         {step === 1 && (
-          <div className="px-6 pb-6 bg-card mx-0">
-            <p className="text-sm font-medium text-muted-foreground py-4">Select your searches and alert types.</p>
+          <div className="px-6 pb-6 bg-card">
+            <p className="text-sm text-muted-foreground py-4 border-b border-border">Select your searches and alert types.</p>
 
-            {/* Search selection - always shown first */}
-            <div className="border-b border-border pb-4 mb-4 space-y-3">
+            {/* Search type */}
+            <div className="py-4 border-b border-border space-y-2">
               <div className="flex items-center gap-2">
                 <Label className="text-sm font-bold text-foreground">Search type</Label>
                 <Tooltip>
@@ -280,12 +280,22 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            <div className="border-b border-border pb-4 mb-4 space-y-3">
+            {/* Searches */}
+            <div className="py-4 border-b border-border space-y-3">
               <div>
                 <Label className="text-sm font-bold text-foreground">Searches</Label>
                 <p className="text-xs text-muted-foreground mt-0.5">Select searches to attach to this alert</p>
               </div>
-              <p className="text-xs text-muted-foreground">{selectedSearches.length}/10</p>
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-muted-foreground">{selectedSearches.length}/10</p>
+                <button
+                  className="text-sm text-primary hover:underline flex items-center gap-1"
+                  onClick={() => {}}
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Add search
+                </button>
+              </div>
               {selectedSearches.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                   {selectedSearches.map((s) => (
@@ -296,74 +306,73 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                   ))}
                 </div>
               )}
-              <button
-                className="text-sm text-primary hover:underline flex items-center gap-1"
-                onClick={() => {}}
-              >
-                <Plus className="w-3.5 h-3.5" />
-                Add search
-              </button>
-              <div className="space-y-1 max-h-32 overflow-y-auto">
-                {mockSearches.filter(s => !selectedSearches.includes(s)).map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => toggleSearch(s)}
-                    className="w-full text-left text-sm px-2 py-1.5 rounded hover:bg-muted text-foreground"
-                  >
-                    {s}
-                  </button>
-                ))}
+              <div className="space-y-0.5">
+                {mockSearches.map((s) => {
+                  const isSelected = selectedSearches.includes(s);
+                  return (
+                    <button
+                      key={s}
+                      onClick={() => toggleSearch(s)}
+                      className={`w-full text-left text-sm px-3 py-2 rounded-md flex items-center gap-2.5 transition-colors ${
+                        isSelected ? 'bg-primary/5 text-primary' : 'hover:bg-muted text-foreground'
+                      }`}
+                    >
+                      <Checkbox checked={isSelected} className="pointer-events-none" />
+                      {s}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Alert type selection - only shown after searches are selected */}
+            {/* Alert type selection */}
             {selectedSearches.length > 0 && (
-              <>
-                <div className="mb-4">
+              <div className="py-4 space-y-4">
+                <div>
                   <div className="flex items-center gap-2 mb-1">
                     <Label className="text-sm font-bold text-foreground">Alert types</Label>
                     {selectedTypes.length > 0 && (
                       <Badge variant="secondary" className="text-xs">{selectedTypes.length} selected</Badge>
                     )}
                   </div>
-                  <p className="text-xs text-muted-foreground mb-4">Select one or more alert types to create.</p>
+                  <p className="text-xs text-muted-foreground">Select one or more alert types to create.</p>
                 </div>
 
                 {/* Search-based alerts */}
-                <div className="border-b border-border pb-5">
-                  <h4 className="text-sm font-bold text-foreground mb-3">Search alerts</h4>
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Search alerts</h4>
                   <div className="grid grid-cols-2 gap-2">
                     {searchAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
                   </div>
                 </div>
 
                 {/* Event alerts */}
-                <div className="border-b border-border py-5">
-                  <h4 className="text-sm font-bold text-foreground mb-3">Event alerts</h4>
-                  <div className="space-y-2">
-                    {eventAlertTypes.map((type) => renderTypeCard(type, 'list'))}
+                <div className="space-y-2 pt-2 border-t border-border">
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Event alerts</h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {eventAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
                   </div>
                 </div>
 
                 {/* Social alerts */}
-                <div className="border-b border-border py-5">
-                  <h4 className="text-sm font-bold text-foreground mb-3">Social alerts</h4>
+                <div className="space-y-2 pt-2 border-t border-border">
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Social alerts</h4>
                   <div className="space-y-2">
                     {socialAlertTypes.map((type) => renderTypeCard(type, 'list'))}
                   </div>
                 </div>
 
                 {/* RSS alerts */}
-                <div className="pt-5">
-                  <h4 className="text-sm font-bold text-foreground mb-3">RSS alerts</h4>
+                <div className="space-y-2 pt-2 border-t border-border">
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">RSS alerts</h4>
                   <div className="space-y-2">
                     {rssAlertTypes.map((type) => renderTypeCard(type, 'list'))}
                   </div>
                 </div>
-              </>
+              </div>
             )}
 
-            <div className="flex justify-center pt-4 border-t border-border mt-4">
+            <div className="flex justify-center pt-4 border-t border-border">
               <Button
                 onClick={handleNextFromStep1}
                 disabled={selectedTypes.length === 0 || (hasSearchRelatedType && selectedSearches.length === 0)}
