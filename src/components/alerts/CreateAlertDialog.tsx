@@ -50,19 +50,13 @@ const mockSearches = [
   'Crisis & Reputation Risk',
 ];
 
-const alertTypeCategories: { label: string; types: AlertType[] }[] = [
-  {
-    label: 'Content Alerts',
-    types: ['every_mention', 'follow_post', 'rss_feed', 'breakout_post'],
-  },
-  {
-    label: 'Analytics Alerts',
-    types: ['sentiment_shift', 'spike_detection', 'top_reach', 'page_engagement'],
-  },
-  {
-    label: 'Intelligence Alerts',
-    types: ['x_influencer', 'company_events', 'industry_events', 'likely_boosted'],
-  },
+const availableAlertTypes: AlertType[] = [
+  'every_mention',
+  'follow_post',
+  'sentiment_shift',
+  'spike_detection',
+  'top_reach',
+  'x_influencer',
 ];
 
 export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps) => {
@@ -171,44 +165,42 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         {step === 1 && (
           <div className="px-6 pb-6 space-y-6 bg-background/60 mx-0">
             <p className="text-sm text-foreground/70">Select the type of alert you want to create.</p>
-            {alertTypeCategories.map((category) => (
-              <div key={category.label}>
-                <h4 className="text-xs font-bold text-foreground/60 uppercase tracking-wider mb-3">
-                  {category.label}
-                </h4>
-                <div className="grid grid-cols-2 gap-2">
-                  {category.types.map((type) => {
-                    const Icon = getAlertIcon(type);
-                    const isSelected = selectedType === type;
-                    return (
-                      <button
-                        key={type}
-                        onClick={() => setSelectedType(type)}
-                        className={`flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
-                          isSelected
-                            ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-sm'
-                            : 'border-border/80 bg-card hover:border-primary/40 hover:bg-muted/50 shadow-sm'
-                        }`}
-                      >
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                          isSelected ? 'bg-primary/10' : 'bg-muted'
-                        }`}>
-                          <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
-                            {alertTypeLabels[type]}
-                          </p>
-                          <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
-                            {alertTypeDescriptions[type]}
-                          </p>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
+            <div>
+              <h4 className="text-xs font-bold text-foreground/60 uppercase tracking-wider mb-3">
+                Alert Types
+              </h4>
+              <div className="grid grid-cols-2 gap-2">
+                {availableAlertTypes.map((type) => {
+                  const Icon = getAlertIcon(type);
+                  const isSelected = selectedType === type;
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedType(type)}
+                      className={`flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
+                        isSelected
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-sm'
+                          : 'border-border/80 bg-card hover:border-primary/40 hover:bg-muted/50 shadow-sm'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                        isSelected ? 'bg-primary/10' : 'bg-muted'
+                      }`}>
+                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+                          {alertTypeLabels[type]}
+                        </p>
+                        <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
+                          {alertTypeDescriptions[type]}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
-            ))}
+            </div>
 
             <div className="flex justify-end pt-2">
               <Button onClick={handleNext} disabled={!selectedType}>
