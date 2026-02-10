@@ -69,13 +69,11 @@ const eventAlertTypes: AlertType[] = ['company_events', 'industry_events'];
 const socialAlertTypes: AlertType[] = ['likely_boosted'];
 const rssAlertTypes: AlertType[] = ['rss_feed'];
 
-const nonSearchAlertTypes: AlertType[] = [...eventAlertTypes, ...socialAlertTypes, ...rssAlertTypes];
-
 const isSearchRelatedType = (type: AlertType) => searchAlertTypes.includes(type);
 
 export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps) => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [selectedType, setSelectedType] = useState<AlertType | null>(null);
+  const [selectedTypes, setSelectedTypes] = useState<AlertType[]>([]);
   const [searchType, setSearchType] = useState<'optimized' | 'standard' | 'custom'>('standard');
   const [selectedSearches, setSelectedSearches] = useState<string[]>([]);
   const [relevanceBoost, setRelevanceBoost] = useState(false);
@@ -90,7 +88,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
   const handleReset = () => {
     setStep(1);
-    setSelectedType(null);
+    setSelectedTypes([]);
     setSearchType('standard');
     setSelectedSearches([]);
     setRelevanceBoost(false);
@@ -107,9 +105,17 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
     onOpenChange(val);
   };
 
+  const toggleType = (type: AlertType) => {
+    setSelectedTypes(prev =>
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    );
+  };
+
+  const hasSearchRelatedType = selectedTypes.some(isSearchRelatedType);
+
   const handleNextFromStep1 = () => {
-    if (!selectedType) return;
-    if (isSearchRelatedType(selectedType) && selectedSearches.length === 0) return;
+    if (selectedTypes.length === 0) return;
+    if (hasSearchRelatedType && selectedSearches.length === 0) return;
     setStep(2);
   };
 
@@ -121,14 +127,12 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
     handleClose(false);
   };
 
-  // Estimate alert count based on settings
   const getEstimatedAlertCount = () => {
     const searchCount = selectedSearches.length || 1;
     const recipientCount = recipients.length || 1;
     if (notifyMode === 'immediate') {
-      // Simulate high volume for immediate + multiple searches
-      const basePerDay = selectedType === 'every_mention' ? 120 : selectedType === 'spike_detection' ? 8 : 25;
-      return basePerDay * searchCount * recipientCount;
+      const basePerDay = selectedTypes.includes('every_mention') ? 120 : selectedTypes.includes('spike_detection') ? 8 : 25;
+      return basePerDay * searchCount * recipientCount * (selectedTypes.length || 1);
     }
     return searchCount * recipientCount;
   };
@@ -146,6 +150,41 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
     );
   };
 
+  const primaryType = selectedTypes[0] || 'every_mention';
+
+  const renderTypeCard = (type: AlertType, layout: 'grid' | 'list' = 'grid') => {
+    const Icon = getAlertIcon(type);
+    const isSelected = selectedTypes.includes(type);
+    return (
+      <button
+        key={type}
+        onClick={() => toggleType(type)}
+        className={`${layout === 'list' ? 'w-full' : ''} flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
+          isSelected
+            ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
+            : 'border-border bg-card hover:border-primary/40 hover:bg-muted/30'
+        }`}
+      >
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+          isSelected ? 'bg-primary/10' : 'bg-muted'
+        }`}>
+          <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+              {alertTypeLabels[type]}
+            </p>
+            {isSelected && <Check className="w-4 h-4 text-primary" />}
+          </div>
+          <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
+            {alertTypeDescriptions[type]}
+          </p>
+        </div>
+      </button>
+    );
+  };
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto p-0 bg-card border-border">
@@ -160,7 +199,6 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
         {/* Step Indicators */}
         <div className="flex items-center justify-center gap-4 px-6 pt-4 pb-2 border-b border-border">
-          {/* Step 1: Type */}
           <button
             onClick={() => step > 1 && setStep(1)}
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
@@ -174,10 +212,9 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             ) : (
               <div className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-semibold">1</div>
             )}
-            Type
+            Setup
           </button>
 
-          {/* Step 2: Details */}
           <button
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
               step === 2 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
@@ -197,7 +234,6 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             Details
           </button>
 
-          {/* Step 3: Preview */}
           <button
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
               step === 3 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
@@ -211,78 +247,85 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
           </button>
         </div>
 
-        {/* Step 1: Search + Type Selection (combined) */}
+        {/* Step 1: Search + Type Selection */}
         {step === 1 && (
           <div className="px-6 pb-6 bg-card mx-0">
-            <p className="text-sm font-medium text-muted-foreground py-4">Select the type of alert you want to create.</p>
+            <p className="text-sm font-medium text-muted-foreground py-4">Select your searches and alert types.</p>
 
-            {/* Search selection - shown first when a search-related type is selected */}
-            {selectedType && isSearchRelatedType(selectedType) && (
-              <>
-                <div className="border-b border-border pb-4 mb-4 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Label className="text-sm font-bold text-foreground">Search type</Label>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
-                      </TooltipTrigger>
-                      <TooltipContent>Choose how searches are applied to this alert</TooltipContent>
-                    </Tooltip>
-                  </div>
-                  <div className="flex gap-2">
-                    {(['optimized', 'standard'] as const).map((t) => (
-                      <button
-                        key={t}
-                        onClick={() => setSearchType(t)}
-                        className={`px-3 py-1.5 text-sm rounded-md border transition-colors ${
-                          searchType === t
-                            ? 'bg-primary text-primary-foreground border-primary'
-                            : 'bg-background text-foreground border-border hover:bg-muted'
-                        }`}
-                      >
-                        {t === 'optimized' ? 'Optimized searches' : 'Standard searches'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="border-b border-border pb-4 mb-4 space-y-3">
-                  <div>
-                    <Label className="text-sm font-bold text-foreground">Searches</Label>
-                    <p className="text-xs text-muted-foreground mt-0.5">Select searches</p>
-                  </div>
-                  <p className="text-xs text-muted-foreground">{selectedSearches.length}/10</p>
-                  {selectedSearches.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5">
-                      {selectedSearches.map((s) => (
-                        <Badge key={s} variant="secondary" className="gap-1 text-xs">
-                          {s}
-                          <X className="w-3 h-3 cursor-pointer" onClick={() => toggleSearch(s)} />
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
+            {/* Search selection - always shown first */}
+            <div className="border-b border-border pb-4 mb-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <Label className="text-sm font-bold text-foreground">Search type</Label>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
+                  </TooltipTrigger>
+                  <TooltipContent>Choose how searches are applied to this alert</TooltipContent>
+                </Tooltip>
+              </div>
+              <div className="flex gap-2">
+                {(['optimized', 'standard'] as const).map((t) => (
                   <button
-                    className="text-sm text-primary hover:underline flex items-center gap-1"
-                    onClick={() => {}}
+                    key={t}
+                    onClick={() => setSearchType(t)}
+                    className={`px-3 py-1.5 text-sm rounded-md border transition-colors ${
+                      searchType === t
+                        ? 'bg-primary text-primary-foreground border-primary'
+                        : 'bg-background text-foreground border-border hover:bg-muted'
+                    }`}
                   >
-                    <Plus className="w-3.5 h-3.5" />
-                    Add search
+                    {t === 'optimized' ? 'Optimized searches' : 'Standard searches'}
                   </button>
-                  <div className="space-y-1 max-h-32 overflow-y-auto">
-                    {mockSearches.filter(s => !selectedSearches.includes(s)).map((s) => (
-                      <button
-                        key={s}
-                        onClick={() => toggleSearch(s)}
-                        className="w-full text-left text-sm px-2 py-1.5 rounded hover:bg-muted text-foreground"
-                      >
-                        {s}
-                      </button>
-                    ))}
-                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="border-b border-border pb-4 mb-4 space-y-3">
+              <div>
+                <Label className="text-sm font-bold text-foreground">Searches</Label>
+                <p className="text-xs text-muted-foreground mt-0.5">Select searches to attach to this alert</p>
+              </div>
+              <p className="text-xs text-muted-foreground">{selectedSearches.length}/10</p>
+              {selectedSearches.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedSearches.map((s) => (
+                    <Badge key={s} variant="secondary" className="gap-1 text-xs">
+                      {s}
+                      <X className="w-3 h-3 cursor-pointer" onClick={() => toggleSearch(s)} />
+                    </Badge>
+                  ))}
                 </div>
-              </>
-            )}
+              )}
+              <button
+                className="text-sm text-primary hover:underline flex items-center gap-1"
+                onClick={() => {}}
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Add search
+              </button>
+              <div className="space-y-1 max-h-32 overflow-y-auto">
+                {mockSearches.filter(s => !selectedSearches.includes(s)).map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => toggleSearch(s)}
+                    className="w-full text-left text-sm px-2 py-1.5 rounded hover:bg-muted text-foreground"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Alert type selection - multi-select */}
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-1">
+                <Label className="text-sm font-bold text-foreground">Alert types</Label>
+                {selectedTypes.length > 0 && (
+                  <Badge variant="secondary" className="text-xs">{selectedTypes.length} selected</Badge>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground mb-4">Select one or more alert types to create.</p>
+            </div>
 
             {/* Search-based alerts */}
             <div className="border-b border-border pb-5">
@@ -292,162 +335,38 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 <p className="text-xs text-muted-foreground font-medium">These alerts require attaching a search</p>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                {searchAlertTypes.map((type) => {
-                  const Icon = getAlertIcon(type);
-                  const isSelected = selectedType === type;
-                  return (
-                    <button
-                      key={type}
-                      onClick={() => setSelectedType(type)}
-                      className={`flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
-                        isSelected
-                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
-                          : 'border-border bg-card hover:border-primary/40 hover:bg-muted/30'
-                      }`}
-                    >
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                        isSelected ? 'bg-primary/10' : 'bg-muted'
-                      }`}>
-                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
-                      </div>
-                      <div className="min-w-0">
-                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
-                          {alertTypeLabels[type]}
-                        </p>
-                        <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
-                          {alertTypeDescriptions[type]}
-                        </p>
-                      </div>
-                    </button>
-                  );
-                })}
+                {searchAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
               </div>
             </div>
 
             {/* Event alerts */}
             <div className="border-b border-border py-5">
               <h4 className="text-sm font-bold text-foreground mb-3">Event alerts</h4>
-              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted">
-                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
-                <p className="text-xs text-muted-foreground font-medium">The alerts below can only be created one at a time</p>
-              </div>
               <div className="space-y-2">
-                {eventAlertTypes.map((type) => {
-                  const Icon = getAlertIcon(type);
-                  const isSelected = selectedType === type;
-                  return (
-                    <button
-                      key={type}
-                      onClick={() => setSelectedType(type)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all ${
-                        isSelected
-                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
-                          : 'border-border bg-card hover:border-primary/40 hover:bg-muted/30'
-                      }`}
-                    >
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                        isSelected ? 'bg-primary/10' : 'bg-muted'
-                      }`}>
-                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
-                          {alertTypeLabels[type]}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          {alertTypeDescriptions[type]}
-                        </p>
-                      </div>
-                    </button>
-                  );
-                })}
+                {eventAlertTypes.map((type) => renderTypeCard(type, 'list'))}
               </div>
             </div>
 
             {/* Social alerts */}
             <div className="border-b border-border py-5">
               <h4 className="text-sm font-bold text-foreground mb-3">Social alerts</h4>
-              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted">
-                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
-                <p className="text-xs text-muted-foreground font-medium">The alerts below can only be created one at a time</p>
-              </div>
               <div className="space-y-2">
-                {socialAlertTypes.map((type) => {
-                  const Icon = getAlertIcon(type);
-                  const isSelected = selectedType === type;
-                  return (
-                    <button
-                      key={type}
-                      onClick={() => setSelectedType(type)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all ${
-                        isSelected
-                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
-                          : 'border-border bg-card hover:border-primary/40 hover:bg-muted/30'
-                      }`}
-                    >
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                        isSelected ? 'bg-primary/10' : 'bg-muted'
-                      }`}>
-                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
-                          {alertTypeLabels[type]}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          {alertTypeDescriptions[type]}
-                        </p>
-                      </div>
-                    </button>
-                  );
-                })}
+                {socialAlertTypes.map((type) => renderTypeCard(type, 'list'))}
               </div>
             </div>
 
             {/* RSS alerts */}
             <div className="pt-5">
               <h4 className="text-sm font-bold text-foreground mb-3">RSS alerts</h4>
-              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted">
-                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
-                <p className="text-xs text-muted-foreground font-medium">The alerts below can only be created one at a time</p>
-              </div>
               <div className="space-y-2">
-                {rssAlertTypes.map((type) => {
-                  const Icon = getAlertIcon(type);
-                  const isSelected = selectedType === type;
-                  return (
-                    <button
-                      key={type}
-                      onClick={() => setSelectedType(type)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all ${
-                        isSelected
-                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
-                          : 'border-border bg-card hover:border-primary/40 hover:bg-muted/30'
-                      }`}
-                    >
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                        isSelected ? 'bg-primary/10' : 'bg-muted'
-                      }`}>
-                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
-                          {alertTypeLabels[type]}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          {alertTypeDescriptions[type]}
-                        </p>
-                      </div>
-                    </button>
-                  );
-                })}
+                {rssAlertTypes.map((type) => renderTypeCard(type, 'list'))}
               </div>
             </div>
 
             <div className="flex justify-center pt-4 border-t border-border mt-4">
               <Button
                 onClick={handleNextFromStep1}
-                disabled={!selectedType || (isSearchRelatedType(selectedType) && selectedSearches.length === 0)}
+                disabled={selectedTypes.length === 0 || (hasSearchRelatedType && selectedSearches.length === 0)}
               >
                 Next
               </Button>
@@ -456,10 +375,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         )}
 
         {/* Step 2: Details */}
-        {step === 2 && selectedType && (
+        {step === 2 && selectedTypes.length > 0 && (
           <div className="px-6 pb-6 bg-card">
             <h3 className="text-base font-semibold text-foreground py-4 border-b border-border">
-              Configure details for {alertTypeLabels[selectedType]} alert
+              Configure details for {selectedTypes.length === 1 ? alertTypeLabels[primaryType] : `${selectedTypes.length} alert types`}
             </h3>
 
             {/* Relevance Boost */}
@@ -618,7 +537,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         )}
 
         {/* Step 3: Preview */}
-        {step === 3 && selectedType && (
+        {step === 3 && selectedTypes.length > 0 && (
           <div className="px-6 pb-6 bg-card">
             {/* Estimated Alert Volume */}
             <div className={`py-4 border-b border-border space-y-2 ${
@@ -635,7 +554,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 </span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Based on {selectedSearches.length || 1} search{(selectedSearches.length || 1) > 1 ? 'es' : ''} × {recipients.length} recipient{recipients.length > 1 ? 's' : ''} × {notifyMode === 'immediate' ? 'every mention' : 'daily digest'}
+                Based on {selectedSearches.length || 1} search{(selectedSearches.length || 1) > 1 ? 'es' : ''} × {recipients.length} recipient{recipients.length > 1 ? 's' : ''} × {selectedTypes.length} type{selectedTypes.length > 1 ? 's' : ''} × {notifyMode === 'immediate' ? 'every mention' : 'daily digest'}
               </p>
 
               {isHighVolume && (
@@ -661,6 +580,26 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               )}
             </div>
 
+            {/* Selected Types Summary */}
+            {selectedTypes.length > 1 && (
+              <div className="py-4 border-b border-border">
+                <div className="flex items-center gap-2 mb-2">
+                  <Label className="text-sm font-bold text-foreground">Alert types being created</Label>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedTypes.map(type => {
+                    const Icon = getAlertIcon(type);
+                    return (
+                      <Badge key={type} variant="secondary" className="gap-1.5 text-xs py-1">
+                        <Icon className="w-3 h-3" />
+                        {alertTypeLabels[type]}
+                      </Badge>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* Email Preview */}
             <div className="py-4 border-b border-border overflow-hidden">
               <div className="flex items-center gap-2 mb-3">
@@ -668,23 +607,20 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 <span className="text-sm font-bold text-foreground">Email preview</span>
               </div>
               
-              {/* Mock Email Content */}
               <div className="p-4 bg-muted rounded-lg">
                 <div className="max-w-md mx-auto bg-card rounded-lg border border-border shadow-sm overflow-hidden">
-                  {/* Email Header */}
                   <div className="px-5 py-4 bg-muted/50 border-b border-border">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        {(() => { const Icon = getAlertIcon(selectedType); return <Icon className="w-5 h-5 text-primary" />; })()}
+                        {(() => { const Icon = getAlertIcon(primaryType); return <Icon className="w-5 h-5 text-primary" />; })()}
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-foreground">{alertTypeLabels[selectedType]} Alert</p>
+                        <p className="text-sm font-semibold text-foreground">{alertTypeLabels[primaryType]} Alert</p>
                         <p className="text-xs text-muted-foreground">{selectedSearches[0] || 'Your Search'}</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Why you received this */}
                   <div className="px-5 py-3 border-b border-border">
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Why you received this</p>
                     <p className="text-xs text-foreground">
@@ -696,7 +632,6 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                     </div>
                   </div>
 
-                  {/* Article Preview */}
                   <div className="px-5 py-4">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-2 mb-2">
@@ -717,14 +652,13 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                       The article discusses developments related to your search query, demonstrating how mentions appear in your alert emails...
                     </p>
 
-                    {/* Metrics */}
                     <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border">
                       <div className="flex items-center gap-1.5">
                         <span className="text-xs">📈</span>
                         <span className="text-xs font-medium text-foreground">649.7k Reach</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
+                        <span className="w-2 h-2 rounded-full bg-accent"></span>
                         <span className="text-xs text-muted-foreground">Neutral Sentiment</span>
                       </div>
                       <div className="flex gap-2 ml-auto">
@@ -734,9 +668,8 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                     </div>
                   </div>
 
-                  {/* Feedback */}
-                  <div className="mx-5 mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-center">
-                    <p className="text-xs font-medium text-amber-800 dark:text-amber-300 mb-2">Was this alert helpful?</p>
+                  <div className="mx-5 mb-4 p-3 rounded-lg bg-muted border border-border text-center">
+                    <p className="text-xs font-medium text-foreground mb-2">Was this alert helpful?</p>
                     <div className="flex items-center justify-center gap-3">
                       <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-background text-xs text-foreground">
                         <ThumbsUp className="w-3 h-3" /> Yes
@@ -747,7 +680,6 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                     </div>
                   </div>
 
-                  {/* Footer Buttons */}
                   <div className="px-5 pb-4 flex items-center justify-center gap-3">
                     <button className="px-4 py-2 rounded-md bg-destructive text-destructive-foreground text-xs font-medium">
                       Edit alert frequency
