@@ -189,10 +189,15 @@ const Alerts = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start" className="w-48 bg-card">
                           <DropdownMenuItem className="cursor-pointer">All types</DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer">Spike Detection</DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer">Sentiment Shift</DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer">Top Reach</DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer">X Influencer</DropdownMenuItem>
+                          {(['spike_detection', 'sentiment_shift', 'top_reach', 'x_influencer'] as AlertType[]).map((type) => {
+                            const Icon = getAlertIcon(type);
+                            return (
+                              <DropdownMenuItem key={type} className="cursor-pointer gap-2">
+                                <Icon className="w-4 h-4" />
+                                {alertTypeLabels[type]}
+                              </DropdownMenuItem>
+                            );
+                          })}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
