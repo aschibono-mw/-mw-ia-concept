@@ -113,8 +113,8 @@ const Alerts = () => {
       <Header />
       
       <main className="ml-52 pt-16">
-        <div className="p-6">
-          <div className="max-w-[1100px] mx-auto">
+        <div className="p-6 flex flex-col items-center">
+          <div className="w-full max-w-[1100px]">
             {/* Page Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
@@ -362,7 +362,9 @@ const Alerts = () => {
                   </div>
 
                   {/* Categories Panel */}
-                  <CategoriesPanel categories={alertFolders} onAddCategory={() => {}} />
+                  <div className="w-56 space-y-4 sticky top-20">
+                    <CategoriesPanel categories={alertFolders} onAddCategory={() => {}} />
+                  </div>
                 </div>
               </TabsContent>
 
