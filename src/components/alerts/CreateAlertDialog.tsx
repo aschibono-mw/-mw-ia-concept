@@ -50,7 +50,7 @@ const mockSearches = [
   'Crisis & Reputation Risk',
 ];
 
-const availableAlertTypes: AlertType[] = [
+const searchAlertTypes: AlertType[] = [
   'every_mention',
   'follow_post',
   'sentiment_shift',
@@ -58,6 +58,14 @@ const availableAlertTypes: AlertType[] = [
   'top_reach',
   'x_influencer',
 ];
+
+const eventAlertTypes: AlertType[] = ['company_events', 'industry_events'];
+const socialAlertTypes: AlertType[] = ['likely_boosted'];
+const rssAlertTypes: AlertType[] = ['rss_feed'];
+
+const nonSearchAlertTypes: AlertType[] = [...eventAlertTypes, ...socialAlertTypes, ...rssAlertTypes];
+
+const isSearchRelatedType = (type: AlertType) => searchAlertTypes.includes(type);
 
 export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps) => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -93,12 +101,17 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
     onOpenChange(val);
   };
 
-  const handleNextFromSearch = () => {
-    if (selectedSearches.length > 0) setStep(2);
+  const handleNextFromType = () => {
+    if (!selectedType) return;
+    if (isSearchRelatedType(selectedType)) {
+      setStep(2); // go to search selection
+    } else {
+      setStep(3); // skip search, go to details
+    }
   };
 
-  const handleNextFromType = () => {
-    if (selectedType) setStep(3);
+  const handleNextFromSearch = () => {
+    if (selectedSearches.length > 0) setStep(3);
   };
 
   const handleSave = () => {
@@ -128,7 +141,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         </DialogHeader>
 
         {/* Step Indicators */}
-        <div className="flex items-center gap-6 px-6 pt-4 pb-2">
+        <div className="flex items-center justify-center gap-6 px-6 pt-4 pb-2">
           <button
             onClick={() => (step === 2 || step === 3) && setStep(1)}
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
@@ -146,30 +159,32 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 1
               </div>
             )}
-            Search
-          </button>
-          <button
-            onClick={() => step === 3 && setStep(2)}
-            className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
-              step === 2
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground'
-            } ${step < 2 ? 'cursor-default' : 'hover:text-foreground'}`}
-            disabled={step < 2}
-          >
-            {step > 2 ? (
-              <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                <Check className="w-3 h-3 text-primary-foreground" />
-              </div>
-            ) : (
-              <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
-                step === 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-              }`}>
-                2
-              </div>
-            )}
             Type
           </button>
+          {selectedType && isSearchRelatedType(selectedType) && (
+            <button
+              onClick={() => step === 3 && setStep(2)}
+              className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
+                step === 2
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-muted-foreground'
+              } ${step < 2 ? 'cursor-default' : 'hover:text-foreground'}`}
+              disabled={step < 2}
+            >
+              {step > 2 ? (
+                <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                  <Check className="w-3 h-3 text-primary-foreground" />
+                </div>
+              ) : (
+                <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
+                  step === 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                }`}>
+                  2
+                </div>
+              )}
+              Search
+            </button>
+          )}
           <button
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
               step === 3
@@ -181,18 +196,190 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
               step === 3 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
             }`}>
-              3
+              {selectedType && isSearchRelatedType(selectedType) ? '3' : '2'}
             </div>
             Details
           </button>
         </div>
 
-        {/* Step 1: Search Selection */}
+        {/* Step 1: Type Selection */}
         {step === 1 && (
+          <div className="px-6 pb-6 space-y-6 bg-background/60 mx-0">
+            <p className="text-sm text-foreground/70">Select the type of alert you want to create.</p>
+
+            {/* Search-based alerts */}
+            <div>
+              <h4 className="text-sm font-bold text-foreground mb-2">Search alerts</h4>
+              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted/50">
+                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
+                <p className="text-xs text-muted-foreground">These alerts require attaching a search</p>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {searchAlertTypes.map((type) => {
+                  const Icon = getAlertIcon(type);
+                  const isSelected = selectedType === type;
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedType(type)}
+                      className={`flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
+                        isSelected
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-sm'
+                          : 'border-border/80 bg-card hover:border-primary/40 hover:bg-muted/50 shadow-sm'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                        isSelected ? 'bg-primary/10' : 'bg-muted'
+                      }`}>
+                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+                          {alertTypeLabels[type]}
+                        </p>
+                        <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
+                          {alertTypeDescriptions[type]}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Event alerts */}
+            <div>
+              <h4 className="text-sm font-bold text-foreground mb-2">Event alerts</h4>
+              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted/50">
+                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
+                <p className="text-xs text-muted-foreground">The alerts below can only be created one at a time</p>
+              </div>
+              <div className="space-y-2">
+                {eventAlertTypes.map((type) => {
+                  const Icon = getAlertIcon(type);
+                  const isSelected = selectedType === type;
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedType(type)}
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all ${
+                        isSelected
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-sm'
+                          : 'border-border/80 bg-card hover:border-primary/40 hover:bg-muted/50 shadow-sm'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                        isSelected ? 'bg-primary/10' : 'bg-muted'
+                      }`}>
+                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+                          {alertTypeLabels[type]}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {alertTypeDescriptions[type]}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Social alerts */}
+            <div>
+              <h4 className="text-sm font-bold text-foreground mb-2">Social alerts</h4>
+              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted/50">
+                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
+                <p className="text-xs text-muted-foreground">The alerts below can only be created one at a time</p>
+              </div>
+              <div className="space-y-2">
+                {socialAlertTypes.map((type) => {
+                  const Icon = getAlertIcon(type);
+                  const isSelected = selectedType === type;
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedType(type)}
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all ${
+                        isSelected
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-sm'
+                          : 'border-border/80 bg-card hover:border-primary/40 hover:bg-muted/50 shadow-sm'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                        isSelected ? 'bg-primary/10' : 'bg-muted'
+                      }`}>
+                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+                          {alertTypeLabels[type]}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {alertTypeDescriptions[type]}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* RSS alerts */}
+            <div>
+              <h4 className="text-sm font-bold text-foreground mb-2">RSS alerts</h4>
+              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted/50">
+                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
+                <p className="text-xs text-muted-foreground">The alerts below can only be created one at a time</p>
+              </div>
+              <div className="space-y-2">
+                {rssAlertTypes.map((type) => {
+                  const Icon = getAlertIcon(type);
+                  const isSelected = selectedType === type;
+                  return (
+                    <button
+                      key={type}
+                      onClick={() => setSelectedType(type)}
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all ${
+                        isSelected
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-sm'
+                          : 'border-border/80 bg-card hover:border-primary/40 hover:bg-muted/50 shadow-sm'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                        isSelected ? 'bg-primary/10' : 'bg-muted'
+                      }`}>
+                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+                          {alertTypeLabels[type]}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {alertTypeDescriptions[type]}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="flex justify-center pt-2">
+              <Button onClick={handleNextFromType} disabled={!selectedType}>
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 2: Search Selection (only for search-related types) */}
+        {step === 2 && (
           <div className="px-6 pb-6 space-y-6 bg-background/60 mx-0">
             <p className="text-sm text-foreground/70">Select the searches to attach to this alert.</p>
 
-            {/* Search Type */}
             <div className="border border-border/80 rounded-lg p-4 space-y-3 bg-card shadow-sm">
               <div className="flex items-center gap-2">
                 <Label className="text-sm font-bold text-foreground">Search type</Label>
@@ -220,7 +407,6 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            {/* Searches */}
             <div className="border border-border/80 rounded-lg p-4 space-y-3 bg-card shadow-sm">
               <div>
                 <Label className="text-sm font-bold text-foreground">Searches</Label>
@@ -257,60 +443,11 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            <div className="flex justify-end pt-2">
-              <Button onClick={handleNextFromSearch} disabled={selectedSearches.length === 0}>
-                Next
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Type Selection */}
-        {step === 2 && (
-          <div className="px-6 pb-6 space-y-6 bg-background/60 mx-0">
-            <p className="text-sm text-foreground/70">Select the type of alert you want to create.</p>
-            <div>
-              <h4 className="text-xs font-bold text-foreground/60 uppercase tracking-wider mb-3">
-                Alert Types
-              </h4>
-              <div className="grid grid-cols-2 gap-2">
-                {availableAlertTypes.map((type) => {
-                  const Icon = getAlertIcon(type);
-                  const isSelected = selectedType === type;
-                  return (
-                    <button
-                      key={type}
-                      onClick={() => setSelectedType(type)}
-                      className={`flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
-                        isSelected
-                          ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-sm'
-                          : 'border-border/80 bg-card hover:border-primary/40 hover:bg-muted/50 shadow-sm'
-                      }`}
-                    >
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                        isSelected ? 'bg-primary/10' : 'bg-muted'
-                      }`}>
-                        <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
-                      </div>
-                      <div className="min-w-0">
-                        <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
-                          {alertTypeLabels[type]}
-                        </p>
-                        <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
-                          {alertTypeDescriptions[type]}
-                        </p>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
             <div className="flex items-center justify-between pt-2">
               <Button variant="ghost" onClick={() => setStep(1)}>
                 Back
               </Button>
-              <Button onClick={handleNextFromType} disabled={!selectedType}>
+              <Button onClick={handleNextFromSearch} disabled={selectedSearches.length === 0}>
                 Next
               </Button>
             </div>
@@ -469,7 +606,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
             {/* Footer */}
             <div className="flex items-center justify-center gap-3 pt-2">
-              <Button variant="ghost" onClick={() => setStep(2)}>
+              <Button variant="ghost" onClick={() => selectedType && isSearchRelatedType(selectedType) ? setStep(2) : setStep(1)}>
                 Back
               </Button>
               <Button onClick={handleSave}>
