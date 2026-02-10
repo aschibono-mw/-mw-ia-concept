@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 import { useSearchParams } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
@@ -244,17 +245,22 @@ const Alerts = () => {
                   <div className="w-48 flex-shrink-0">
                     <div className="bg-card rounded-lg border border-border p-4">
                       <h3 className="font-semibold text-card-foreground mb-3">Views</h3>
-                      <div className="divide-y divide-border">
+                      <div className="space-y-1">
                         {viewCategories.map((cat) => (
                           <button
                             key={cat.label}
                             onClick={() => setSelectedView(cat.label)}
-                            className={`flex items-center justify-between w-full px-2 py-2 text-sm hover:bg-muted/50 transition-colors ${selectedView === cat.label ? "bg-muted font-medium" : ""}`}
+                            className={cn(
+                              "flex items-center justify-between w-full px-3 py-2.5 rounded-lg text-sm transition-colors",
+                              selectedView === cat.label
+                                ? "bg-sidebar-accent text-foreground font-medium"
+                                : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                            )}
                           >
-                            <span className={cat.label === "Urgent" || cat.label === "Needs attention" ? cat.color : "text-foreground"}>
+                            <span className={cat.label === "Urgent" || cat.label === "Needs attention" ? cat.color : ""}>
                               {cat.label}
                             </span>
-                            <span className={`text-xs ${selectedView === cat.label ? "text-primary" : "text-muted-foreground"}`}>{cat.count}</span>
+                            <span className={`text-xs ${selectedView === cat.label ? "text-foreground" : "text-muted-foreground"}`}>{cat.count}</span>
                           </button>
                         ))}
                       </div>
