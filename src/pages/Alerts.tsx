@@ -27,6 +27,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { ExpandableSearch } from "@/components/alerts/ExpandableSearch";
 import { CreateAlertDialog } from "@/components/alerts/CreateAlertDialog";
+import { ManageNotificationsTab } from "@/components/alerts/ManageNotificationsTab";
 
 // Mock data for managed alerts (alert configurations)
 const managedAlerts = [
@@ -43,7 +44,7 @@ const managedAlerts = [
 const Alerts = () => {
   const [searchParams] = useSearchParams();
   const tabFromUrl = searchParams.get("tab");
-  const [activeTab, setActiveTab] = useState(tabFromUrl === "manage" ? "manage" : "all");
+  const [activeTab, setActiveTab] = useState(tabFromUrl === "manage" ? "manage" : tabFromUrl === "notifications" ? "notifications" : "all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAlerts, setSelectedAlerts] = useState<string[]>([]);
   const [createAlertOpen, setCreateAlertOpen] = useState(false);
@@ -52,6 +53,8 @@ const Alerts = () => {
   useEffect(() => {
     if (tabFromUrl === "manage") {
       setActiveTab("manage");
+    } else if (tabFromUrl === "notifications") {
+      setActiveTab("notifications");
     }
   }, [tabFromUrl]);
 
@@ -98,6 +101,7 @@ const Alerts = () => {
                     )}
                   </TabsTrigger>
                   <TabsTrigger value="manage">Manage Alerts</TabsTrigger>
+                  <TabsTrigger value="notifications">Manage Notifications</TabsTrigger>
                 </TabsList>
 
                 {/* Search & Filter */}
@@ -299,6 +303,11 @@ const Alerts = () => {
                     })}
                   </div>
                 </div>
+              </TabsContent>
+
+              {/* Manage Notifications Tab */}
+              <TabsContent value="notifications" className="mt-0">
+                <ManageNotificationsTab />
               </TabsContent>
             </Tabs>
           </div>
