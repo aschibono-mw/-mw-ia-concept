@@ -123,26 +123,30 @@ const Alerts = () => {
             {/* Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <div className="flex items-center justify-between mb-4">
-                <TabsList className="bg-muted">
-                  <TabsTrigger value="all" className="gap-2">
-                    All Alerts
-                    {unreadCount > 0 && (
-                      <span className="w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full inline-flex items-center justify-center">
-                        {unreadCount}
-                      </span>
-                    )}
-                  </TabsTrigger>
-                  <TabsTrigger value="all-notifications" className="gap-2">
-                    All Notifications
-                    {mockNotifications.filter(n => !n.isRead).length > 0 && (
-                      <span className="w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full inline-flex items-center justify-center">
-                        {mockNotifications.filter(n => !n.isRead).length}
-                      </span>
-                    )}
-                  </TabsTrigger>
-                  <TabsTrigger value="manage">Manage Alerts</TabsTrigger>
-                  <TabsTrigger value="notifications">Manage Notifications</TabsTrigger>
-                </TabsList>
+                <div className="flex items-center gap-6">
+                  <TabsList className="bg-muted">
+                    <TabsTrigger value="all" className="gap-2">
+                      All Alerts
+                      {unreadCount > 0 && (
+                        <span className="w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full inline-flex items-center justify-center">
+                          {unreadCount}
+                        </span>
+                      )}
+                    </TabsTrigger>
+                    <TabsTrigger value="manage">Manage Alerts</TabsTrigger>
+                  </TabsList>
+                  <TabsList className="bg-muted">
+                    <TabsTrigger value="all-notifications" className="gap-2">
+                      All Notifications
+                      {mockNotifications.filter(n => !n.isRead).length > 0 && (
+                        <span className="w-5 h-5 bg-primary text-primary-foreground text-xs font-medium rounded-full inline-flex items-center justify-center">
+                          {mockNotifications.filter(n => !n.isRead).length}
+                        </span>
+                      )}
+                    </TabsTrigger>
+                    <TabsTrigger value="notifications">Manage Notifications</TabsTrigger>
+                  </TabsList>
+                </div>
 
                 {/* Search & Filter */}
                 <div className="flex items-center gap-3">
