@@ -72,7 +72,7 @@ const rssAlertTypes: AlertType[] = ['rss_feed'];
 const isSearchRelatedType = (type: AlertType) => searchAlertTypes.includes(type);
 
 export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps) => {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [selectedTypes, setSelectedTypes] = useState<AlertType[]>([]);
   const [searchType, setSearchType] = useState<'optimized' | 'standard' | 'custom'>('standard');
   const [selectedSearches, setSelectedSearches] = useState<string[]>([]);
@@ -114,13 +114,17 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
   const hasSearchRelatedType = selectedTypes.some(isSearchRelatedType);
 
   const handleNextFromStep1 = () => {
-    if (selectedTypes.length === 0) return;
-    if (hasSearchRelatedType && selectedSearches.length === 0) return;
+    if (selectedSearches.length === 0) return;
     setStep(2);
   };
 
-  const handleNextFromDetails = () => {
+  const handleNextFromStep2 = () => {
+    if (selectedTypes.length === 0) return;
     setStep(3);
+  };
+
+  const handleNextFromDetails = () => {
+    setStep(4);
   };
 
   const handleSave = () => {
@@ -199,58 +203,38 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
         {/* Step Indicators */}
         <div className="flex items-center justify-center gap-4 px-6 pt-4 pb-2 border-b border-border">
-          <button
-            onClick={() => step > 1 && setStep(1)}
-            className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
-              step === 1 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            {step > 1 ? (
-              <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                <Check className="w-3 h-3 text-primary-foreground" />
-              </div>
-            ) : (
-              <div className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-semibold">1</div>
-            )}
-            Setup
-          </button>
-
-          <button
-            className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
-              step === 2 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
-            } ${step < 2 ? 'cursor-default' : 'hover:text-foreground'}`}
-            disabled={step < 2}
-            onClick={() => step > 2 && setStep(2)}
-          >
-            {step > 2 ? (
-              <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                <Check className="w-3 h-3 text-primary-foreground" />
-              </div>
-            ) : (
-              <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
-                step === 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-              }`}>2</div>
-            )}
-            Details
-          </button>
-
-          <button
-            className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
-              step === 3 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
-            } cursor-default`}
-            disabled={step < 3}
-          >
-            <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
-              step === 3 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-            }`}>3</div>
-            Preview
-          </button>
+          {([
+            { num: 1, label: 'Searches' },
+            { num: 2, label: 'Alert Types' },
+            { num: 3, label: 'Details' },
+            { num: 4, label: 'Preview' },
+          ] as const).map(({ num, label }) => (
+            <button
+              key={num}
+              onClick={() => step > num && setStep(num as 1 | 2 | 3 | 4)}
+              disabled={step < num}
+              className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
+                step === num ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
+              } ${step > num ? 'hover:text-foreground cursor-pointer' : step < num ? 'cursor-default' : ''}`}
+            >
+              {step > num ? (
+                <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                  <Check className="w-3 h-3 text-primary-foreground" />
+                </div>
+              ) : (
+                <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
+                  step === num ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                }`}>{num}</div>
+              )}
+              {label}
+            </button>
+          ))}
         </div>
 
-        {/* Step 1: Search + Type Selection */}
+        {/* Step 1: Search Selection */}
         {step === 1 && (
           <div className="px-6 pb-6 bg-card">
-            <p className="text-sm text-muted-foreground py-4 border-b border-border">Select your searches and alert types.</p>
+            <p className="text-sm text-muted-foreground py-4 border-b border-border">Select the searches to attach to your alert.</p>
 
             {/* Search type */}
             <div className="py-4 border-b border-border space-y-2">
@@ -281,7 +265,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Searches */}
-            <div className="py-4 border-b border-border space-y-3">
+            <div className="py-4 space-y-3">
               <div>
                 <Label className="text-sm font-bold text-foreground">Searches</Label>
                 <p className="text-xs text-muted-foreground mt-0.5">Select searches to attach to this alert</p>
@@ -325,57 +309,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            {/* Alert type selection */}
-            {selectedSearches.length > 0 && (
-              <div className="py-4 space-y-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <Label className="text-sm font-bold text-foreground">Alert types</Label>
-                    {selectedTypes.length > 0 && (
-                      <Badge variant="secondary" className="text-xs">{selectedTypes.length} selected</Badge>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground">Select one or more alert types to create.</p>
-                </div>
-
-                {/* Search-based alerts */}
-                <div className="space-y-2">
-                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Search alerts</h4>
-                  <div className="grid grid-cols-2 gap-2">
-                    {searchAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
-                  </div>
-                </div>
-
-                {/* Event alerts */}
-                <div className="space-y-2 pt-2 border-t border-border">
-                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Event alerts</h4>
-                  <div className="grid grid-cols-2 gap-2">
-                    {eventAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
-                  </div>
-                </div>
-
-                {/* Social alerts */}
-                <div className="space-y-2 pt-2 border-t border-border">
-                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Social alerts</h4>
-                  <div className="space-y-2">
-                    {socialAlertTypes.map((type) => renderTypeCard(type, 'list'))}
-                  </div>
-                </div>
-
-                {/* RSS alerts */}
-                <div className="space-y-2 pt-2 border-t border-border">
-                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">RSS alerts</h4>
-                  <div className="space-y-2">
-                    {rssAlertTypes.map((type) => renderTypeCard(type, 'list'))}
-                  </div>
-                </div>
-              </div>
-            )}
-
             <div className="flex justify-center pt-4 border-t border-border">
               <Button
                 onClick={handleNextFromStep1}
-                disabled={selectedTypes.length === 0 || (hasSearchRelatedType && selectedSearches.length === 0)}
+                disabled={selectedSearches.length === 0}
               >
                 Next
               </Button>
@@ -383,8 +320,61 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
           </div>
         )}
 
-        {/* Step 2: Details */}
-        {step === 2 && selectedTypes.length > 0 && (
+        {/* Step 2: Alert Type Selection */}
+        {step === 2 && (
+          <div className="px-6 pb-6 bg-card">
+            <p className="text-sm text-muted-foreground py-4 border-b border-border">Select one or more alert types to create.</p>
+
+            <div className="py-4 space-y-4">
+              {/* Search-based alerts */}
+              <div className="space-y-2">
+                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Search alerts</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {searchAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
+                </div>
+              </div>
+
+              {/* Event alerts */}
+              <div className="space-y-2 pt-2 border-t border-border">
+                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Event alerts</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {eventAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
+                </div>
+              </div>
+
+              {/* Social alerts */}
+              <div className="space-y-2 pt-2 border-t border-border">
+                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Social alerts</h4>
+                <div className="space-y-2">
+                  {socialAlertTypes.map((type) => renderTypeCard(type, 'list'))}
+                </div>
+              </div>
+
+              {/* RSS alerts */}
+              <div className="space-y-2 pt-2 border-t border-border">
+                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">RSS alerts</h4>
+                <div className="space-y-2">
+                  {rssAlertTypes.map((type) => renderTypeCard(type, 'list'))}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
+              <Button variant="ghost" onClick={() => setStep(1)}>
+                Back
+              </Button>
+              <Button
+                onClick={handleNextFromStep2}
+                disabled={selectedTypes.length === 0}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 3: Details */}
+        {step === 3 && selectedTypes.length > 0 && (
           <div className="px-6 pb-6 bg-card">
             <h3 className="text-base font-semibold text-foreground py-4 border-b border-border">
               Configure details for {selectedTypes.length === 1 ? alertTypeLabels[primaryType] : `${selectedTypes.length} alert types`}
@@ -535,7 +525,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
             {/* Footer */}
             <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
-              <Button variant="ghost" onClick={() => setStep(1)}>
+              <Button variant="ghost" onClick={() => setStep(2)}>
                 Back
               </Button>
               <Button onClick={handleNextFromDetails}>
@@ -545,8 +535,8 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
           </div>
         )}
 
-        {/* Step 3: Preview */}
-        {step === 3 && selectedTypes.length > 0 && (
+        {/* Step 4: Preview */}
+        {step === 4 && selectedTypes.length > 0 && (
           <div className="px-6 pb-6 bg-card">
             {/* Estimated Alert Volume */}
             <div className={`py-4 border-b border-border space-y-2 ${
@@ -703,7 +693,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
             {/* Footer */}
             <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
-              <Button variant="ghost" onClick={() => setStep(2)}>
+              <Button variant="ghost" onClick={() => setStep(3)}>
                 Back
               </Button>
               <Button onClick={handleSave}>
