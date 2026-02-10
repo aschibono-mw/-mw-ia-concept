@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ExpandableSearch } from "@/components/alerts/ExpandableSearch";
+import { CreateAlertDialog } from "@/components/alerts/CreateAlertDialog";
 
 // Mock data for managed alerts (alert configurations)
 const managedAlerts = [
@@ -45,6 +46,7 @@ const Alerts = () => {
   const [activeTab, setActiveTab] = useState(tabFromUrl === "manage" ? "manage" : "all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAlerts, setSelectedAlerts] = useState<string[]>([]);
+  const [createAlertOpen, setCreateAlertOpen] = useState(false);
 
   // Sync tab with URL parameter
   useEffect(() => {
@@ -77,7 +79,7 @@ const Alerts = () => {
                   Stay informed with real-time notifications from your searches
                 </p>
               </div>
-              <Button className="gap-2">
+              <Button className="gap-2" onClick={() => setCreateAlertOpen(true)}>
                 <Plus className="w-4 h-4" />
                 Create Alert
               </Button>
@@ -302,6 +304,7 @@ const Alerts = () => {
           </div>
         </div>
       </main>
+        <CreateAlertDialog open={createAlertOpen} onOpenChange={setCreateAlertOpen} />
     </div>
   );
 };
