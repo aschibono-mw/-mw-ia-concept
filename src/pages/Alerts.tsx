@@ -278,13 +278,13 @@ const Alerts = () => {
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-border text-left">
-                          <th className="px-4 py-3 text-sm font-normal text-muted-foreground">Name</th>
-                          <th className="px-4 py-3 text-sm font-normal text-muted-foreground">Purpose</th>
-                          <th className="px-4 py-3 text-sm font-normal text-muted-foreground">Urgency</th>
-                          <th className="px-4 py-3 text-sm font-normal text-muted-foreground">Delivery</th>
-                          <th className="px-4 py-3 text-sm font-normal text-muted-foreground">Status</th>
-                          <th className="px-4 py-3 text-sm font-normal text-muted-foreground">Last Triggered</th>
-                          <th className="px-4 py-3 w-10"></th>
+                          <th className="p-4 text-sm font-bold text-foreground">Name</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Purpose</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Urgency</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Delivery</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Status</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Last Triggered</th>
+                          <th className="p-4 w-10"></th>
                         </tr>
                       </thead>
                       <tbody>
