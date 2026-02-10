@@ -166,7 +166,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         </DialogHeader>
 
         {/* Step Indicators */}
-        <div className="flex items-center justify-center gap-4 px-6 pt-4 pb-2 bg-muted border-y border-border">
+        <div className="flex items-center justify-center gap-4 px-6 pt-4 pb-2 border-b border-border">
           {/* Step 1: Type */}
           <button
             onClick={() => step > 1 && setStep(1)}
@@ -246,15 +246,15 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
         {/* Step 1: Type Selection */}
         {step === 1 && (
-          <div className="px-6 pb-6 space-y-6 bg-muted/40 mx-0">
-            <p className="text-sm font-medium text-foreground/80">Select the type of alert you want to create.</p>
+          <div className="px-6 pb-6 bg-card mx-0">
+            <p className="text-sm font-medium text-muted-foreground py-4">Select the type of alert you want to create.</p>
 
             {/* Search-based alerts */}
-            <div>
+            <div className="border-b border-border pb-5">
               <h4 className="text-sm font-bold text-foreground mb-3">Search alerts</h4>
-              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted border border-border">
-                <Info className="w-4 h-4 text-foreground/60 shrink-0" />
-                <p className="text-xs text-foreground/70 font-medium">These alerts require attaching a search</p>
+              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted">
+                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
+                <p className="text-xs text-muted-foreground font-medium">These alerts require attaching a search</p>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 {searchAlertTypes.map((type) => {
@@ -264,10 +264,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                     <button
                       key={type}
                       onClick={() => setSelectedType(type)}
-                      className={`flex items-start gap-3 p-3 rounded-lg border-2 text-left transition-all ${
+                      className={`flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
                         isSelected
-                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30 shadow-md'
-                          : 'border-border bg-card hover:border-primary/50 hover:shadow-md shadow-sm'
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
+                          : 'border-border bg-card hover:border-primary/40 hover:bg-muted/30'
                       }`}
                     >
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
@@ -290,11 +290,11 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Event alerts */}
-            <div>
+            <div className="border-b border-border py-5">
               <h4 className="text-sm font-bold text-foreground mb-3">Event alerts</h4>
-              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted border border-border">
-                <Info className="w-4 h-4 text-foreground/60 shrink-0" />
-                <p className="text-xs text-foreground/70 font-medium">The alerts below can only be created one at a time</p>
+              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted">
+                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
+                <p className="text-xs text-muted-foreground font-medium">The alerts below can only be created one at a time</p>
               </div>
               <div className="space-y-2">
                 {eventAlertTypes.map((type) => {
@@ -304,10 +304,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                     <button
                       key={type}
                       onClick={() => setSelectedType(type)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-lg border-2 text-left transition-all ${
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all ${
                         isSelected
-                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30 shadow-md'
-                          : 'border-border bg-card hover:border-primary/50 hover:shadow-md shadow-sm'
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
+                          : 'border-border bg-card hover:border-primary/40 hover:bg-muted/30'
                       }`}
                     >
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
@@ -330,11 +330,11 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Social alerts */}
-            <div>
+            <div className="border-b border-border py-5">
               <h4 className="text-sm font-bold text-foreground mb-3">Social alerts</h4>
-              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted border border-border">
-                <Info className="w-4 h-4 text-foreground/60 shrink-0" />
-                <p className="text-xs text-foreground/70 font-medium">The alerts below can only be created one at a time</p>
+              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted">
+                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
+                <p className="text-xs text-muted-foreground font-medium">The alerts below can only be created one at a time</p>
               </div>
               <div className="space-y-2">
                 {socialAlertTypes.map((type) => {
@@ -344,10 +344,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                     <button
                       key={type}
                       onClick={() => setSelectedType(type)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-lg border-2 text-left transition-all ${
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all ${
                         isSelected
-                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30 shadow-md'
-                          : 'border-border bg-card hover:border-primary/50 hover:shadow-md shadow-sm'
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
+                          : 'border-border bg-card hover:border-primary/40 hover:bg-muted/30'
                       }`}
                     >
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
@@ -370,11 +370,11 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* RSS alerts */}
-            <div>
+            <div className="pt-5">
               <h4 className="text-sm font-bold text-foreground mb-3">RSS alerts</h4>
-              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted border border-border">
-                <Info className="w-4 h-4 text-foreground/60 shrink-0" />
-                <p className="text-xs text-foreground/70 font-medium">The alerts below can only be created one at a time</p>
+              <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-md bg-muted">
+                <Info className="w-4 h-4 text-muted-foreground shrink-0" />
+                <p className="text-xs text-muted-foreground font-medium">The alerts below can only be created one at a time</p>
               </div>
               <div className="space-y-2">
                 {rssAlertTypes.map((type) => {
@@ -384,10 +384,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                     <button
                       key={type}
                       onClick={() => setSelectedType(type)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-lg border-2 text-left transition-all ${
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all ${
                         isSelected
-                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30 shadow-md'
-                          : 'border-border bg-card hover:border-primary/50 hover:shadow-md shadow-sm'
+                          ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
+                          : 'border-border bg-card hover:border-primary/40 hover:bg-muted/30'
                       }`}
                     >
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
@@ -409,7 +409,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            <div className="flex justify-center pt-2">
+            <div className="flex justify-center pt-4 border-t border-border mt-4">
               <Button onClick={handleNextFromType} disabled={!selectedType}>
                 Next
               </Button>
@@ -419,10 +419,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
         {/* Step 2: Search Selection (only for search-related types) */}
         {step === 2 && (
-          <div className="px-6 pb-6 space-y-6 bg-muted/40 mx-0">
-            <p className="text-sm font-medium text-foreground/80">Select the searches to attach to this alert.</p>
+          <div className="px-6 pb-6 bg-card mx-0">
+            <p className="text-sm font-medium text-muted-foreground py-4 border-b border-border">Select the searches to attach to this alert.</p>
 
-            <div className="border-2 border-border rounded-lg p-4 space-y-3 bg-card shadow-sm">
+            <div className="py-4 border-b border-border space-y-3">
               <div className="flex items-center gap-2">
                 <Label className="text-sm font-bold text-foreground">Search type</Label>
                 <Tooltip>
@@ -449,7 +449,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            <div className="border-2 border-border rounded-lg p-4 space-y-3 bg-card shadow-sm">
+            <div className="py-4 space-y-3">
               <div>
                 <Label className="text-sm font-bold text-foreground">Searches</Label>
                 <p className="text-xs text-muted-foreground mt-0.5">Select searches</p>
@@ -485,7 +485,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-2">
+            <div className="flex items-center justify-between pt-4 border-t border-border">
               <Button variant="ghost" onClick={() => setStep(1)}>
                 Back
               </Button>
@@ -498,13 +498,13 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
         {/* Step 3: Details */}
         {step === 3 && selectedType && (
-          <div className="px-6 pb-6 space-y-5 bg-muted/40">
-            <h3 className="text-base font-semibold text-foreground">
+          <div className="px-6 pb-6 bg-card">
+            <h3 className="text-base font-semibold text-foreground py-4 border-b border-border">
               Configure details for {alertTypeLabels[selectedType]} alert
             </h3>
 
             {/* Relevance Boost */}
-            <div className="border-2 border-primary/40 rounded-lg p-4 space-y-3 bg-primary/5 shadow-sm">
+            <div className="py-4 border-b border-border space-y-3 bg-primary/5 -mx-6 px-6">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
                 <Label className="text-sm font-bold text-foreground">Relevance Boost</Label>
@@ -513,14 +513,14 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               <p className="text-xs text-muted-foreground">
                 Reduce noise by prioritizing mentions that match your intent.
               </p>
-              <div className="flex items-center justify-between border border-border rounded-md px-3 py-2.5 bg-background">
+              <div className="flex items-center justify-between border border-border rounded-md px-3 py-2.5 bg-card">
                 <span className="text-sm text-foreground">Enable relevance filtering</span>
                 <Switch checked={relevanceBoost} onCheckedChange={setRelevanceBoost} />
               </div>
             </div>
 
             {/* Settings */}
-            <div className="border-2 border-border rounded-lg p-4 space-y-4 bg-card shadow-sm">
+            <div className="py-4 border-b border-border space-y-4">
               <div className="flex items-center gap-2">
                 <Label className="text-sm font-bold text-foreground">Settings</Label>
                 <Tooltip>
@@ -553,7 +553,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* When to notify */}
-            <div className="border-2 border-border rounded-lg p-4 space-y-3 bg-card shadow-sm">
+            <div className="py-4 border-b border-border space-y-3">
               <div className="flex items-center gap-2">
                 <Label className="text-sm font-bold text-foreground">When to notify me</Label>
                 <Tooltip>
@@ -590,7 +590,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Recipients */}
-            <div className="border-2 border-border rounded-lg p-4 space-y-3 bg-card shadow-sm">
+            <div className="py-4 border-b border-border space-y-3">
               <div>
                 <Label className="text-sm font-bold text-foreground">Recipients</Label>
                 <p className="text-xs text-muted-foreground mt-0.5">Send alerts to the following people</p>
@@ -626,7 +626,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Delivery Method */}
-            <div className="border-2 border-border rounded-lg p-4 space-y-3 bg-card shadow-sm">
+            <div className="py-4 space-y-3">
               <div className="flex items-center gap-2">
                 <Label className="text-sm font-bold text-foreground">Delivery method</Label>
                 <Tooltip>
@@ -647,7 +647,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-center gap-3 pt-2">
+            <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
               <Button variant="ghost" onClick={() => selectedType && isSearchRelatedType(selectedType) ? setStep(2) : setStep(1)}>
                 Back
               </Button>
@@ -660,10 +660,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
         {/* Step 4: Preview */}
         {step === 4 && selectedType && (
-          <div className="px-6 pb-6 space-y-5 bg-muted/40">
+          <div className="px-6 pb-6 bg-card">
             {/* Estimated Alert Volume */}
-            <div className={`border-2 rounded-lg p-4 space-y-2 shadow-sm ${
-              isHighVolume ? 'border-destructive/60 bg-destructive/5' : 'border-border bg-card'
+            <div className={`py-4 border-b border-border space-y-2 ${
+              isHighVolume ? 'bg-destructive/5 -mx-6 px-6' : ''
             }`}>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-muted-foreground" />
@@ -703,17 +703,17 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Email Preview */}
-            <div className="border-2 border-border rounded-lg overflow-hidden bg-card shadow-sm">
-              <div className="flex items-center gap-2 px-4 py-2.5 bg-muted border-b border-border">
+            <div className="py-4 border-b border-border overflow-hidden">
+              <div className="flex items-center gap-2 mb-3">
                 <Eye className="w-4 h-4 text-foreground/60" />
                 <span className="text-sm font-bold text-foreground">Email preview</span>
               </div>
               
               {/* Mock Email Content */}
-              <div className="p-5 bg-[hsl(var(--muted)/0.2)]">
-                <div className="max-w-md mx-auto bg-background rounded-lg border border-border/60 shadow-sm overflow-hidden">
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="max-w-md mx-auto bg-card rounded-lg border border-border shadow-sm overflow-hidden">
                   {/* Email Header */}
-                  <div className="px-5 py-4 bg-muted/30 border-b border-border/50">
+                  <div className="px-5 py-4 bg-muted/50 border-b border-border">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                         {(() => { const Icon = getAlertIcon(selectedType); return <Icon className="w-5 h-5 text-primary" />; })()}
@@ -726,7 +726,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                   </div>
 
                   {/* Why you received this */}
-                  <div className="px-5 py-3 border-b border-border/30">
+                  <div className="px-5 py-3 border-b border-border">
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Why you received this</p>
                     <p className="text-xs text-foreground">
                       This article matched your search: <span className="font-semibold">"{selectedSearches[0] || 'Brand Monitoring'}"</span>
@@ -759,7 +759,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                     </p>
 
                     {/* Metrics */}
-                    <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border/30">
+                    <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border">
                       <div className="flex items-center gap-1.5">
                         <span className="text-xs">📈</span>
                         <span className="text-xs font-medium text-foreground">649.7k Reach</span>
@@ -802,7 +802,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-center gap-3 pt-2">
+            <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
               <Button variant="ghost" onClick={() => setStep(3)}>
                 Back
               </Button>
