@@ -27,6 +27,12 @@ import {
   Sparkles,
   Info,
   HelpCircle,
+  Mail,
+  AlertTriangle,
+  Eye,
+  ExternalLink,
+  ThumbsUp,
+  ThumbsDown,
 } from 'lucide-react';
 import { AlertType, alertTypeLabels, alertTypeDescriptions } from './types';
 import { getAlertIcon } from './alertIcons';
@@ -68,7 +74,7 @@ const nonSearchAlertTypes: AlertType[] = [...eventAlertTypes, ...socialAlertType
 const isSearchRelatedType = (type: AlertType) => searchAlertTypes.includes(type);
 
 export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps) => {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [selectedType, setSelectedType] = useState<AlertType | null>(null);
   const [searchType, setSearchType] = useState<'optimized' | 'standard' | 'custom'>('standard');
   const [selectedSearches, setSelectedSearches] = useState<string[]>([]);
@@ -104,9 +110,9 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
   const handleNextFromType = () => {
     if (!selectedType) return;
     if (isSearchRelatedType(selectedType)) {
-      setStep(2); // go to search selection
+      setStep(2);
     } else {
-      setStep(3); // skip search, go to details
+      setStep(3);
     }
   };
 
@@ -114,9 +120,28 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
     if (selectedSearches.length > 0) setStep(3);
   };
 
+  const handleNextFromDetails = () => {
+    setStep(4);
+  };
+
   const handleSave = () => {
     handleClose(false);
   };
+
+  // Estimate alert count based on settings
+  const getEstimatedAlertCount = () => {
+    const searchCount = selectedSearches.length || 1;
+    const recipientCount = recipients.length || 1;
+    if (notifyMode === 'immediate') {
+      // Simulate high volume for immediate + multiple searches
+      const basePerDay = selectedType === 'every_mention' ? 120 : selectedType === 'spike_detection' ? 8 : 25;
+      return basePerDay * searchCount * recipientCount;
+    }
+    return searchCount * recipientCount;
+  };
+
+  const estimatedAlerts = getEstimatedAlertCount();
+  const isHighVolume = notifyMode === 'immediate' && estimatedAlerts > 50;
 
   const removeRecipient = (email: string) => {
     setRecipients(prev => prev.filter(r => r.email !== email));
@@ -141,13 +166,12 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         </DialogHeader>
 
         {/* Step Indicators */}
-        <div className="flex items-center justify-center gap-6 px-6 pt-4 pb-2">
+        <div className="flex items-center justify-center gap-4 px-6 pt-4 pb-2">
+          {/* Step 1: Type */}
           <button
-            onClick={() => (step === 2 || step === 3) && setStep(1)}
+            onClick={() => step > 1 && setStep(1)}
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
-              step === 1
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
+              step === 1 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
             {step > 1 ? (
@@ -155,19 +179,17 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 <Check className="w-3 h-3 text-primary-foreground" />
               </div>
             ) : (
-              <div className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-semibold">
-                1
-              </div>
+              <div className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-semibold">1</div>
             )}
             Type
           </button>
+
+          {/* Step 2: Search (conditional) */}
           {selectedType && isSearchRelatedType(selectedType) && (
             <button
-              onClick={() => step === 3 && setStep(2)}
+              onClick={() => step > 2 && setStep(2)}
               className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
-                step === 2
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-muted-foreground'
+                step === 2 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
               } ${step < 2 ? 'cursor-default' : 'hover:text-foreground'}`}
               disabled={step < 2}
             >
@@ -178,27 +200,47 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               ) : (
                 <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
                   step === 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                }`}>
-                  2
-                </div>
+                }`}>2</div>
               )}
               Search
             </button>
           )}
+
+          {/* Step 3: Details */}
           <button
             className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
-              step === 3
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground'
-            } cursor-default`}
+              step === 3 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
+            } ${step < 3 ? 'cursor-default' : 'hover:text-foreground'}`}
             disabled={step < 3}
+            onClick={() => step > 3 && setStep(3)}
+          >
+            {step > 3 ? (
+              <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                <Check className="w-3 h-3 text-primary-foreground" />
+              </div>
+            ) : (
+              <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
+                step === 3 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+              }`}>
+                {selectedType && isSearchRelatedType(selectedType) ? '3' : '2'}
+              </div>
+            )}
+            Details
+          </button>
+
+          {/* Step 4: Preview */}
+          <button
+            className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
+              step === 4 ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
+            } cursor-default`}
+            disabled={step < 4}
           >
             <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
-              step === 3 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+              step === 4 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
             }`}>
-              {selectedType && isSearchRelatedType(selectedType) ? '3' : '2'}
+              {selectedType && isSearchRelatedType(selectedType) ? '4' : '3'}
             </div>
-            Details
+            Preview
           </button>
         </div>
 
@@ -607,6 +649,161 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             {/* Footer */}
             <div className="flex items-center justify-center gap-3 pt-2">
               <Button variant="ghost" onClick={() => selectedType && isSearchRelatedType(selectedType) ? setStep(2) : setStep(1)}>
+                Back
+              </Button>
+              <Button onClick={handleNextFromDetails}>
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Step 4: Preview */}
+        {step === 4 && selectedType && (
+          <div className="px-6 pb-6 space-y-5 bg-background/60">
+            {/* Estimated Alert Volume */}
+            <div className={`border rounded-lg p-4 space-y-2 shadow-sm ${
+              isHighVolume ? 'border-destructive/50 bg-destructive/5' : 'border-border/80 bg-card'
+            }`}>
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-muted-foreground" />
+                <Label className="text-sm font-bold text-foreground">Estimated alert volume</Label>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-2xl font-bold text-foreground">~{estimatedAlerts.toLocaleString()}</span>
+                <span className="text-sm text-muted-foreground">
+                  {notifyMode === 'immediate' ? 'emails per day' : 'emails per day'}
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Based on {selectedSearches.length || 1} search{(selectedSearches.length || 1) > 1 ? 'es' : ''} × {recipients.length} recipient{recipients.length > 1 ? 's' : ''} × {notifyMode === 'immediate' ? 'every mention' : 'daily digest'}
+              </p>
+
+              {isHighVolume && (
+                <div className="flex items-start gap-2 mt-2 p-3 rounded-md bg-destructive/10 border border-destructive/20">
+                  <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium text-destructive">High alert volume detected</p>
+                    <p className="text-xs text-destructive/80">
+                      This configuration will generate a large number of emails. Consider these changes:
+                    </p>
+                    <ul className="text-xs text-destructive/80 list-disc pl-4 space-y-0.5">
+                      <li>Switch to <button className="underline font-medium" onClick={() => { setNotifyMode('daily'); setStep(3); }}>Daily threshold</button> instead of immediate notifications</li>
+                      {selectedSearches.length > 2 && (
+                        <li>Reduce the number of attached searches (currently {selectedSearches.length})</li>
+                      )}
+                      {!relevanceBoost && (
+                        <li>Enable <button className="underline font-medium" onClick={() => { setRelevanceBoost(true); setStep(3); }}>Relevance Boost</button> to filter noise</li>
+                      )}
+                      <li>Use a more specific alert type like Spike Detection or Top Reach</li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Email Preview */}
+            <div className="border border-border/80 rounded-lg overflow-hidden bg-card shadow-sm">
+              <div className="flex items-center gap-2 px-4 py-2.5 bg-muted/50 border-b border-border/50">
+                <Eye className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm font-bold text-foreground">Email preview</span>
+              </div>
+              
+              {/* Mock Email Content */}
+              <div className="p-5 bg-[hsl(var(--muted)/0.2)]">
+                <div className="max-w-md mx-auto bg-background rounded-lg border border-border/60 shadow-sm overflow-hidden">
+                  {/* Email Header */}
+                  <div className="px-5 py-4 bg-muted/30 border-b border-border/50">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        {(() => { const Icon = getAlertIcon(selectedType); return <Icon className="w-5 h-5 text-primary" />; })()}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">{alertTypeLabels[selectedType]} Alert</p>
+                        <p className="text-xs text-muted-foreground">{selectedSearches[0] || 'Your Search'}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Why you received this */}
+                  <div className="px-5 py-3 border-b border-border/30">
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Why you received this</p>
+                    <p className="text-xs text-foreground">
+                      This article matched your search: <span className="font-semibold">"{selectedSearches[0] || 'Brand Monitoring'}"</span>
+                    </p>
+                    <div className="flex gap-1.5 mt-1.5">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">keyword match</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">brand</span>
+                    </div>
+                  </div>
+
+                  {/* Article Preview */}
+                  <div className="px-5 py-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-6 h-6 rounded bg-destructive/10 text-destructive text-[10px] font-bold flex items-center justify-center">Y!</div>
+                        <div>
+                          <p className="text-xs font-medium text-foreground">News Source · Wire Service</p>
+                          <p className="text-[10px] text-muted-foreground">News | US | Feb 10, 2:36 PM</p>
+                        </div>
+                      </div>
+                      <button className="text-xs text-primary flex items-center gap-0.5 shrink-0">
+                        View article <ExternalLink className="w-3 h-3" />
+                      </button>
+                    </div>
+                    <h4 className="text-sm font-semibold text-foreground leading-snug mb-2">
+                      Sample Article Title: Breaking News Coverage Related to Your Brand Monitoring Search
+                    </h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      The article discusses developments related to your search query, demonstrating how mentions appear in your alert emails...
+                    </p>
+
+                    {/* Metrics */}
+                    <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border/30">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs">📈</span>
+                        <span className="text-xs font-medium text-foreground">649.7k Reach</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
+                        <span className="text-xs text-muted-foreground">Neutral Sentiment</span>
+                      </div>
+                      <div className="flex gap-2 ml-auto">
+                        <span className="text-xs text-primary cursor-pointer">Tag</span>
+                        <span className="text-xs text-primary cursor-pointer">Share</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Feedback */}
+                  <div className="mx-5 mb-4 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 text-center">
+                    <p className="text-xs font-medium text-amber-800 dark:text-amber-300 mb-2">Was this alert helpful?</p>
+                    <div className="flex items-center justify-center gap-3">
+                      <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-background text-xs text-foreground">
+                        <ThumbsUp className="w-3 h-3" /> Yes
+                      </button>
+                      <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-background text-xs text-foreground">
+                        <ThumbsDown className="w-3 h-3" /> No
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Footer Buttons */}
+                  <div className="px-5 pb-4 flex items-center justify-center gap-3">
+                    <button className="px-4 py-2 rounded-md bg-destructive text-destructive-foreground text-xs font-medium">
+                      Edit alert frequency
+                    </button>
+                    <button className="px-4 py-2 rounded-md border border-border text-xs font-medium text-foreground">
+                      View all alerts
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-center gap-3 pt-2">
+              <Button variant="ghost" onClick={() => setStep(3)}>
                 Back
               </Button>
               <Button onClick={handleSave}>
