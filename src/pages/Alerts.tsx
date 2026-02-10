@@ -264,7 +264,7 @@ const Alerts = () => {
                   {/* Table */}
                   <div className="flex-1 bg-card rounded-lg border border-border">
                     <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-                      <span className="text-sm font-bold text-foreground">{selectedView} <span className="text-foreground font-normal">({managedAlerts.filter(a => {
+                      <span className="text-base font-semibold text-foreground">{selectedView} <span className="text-foreground font-normal">({managedAlerts.filter(a => {
                         if (selectedView === "All") return true;
                         if (selectedView === "Urgent") return a.urgency === "Urgent";
                         if (selectedView === "Paused") return !a.enabled;
