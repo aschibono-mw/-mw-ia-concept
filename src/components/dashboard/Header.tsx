@@ -237,12 +237,12 @@ export const Header = () => {
                         );
                       })}
                     </div>
-                    <div className="px-4 py-3 border-t border-border flex items-center justify-center gap-4">
-                      <a href="/alerts?tab=all-notifications" className="text-sm text-foreground hover:text-primary cursor-pointer">View all</a>
+                    <div className="px-4 py-3 border-t border-border flex items-center justify-center gap-3 whitespace-nowrap">
+                      <a href="/alerts?tab=all-notifications" className="text-xs text-foreground hover:text-primary cursor-pointer">View all</a>
                       <span className="h-4 w-px bg-border" />
-                      <span className="text-sm text-foreground hover:text-primary cursor-pointer">Mark all as read</span>
+                      <span className="text-xs text-foreground hover:text-primary cursor-pointer">Mark all as read</span>
                       <span className="h-4 w-px bg-border" />
-                      <a href="/alerts?tab=notifications" className="text-sm text-foreground hover:text-primary cursor-pointer">Manage notifications</a>
+                      <a href="/alerts?tab=notifications" className="text-xs text-foreground hover:text-primary cursor-pointer">Manage notifications</a>
                     </div>
                   </TabsContent>
                 </Tabs>
