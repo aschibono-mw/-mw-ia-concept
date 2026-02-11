@@ -459,9 +459,9 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                     <Slider value={strictness} onValueChange={setStrictness} max={100} step={1} />
                     <div className="flex items-center justify-between mt-2">
                       <span className="text-xs text-muted-foreground">More Alerts</span>
-                      <Badge variant="outline" className="text-[10px] px-2 py-0.5 font-medium border-primary text-primary">
-                        Recommended: Precision-first
-                      </Badge>
+                      <span className="text-sm font-semibold text-foreground">
+                        ~{Math.round(200 - strictness[0] * 1.8)}–{Math.round(250 - strictness[0] * 2)} alerts/day
+                      </span>
                       <span className="text-xs text-muted-foreground">Fewer Alerts</span>
                     </div>
                   </div>
