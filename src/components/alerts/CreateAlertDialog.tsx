@@ -357,49 +357,21 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         {/* ── Step 3: Details ──────────────────────────────── */}
         {step === 3 && selectedTypes.length > 0 && (
           <div className="px-6 pb-6 space-y-5">
-            {/* Page title */}
-            <h2 className="text-base font-bold text-foreground">
-              Configure details for {alertTypeLabels[selectedTypes[0] || 'every_mention']} alert
-            </h2>
-
-            {/* Search type */}
-            <div className="rounded-xl border border-border bg-card p-5">
-              <SectionLabel tooltip="Choose which type of searches to attach">Search type</SectionLabel>
-              <div className="flex gap-2 mt-3">
-                {(['optimized', 'standard', 'custom'] as const).map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setSearchType(t)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
-                      searchType === t
-                        ? 'border-primary bg-primary text-primary-foreground'
-                        : 'border-border text-foreground hover:bg-muted/50'
-                    }`}
-                  >
-                    {t === 'optimized' ? 'Optimized searches' : t === 'standard' ? 'Standard searches' : 'Custom fields'}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Searches */}
-            <div className="rounded-xl border border-border bg-card p-5">
-              <SectionLabel>Searches</SectionLabel>
-              <p className="text-xs text-muted-foreground mb-2">Select searches</p>
-              <p className="text-xs text-muted-foreground mb-2">{selectedSearches.length}/10</p>
+            {/* Page title + selected searches */}
+            <div>
+              <h2 className="text-base font-bold text-foreground">
+                Configure details for {alertTypeLabels[selectedTypes[0] || 'every_mention']} alert
+              </h2>
               {selectedSearches.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mb-3">
+                <div className="flex flex-wrap gap-1.5 mt-2">
                   {selectedSearches.map((s) => (
                     <Badge key={s} variant="secondary" className="gap-1 text-xs font-medium">
+                      <Search className="w-3 h-3" />
                       {s}
-                      <X className="w-3 h-3 cursor-pointer opacity-60 hover:opacity-100" onClick={() => toggleSearch(s)} />
                     </Badge>
                   ))}
                 </div>
               )}
-              <button className="flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
-                <Plus className="w-4 h-4" /> Add search
-              </button>
             </div>
 
             {/* Relevance Boost */}
