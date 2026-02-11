@@ -390,6 +390,96 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 <span className="text-sm text-foreground">Enable relevance filtering</span>
                 <Switch checked={relevanceBoost} onCheckedChange={setRelevanceBoost} />
               </div>
+
+              {relevanceBoost && (
+                <div className="mt-5 space-y-5">
+                  {/* Choose what matters most */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-sm">💡</span>
+                      <span className="text-sm font-bold text-foreground">Choose what matters most</span>
+                      <span className="text-xs text-muted-foreground">(select multiple)</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        'Crisis / Breaking news',
+                        'Product issues',
+                        'Executive & leadership quotes',
+                        'Partnerships & announcements',
+                        'Financial / earnings coverage',
+                      ].map((topic) => {
+                        const selected = relevanceTopics.includes(topic);
+                        return (
+                          <button
+                            key={topic}
+                            onClick={() => setRelevanceTopics(prev =>
+                              selected ? prev.filter(t => t !== topic) : [...prev, topic]
+                            )}
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                              selected
+                                ? 'border-primary bg-primary/10 text-primary'
+                                : 'border-border text-foreground hover:bg-muted/50'
+                            }`}
+                          >
+                            {topic}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* What do you want to be alerted about */}
+                  <div>
+                    <p className="text-sm font-bold text-foreground mb-1">What do you want to be alerted about?</p>
+                    <p className="text-xs text-muted-foreground mb-2">Your search query controls what's included. This refines what's most relevant.</p>
+                    <textarea
+                      value={relevancePrompt}
+                      onChange={(e) => setRelevancePrompt(e.target.value)}
+                      placeholder="Prioritize breaking news about {Brand} from major outlets, product issues, and exec quotes."
+                      className="w-full rounded-lg border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-ring"
+                      rows={2}
+                    />
+                    <p className="text-xs text-muted-foreground mt-1.5">
+                      Tip: Use positive phrasing (what to prioritize). Avoid exclusions like "don't show competitors".
+                    </p>
+                  </div>
+
+                  {/* Strictness */}
+                  <div className="rounded-lg border border-border bg-card p-4">
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="text-sm font-bold text-foreground">Strictness (relevance threshold)</p>
+                      <button
+                        onClick={() => setStrictness([65])}
+                        className="text-xs font-medium text-primary hover:underline flex items-center gap-1"
+                      >
+                        ↻ Reset to recommended
+                      </button>
+                    </div>
+                    <p className="text-xs text-muted-foreground mb-3">Stricter = fewer, higher-confidence mentions.</p>
+                    <Slider value={strictness} onValueChange={setStrictness} max={100} step={1} />
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-xs text-muted-foreground">More Alerts</span>
+                      <Badge variant="outline" className="text-[10px] px-2 py-0.5 font-medium border-primary text-primary">
+                        Recommended: Precision-first
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">Fewer Alerts</span>
+                    </div>
+                  </div>
+
+                  {/* Always include high-impact */}
+                  <div className="flex items-start gap-3 rounded-lg border border-border bg-card p-4">
+                    <Checkbox
+                      checked={alwaysIncludeHighImpact}
+                      onCheckedChange={(v) => setAlwaysIncludeHighImpact(!!v)}
+                      className="mt-0.5"
+                    />
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">Always include high-impact mentions (major outlets, exec quotes)</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Prevents missing critical coverage even on stricter settings.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Urgency level */}
