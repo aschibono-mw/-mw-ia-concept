@@ -160,6 +160,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
   const [selectedTypes, setSelectedTypes] = useState<AlertType[]>([]);
   const [selectedSearches, setSelectedSearches] = useState<string[]>([]);
   const [relevanceBoost, setRelevanceBoost] = useState(false);
+  const [searchType, setSearchType] = useState<'optimized' | 'standard' | 'custom'>('standard');
   const [similarMentions, setSimilarMentions] = useState('exclude');
   const [showImages, setShowImages] = useState(true);
   const [urgencyLevel, setUrgencyLevel] = useState([50]);
@@ -356,9 +357,68 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         {/* ── Step 3: Details ──────────────────────────────── */}
         {step === 3 && selectedTypes.length > 0 && (
           <div className="px-6 pb-6 space-y-5">
+            {/* Page title */}
+            <h2 className="text-base font-bold text-foreground">
+              Configure details for {alertTypeLabels[selectedTypes[0] || 'every_mention']} alert
+            </h2>
+
+            {/* Search type */}
+            <div className="rounded-xl border border-border bg-card p-5">
+              <SectionLabel tooltip="Choose which type of searches to attach">Search type</SectionLabel>
+              <div className="flex gap-2 mt-3">
+                {(['optimized', 'standard', 'custom'] as const).map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setSearchType(t)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+                      searchType === t
+                        ? 'border-primary bg-primary text-primary-foreground'
+                        : 'border-border text-foreground hover:bg-muted/50'
+                    }`}
+                  >
+                    {t === 'optimized' ? 'Optimized searches' : t === 'standard' ? 'Standard searches' : 'Custom fields'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Searches */}
+            <div className="rounded-xl border border-border bg-card p-5">
+              <SectionLabel>Searches</SectionLabel>
+              <p className="text-xs text-muted-foreground mb-2">Select searches</p>
+              <p className="text-xs text-muted-foreground mb-2">{selectedSearches.length}/10</p>
+              {selectedSearches.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {selectedSearches.map((s) => (
+                    <Badge key={s} variant="secondary" className="gap-1 text-xs font-medium">
+                      {s}
+                      <X className="w-3 h-3 cursor-pointer opacity-60 hover:opacity-100" onClick={() => toggleSearch(s)} />
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              <button className="flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+                <Plus className="w-4 h-4" /> Add search
+              </button>
+            </div>
+
+            {/* Relevance Boost */}
+            <div className="rounded-xl border-2 border-primary/30 bg-primary/[0.02] p-5">
+              <div className="flex items-center gap-2 mb-1">
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span className="text-sm font-bold text-foreground">Relevance Boost</span>
+                <Badge variant="secondary" className="text-[10px] px-1.5 py-0 font-medium">Beta</Badge>
+              </div>
+              <p className="text-xs text-muted-foreground mb-4">Reduce noise by prioritizing mentions that match your intent.</p>
+              <div className="flex items-center justify-between px-4 py-3 rounded-lg border border-border bg-card">
+                <span className="text-sm text-foreground">Enable relevance filtering</span>
+                <Switch checked={relevanceBoost} onCheckedChange={setRelevanceBoost} />
+              </div>
+            </div>
+
             {/* Urgency level */}
-            <div className="rounded-xl border border-border bg-card p-6">
-              <div className="flex items-center gap-2 mb-5">
+            <div className="rounded-xl border border-border bg-card p-5">
+              <div className="flex items-center gap-2 mb-4">
                 <Zap className="w-4 h-4 text-foreground" />
                 <h3 className="text-sm font-bold text-foreground">Urgency level</h3>
               </div>
@@ -367,13 +427,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 <span>Important only</span>
                 <span>Urgent spikes only</span>
               </div>
-              <Slider
-                value={urgencyLevel}
-                onValueChange={setUrgencyLevel}
-                max={100}
-                step={1}
-                className="mb-4"
-              />
+              <Slider value={urgencyLevel} onValueChange={setUrgencyLevel} max={100} step={1} className="mb-4" />
               <div className="rounded-lg bg-muted/60 px-4 py-3">
                 <p className="text-xs text-foreground">
                   <span className="font-semibold">
@@ -388,9 +442,36 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
+            {/* Settings */}
+            <div className="rounded-xl border border-border bg-card p-5">
+              <SectionLabel tooltip="Configure alert behavior">Settings</SectionLabel>
+              <div className="mt-3 space-y-4">
+                <div className="space-y-1.5">
+                  <CategoryLabel>Similar Mentions</CategoryLabel>
+                  <Select value={similarMentions} onValueChange={setSimilarMentions}>
+                    <SelectTrigger className="w-full text-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="exclude">Exclude similar mentions</SelectItem>
+                      <SelectItem value="include">Include similar mentions</SelectItem>
+                      <SelectItem value="group">Group similar mentions</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1.5">
+                  <CategoryLabel>Display</CategoryLabel>
+                  <div className="flex items-center gap-2">
+                    <Checkbox checked={showImages} onCheckedChange={(v) => setShowImages(!!v)} />
+                    <span className="text-sm text-foreground">Images</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Delivery channels */}
-            <div className="rounded-xl border border-border bg-card p-6">
-              <div className="flex items-center gap-2 mb-5">
+            <div className="rounded-xl border border-border bg-card p-5">
+              <div className="flex items-center gap-2 mb-4">
                 <Mail className="w-4 h-4 text-foreground" />
                 <h3 className="text-sm font-bold text-foreground">Delivery channels</h3>
               </div>
@@ -403,20 +484,14 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                 ] as const).map(({ key, label, icon: Icon }) => {
                   const enabled = deliveryChannels[key];
                   return (
-                    <div
-                      key={key}
-                      className={`flex items-center justify-between px-4 py-3 rounded-lg border transition-colors ${
-                        enabled ? 'border-primary/30 bg-primary/5' : 'border-border'
-                      }`}
-                    >
+                    <div key={key} className={`flex items-center justify-between px-4 py-3 rounded-lg border transition-colors ${
+                      enabled ? 'border-primary/30 bg-primary/5' : 'border-border'
+                    }`}>
                       <div className="flex items-center gap-2.5">
                         <Icon className={`w-4 h-4 ${enabled ? 'text-primary' : 'text-muted-foreground'}`} />
                         <span className={`text-sm font-medium ${enabled ? 'text-primary' : 'text-foreground'}`}>{label}</span>
                       </div>
-                      <Switch
-                        checked={enabled}
-                        onCheckedChange={(v) => setDeliveryChannels(prev => ({ ...prev, [key]: v }))}
-                      />
+                      <Switch checked={enabled} onCheckedChange={(v) => setDeliveryChannels(prev => ({ ...prev, [key]: v }))} />
                     </div>
                   );
                 })}
@@ -425,17 +500,45 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                     <Webhook className="w-4 h-4 text-muted-foreground" />
                     <span className="text-sm font-medium text-foreground">Webhook</span>
                   </div>
-                  <Switch
-                    checked={deliveryChannels.webhook}
-                    onCheckedChange={(v) => setDeliveryChannels(prev => ({ ...prev, webhook: v }))}
-                  />
+                  <Switch checked={deliveryChannels.webhook} onCheckedChange={(v) => setDeliveryChannels(prev => ({ ...prev, webhook: v }))} />
                 </div>
               </div>
             </div>
 
+            {/* When to notify me */}
+            <div className="rounded-xl border border-border bg-card p-5">
+              <SectionLabel tooltip="Choose notification frequency">When to notify me</SectionLabel>
+              <div className="mt-3">
+                <RadioGroup value={frequency} onValueChange={(v) => setFrequency(v as 'immediate' | 'hourly' | 'daily')}>
+                  <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/40 transition-colors">
+                    <RadioGroupItem value="immediate" id="notify-immediate" className="mt-0.5" />
+                    <div>
+                      <Label htmlFor="notify-immediate" className="text-sm font-semibold cursor-pointer text-foreground">
+                        Immediately (every mention)
+                      </Label>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        You will receive notification for every single mention as they happen
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/40 transition-colors">
+                    <RadioGroupItem value="daily" id="notify-daily" className="mt-0.5" />
+                    <div>
+                      <Label htmlFor="notify-daily" className="text-sm font-semibold cursor-pointer text-foreground">
+                        Daily threshold (last 24 hours)
+                      </Label>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Sends an alert as soon as mentions exceed your threshold (24-hour window is fixed)
+                      </p>
+                    </div>
+                  </div>
+                </RadioGroup>
+              </div>
+            </div>
+
             {/* Timing */}
-            <div className="rounded-xl border border-border bg-card p-6">
-              <div className="flex items-center gap-2 mb-5">
+            <div className="rounded-xl border border-border bg-card p-5">
+              <div className="flex items-center gap-2 mb-4">
                 <Clock className="w-4 h-4 text-foreground" />
                 <h3 className="text-sm font-bold text-foreground">Timing</h3>
               </div>
@@ -444,15 +547,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                   <p className="text-sm font-semibold text-foreground mb-3">Frequency</p>
                   <div className="flex gap-2">
                     {(['immediate', 'hourly', 'daily'] as const).map((f) => (
-                      <button
-                        key={f}
-                        onClick={() => setFrequency(f)}
+                      <button key={f} onClick={() => setFrequency(f)}
                         className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
-                          frequency === f
-                            ? 'border-primary bg-primary/10 text-primary'
-                            : 'border-border text-foreground hover:bg-muted/50'
-                        }`}
-                      >
+                          frequency === f ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground hover:bg-muted/50'
+                        }`}>
                         {f.charAt(0).toUpperCase() + f.slice(1)}
                       </button>
                     ))}
@@ -465,6 +563,51 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                   </div>
                   <Switch checked={quietHours} onCheckedChange={setQuietHours} />
                 </div>
+              </div>
+            </div>
+
+            {/* Recipients */}
+            <div className="rounded-xl border border-border bg-card p-5">
+              <SectionLabel>Recipients</SectionLabel>
+              <p className="text-xs text-muted-foreground mb-3">Send alerts to the following people</p>
+              <div className="relative mb-2">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search by name or enter an email address"
+                  value={recipientSearch}
+                  onChange={(e) => setRecipientSearch(e.target.value)}
+                  className="pl-9 text-sm"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground mb-2">{recipients.length}/10</p>
+              <div className="space-y-1.5">
+                {recipients.map((r) => (
+                  <div key={r.email} className="flex items-center justify-between px-3 py-2.5 rounded-lg bg-muted/50">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">
+                        {r.name.split(' ').map(n => n[0]).join('')}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{r.name}</p>
+                        <p className="text-xs text-muted-foreground">{r.email}</p>
+                      </div>
+                    </div>
+                    <button onClick={() => removeRecipient(r.email)} className="text-muted-foreground hover:text-foreground">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Delivery method */}
+            <div className="rounded-xl border border-border bg-card p-5">
+              <SectionLabel tooltip="How would you like to receive alerts?">Delivery method</SectionLabel>
+              <p className="text-xs text-muted-foreground mb-3">How would you like to receive alerts?</p>
+              <CategoryLabel>Standard</CategoryLabel>
+              <div className="flex items-center gap-2 mt-1">
+                <Checkbox checked={deliveryEmail} onCheckedChange={(v) => setDeliveryEmail(!!v)} />
+                <span className="text-sm text-foreground">Email</span>
               </div>
             </div>
 
