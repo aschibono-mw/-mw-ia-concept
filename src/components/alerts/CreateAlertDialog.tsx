@@ -506,93 +506,83 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
             {/* Email Preview */}
             <Panel title="Email preview">
-              <div className="p-5 bg-muted/20">
-                <div className="max-w-md mx-auto bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-                  {/* Alert Header */}
-                  <div className="px-6 pt-6 pb-5 flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      {(() => { const Icon = getAlertIcon(primaryType); return <Icon className="w-5 h-5 text-primary" />; })()}
-                    </div>
-                    <div>
-                      <p className="text-base font-bold text-foreground leading-tight">{alertTypeLabels[primaryType]} Alert</p>
-                      <p className="text-sm text-muted-foreground">{selectedSearches[0] || 'Your Search'}</p>
+              <div className="p-4 bg-muted/30">
+                <div className="max-w-md mx-auto bg-card rounded-lg border border-border shadow-sm overflow-hidden">
+                  <div className="px-5 py-4 bg-muted/30">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        {(() => { const Icon = getAlertIcon(primaryType); return <Icon className="w-5 h-5 text-primary" />; })()}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">{alertTypeLabels[primaryType]} Alert</p>
+                        <p className="text-xs text-muted-foreground">{selectedSearches[0] || 'Your Search'}</p>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Why you received this */}
-                  <div className="mx-6 mb-5">
-                    <p className="text-[10px] font-bold text-foreground/50 uppercase tracking-widest mb-2">Why you received this</p>
-                    <p className="text-sm text-foreground">
-                      This article matched your search: <span className="font-semibold">"{selectedSearches[0] || 'Brand Coverage'}"</span>
+                  <div className="px-5 py-3">
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Why you received this</p>
+                    <p className="text-xs text-foreground">
+                      This article matched your search: <span className="font-semibold">"{selectedSearches[0] || 'Brand Monitoring'}"</span>
                     </p>
-                    <div className="flex gap-2 mt-2">
-                      <span className="text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary font-medium">keyword match</span>
-                      <span className="text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary font-medium">brand</span>
+                    <div className="flex gap-1.5 mt-1.5">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">keyword match</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">brand</span>
                     </div>
                   </div>
 
-                  {/* Article Card */}
-                  <div className="mx-6 mb-5 rounded-lg border border-border bg-card">
-                    {/* Source row */}
-                    <div className="flex items-center justify-between px-4 py-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded bg-destructive/10 text-destructive text-[11px] font-bold flex items-center justify-center shrink-0">Y!</div>
+                  <div className="px-5 py-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-6 h-6 rounded bg-destructive/10 text-destructive text-[10px] font-bold flex items-center justify-center">Y!</div>
                         <div>
-                          <p className="text-sm font-medium text-foreground leading-tight">News Source · Wire Service</p>
-                          <p className="text-xs text-muted-foreground">News | US | Feb 10, 2:36 PM</p>
+                          <p className="text-xs font-medium text-foreground">News Source · Wire Service</p>
+                          <p className="text-[10px] text-muted-foreground">News | US | Feb 10, 2:36 PM</p>
                         </div>
                       </div>
-                      <button className="text-xs text-primary flex items-center gap-1 shrink-0 font-semibold hover:underline">
+                      <button className="text-xs text-primary flex items-center gap-0.5 shrink-0 font-medium">
                         View article <ExternalLink className="w-3 h-3" />
                       </button>
                     </div>
-
-                    {/* Article content */}
-                    <div className="px-4 pb-4">
-                      <h4 className="text-[15px] font-bold text-foreground leading-snug mb-2">
-                        Sample Article Title: Breaking News Coverage Related to Your Brand Monitoring Search
-                      </h4>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        The article discusses developments related to your search query, demonstrating how mentions appear in your alert emails...
-                      </p>
-                    </div>
-
-                    {/* Metrics row */}
-                    <div className="flex items-center gap-4 px-4 py-3 border-t border-border">
+                    <h4 className="text-sm font-semibold text-foreground leading-snug mb-2">
+                      Sample Article Title: Breaking News Coverage Related to Your Brand Monitoring Search
+                    </h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      The article discusses developments related to your search query, demonstrating how mentions appear in your alert emails...
+                    </p>
+                    <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-sm">📈</span>
-                        <span className="text-sm font-semibold text-foreground">649.7k Reach</span>
+                        <span className="text-xs">📈</span>
+                        <span className="text-xs font-medium text-foreground">649.7k Reach</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-muted-foreground/40"></span>
-                        <span className="text-sm text-muted-foreground">Neutral Sentiment</span>
+                        <span className="w-2 h-2 rounded-full bg-accent"></span>
+                        <span className="text-xs text-muted-foreground">Neutral Sentiment</span>
                       </div>
-                      <div className="flex gap-3 ml-auto">
-                        <span className="text-sm text-primary cursor-pointer font-semibold hover:underline">Tag</span>
-                        <span className="text-sm text-primary cursor-pointer font-semibold hover:underline">Share</span>
+                      <div className="flex gap-2 ml-auto">
+                        <span className="text-xs text-primary cursor-pointer font-medium">Tag</span>
+                        <span className="text-xs text-primary cursor-pointer font-medium">Share</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Feedback */}
-                  <div className="mx-6 mb-5 py-4 text-center">
-                    <p className="text-sm font-medium text-foreground mb-3">Was this alert helpful?</p>
+                  <div className="mx-5 mb-4 p-3 rounded-lg bg-muted/50 text-center">
+                    <p className="text-xs font-medium text-foreground mb-2">Was this alert helpful?</p>
                     <div className="flex items-center justify-center gap-3">
-                      <button className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border bg-card text-sm text-foreground font-medium hover:bg-muted/50 transition-colors">
-                        <ThumbsUp className="w-3.5 h-3.5" /> Yes
+                      <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-card text-xs text-foreground font-medium">
+                        <ThumbsUp className="w-3 h-3" /> Yes
                       </button>
-                      <button className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border bg-card text-sm text-foreground font-medium hover:bg-muted/50 transition-colors">
-                        <ThumbsDown className="w-3.5 h-3.5" /> No
+                      <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-card text-xs text-foreground font-medium">
+                        <ThumbsDown className="w-3 h-3" /> No
                       </button>
                     </div>
                   </div>
 
-                  {/* Actions */}
-                  <div className="px-6 pb-6 flex items-center justify-center gap-3">
-                    <button className="px-5 py-2.5 rounded-lg bg-destructive text-destructive-foreground text-sm font-semibold">
+                  <div className="px-5 pb-4 flex items-center justify-center gap-3">
+                    <button className="px-4 py-2 rounded-md bg-destructive text-destructive-foreground text-xs font-medium">
                       Edit alert frequency
                     </button>
-                    <button className="px-5 py-2.5 rounded-lg border border-border text-sm font-semibold text-foreground hover:bg-muted/50 transition-colors">
+                    <button className="px-4 py-2 rounded-md border border-border text-xs font-medium text-foreground">
                       View all alerts
                     </button>
                   </div>
