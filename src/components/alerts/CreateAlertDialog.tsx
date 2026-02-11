@@ -156,32 +156,32 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
   const primaryType = selectedTypes[0] || 'every_mention';
 
-  const renderTypeCard = (type: AlertType, layout: 'grid' | 'list' = 'grid') => {
+  const renderTypeCard = (type: AlertType) => {
     const Icon = getAlertIcon(type);
     const isSelected = selectedTypes.includes(type);
     return (
       <button
         key={type}
         onClick={() => toggleType(type)}
-        className={`${layout === 'list' ? 'w-full' : ''} flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
+        className={`flex items-start gap-3 p-3 rounded-lg border text-left transition-all ${
           isSelected
             ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
-            : 'border-border bg-card hover:border-primary/40 hover:bg-muted/30'
+            : 'border-border hover:border-foreground/20'
         }`}
       >
         <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
           isSelected ? 'bg-primary/10' : 'bg-muted'
         }`}>
-          <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+          <Icon className={`w-4 h-4 ${isSelected ? 'text-primary' : 'text-foreground/50'}`} />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <p className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+            <p className={`text-sm font-semibold ${isSelected ? 'text-primary' : 'text-foreground'}`}>
               {alertTypeLabels[type]}
             </p>
-            {isSelected && <Check className="w-4 h-4 text-primary" />}
+            {isSelected && <Check className="w-3.5 h-3.5 text-primary" />}
           </div>
-          <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">
+          <p className="text-xs text-foreground/50 line-clamp-2 mt-0.5 leading-relaxed">
             {alertTypeDescriptions[type]}
           </p>
         </div>
@@ -189,73 +189,102 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
     );
   };
 
+  const SectionLabel = ({ children, tooltip }: { children: React.ReactNode; tooltip?: string }) => (
+    <div className="flex items-center gap-1.5">
+      <span className="text-sm font-semibold text-foreground">{children}</span>
+      {tooltip && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <HelpCircle className="w-3.5 h-3.5 text-foreground/30" />
+          </TooltipTrigger>
+          <TooltipContent>{tooltip}</TooltipContent>
+        </Tooltip>
+      )}
+    </div>
+  );
+
+  const CategoryLabel = ({ children }: { children: React.ReactNode }) => (
+    <h4 className="text-[11px] font-semibold text-foreground/40 uppercase tracking-widest">{children}</h4>
+  );
+
+  const StepFooter = ({ onBack, onNext, nextLabel = 'Next', nextDisabled = false }: {
+    onBack?: () => void;
+    onNext: () => void;
+    nextLabel?: string;
+    nextDisabled?: boolean;
+  }) => (
+    <div className="flex items-center justify-end gap-2 pt-5 mt-2">
+      {onBack && (
+        <Button variant="ghost" size="sm" onClick={onBack}>
+          Back
+        </Button>
+      )}
+      <Button size="sm" onClick={onNext} disabled={nextDisabled}>
+        {nextLabel}
+      </Button>
+    </div>
+  );
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto p-0 bg-card border-border">
-        <DialogHeader className="p-6 pb-0">
-          <DialogTitle className="flex items-center gap-2 text-lg font-bold text-foreground">
+      <DialogContent className="sm:max-w-[620px] max-h-[85vh] overflow-y-auto p-0 bg-card border-border">
+        {/* Header */}
+        <div className="px-6 pt-6 pb-4">
+          <DialogTitle className="flex items-center gap-2.5 text-base font-bold text-foreground">
             <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center">
               <Plus className="w-4 h-4 text-primary-foreground" />
             </div>
             Create alert
           </DialogTitle>
-        </DialogHeader>
 
-        {/* Step Indicators */}
-        <div className="flex items-center justify-center gap-4 px-6 pt-4 pb-2">
-          {([
-            { num: 1, label: 'Searches' },
-            { num: 2, label: 'Alert Types' },
-            { num: 3, label: 'Details' },
-            { num: 4, label: 'Preview' },
-          ] as const).map(({ num, label }) => (
-            <button
-              key={num}
-              onClick={() => step > num && setStep(num as 1 | 2 | 3 | 4)}
-              disabled={step < num}
-              className={`flex items-center gap-2 text-sm font-medium pb-2 border-b-2 transition-colors ${
-                step === num ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
-              } ${step > num ? 'hover:text-foreground cursor-pointer' : step < num ? 'cursor-default' : ''}`}
-            >
-              {step > num ? (
-                <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                  <Check className="w-3 h-3 text-primary-foreground" />
-                </div>
-              ) : (
-                <div className={`w-5 h-5 rounded-full text-xs flex items-center justify-center font-semibold ${
-                  step === num ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                }`}>{num}</div>
-              )}
-              {label}
-            </button>
-          ))}
+          {/* Step Indicators */}
+          <div className="flex items-center gap-6 mt-5">
+            {([
+              { num: 1, label: 'Searches' },
+              { num: 2, label: 'Alert Types' },
+              { num: 3, label: 'Details' },
+              { num: 4, label: 'Preview' },
+            ] as const).map(({ num, label }) => (
+              <button
+                key={num}
+                onClick={() => step > num && setStep(num as 1 | 2 | 3 | 4)}
+                disabled={step < num}
+                className={`flex items-center gap-1.5 text-[13px] font-medium transition-colors ${
+                  step === num ? 'text-primary' : step > num ? 'text-foreground/70 hover:text-foreground cursor-pointer' : 'text-foreground/30 cursor-default'
+                }`}
+              >
+                {step > num ? (
+                  <div className="w-[18px] h-[18px] rounded-full bg-primary flex items-center justify-center">
+                    <Check className="w-3 h-3 text-primary-foreground" />
+                  </div>
+                ) : (
+                  <div className={`w-[18px] h-[18px] rounded-full text-[10px] flex items-center justify-center font-bold ${
+                    step === num ? 'bg-primary text-primary-foreground' : 'bg-foreground/10 text-foreground/40'
+                  }`}>{num}</div>
+                )}
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Step 1: Search Selection */}
         {step === 1 && (
-          <div className="px-6 pb-6 bg-card">
-            <p className="text-sm text-muted-foreground py-4">Select the searches to attach to your alert.</p>
+          <div className="px-6 pb-6 space-y-5">
+            <p className="text-sm text-foreground/50">Select the searches to attach to your alert.</p>
 
             {/* Search type */}
-            <div className="py-4 space-y-2">
-              <div className="flex items-center gap-2">
-                <Label className="text-sm font-bold text-foreground">Search type</Label>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>Choose how searches are applied to this alert</TooltipContent>
-                </Tooltip>
-              </div>
-              <div className="flex gap-2">
+            <div className="space-y-2">
+              <SectionLabel tooltip="Choose how searches are applied to this alert">Search type</SectionLabel>
+              <div className="flex gap-1.5">
                 {(['optimized', 'standard'] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setSearchType(t)}
-                    className={`px-3 py-1.5 text-sm rounded-md border transition-colors ${
+                    className={`px-3 py-1.5 text-[13px] rounded-md border font-medium transition-colors ${
                       searchType === t
                         ? 'bg-primary text-primary-foreground border-primary'
-                        : 'bg-background text-foreground border-border hover:bg-muted'
+                        : 'bg-card text-foreground border-border hover:bg-muted'
                     }`}
                   >
                     {t === 'optimized' ? 'Optimized searches' : 'Standard searches'}
@@ -265,40 +294,40 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Searches */}
-            <div className="py-4 space-y-3">
-              <div>
-                <Label className="text-sm font-bold text-foreground">Searches</Label>
-                <p className="text-xs text-muted-foreground mt-0.5">Select searches to attach to this alert</p>
-              </div>
+            <div className="space-y-2.5">
               <div className="flex items-center justify-between">
-                <p className="text-xs text-muted-foreground">{selectedSearches.length}/10</p>
+                <div>
+                  <SectionLabel>Searches</SectionLabel>
+                  <p className="text-xs text-foreground/40 mt-0.5">Select searches to attach to this alert</p>
+                </div>
                 <button
-                  className="text-sm text-primary hover:underline flex items-center gap-1"
+                  className="text-[13px] text-primary hover:underline flex items-center gap-1 font-medium"
                   onClick={() => {}}
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Add search
                 </button>
               </div>
+              <p className="text-xs text-foreground/40">{selectedSearches.length}/10</p>
               {selectedSearches.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                   {selectedSearches.map((s) => (
-                    <Badge key={s} variant="secondary" className="gap-1 text-xs">
+                    <Badge key={s} variant="secondary" className="gap-1 text-xs font-medium">
                       {s}
-                      <X className="w-3 h-3 cursor-pointer" onClick={() => toggleSearch(s)} />
+                      <X className="w-3 h-3 cursor-pointer opacity-60 hover:opacity-100" onClick={() => toggleSearch(s)} />
                     </Badge>
                   ))}
                 </div>
               )}
-              <div className="space-y-0.5">
+              <div className="space-y-px rounded-lg overflow-hidden">
                 {mockSearches.map((s) => {
                   const isSelected = selectedSearches.includes(s);
                   return (
                     <button
                       key={s}
                       onClick={() => toggleSearch(s)}
-                      className={`w-full text-left text-sm px-3 py-2 rounded-md flex items-center gap-2.5 transition-colors ${
-                        isSelected ? 'bg-primary/5 text-primary' : 'hover:bg-muted text-foreground'
+                      className={`w-full text-left text-[13px] px-3 py-2.5 flex items-center gap-3 transition-colors ${
+                        isSelected ? 'bg-primary/5 text-primary font-medium' : 'hover:bg-muted/60 text-foreground'
                       }`}
                     >
                       <Checkbox checked={isSelected} className="pointer-events-none" />
@@ -309,108 +338,79 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            <div className="flex justify-center pt-4">
-              <Button
-                onClick={handleNextFromStep1}
-                disabled={selectedSearches.length === 0}
-              >
-                Next
-              </Button>
-            </div>
+            <StepFooter onNext={handleNextFromStep1} nextDisabled={selectedSearches.length === 0} />
           </div>
         )}
 
         {/* Step 2: Alert Type Selection */}
         {step === 2 && (
-          <div className="px-6 pb-6 bg-card">
-            <p className="text-sm text-muted-foreground py-4">Select one or more alert types to create.</p>
+          <div className="px-6 pb-6 space-y-5">
+            <p className="text-sm text-foreground/50">Select one or more alert types to create.</p>
 
-            <div className="py-4 space-y-4">
-              {/* Search-based alerts */}
-              <div className="space-y-2">
-                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Search alerts</h4>
+            <div className="space-y-5">
+              <div className="space-y-2.5">
+                <CategoryLabel>Search alerts</CategoryLabel>
                 <div className="grid grid-cols-2 gap-2">
-                  {searchAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
+                  {searchAlertTypes.map((type) => renderTypeCard(type))}
                 </div>
               </div>
 
-              {/* Event alerts */}
-              <div className="space-y-2 pt-2">
-                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Event alerts</h4>
+              <div className="space-y-2.5">
+                <CategoryLabel>Event alerts</CategoryLabel>
                 <div className="grid grid-cols-2 gap-2">
-                  {eventAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
+                  {eventAlertTypes.map((type) => renderTypeCard(type))}
                 </div>
               </div>
 
-              {/* Social alerts */}
-              <div className="space-y-2 pt-2">
-                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Social alerts</h4>
-                <div className="space-y-2">
-                  {socialAlertTypes.map((type) => renderTypeCard(type, 'list'))}
+              <div className="space-y-2.5">
+                <CategoryLabel>Social alerts</CategoryLabel>
+                <div className="grid grid-cols-2 gap-2">
+                  {socialAlertTypes.map((type) => renderTypeCard(type))}
                 </div>
               </div>
 
-              {/* RSS alerts */}
-              <div className="space-y-2 pt-2">
-                <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">RSS alerts</h4>
-                <div className="space-y-2">
-                  {rssAlertTypes.map((type) => renderTypeCard(type, 'list'))}
+              <div className="space-y-2.5">
+                <CategoryLabel>RSS alerts</CategoryLabel>
+                <div className="grid grid-cols-2 gap-2">
+                  {rssAlertTypes.map((type) => renderTypeCard(type))}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-3 pt-4">
-              <Button variant="ghost" onClick={() => setStep(1)}>
-                Back
-              </Button>
-              <Button
-                onClick={handleNextFromStep2}
-                disabled={selectedTypes.length === 0}
-              >
-                Next
-              </Button>
-            </div>
+            <StepFooter onBack={() => setStep(1)} onNext={handleNextFromStep2} nextDisabled={selectedTypes.length === 0} />
           </div>
         )}
 
         {/* Step 3: Details */}
         {step === 3 && selectedTypes.length > 0 && (
-          <div className="px-6 pb-6 bg-card">
-            <h3 className="text-base font-semibold text-foreground py-4">
+          <div className="px-6 pb-6 space-y-5">
+            <p className="text-sm text-foreground/50">
               Configure details for {selectedTypes.length === 1 ? alertTypeLabels[primaryType] : `${selectedTypes.length} alert types`}
-            </h3>
+            </p>
 
             {/* Relevance Boost */}
-            <div className="py-4 space-y-3 bg-primary/5 -mx-6 px-6 rounded-lg">
+            <div className="p-4 space-y-2.5 bg-primary/5 rounded-lg">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <Label className="text-sm font-bold text-foreground">Relevance Boost</Label>
-                <Badge variant="secondary" className="text-[10px] px-1.5 py-0">Beta</Badge>
+                <span className="text-sm font-semibold text-foreground">Relevance Boost</span>
+                <Badge variant="secondary" className="text-[10px] px-1.5 py-0 font-medium">Beta</Badge>
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-foreground/50">
                 Reduce noise by prioritizing mentions that match your intent.
               </p>
               <div className="flex items-center justify-between border border-border rounded-md px-3 py-2.5 bg-card">
-                <span className="text-sm text-foreground">Enable relevance filtering</span>
+                <span className="text-[13px] text-foreground">Enable relevance filtering</span>
                 <Switch checked={relevanceBoost} onCheckedChange={setRelevanceBoost} />
               </div>
             </div>
 
             {/* Settings */}
-            <div className="py-4 space-y-4">
-              <div className="flex items-center gap-2">
-                <Label className="text-sm font-bold text-foreground">Settings</Label>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>Configure alert behavior</TooltipContent>
-                </Tooltip>
-              </div>
-              <div className="space-y-1">
-                <span className="text-xs font-bold text-foreground/60 uppercase tracking-wider">Similar Mentions</span>
+            <div className="space-y-4">
+              <SectionLabel tooltip="Configure alert behavior">Settings</SectionLabel>
+              <div className="space-y-1.5">
+                <CategoryLabel>Similar Mentions</CategoryLabel>
                 <Select value={similarMentions} onValueChange={setSimilarMentions}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full text-[13px]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -420,45 +420,37 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
-                <span className="text-xs font-bold text-foreground/60 uppercase tracking-wider">Display</span>
+              <div className="space-y-1.5">
+                <CategoryLabel>Display</CategoryLabel>
                 <div className="flex items-center gap-2">
                   <Checkbox checked={showImages} onCheckedChange={(v) => setShowImages(!!v)} />
-                  <span className="text-sm text-foreground">Images</span>
+                  <span className="text-[13px] text-foreground">Images</span>
                 </div>
               </div>
             </div>
 
             {/* When to notify */}
-            <div className="py-4 space-y-3">
-              <div className="flex items-center gap-2">
-                <Label className="text-sm font-bold text-foreground">When to notify me</Label>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>Choose notification frequency</TooltipContent>
-                </Tooltip>
-              </div>
+            <div className="space-y-3">
+              <SectionLabel tooltip="Choose notification frequency">When to notify me</SectionLabel>
               <RadioGroup value={notifyMode} onValueChange={(v) => setNotifyMode(v as 'immediate' | 'daily')}>
-                <div className="flex items-start gap-3">
-                  <RadioGroupItem value="immediate" id="notify-immediate" className="mt-1" />
+                <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/40 transition-colors -mx-3">
+                  <RadioGroupItem value="immediate" id="notify-immediate" className="mt-0.5" />
                   <div>
-                    <Label htmlFor="notify-immediate" className="text-sm font-medium cursor-pointer">
+                    <Label htmlFor="notify-immediate" className="text-[13px] font-semibold cursor-pointer text-foreground">
                       Immediately (every mention)
                     </Label>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-foreground/40 mt-0.5">
                       You will receive notification for every single mention as they happen
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3">
-                  <RadioGroupItem value="daily" id="notify-daily" className="mt-1" />
+                <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/40 transition-colors -mx-3">
+                  <RadioGroupItem value="daily" id="notify-daily" className="mt-0.5" />
                   <div>
-                    <Label htmlFor="notify-daily" className="text-sm font-medium cursor-pointer">
+                    <Label htmlFor="notify-daily" className="text-[13px] font-semibold cursor-pointer text-foreground">
                       Daily threshold (last 24 hours)
                     </Label>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-foreground/40 mt-0.5">
                       Sends an alert as soon as mentions exceed your threshold (24-hour window is fixed)
                     </p>
                   </div>
@@ -467,34 +459,34 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Recipients */}
-            <div className="py-4 space-y-3">
+            <div className="space-y-2.5">
               <div>
-                <Label className="text-sm font-bold text-foreground">Recipients</Label>
-                <p className="text-xs text-muted-foreground mt-0.5">Send alerts to the following people</p>
+                <SectionLabel>Recipients</SectionLabel>
+                <p className="text-xs text-foreground/40 mt-0.5">Send alerts to the following people</p>
               </div>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/30" />
                 <Input
                   placeholder="Search by name or enter an email address"
                   value={recipientSearch}
                   onChange={(e) => setRecipientSearch(e.target.value)}
-                  className="pl-9"
+                  className="pl-9 text-[13px]"
                 />
               </div>
-              <p className="text-xs text-muted-foreground">{recipients.length}/10</p>
-              <div className="space-y-2">
+              <p className="text-xs text-foreground/40">{recipients.length}/10</p>
+              <div className="space-y-1.5">
                 {recipients.map((r) => (
-                  <div key={r.email} className="flex items-center justify-between px-3 py-2 rounded-md bg-muted border border-border/50">
+                  <div key={r.email} className="flex items-center justify-between px-3 py-2 rounded-lg bg-muted/50">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">
                         {r.name.split(' ').map(n => n[0]).join('')}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-foreground">{r.name}</p>
-                        <p className="text-xs text-muted-foreground">{r.email}</p>
+                        <p className="text-[13px] font-medium text-foreground">{r.name}</p>
+                        <p className="text-xs text-foreground/40">{r.email}</p>
                       </div>
                     </div>
-                    <button onClick={() => removeRecipient(r.email)} className="text-muted-foreground hover:text-foreground">
+                    <button onClick={() => removeRecipient(r.email)} className="text-foreground/30 hover:text-foreground">
                       <X className="w-4 h-4" />
                     </button>
                   </div>
@@ -503,74 +495,54 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Delivery Method */}
-            <div className="py-4 space-y-3">
-              <div className="flex items-center gap-2">
-                <Label className="text-sm font-bold text-foreground">Delivery method</Label>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>How you receive alerts</TooltipContent>
-                </Tooltip>
-              </div>
-              <p className="text-xs text-muted-foreground">How would you like to receive alerts?</p>
-              <div className="space-y-1">
-                <span className="text-xs font-bold text-foreground/60 uppercase tracking-wider">Standard</span>
+            <div className="space-y-2.5">
+              <SectionLabel tooltip="How you receive alerts">Delivery method</SectionLabel>
+              <p className="text-xs text-foreground/40">How would you like to receive alerts?</p>
+              <div className="space-y-1.5">
+                <CategoryLabel>Standard</CategoryLabel>
                 <div className="flex items-center gap-2">
                   <Checkbox checked={deliveryEmail} onCheckedChange={(v) => setDeliveryEmail(!!v)} />
-                  <span className="text-sm text-foreground">Email</span>
+                  <span className="text-[13px] text-foreground">Email</span>
                 </div>
               </div>
             </div>
 
-            {/* Footer */}
-            <div className="flex items-center justify-center gap-3 pt-4">
-              <Button variant="ghost" onClick={() => setStep(2)}>
-                Back
-              </Button>
-              <Button onClick={handleNextFromDetails}>
-                Next
-              </Button>
-            </div>
+            <StepFooter onBack={() => setStep(2)} onNext={handleNextFromDetails} />
           </div>
         )}
 
         {/* Step 4: Preview */}
         {step === 4 && selectedTypes.length > 0 && (
-          <div className="px-6 pb-6 bg-card">
+          <div className="px-6 pb-6 space-y-5">
             {/* Estimated Alert Volume */}
-            <div className={`py-4 space-y-2 ${
-              isHighVolume ? 'bg-destructive/5 -mx-6 px-6' : ''
-            }`}>
+            <div className={`space-y-2 ${isHighVolume ? 'p-4 bg-destructive/5 rounded-lg' : ''}`}>
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-muted-foreground" />
-                <Label className="text-sm font-bold text-foreground">Estimated alert volume</Label>
+                <Mail className="w-4 h-4 text-foreground/40" />
+                <span className="text-sm font-semibold text-foreground">Estimated alert volume</span>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-baseline gap-2">
                 <span className="text-2xl font-bold text-foreground">~{estimatedAlerts.toLocaleString()}</span>
-                <span className="text-sm text-muted-foreground">
-                  {notifyMode === 'immediate' ? 'emails per day' : 'emails per day'}
-                </span>
+                <span className="text-sm text-foreground/50">emails per day</span>
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-foreground/40">
                 Based on {selectedSearches.length || 1} search{(selectedSearches.length || 1) > 1 ? 'es' : ''} × {recipients.length} recipient{recipients.length > 1 ? 's' : ''} × {selectedTypes.length} type{selectedTypes.length > 1 ? 's' : ''} × {notifyMode === 'immediate' ? 'every mention' : 'daily digest'}
               </p>
 
               {isHighVolume && (
-                <div className="flex items-start gap-2 mt-2 p-3 rounded-md bg-destructive/10 border border-destructive/20">
+                <div className="flex items-start gap-2 mt-1 p-3 rounded-md bg-destructive/10 border border-destructive/20">
                   <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
                   <div className="space-y-1">
-                    <p className="text-sm font-medium text-destructive">High alert volume detected</p>
-                    <p className="text-xs text-destructive/80">
+                    <p className="text-[13px] font-semibold text-destructive">High alert volume detected</p>
+                    <p className="text-xs text-destructive/70">
                       This configuration will generate a large number of emails. Consider these changes:
                     </p>
-                    <ul className="text-xs text-destructive/80 list-disc pl-4 space-y-0.5">
-                      <li>Switch to <button className="underline font-medium" onClick={() => { setNotifyMode('daily'); setStep(2); }}>Daily threshold</button> instead of immediate notifications</li>
+                    <ul className="text-xs text-destructive/70 list-disc pl-4 space-y-0.5">
+                      <li>Switch to <button className="underline font-medium" onClick={() => { setNotifyMode('daily'); setStep(3); }}>Daily threshold</button> instead of immediate notifications</li>
                       {selectedSearches.length > 2 && (
                         <li>Reduce the number of attached searches (currently {selectedSearches.length})</li>
                       )}
                       {!relevanceBoost && (
-                        <li>Enable <button className="underline font-medium" onClick={() => { setRelevanceBoost(true); setStep(2); }}>Relevance Boost</button> to filter noise</li>
+                        <li>Enable <button className="underline font-medium" onClick={() => { setRelevanceBoost(true); setStep(3); }}>Relevance Boost</button> to filter noise</li>
                       )}
                       <li>Use a more specific alert type like Spike Detection or Top Reach</li>
                     </ul>
@@ -581,15 +553,13 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
             {/* Selected Types Summary */}
             {selectedTypes.length > 1 && (
-              <div className="py-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Label className="text-sm font-bold text-foreground">Alert types being created</Label>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
+              <div>
+                <span className="text-sm font-semibold text-foreground">Alert types being created</span>
+                <div className="flex flex-wrap gap-1.5 mt-2">
                   {selectedTypes.map(type => {
                     const Icon = getAlertIcon(type);
                     return (
-                      <Badge key={type} variant="secondary" className="gap-1.5 text-xs py-1">
+                      <Badge key={type} variant="secondary" className="gap-1.5 text-xs py-1 font-medium">
                         <Icon className="w-3 h-3" />
                         {alertTypeLabels[type]}
                       </Badge>
@@ -600,28 +570,28 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             )}
 
             {/* Email Preview */}
-            <div className="py-4 overflow-hidden">
+            <div>
               <div className="flex items-center gap-2 mb-3">
-                <Eye className="w-4 h-4 text-foreground/60" />
-                <span className="text-sm font-bold text-foreground">Email preview</span>
+                <Eye className="w-4 h-4 text-foreground/40" />
+                <span className="text-sm font-semibold text-foreground">Email preview</span>
               </div>
               
-              <div className="p-4 bg-muted rounded-lg">
+              <div className="p-4 bg-muted/50 rounded-lg">
                 <div className="max-w-md mx-auto bg-card rounded-lg border border-border shadow-sm overflow-hidden">
-                  <div className="px-5 py-4 bg-muted/50 border-b border-border">
+                  <div className="px-5 py-4 bg-muted/30">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                         {(() => { const Icon = getAlertIcon(primaryType); return <Icon className="w-5 h-5 text-primary" />; })()}
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-foreground">{alertTypeLabels[primaryType]} Alert</p>
-                        <p className="text-xs text-muted-foreground">{selectedSearches[0] || 'Your Search'}</p>
+                        <p className="text-xs text-foreground/50">{selectedSearches[0] || 'Your Search'}</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="px-5 py-3 border-b border-border">
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Why you received this</p>
+                  <div className="px-5 py-3">
+                    <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-wider mb-1">Why you received this</p>
                     <p className="text-xs text-foreground">
                       This article matched your search: <span className="font-semibold">"{selectedSearches[0] || 'Brand Monitoring'}"</span>
                     </p>
@@ -637,17 +607,17 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                         <div className="w-6 h-6 rounded bg-destructive/10 text-destructive text-[10px] font-bold flex items-center justify-center">Y!</div>
                         <div>
                           <p className="text-xs font-medium text-foreground">News Source · Wire Service</p>
-                          <p className="text-[10px] text-muted-foreground">News | US | Feb 10, 2:36 PM</p>
+                          <p className="text-[10px] text-foreground/40">News | US | Feb 10, 2:36 PM</p>
                         </div>
                       </div>
-                      <button className="text-xs text-primary flex items-center gap-0.5 shrink-0">
+                      <button className="text-xs text-primary flex items-center gap-0.5 shrink-0 font-medium">
                         View article <ExternalLink className="w-3 h-3" />
                       </button>
                     </div>
                     <h4 className="text-sm font-semibold text-foreground leading-snug mb-2">
                       Sample Article Title: Breaking News Coverage Related to Your Brand Monitoring Search
                     </h4>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
+                    <p className="text-xs text-foreground/50 leading-relaxed">
                       The article discusses developments related to your search query, demonstrating how mentions appear in your alert emails...
                     </p>
 
@@ -658,22 +628,22 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-accent"></span>
-                        <span className="text-xs text-muted-foreground">Neutral Sentiment</span>
+                        <span className="text-xs text-foreground/50">Neutral Sentiment</span>
                       </div>
                       <div className="flex gap-2 ml-auto">
-                        <span className="text-xs text-primary cursor-pointer">Tag</span>
-                        <span className="text-xs text-primary cursor-pointer">Share</span>
+                        <span className="text-xs text-primary cursor-pointer font-medium">Tag</span>
+                        <span className="text-xs text-primary cursor-pointer font-medium">Share</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="mx-5 mb-4 p-3 rounded-lg bg-muted border border-border text-center">
+                  <div className="mx-5 mb-4 p-3 rounded-lg bg-muted/50 text-center">
                     <p className="text-xs font-medium text-foreground mb-2">Was this alert helpful?</p>
                     <div className="flex items-center justify-center gap-3">
-                      <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-background text-xs text-foreground">
+                      <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-card text-xs text-foreground font-medium">
                         <ThumbsUp className="w-3 h-3" /> Yes
                       </button>
-                      <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-background text-xs text-foreground">
+                      <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border bg-card text-xs text-foreground font-medium">
                         <ThumbsDown className="w-3 h-3" /> No
                       </button>
                     </div>
@@ -691,15 +661,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            {/* Footer */}
-            <div className="flex items-center justify-center gap-3 pt-4">
-              <Button variant="ghost" onClick={() => setStep(3)}>
-                Back
-              </Button>
-              <Button onClick={handleSave}>
-                Save
-              </Button>
-            </div>
+            <StepFooter onBack={() => setStep(3)} onNext={handleSave} nextLabel="Save" />
           </div>
         )}
       </DialogContent>
