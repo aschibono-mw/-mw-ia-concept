@@ -164,6 +164,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
   const [similarMentions, setSimilarMentions] = useState('exclude');
   const [showImages, setShowImages] = useState(true);
   const [urgencyLevel, setUrgencyLevel] = useState([50]);
+  const [relevanceTopics, setRelevanceTopics] = useState<string[]>([]);
+  const [relevancePrompt, setRelevancePrompt] = useState('');
+  const [strictness, setStrictness] = useState([65]);
+  const [alwaysIncludeHighImpact, setAlwaysIncludeHighImpact] = useState(true);
   const [deliveryChannels, setDeliveryChannels] = useState({
     email: true, inApp: true, slack: false, teams: false, webhook: false,
   });
