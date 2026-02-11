@@ -202,7 +202,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         </DialogHeader>
 
         {/* Step Indicators */}
-        <div className="flex items-center justify-center gap-4 px-6 pt-4 pb-2 border-b border-border">
+        <div className="flex items-center justify-center gap-4 px-6 pt-4 pb-2">
           {([
             { num: 1, label: 'Searches' },
             { num: 2, label: 'Alert Types' },
@@ -234,10 +234,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         {/* Step 1: Search Selection */}
         {step === 1 && (
           <div className="px-6 pb-6 bg-card">
-            <p className="text-sm text-muted-foreground py-4 border-b border-border">Select the searches to attach to your alert.</p>
+            <p className="text-sm text-muted-foreground py-4">Select the searches to attach to your alert.</p>
 
             {/* Search type */}
-            <div className="py-4 border-b border-border space-y-2">
+            <div className="py-4 space-y-2">
               <div className="flex items-center gap-2">
                 <Label className="text-sm font-bold text-foreground">Search type</Label>
                 <Tooltip>
@@ -309,7 +309,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            <div className="flex justify-center pt-4 border-t border-border">
+            <div className="flex justify-center pt-4">
               <Button
                 onClick={handleNextFromStep1}
                 disabled={selectedSearches.length === 0}
@@ -323,7 +323,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         {/* Step 2: Alert Type Selection */}
         {step === 2 && (
           <div className="px-6 pb-6 bg-card">
-            <p className="text-sm text-muted-foreground py-4 border-b border-border">Select one or more alert types to create.</p>
+            <p className="text-sm text-muted-foreground py-4">Select one or more alert types to create.</p>
 
             <div className="py-4 space-y-4">
               {/* Search-based alerts */}
@@ -335,7 +335,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
 
               {/* Event alerts */}
-              <div className="space-y-2 pt-2 border-t border-border">
+              <div className="space-y-2 pt-2">
                 <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Event alerts</h4>
                 <div className="grid grid-cols-2 gap-2">
                   {eventAlertTypes.map((type) => renderTypeCard(type, 'grid'))}
@@ -343,7 +343,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
 
               {/* Social alerts */}
-              <div className="space-y-2 pt-2 border-t border-border">
+              <div className="space-y-2 pt-2">
                 <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Social alerts</h4>
                 <div className="space-y-2">
                   {socialAlertTypes.map((type) => renderTypeCard(type, 'list'))}
@@ -351,7 +351,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
 
               {/* RSS alerts */}
-              <div className="space-y-2 pt-2 border-t border-border">
+              <div className="space-y-2 pt-2">
                 <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">RSS alerts</h4>
                 <div className="space-y-2">
                   {rssAlertTypes.map((type) => renderTypeCard(type, 'list'))}
@@ -359,7 +359,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
+            <div className="flex items-center justify-center gap-3 pt-4">
               <Button variant="ghost" onClick={() => setStep(1)}>
                 Back
               </Button>
@@ -376,12 +376,12 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         {/* Step 3: Details */}
         {step === 3 && selectedTypes.length > 0 && (
           <div className="px-6 pb-6 bg-card">
-            <h3 className="text-base font-semibold text-foreground py-4 border-b border-border">
+            <h3 className="text-base font-semibold text-foreground py-4">
               Configure details for {selectedTypes.length === 1 ? alertTypeLabels[primaryType] : `${selectedTypes.length} alert types`}
             </h3>
 
             {/* Relevance Boost */}
-            <div className="py-4 border-b border-border space-y-3 bg-primary/5 -mx-6 px-6">
+            <div className="py-4 space-y-3 bg-primary/5 -mx-6 px-6 rounded-lg">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
                 <Label className="text-sm font-bold text-foreground">Relevance Boost</Label>
@@ -397,7 +397,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Settings */}
-            <div className="py-4 border-b border-border space-y-4">
+            <div className="py-4 space-y-4">
               <div className="flex items-center gap-2">
                 <Label className="text-sm font-bold text-foreground">Settings</Label>
                 <Tooltip>
@@ -430,7 +430,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* When to notify */}
-            <div className="py-4 border-b border-border space-y-3">
+            <div className="py-4 space-y-3">
               <div className="flex items-center gap-2">
                 <Label className="text-sm font-bold text-foreground">When to notify me</Label>
                 <Tooltip>
@@ -467,7 +467,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Recipients */}
-            <div className="py-4 border-b border-border space-y-3">
+            <div className="py-4 space-y-3">
               <div>
                 <Label className="text-sm font-bold text-foreground">Recipients</Label>
                 <p className="text-xs text-muted-foreground mt-0.5">Send alerts to the following people</p>
@@ -524,7 +524,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
+            <div className="flex items-center justify-center gap-3 pt-4">
               <Button variant="ghost" onClick={() => setStep(2)}>
                 Back
               </Button>
@@ -539,7 +539,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
         {step === 4 && selectedTypes.length > 0 && (
           <div className="px-6 pb-6 bg-card">
             {/* Estimated Alert Volume */}
-            <div className={`py-4 border-b border-border space-y-2 ${
+            <div className={`py-4 space-y-2 ${
               isHighVolume ? 'bg-destructive/5 -mx-6 px-6' : ''
             }`}>
               <div className="flex items-center gap-2">
@@ -581,7 +581,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
             {/* Selected Types Summary */}
             {selectedTypes.length > 1 && (
-              <div className="py-4 border-b border-border">
+              <div className="py-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Label className="text-sm font-bold text-foreground">Alert types being created</Label>
                 </div>
@@ -600,7 +600,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             )}
 
             {/* Email Preview */}
-            <div className="py-4 border-b border-border overflow-hidden">
+            <div className="py-4 overflow-hidden">
               <div className="flex items-center gap-2 mb-3">
                 <Eye className="w-4 h-4 text-foreground/60" />
                 <span className="text-sm font-bold text-foreground">Email preview</span>
@@ -692,7 +692,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-center gap-3 pt-4 border-t border-border">
+            <div className="flex items-center justify-center gap-3 pt-4">
               <Button variant="ghost" onClick={() => setStep(3)}>
                 Back
               </Button>
