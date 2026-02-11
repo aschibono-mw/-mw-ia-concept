@@ -31,7 +31,13 @@ import {
   ExternalLink,
   ThumbsUp,
   ThumbsDown,
+  Zap,
+  Bell,
+  Clock,
+  MessageSquare,
+  Webhook,
 } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
 import { AlertType, alertTypeLabels, alertTypeDescriptions } from './types';
 import { getAlertIcon } from './alertIcons';
 import {
@@ -156,7 +162,12 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
   const [relevanceBoost, setRelevanceBoost] = useState(false);
   const [similarMentions, setSimilarMentions] = useState('exclude');
   const [showImages, setShowImages] = useState(true);
-  const [notifyMode, setNotifyMode] = useState<'immediate' | 'daily'>('immediate');
+  const [urgencyLevel, setUrgencyLevel] = useState([50]);
+  const [deliveryChannels, setDeliveryChannels] = useState({
+    email: true, inApp: true, slack: false, teams: false, webhook: false,
+  });
+  const [frequency, setFrequency] = useState<'immediate' | 'hourly' | 'daily'>('immediate');
+  const [quietHours, setQuietHours] = useState(false);
   const [recipients, setRecipients] = useState<{ name: string; email: string }[]>([
     { name: 'Mariano Titanti', email: 'mariano.titanti@meltwater.com' },
   ]);
@@ -170,7 +181,10 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
     setRelevanceBoost(false);
     setSimilarMentions('exclude');
     setShowImages(true);
-    setNotifyMode('immediate');
+    setFrequency('immediate');
+    setUrgencyLevel([50]);
+    setDeliveryChannels({ email: true, inApp: true, slack: false, teams: false, webhook: false });
+    setQuietHours(false);
     setRecipients([{ name: 'Mariano Titanti', email: 'mariano.titanti@meltwater.com' }]);
     setRecipientSearch('');
     setDeliveryEmail(true);
@@ -202,7 +216,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
   const getEstimatedAlertCount = () => {
     const searchCount = selectedSearches.length || 1;
     const recipientCount = recipients.length || 1;
-    if (notifyMode === 'immediate') {
+    if (frequency === 'immediate') {
       const basePerDay = selectedTypes.includes('every_mention') ? 120 : selectedTypes.includes('spike_detection') ? 8 : 25;
       return basePerDay * searchCount * recipientCount * (selectedTypes.length || 1);
     }
@@ -210,7 +224,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
   };
 
   const estimatedAlerts = getEstimatedAlertCount();
-  const isHighVolume = notifyMode === 'immediate' && estimatedAlerts > 50;
+  const isHighVolume = frequency === 'immediate' && estimatedAlerts > 50;
 
   const renderTypeCard = (type: AlertType) => {
     const Icon = getAlertIcon(type);
@@ -341,120 +355,118 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
 
         {/* ── Step 3: Details ──────────────────────────────── */}
         {step === 3 && selectedTypes.length > 0 && (
-          <div className="px-6 pb-6 space-y-4">
-            {/* Relevance Boost */}
-            <Panel title="Relevance Boost" subtitle="Reduce noise by prioritizing mentions that match your intent">
-              <div className="px-5 py-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-primary" />
-                    <span className="text-sm text-foreground">Enable relevance filtering</span>
-                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0 font-medium">Beta</Badge>
-                  </div>
-                  <Switch checked={relevanceBoost} onCheckedChange={setRelevanceBoost} />
-                </div>
+          <div className="px-6 pb-6 space-y-5">
+            {/* Urgency level */}
+            <div className="rounded-xl border border-border bg-card p-6">
+              <div className="flex items-center gap-2 mb-5">
+                <Zap className="w-4 h-4 text-foreground" />
+                <h3 className="text-sm font-bold text-foreground">Urgency level</h3>
               </div>
-            </Panel>
-
-            {/* Settings */}
-            <Panel title="Settings" subtitle="Configure alert behavior">
-              <div className="px-5 py-4 space-y-4">
-                <div className="space-y-1.5">
-                  <CategoryLabel>Similar Mentions</CategoryLabel>
-                  <Select value={similarMentions} onValueChange={setSimilarMentions}>
-                    <SelectTrigger className="w-full text-sm">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="exclude">Exclude similar mentions</SelectItem>
-                      <SelectItem value="include">Include similar mentions</SelectItem>
-                      <SelectItem value="group">Group similar mentions</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-1.5">
-                  <CategoryLabel>Display</CategoryLabel>
-                  <div className="flex items-center gap-2">
-                    <Checkbox checked={showImages} onCheckedChange={(v) => setShowImages(!!v)} />
-                    <span className="text-sm text-foreground">Images</span>
-                  </div>
-                </div>
+              <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
+                <span>All coverage</span>
+                <span>Important only</span>
+                <span>Urgent spikes only</span>
               </div>
-            </Panel>
+              <Slider
+                value={urgencyLevel}
+                onValueChange={setUrgencyLevel}
+                max={100}
+                step={1}
+                className="mb-4"
+              />
+              <div className="rounded-lg bg-muted/60 px-4 py-3">
+                <p className="text-xs text-foreground">
+                  <span className="font-semibold">
+                    {urgencyLevel[0] < 33 ? 'All coverage' : urgencyLevel[0] < 66 ? 'Important only' : 'Urgent spikes only'}:
+                  </span>{' '}
+                  {urgencyLevel[0] < 33
+                    ? "You'll receive alerts for every mention across all sources."
+                    : urgencyLevel[0] < 66
+                    ? "We'll filter out low-relevance mentions using AI ranking"
+                    : "Only high-impact spikes and critical mentions will trigger alerts."}
+                </p>
+              </div>
+            </div>
 
-            {/* When to notify */}
-            <Panel title="When to notify me" subtitle="Choose notification frequency">
-              <div className="px-5 py-4">
-                <RadioGroup value={notifyMode} onValueChange={(v) => setNotifyMode(v as 'immediate' | 'daily')}>
-                  <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/40 transition-colors">
-                    <RadioGroupItem value="immediate" id="notify-immediate" className="mt-0.5" />
-                    <div>
-                      <Label htmlFor="notify-immediate" className="text-sm font-semibold cursor-pointer text-foreground">
-                        Immediately (every mention)
-                      </Label>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        Receive a notification for every single mention as they happen
-                      </p>
+            {/* Delivery channels */}
+            <div className="rounded-xl border border-border bg-card p-6">
+              <div className="flex items-center gap-2 mb-5">
+                <Mail className="w-4 h-4 text-foreground" />
+                <h3 className="text-sm font-bold text-foreground">Delivery channels</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {([
+                  { key: 'email' as const, label: 'Email', icon: Mail },
+                  { key: 'inApp' as const, label: 'In-app', icon: Bell },
+                  { key: 'slack' as const, label: 'Slack', icon: MessageSquare },
+                  { key: 'teams' as const, label: 'Teams', icon: MessageSquare },
+                ] as const).map(({ key, label, icon: Icon }) => {
+                  const enabled = deliveryChannels[key];
+                  return (
+                    <div
+                      key={key}
+                      className={`flex items-center justify-between px-4 py-3 rounded-lg border transition-colors ${
+                        enabled ? 'border-primary/30 bg-primary/5' : 'border-border'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Icon className={`w-4 h-4 ${enabled ? 'text-primary' : 'text-muted-foreground'}`} />
+                        <span className={`text-sm font-medium ${enabled ? 'text-primary' : 'text-foreground'}`}>{label}</span>
+                      </div>
+                      <Switch
+                        checked={enabled}
+                        onCheckedChange={(v) => setDeliveryChannels(prev => ({ ...prev, [key]: v }))}
+                      />
                     </div>
+                  );
+                })}
+                <div className="flex items-center justify-between px-4 py-3 rounded-lg border border-border col-span-2 sm:col-span-1">
+                  <div className="flex items-center gap-2.5">
+                    <Webhook className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-foreground">Webhook</span>
                   </div>
-                  <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/40 transition-colors">
-                    <RadioGroupItem value="daily" id="notify-daily" className="mt-0.5" />
-                    <div>
-                      <Label htmlFor="notify-daily" className="text-sm font-semibold cursor-pointer text-foreground">
-                        Daily threshold (last 24 hours)
-                      </Label>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        Sends an alert as soon as mentions exceed your threshold
-                      </p>
-                    </div>
-                  </div>
-                </RadioGroup>
-              </div>
-            </Panel>
-
-            {/* Recipients */}
-            <Panel title="Recipients" subtitle="Send alerts to the following people">
-              <div className="px-5 py-4 space-y-3">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search by name or enter an email address"
-                    value={recipientSearch}
-                    onChange={(e) => setRecipientSearch(e.target.value)}
-                    className="pl-9 text-sm"
+                  <Switch
+                    checked={deliveryChannels.webhook}
+                    onCheckedChange={(v) => setDeliveryChannels(prev => ({ ...prev, webhook: v }))}
                   />
                 </div>
-                <p className="text-xs text-muted-foreground">{recipients.length}/10</p>
-                <div className="space-y-1.5">
-                  {recipients.map((r) => (
-                    <div key={r.email} className="flex items-center justify-between px-3 py-2.5 rounded-lg bg-muted/50">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">
-                          {r.name.split(' ').map(n => n[0]).join('')}
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-foreground">{r.name}</p>
-                          <p className="text-xs text-muted-foreground">{r.email}</p>
-                        </div>
-                      </div>
-                      <button onClick={() => removeRecipient(r.email)} className="text-muted-foreground hover:text-foreground">
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
               </div>
-            </Panel>
+            </div>
 
-            {/* Delivery */}
-            <Panel title="Delivery method" subtitle="How you receive alerts">
-              <div className="px-5 py-4">
-                <div className="flex items-center gap-2">
-                  <Checkbox checked={deliveryEmail} onCheckedChange={(v) => setDeliveryEmail(!!v)} />
-                  <span className="text-sm text-foreground">Email</span>
+            {/* Timing */}
+            <div className="rounded-xl border border-border bg-card p-6">
+              <div className="flex items-center gap-2 mb-5">
+                <Clock className="w-4 h-4 text-foreground" />
+                <h3 className="text-sm font-bold text-foreground">Timing</h3>
+              </div>
+              <div className="space-y-5">
+                <div>
+                  <p className="text-sm font-semibold text-foreground mb-3">Frequency</p>
+                  <div className="flex gap-2">
+                    {(['immediate', 'hourly', 'daily'] as const).map((f) => (
+                      <button
+                        key={f}
+                        onClick={() => setFrequency(f)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+                          frequency === f
+                            ? 'border-primary bg-primary/10 text-primary'
+                            : 'border-border text-foreground hover:bg-muted/50'
+                        }`}
+                      >
+                        {f.charAt(0).toUpperCase() + f.slice(1)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">Quiet hours</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Pause alerts between 10pm – 7am</p>
+                  </div>
+                  <Switch checked={quietHours} onCheckedChange={setQuietHours} />
                 </div>
               </div>
-            </Panel>
+            </div>
 
             <StepFooter onBack={() => setStep(2)} onNext={() => setStep(4)} />
           </div>
@@ -476,7 +488,7 @@ export const CreateAlertDialog = ({ open, onOpenChange }: CreateAlertDialogProps
                     <div className="space-y-1">
                       <p className="text-sm font-semibold text-destructive">High alert volume detected</p>
                       <ul className="text-xs text-destructive/70 list-disc pl-4 space-y-0.5">
-                        <li>Switch to <button className="underline font-medium" onClick={() => { setNotifyMode('daily'); setStep(3); }}>Daily threshold</button></li>
+                        <li>Switch to <button className="underline font-medium" onClick={() => { setFrequency('daily'); setStep(3); }}>Daily threshold</button></li>
                         {!relevanceBoost && (
                           <li>Enable <button className="underline font-medium" onClick={() => { setRelevanceBoost(true); setStep(3); }}>Relevance Boost</button></li>
                         )}
