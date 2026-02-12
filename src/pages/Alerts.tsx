@@ -36,28 +36,20 @@ import { ManageNotificationsTab } from "@/components/alerts/ManageNotificationsT
 
 // Mock data for managed alerts (alert configurations)
 const managedAlerts = [
-  { id: "1", name: "Brand Crisis Monitor", subtitle: "Brand Coverage, Crisis Keywords", purpose: "Crisis", urgency: "Urgent", delivery: "Email, Slack", enabled: true, lastTriggered: "2 hours ago", type: "spike_detection" as AlertType },
-  { id: "2", name: "Competitor Launch Tracker", subtitle: "Competitor A, Product Launches", purpose: "Competitor", urgency: "Important", delivery: "Email", enabled: true, lastTriggered: "Yesterday", type: "sentiment_shift" as AlertType },
-  { id: "3", name: "Campaign Performance", subtitle: "Summer Campaign 2026", purpose: "Campaign", urgency: "All", delivery: "Slack", enabled: true, lastTriggered: "3 days ago", type: "company_events" as AlertType },
-  { id: "4", name: "CEO Mentions", subtitle: "CEO Name, Executive Team", purpose: "Executive", urgency: "Important", delivery: "Email, In-app", enabled: false, lastTriggered: "1 week ago", type: "top_reach" as AlertType },
-  { id: "5", name: "Industry News Daily", subtitle: "Industry Keywords", purpose: "Custom", urgency: "All", delivery: "Email", enabled: true, lastTriggered: "Today", type: "industry_events" as AlertType },
-  { id: "6", name: "Social Influencers", subtitle: "Influencer Mentions Tracker", purpose: "Executive", urgency: "Urgent", delivery: "Email, Slack", enabled: true, lastTriggered: "5 hours ago", type: "x_influencer" as AlertType },
-  { id: "7", name: "Product Launches", subtitle: "Competitor Product Launches", purpose: "Competitor", urgency: "All", delivery: "In-app", enabled: false, lastTriggered: "2 weeks ago", type: "company_events" as AlertType },
-  { id: "8", name: "Earnings Coverage", subtitle: "Earnings Call Mentions", purpose: "Campaign", urgency: "Important", delivery: "Email", enabled: true, lastTriggered: "Yesterday", type: "top_reach" as AlertType },
+  { id: "1", name: "Brand Crisis Monitor", subtitle: "Brand Coverage, Crisis Keywords", source: "Explore Search", urgency: "Urgent", delivery: "Email, Slack", enabled: true, lastTriggered: "2 hours ago", type: "spike_detection" as AlertType },
+  { id: "2", name: "Competitor Launch Tracker", subtitle: "Competitor A, Product Launches", source: "Explore Search", urgency: "Important", delivery: "Email", enabled: true, lastTriggered: "Yesterday", type: "sentiment_shift" as AlertType },
+  { id: "3", name: "Campaign Performance", subtitle: "Summer Campaign 2026", source: "Competitor & Industry", urgency: "All", delivery: "Slack", enabled: true, lastTriggered: "3 days ago", type: "company_events" as AlertType },
+  { id: "4", name: "CEO Mentions", subtitle: "CEO Name, Executive Team", source: "Explore Search", urgency: "Important", delivery: "Email, In-app", enabled: false, lastTriggered: "1 week ago", type: "top_reach" as AlertType },
+  { id: "5", name: "Industry News Daily", subtitle: "Industry Keywords", source: "Competitor & Industry", urgency: "All", delivery: "Email", enabled: true, lastTriggered: "Today", type: "industry_events" as AlertType },
+  { id: "6", name: "Social Influencers", subtitle: "Influencer Mentions Tracker", source: "Social", urgency: "Urgent", delivery: "Email, Slack", enabled: true, lastTriggered: "5 hours ago", type: "x_influencer" as AlertType },
+  { id: "7", name: "Product Launches", subtitle: "Competitor Product Launches", source: "Competitor & Industry", urgency: "All", delivery: "In-app", enabled: false, lastTriggered: "2 weeks ago", type: "company_events" as AlertType },
+  { id: "8", name: "Earnings Coverage", subtitle: "Earnings Call Mentions", source: "Explore Search", urgency: "Important", delivery: "Email", enabled: true, lastTriggered: "Yesterday", type: "top_reach" as AlertType },
 ];
 
-const purposeColors: Record<string, string> = {
-  Crisis: "bg-red-100 text-red-700",
-  Competitor: "bg-blue-100 text-blue-700",
-  Campaign: "bg-green-100 text-green-700",
-  Executive: "bg-teal-100 text-teal-700",
-  Custom: "bg-gray-100 text-gray-600",
-};
-
-const urgencyColors: Record<string, string> = {
-  Urgent: "bg-orange-100 text-orange-700",
-  Important: "bg-yellow-100 text-yellow-700",
-  All: "bg-gray-100 text-gray-500",
+const sourceColors: Record<string, string> = {
+  "Explore Search": "bg-emerald-100 text-emerald-700",
+  "Competitor & Industry": "bg-orange-100 text-orange-700",
+  "Social": "bg-red-100 text-red-700",
 };
 
 const viewCategories = [
@@ -70,11 +62,9 @@ const viewCategories = [
 ];
 
 const alertFolders = [
-  { name: "Crisis", count: 1 },
-  { name: "Competitor", count: 2 },
-  { name: "Campaign", count: 2 },
-  { name: "Executive", count: 2 },
-  { name: "Custom", count: 1 },
+  { name: "Explore Search", count: 4 },
+  { name: "Competitor & Industry", count: 3 },
+  { name: "Social", count: 1 },
 ];
 
 const Alerts = () => {
@@ -294,8 +284,7 @@ const Alerts = () => {
                       <thead>
                         <tr className="border-b border-border text-left">
                           <th className="p-4 text-sm font-bold text-foreground">Name</th>
-                          <th className="p-4 text-sm font-bold text-foreground">Purpose</th>
-                          <th className="p-4 text-sm font-bold text-foreground">Urgency</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Source</th>
                           <th className="p-4 text-sm font-bold text-foreground">Delivery</th>
                           <th className="p-4 text-sm font-bold text-foreground">Status</th>
                           <th className="p-4 text-sm font-bold text-foreground">Last Triggered</th>
@@ -320,13 +309,8 @@ const Alerts = () => {
                               </div>
                             </td>
                             <td className="px-4 py-3.5">
-                              <span className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${purposeColors[alert.purpose] || "bg-muted text-muted-foreground"}`}>
-                                {alert.purpose}
-                              </span>
-                            </td>
-                            <td className="px-4 py-3.5">
-                              <span className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${urgencyColors[alert.urgency] || "bg-muted text-muted-foreground"}`}>
-                                {alert.urgency}
+                              <span className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${sourceColors[alert.source] || "bg-muted text-muted-foreground"}`}>
+                                {alert.source}
                               </span>
                             </td>
                             <td className="px-4 py-3.5">
