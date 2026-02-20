@@ -248,9 +248,8 @@ const Alerts = () => {
 
               {/* Manage Alerts Tab */}
               <TabsContent value="manage" className="mt-0">
-                <div className="flex gap-6 flex-row-reverse">
-                  {/* Main Table */}
-                  <div className="flex-1 bg-card rounded-lg border border-border">
+                <div>
+                  <div className="bg-card rounded-lg border border-border">
                     {/* Header with sort/owner controls */}
                     <div className="flex items-center justify-between px-4 py-3 border-b border-border">
                       <span className="text-base font-semibold text-foreground">{selectedView} <span className="text-foreground font-normal">({managedAlerts.filter(a => {
@@ -350,10 +349,6 @@ const Alerts = () => {
                     </div>
                   </div>
 
-                  {/* Categories Panel */}
-                  <div className="w-56 space-y-4 sticky top-20">
-                    <CategoriesPanel categories={alertFolders} onAddCategory={() => {}} />
-                  </div>
                 </div>
               </TabsContent>
 
