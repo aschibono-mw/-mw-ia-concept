@@ -10,6 +10,7 @@ import Monitor from "./pages/Monitor.tsx";
 import Distribute from "./pages/Distribute.tsx";
 import Outreach from "./pages/Outreach.tsx";
 import Alerts from "./pages/Alerts.tsx";
+import Reports from "./pages/Reports.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/newsletters" element={<Distribute />} />
           <Route path="/outreach" element={<Outreach />} />
           <Route path="/alerts" element={<Alerts />} />
+          <Route path="/reports" element={<Reports />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -304,8 +304,8 @@ const Reports = () => {
       </main>
 
       <ShareDialog
-        isOpen={isShareOpen}
-        onClose={() => setIsShareOpen(false)}
+        open={isShareOpen}
+        onOpenChange={setIsShareOpen}
         itemName={shareItemName}
         itemType="report"
       />
