@@ -307,7 +307,6 @@ const Reports = () => {
         open={isShareOpen}
         onOpenChange={setIsShareOpen}
         itemName={shareItemName}
-        itemType="report"
       />
     </div>
   );
