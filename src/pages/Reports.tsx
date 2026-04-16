@@ -30,6 +30,7 @@ interface ReportItem {
   id: number;
   name: string;
   type: string;
+  generatedFrom: string;
   generatedBy: string;
   generatedAt: string;
   status: "completed" | "scheduled" | "failed";
@@ -37,18 +38,18 @@ interface ReportItem {
 }
 
 const mockReports: ReportItem[] = [
-  { id: 1, name: "Weekly Brand Health Summary", type: "Dashboard Export", generatedBy: "Rachel Wu", generatedAt: "Apr 13, 2026 · 9:04 AM", status: "completed", format: "PDF" },
-  { id: 2, name: "Competitor Benchmark Q1", type: "Scheduled Report", generatedBy: "Tom Nguyen", generatedAt: "Apr 12, 2026 · 6:00 AM", status: "completed", format: "PDF" },
-  { id: 3, name: "Executive Visibility – March", type: "Dashboard Export", generatedBy: "Sophia Patel", generatedAt: "Apr 10, 2026 · 3:15 PM", status: "completed", format: "PPTX" },
-  { id: 4, name: "Crisis Monitor Snapshot", type: "One-time Export", generatedBy: "Rachel Wu", generatedAt: "Apr 9, 2026 · 11:30 AM", status: "completed", format: "PDF" },
-  { id: 5, name: "Daily Media Brief – Apr 8", type: "Scheduled Report", generatedBy: "System", generatedAt: "Apr 8, 2026 · 7:00 AM", status: "completed", format: "Email" },
-  { id: 6, name: "Audience Insights Deep Dive", type: "Dashboard Export", generatedBy: "David Kim", generatedAt: "Apr 7, 2026 · 2:45 PM", status: "completed", format: "PDF" },
-  { id: 7, name: "Sentiment Tracker – Weekly", type: "Scheduled Report", generatedBy: "System", generatedAt: "Apr 7, 2026 · 6:00 AM", status: "completed", format: "CSV" },
-  { id: 8, name: "Campaign Performance Recap", type: "One-time Export", generatedBy: "Alex Morgan", generatedAt: "Apr 5, 2026 · 4:20 PM", status: "completed", format: "PPTX" },
-  { id: 9, name: "Global Coverage Report", type: "Scheduled Report", generatedBy: "System", generatedAt: "Apr 5, 2026 · 6:00 AM", status: "failed", format: "PDF" },
-  { id: 10, name: "Influencer Watch – Monthly", type: "Dashboard Export", generatedBy: "Sophia Patel", generatedAt: "Apr 1, 2026 · 10:00 AM", status: "completed", format: "PDF" },
-  { id: 11, name: "Risk Monitor Summary", type: "Scheduled Report", generatedBy: "System", generatedAt: "Mar 31, 2026 · 6:00 AM", status: "completed", format: "PDF" },
-  { id: 12, name: "Investor Sentiment Brief", type: "One-time Export", generatedBy: "David Kim", generatedAt: "Mar 28, 2026 · 1:10 PM", status: "completed", format: "PDF" },
+  { id: 1, name: "Weekly Brand Health Summary", type: "Dashboard Export", generatedFrom: "Analyze", generatedBy: "Rachel Wu", generatedAt: "Apr 13, 2026 · 9:04 AM", status: "completed", format: "PDF" },
+  { id: 2, name: "Competitor Benchmark Q1", type: "Scheduled Report", generatedFrom: "Monitor", generatedBy: "Tom Nguyen", generatedAt: "Apr 12, 2026 · 6:00 AM", status: "completed", format: "PDF" },
+  { id: 3, name: "Executive Visibility – March", type: "Dashboard Export", generatedFrom: "Analyze", generatedBy: "Sophia Patel", generatedAt: "Apr 10, 2026 · 3:15 PM", status: "completed", format: "PPTX" },
+  { id: 4, name: "Crisis Monitor Snapshot", type: "One-time Export", generatedFrom: "Monitor", generatedBy: "Rachel Wu", generatedAt: "Apr 9, 2026 · 11:30 AM", status: "completed", format: "PDF" },
+  { id: 5, name: "Daily Media Brief – Apr 8", type: "Scheduled Report", generatedFrom: "GenAI Lens", generatedBy: "System", generatedAt: "Apr 8, 2026 · 7:00 AM", status: "completed", format: "Email" },
+  { id: 6, name: "Audience Insights Deep Dive", type: "Dashboard Export", generatedFrom: "Explore", generatedBy: "David Kim", generatedAt: "Apr 7, 2026 · 2:45 PM", status: "completed", format: "PDF" },
+  { id: 7, name: "Sentiment Tracker – Weekly", type: "Scheduled Report", generatedFrom: "Monitor", generatedBy: "System", generatedAt: "Apr 7, 2026 · 6:00 AM", status: "completed", format: "CSV" },
+  { id: 8, name: "Campaign Performance Recap", type: "One-time Export", generatedFrom: "Analyze", generatedBy: "Alex Morgan", generatedAt: "Apr 5, 2026 · 4:20 PM", status: "completed", format: "PPTX" },
+  { id: 9, name: "Global Coverage Report", type: "Scheduled Report", generatedFrom: "Explore", generatedBy: "System", generatedAt: "Apr 5, 2026 · 6:00 AM", status: "failed", format: "PDF" },
+  { id: 10, name: "Influencer Watch – Monthly", type: "Dashboard Export", generatedFrom: "GenAI Lens", generatedBy: "Sophia Patel", generatedAt: "Apr 1, 2026 · 10:00 AM", status: "completed", format: "PDF" },
+  { id: 11, name: "Risk Monitor Summary", type: "Scheduled Report", generatedFrom: "Monitor", generatedBy: "System", generatedAt: "Mar 31, 2026 · 6:00 AM", status: "completed", format: "PDF" },
+  { id: 12, name: "Investor Sentiment Brief", type: "One-time Export", generatedFrom: "Analyze", generatedBy: "David Kim", generatedAt: "Mar 28, 2026 · 1:10 PM", status: "completed", format: "PDF" },
 ];
 
 const statusColors: Record<string, string> = {
@@ -185,7 +186,7 @@ const Reports = () => {
               </div>
 
               {/* Table Header */}
-              <div className="grid grid-cols-[40px_1fr_140px_150px_90px_80px_50px] items-center px-4 py-2.5 border-b border-border bg-muted/30 text-xs font-medium text-muted-foreground uppercase tracking-wide">
+              <div className="grid grid-cols-[40px_1fr_140px_120px_150px_90px_80px_50px] items-center px-4 py-2.5 border-b border-border bg-muted/30 text-xs font-medium text-muted-foreground uppercase tracking-wide">
                 <div>
                   <Checkbox
                     checked={
@@ -197,6 +198,7 @@ const Reports = () => {
                 </div>
                 <div>Report Name</div>
                 <div>Type</div>
+                <div>Generated From</div>
                 <div>Generated By</div>
                 <div>Format</div>
                 <div>Status</div>
@@ -207,7 +209,7 @@ const Reports = () => {
               {filteredReports.map((report) => (
                 <div
                   key={report.id}
-                  className="grid grid-cols-[40px_1fr_140px_150px_90px_80px_50px] items-center px-4 py-3 border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors group"
+                  className="grid grid-cols-[40px_1fr_140px_120px_150px_90px_80px_50px] items-center px-4 py-3 border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors group"
                 >
                   <div>
                     <Checkbox
@@ -228,6 +230,9 @@ const Reports = () => {
                   </div>
                   <div>
                     <span className="text-xs text-muted-foreground">{report.type}</span>
+                  </div>
+                  <div>
+                    <span className="text-xs text-muted-foreground">{report.generatedFrom}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
