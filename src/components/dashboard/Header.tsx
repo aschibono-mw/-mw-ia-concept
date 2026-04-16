@@ -277,6 +277,10 @@ export const Header = () => {
                 <UserCircle className="w-4 h-4 mr-2" />
                 Profile
               </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/reports")}>
+                <FileStack className="w-4 h-4 mr-2" />
+                Reports
+              </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
                 <FileText className="w-4 h-4 mr-2" />
                 Saved Documents
