@@ -17,7 +17,7 @@ const navItems: NavItem[] = [
   { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze", path: "/analyze", id: "analyze" },
   { icon: <Mail className="w-5 h-5" />, label: "Newsletters", path: "/newsletters", id: "newsletters" },
   { icon: <Users className="w-5 h-5" />, label: "Outreach", path: "/outreach", id: "outreach" },
-  { icon: <FileText className="w-5 h-5" />, label: "Reports", path: "/reports", id: "reports" },
+  
 ];
 
 interface PromoCard {
