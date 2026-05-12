@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, AlertCircle, ShieldCheck, LogOut, Building2, UserCircle, FolderOpen, Users, FileStack, Rows3, Send } from "lucide-react";
+import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, AlertCircle, ShieldCheck, LogOut, Building2, UserCircle, FolderOpen, Users, FileStack, Rows3, Send, ChevronRight, ChevronLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "./SearchBar";
 import {
@@ -37,18 +37,54 @@ const pageTitles: Record<string, string> = {
   "/distribute": "Newsletters",
   "/newsletters": "Newsletters",
   "/outreach": "Outreach",
+  "/alerts": "Alerts",
+  "/reports": "Reports",
+  "/digests": "Digests",
+  "/mira": "Mira Studio",
+  "/content-manager": "Content Manager",
+  "/account": "Account",
+  "/genai-lens": "GenAI Lens",
+  "/social-trends": "Social Trends",
 };
 
 const unreadAlertsCount = mockAlerts.filter(a => !a.isRead).length;
 const unreadNotificationsCount = mockNotifications.filter(n => !n.isRead).length;
 const totalUnreadCount = unreadAlertsCount + unreadNotificationsCount;
 
+const accounts = [
+  { id: "1", name: "Company Demo" },
+  { id: "2", name: "Meltwater Product" },
+  { id: "3", name: "mLabs prod" },
+  { id: "4", name: "Phoenix" },
+  { id: "5", name: "Tony Schibono's Buddy Account" },
+];
+
 export const Header = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [bellTab, setBellTab] = useState<string>("alerts");
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [userMenuView, setUserMenuView] = useState<"menu" | "accounts">("menu");
+  const [activeAccountId, setActiveAccountId] = useState("5");
+  const [accountSearch, setAccountSearch] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const pageTitle = pageTitles[location.pathname] || "Meltwater";
+
+  const activeAccount = accounts.find((a) => a.id === activeAccountId)!;
+  const filteredAccounts = accounts.filter((a) =>
+    a.name.toLowerCase().includes(accountSearch.toLowerCase())
+  );
+
+  const handleUserMenuOpenChange = (open: boolean) => {
+    setUserMenuOpen(open);
+    if (!open) {
+      // Reset to main menu view when closing
+      setTimeout(() => {
+        setUserMenuView("menu");
+        setAccountSearch("");
+      }, 150);
+    }
+  };
 
   const handleCreateMenuClick = (label: string) => {
     if (label === "Search") {
@@ -252,78 +288,148 @@ export const Header = () => {
           <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
             <HelpCircle className="w-5 h-5" />
           </button>
-          <DropdownMenu>
+          <DropdownMenu open={userMenuOpen} onOpenChange={handleUserMenuOpenChange}>
             <DropdownMenuTrigger asChild>
               <button className="w-11 h-11 rounded-full border-2 border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
                 <User className="w-5 h-5" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-64 bg-card">
-              {/* User Info */}
-              <div className="flex items-center gap-3 p-3 border-b border-border">
-                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                  <User className="w-5 h-5 text-muted-foreground" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-medium text-sm">John Box</span>
-                  <span className="text-xs text-muted-foreground">John.Box@meltwater.com</span>
-                </div>
-              </div>
-              
-              <div className="px-2 pt-2 pb-1">
-                <span className="text-xs font-medium text-muted-foreground px-2">Personal</span>
-              </div>
-              <DropdownMenuItem className="cursor-pointer">
-                <UserCircle className="w-4 h-4 mr-2" />
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/reports")}>
-                <FileStack className="w-4 h-4 mr-2" />
-                Reports
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <FileText className="w-4 h-4 mr-2" />
-                Saved Documents
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <Users className="w-4 h-4 mr-2" />
-                Social Accounts
-              </DropdownMenuItem>
-              
-              <DropdownMenuSeparator />
+            <DropdownMenuContent align="end" className="w-64 bg-card p-0 overflow-hidden">
 
-              <div className="px-2 pt-1 pb-1">
-                <span className="text-xs font-medium text-muted-foreground px-2">Workspace</span>
-              </div>
-              <DropdownMenuItem className="cursor-pointer">
-                <FolderOpen className="w-4 h-4 mr-2" />
-                Asset Manager
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <FileStack className="w-4 h-4 mr-2" />
-                Content Manager
-              </DropdownMenuItem>
-              
-              <DropdownMenuSeparator />
+              {/* ── MAIN MENU VIEW ── */}
+              {userMenuView === "menu" && (
+                <>
+                  {/* User info */}
+                  <div className="flex items-center gap-3 p-3 border-b border-border">
+                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                      <User className="w-5 h-5 text-muted-foreground" />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="font-medium text-sm">John Box</span>
+                      <span className="text-xs text-muted-foreground truncate">John.Box@meltwater.com</span>
+                    </div>
+                  </div>
 
-              <div className="px-2 pt-1 pb-1">
-                <span className="text-xs font-medium text-muted-foreground px-2">Administration</span>
-              </div>
-              <DropdownMenuItem className="cursor-pointer">
-                <Building2 className="w-4 h-4 mr-2" />
-                Account Settings
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <ShieldCheck className="w-4 h-4 mr-2" />
-                Admin
-              </DropdownMenuItem>
-              
-              <DropdownMenuSeparator />
-              
-              <DropdownMenuItem className="cursor-pointer text-destructive">
-                <LogOut className="w-4 h-4 mr-2" />
-                Logout
-              </DropdownMenuItem>
+                  {/* Account switcher row */}
+                  <DropdownMenuItem
+                    className="cursor-pointer mx-1 mt-1 rounded-md"
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      setUserMenuView("accounts");
+                      setAccountSearch("");
+                    }}
+                  >
+                    <Building2 className="w-4 h-4 mr-2 text-muted-foreground flex-shrink-0" />
+                    <div className="flex flex-col flex-1 min-w-0">
+                      <span className="text-xs text-muted-foreground leading-none mb-0.5">Account</span>
+                      <span className="text-sm font-medium truncate">{activeAccount.name}</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0 ml-1" />
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSeparator className="my-1" />
+
+                  <div className="px-3 pt-1 pb-0.5">
+                    <span className="text-xs font-medium text-muted-foreground">Administration</span>
+                  </div>
+                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md">
+                    <UserCircle className="w-4 h-4 mr-2" />
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md">
+                    <ShieldCheck className="w-4 h-4 mr-2" />
+                    Admin
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/account")}>
+                    <Building2 className="w-4 h-4 mr-2" />
+                    Account Settings
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSeparator className="my-1" />
+
+                  <div className="px-3 pt-1 pb-0.5">
+                    <span className="text-xs font-medium text-muted-foreground">Workspace</span>
+                  </div>
+                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md">
+                    <FolderOpen className="w-4 h-4 mr-2" />
+                    Asset Manager
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/content-manager")}>
+                    <FileStack className="w-4 h-4 mr-2" />
+                    Content Manager
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md">
+                    <Users className="w-4 h-4 mr-2" />
+                    Social Accounts
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSeparator className="my-1" />
+
+                  <DropdownMenuItem className="cursor-pointer mx-1 mb-1 rounded-md text-destructive">
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Logout
+                  </DropdownMenuItem>
+                </>
+              )}
+
+              {/* ── ACCOUNT SWITCHER VIEW ── */}
+              {userMenuView === "accounts" && (
+                <>
+                  {/* Header */}
+                  <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border">
+                    <button
+                      className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => setUserMenuView("menu")}
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                      <span className="font-medium">Accounts</span>
+                    </button>
+                  </div>
+
+                  {/* Search */}
+                  <div className="px-3 py-2 border-b border-border">
+                    <p className="text-xs text-muted-foreground mb-1.5">Find account</p>
+                    <div className="relative">
+                      <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                      <input
+                        className="w-full pl-7 pr-3 py-1.5 text-sm bg-transparent border border-border rounded focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder=""
+                        value={accountSearch}
+                        onChange={(e) => setAccountSearch(e.target.value)}
+                        autoFocus
+                        onKeyDown={(e) => e.stopPropagation()}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Account list */}
+                  <div className="py-1 max-h-64 overflow-y-auto">
+                    {filteredAccounts.map((account) => (
+                      <DropdownMenuItem
+                        key={account.id}
+                        className="cursor-pointer mx-1 rounded-md flex items-center justify-between"
+                        onSelect={(e) => {
+                          e.preventDefault();
+                          setActiveAccountId(account.id);
+                          setUserMenuView("menu");
+                          setAccountSearch("");
+                        }}
+                      >
+                        <span className={`text-sm ${account.id === activeAccountId ? "font-semibold text-foreground" : "text-foreground"}`}>
+                          {account.name}
+                        </span>
+                        {account.id === activeAccountId && (
+                          <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                        )}
+                      </DropdownMenuItem>
+                    ))}
+                    {filteredAccounts.length === 0 && (
+                      <p className="text-sm text-muted-foreground text-center py-4">No accounts found</p>
+                    )}
+                  </div>
+                </>
+              )}
+
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

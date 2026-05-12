@@ -429,7 +429,7 @@ export const getTemplateIllustration = (title: string) => {
 export const getIntelligenceIllustration = (title: string) => {
   const illustrations: Record<string, React.FC<IllustrationProps>> = {
     "GenAI Lens": GenAILensIllustration,
-    "TikTok Trends": TikTokTrendsIllustration,
+    "Trends Center": TikTokTrendsIllustration,
     "Audience Segments": AudienceSegmentsIllustration,
     "Predictive Trends": PredictiveTrendsIllustration,
     "Competitor Intel": CompetitorIntelIllustration,

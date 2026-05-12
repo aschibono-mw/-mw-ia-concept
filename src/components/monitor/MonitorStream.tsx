@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { MonitorStream as MonitorStreamType, FeedItem } from './types';
 import { MonitorFeedItem } from './MonitorFeedItem';
-import { BarChart2, Filter, MoreVertical, RefreshCw, Search, Trash2, Loader2 } from 'lucide-react';
+import { BarChart2, Filter, MoreVertical, RefreshCw, Search, Trash2, Loader2, FileText, Bell, Mail, Wand2, Download, SlidersHorizontal, ArrowUp, ChevronDown, X, Smile, Tag, EyeOff, Layers } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -66,8 +66,37 @@ interface MonitorStreamProps {
 export const MonitorStream = ({ stream, onAnalyze, onRemove }: MonitorStreamProps) => {
   const [items, setItems] = useState<FeedItem[]>(stream.items);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const loaderRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const selectAllRef = useRef<HTMLInputElement>(null);
+
+  const allSelected = items.length > 0 && selectedIds.size === items.length;
+  const someSelected = selectedIds.size > 0 && selectedIds.size < items.length;
+
+  // Keep the indeterminate attribute in sync
+  useEffect(() => {
+    if (selectAllRef.current) {
+      selectAllRef.current.indeterminate = someSelected;
+    }
+  }, [someSelected]);
+
+  const handleSelectAll = () => {
+    if (allSelected || someSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(items.map((i) => i.id)));
+    }
+  };
+
+  const handleSelectItem = (id: string, checked: boolean) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (checked) next.add(id);
+      else next.delete(id);
+      return next;
+    });
+  };
 
   const loadMore = useCallback(() => {
     if (isLoading) return;
@@ -119,12 +148,18 @@ export const MonitorStream = ({ stream, onAnalyze, onRemove }: MonitorStreamProp
             <button className="p-1.5 hover:bg-muted rounded" title="Filter">
               <Filter className="w-4 h-4 text-muted-foreground" />
             </button>
-            <button 
-              className="p-1.5 hover:bg-muted rounded" 
+            <button
+              className="p-1.5 hover:bg-muted rounded"
               title="Analyze"
               onClick={() => onAnalyze(stream.id)}
             >
               <BarChart2 className="w-4 h-4 text-muted-foreground hover:text-primary" />
+            </button>
+            <button className="p-1.5 hover:bg-muted rounded" title="AI actions">
+              <Wand2 className="w-4 h-4 text-muted-foreground" />
+            </button>
+            <button className="p-1.5 hover:bg-muted rounded" title="Export">
+              <Download className="w-4 h-4 text-muted-foreground" />
             </button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -140,6 +175,18 @@ export const MonitorStream = ({ stream, onAnalyze, onRemove }: MonitorStreamProp
                 <DropdownMenuItem className="cursor-pointer">
                   <Search className="w-4 h-4 mr-2" />
                   Edit search
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                  <FileText className="w-4 h-4 mr-2" />
+                  Create digest
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                  <Bell className="w-4 h-4 mr-2" />
+                  Create alert
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                  <Mail className="w-4 h-4 mr-2" />
+                  Create newsletter
                 </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer" onClick={() => onAnalyze(stream.id)}>
                   <BarChart2 className="w-4 h-4 mr-2" />
@@ -163,11 +210,92 @@ export const MonitorStream = ({ stream, onAnalyze, onRemove }: MonitorStreamProp
         </p>
       </div>
 
+      {/* Results bar / Selection action bar */}
+      {selectedIds.size > 0 ? (
+        <div className="border-b border-border">
+          {/* Action bar */}
+          <div className="flex items-center justify-between px-3 py-2 bg-primary/5">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setSelectedIds(new Set())}
+                className="p-0.5 hover:bg-muted rounded text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+              <span className="text-xs font-semibold text-foreground">
+                {selectedIds.size} {selectedIds.size === 1 ? 'item' : 'items'} selected
+              </span>
+            </div>
+            <div className="flex items-center gap-0.5">
+              {[
+                { icon: Download, title: 'Export' },
+                { icon: Smile,    title: 'Set sentiment' },
+                { icon: Mail,     title: 'Add to newsletter' },
+                { icon: Tag,      title: 'Tag' },
+                { icon: Layers,   title: 'Add to digest' },
+                { icon: EyeOff,   title: 'Hide' },
+              ].map(({ icon: Icon, title }) => (
+                <button
+                  key={title}
+                  title={title}
+                  className="p-1.5 hover:bg-muted rounded text-muted-foreground hover:text-foreground"
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                </button>
+              ))}
+            </div>
+          </div>
+          {/* Sub-row */}
+          <div className="px-3 py-1.5 text-[11px] text-muted-foreground">
+            Only the shown items are selected.{' '}
+            <button
+              className="text-primary hover:underline"
+              onClick={() => setSelectedIds(new Set(items.map((i) => i.id)))}
+            >
+              Select all 476 items
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center px-3 py-2 border-b border-border gap-2">
+          <input
+            ref={selectAllRef}
+            type="checkbox"
+            checked={allSelected}
+            onChange={handleSelectAll}
+            className="rounded w-3.5 h-3.5 accent-primary cursor-pointer"
+          />
+          <span className="text-xs font-semibold text-foreground">476 results</span>
+        </div>
+      )}
+
+      {/* Sort bar */}
+      <div className="flex items-center justify-between px-3 py-1.5 border-b border-border">
+        <div className="flex items-center gap-1.5">
+          <SlidersHorizontal className="w-3 h-3 text-muted-foreground" />
+          <span className="text-xs text-muted-foreground">Sort by</span>
+          <button className="flex items-center gap-0.5 text-xs font-medium text-foreground hover:text-primary">
+            Date <ChevronDown className="w-3 h-3" />
+          </button>
+          <button className="flex items-center gap-0.5 text-xs text-muted-foreground hover:text-foreground">
+            <ArrowUp className="w-3 h-3" /> <ChevronDown className="w-3 h-3" />
+          </button>
+        </div>
+        <button className="p-1 hover:bg-muted rounded">
+          <Search className="w-3.5 h-3.5 text-muted-foreground" />
+        </button>
+      </div>
+
       {/* Feed Items - Scrollable with Infinite Loading */}
       <ScrollArea className="flex-1" ref={scrollRef}>
         <div className="p-4 space-y-3">
           {items.map((item) => (
-            <MonitorFeedItem key={item.id} item={item} />
+            <MonitorFeedItem
+              key={item.id}
+              item={item}
+              selected={selectedIds.has(item.id)}
+              onSelect={handleSelectItem}
+            />
           ))}
           
           {/* Infinite scroll loader */}

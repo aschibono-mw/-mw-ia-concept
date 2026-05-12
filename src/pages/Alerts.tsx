@@ -13,15 +13,17 @@ import { getAlertIcon } from "@/components/alerts/alertIcons";
 import { alertTypeLabels, alertTypeDescriptions, AlertType } from "@/components/alerts/types";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { 
-  Bell, 
-  Search, 
-  Filter, 
-  MoreVertical, 
-  Pencil, 
-  Trash2, 
+import {
+  Bell,
+  Search,
+  Filter,
+  MoreVertical,
+  Pencil,
+  Trash2,
   Plus,
-  ChevronDown
+  ChevronDown,
+  FolderOpen,
+  CheckCircle2,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -45,6 +47,21 @@ const managedAlerts = [
   { id: "7", name: "Product Launches", subtitle: "Competitor Product Launches", source: "Competitor & Industry", urgency: "All", delivery: "In-app", enabled: false, lastTriggered: "2 weeks ago", type: "company_events" as AlertType },
   { id: "8", name: "Earnings Coverage", subtitle: "Earnings Call Mentions", source: "Explore Search", urgency: "Important", delivery: "Email", enabled: true, lastTriggered: "Yesterday", type: "top_reach" as AlertType },
 ];
+
+// Available digests to assign alerts to
+const availableDigests = [
+  "Weekly Brand Monitor",
+  "ESG & Sustainability Tracker",
+  "Competitor Intel Digest",
+  "Executive Briefing",
+  "Social Pulse Weekly",
+];
+
+// Seed: alerts pre-assigned to digests (pink "Created for digest" state)
+const initialDigestAssignments: Record<string, string> = {
+  "1": "Weekly Brand Monitor",
+  "6": "ESG & Sustainability Tracker",
+};
 
 const sourceColors: Record<string, string> = {
   "Explore Search": "bg-emerald-100 text-emerald-700",
@@ -77,6 +94,16 @@ const Alerts = () => {
   const [selectedAlerts, setSelectedAlerts] = useState<string[]>([]);
   const [createAlertOpen, setCreateAlertOpen] = useState(false);
   const [selectedView, setSelectedView] = useState("All");
+  // digest assignments: "created" = pre-existing (pink card), string value = newly added (green check)
+  const [digestAssignments, setDigestAssignments] = useState<Record<string, { name: string; isNew: boolean }>>(
+    Object.fromEntries(
+      Object.entries(initialDigestAssignments).map(([id, name]) => [id, { name, isNew: false }])
+    )
+  );
+
+  const assignDigest = (alertId: string, digestName: string) => {
+    setDigestAssignments(prev => ({ ...prev, [alertId]: { name: digestName, isNew: true } }));
+  };
 
   // Sync tab with URL parameter
   useEffect(() => {
@@ -108,9 +135,9 @@ const Alerts = () => {
             {/* Page Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-2xl font-semibold text-foreground mb-1">Alerts</h1>
+                <h1 className="text-2xl font-bold text-foreground mb-1">Never miss what matters</h1>
                 <p className="text-sm text-muted-foreground">
-                  Stay informed with real-time notifications from your searches
+                  Get notified instantly when your searches surface important mentions or trends.
                 </p>
               </div>
               <Button className="gap-2" onClick={() => setCreateAlertOpen(true)}>
@@ -287,6 +314,7 @@ const Alerts = () => {
                           <th className="p-4 text-sm font-bold text-foreground">Delivery</th>
                           <th className="p-4 text-sm font-bold text-foreground">Status</th>
                           <th className="p-4 text-sm font-bold text-foreground">Last Triggered</th>
+                          <th className="p-4 text-sm font-bold text-foreground">Add to Digest</th>
                           <th className="p-4 w-10"></th>
                         </tr>
                       </thead>
@@ -320,6 +348,48 @@ const Alerts = () => {
                             </td>
                             <td className="px-4 py-3.5">
                               <span className="text-sm text-muted-foreground">{alert.lastTriggered}</span>
+                            </td>
+                            {/* Add to Digest column */}
+                            <td className="px-4 py-3.5">
+                              {digestAssignments[alert.id] ? (
+                                digestAssignments[alert.id].isNew ? (
+                                  // Green "added" state
+                                  <div className="flex items-center gap-1.5">
+                                    <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                                    <span className="text-sm font-semibold text-primary">{digestAssignments[alert.id].name}</span>
+                                  </div>
+                                ) : (
+                                  // Pink "created for digest" card
+                                  <div className="inline-flex items-start gap-2 bg-pink-50 border border-pink-200 rounded-lg px-3 py-1.5">
+                                    <FolderOpen className="w-3.5 h-3.5 text-pink-600 mt-0.5 flex-shrink-0" />
+                                    <div>
+                                      <p className="text-xs font-bold text-pink-600 leading-tight">Created for digest</p>
+                                      <p className="text-xs text-pink-500 leading-tight">{digestAssignments[alert.id].name}</p>
+                                    </div>
+                                  </div>
+                                )
+                              ) : (
+                                // Unassigned — "+ Add to Digest" dropdown button
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <button className="flex items-center gap-1.5 border border-primary text-primary rounded-full px-3 py-1 text-xs font-medium hover:bg-primary/5 transition-colors">
+                                      + Add to Digest
+                                      <ChevronDown className="w-3 h-3" />
+                                    </button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="start" className="w-52 bg-card">
+                                    {availableDigests.map((digest) => (
+                                      <DropdownMenuItem
+                                        key={digest}
+                                        className="cursor-pointer text-sm"
+                                        onClick={() => assignDigest(alert.id, digest)}
+                                      >
+                                        {digest}
+                                      </DropdownMenuItem>
+                                    ))}
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              )}
                             </td>
                             <td className="px-4 py-3.5">
                               <DropdownMenu>

@@ -49,7 +49,7 @@ const intelligenceProducts = [
   },
   { 
     icon: Music2, 
-    title: "TikTok Trends", 
+    title: "Trends Center",
     description: "Discover trending topics and signals shaping conversations on TikTok.",
     featured: false,
     tag: "Popular"

@@ -24,6 +24,7 @@ import {
   Copy,
   Eye,
   User,
+  Mail,
 } from "lucide-react";
 
 interface ReportItem {
@@ -113,13 +114,19 @@ const Reports = () => {
         <div className="p-6 flex flex-col items-center">
           <div className="w-full max-w-[1100px]">
             {/* Page Header */}
-            <div className="mb-6">
-              <h1 className="text-2xl font-semibold text-foreground mb-2">
-                Reports Repository
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                History and archive of all generated reports across your workspace.
-              </p>
+            <div className="mb-6 flex items-start justify-between">
+              <div>
+                <h1 className="text-2xl font-bold text-foreground mb-2">
+                  All your reports, in one place
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  Reports generated across Meltwater — from Monitor, Analyze, GenAI Lens, and more — all land here. You can also generate any report type directly from this page.
+                </p>
+              </div>
+              <Button className="gap-2 shrink-0">
+                <FileText className="w-4 h-4" />
+                Generate report
+              </Button>
             </div>
 
             {/* Table */}
@@ -286,6 +293,10 @@ const Reports = () => {
                         <DropdownMenuItem className="cursor-pointer">
                           <Copy className="w-4 h-4 mr-2" />
                           Copy Link
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer">
+                          <Mail className="w-4 h-4 mr-2" />
+                          Attach to newsletter
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="cursor-pointer text-destructive">

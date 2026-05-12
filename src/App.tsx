@@ -11,13 +11,19 @@ import Distribute from "./pages/Distribute.tsx";
 import Outreach from "./pages/Outreach.tsx";
 import Alerts from "./pages/Alerts.tsx";
 import Reports from "./pages/Reports.tsx";
+import Digests from "./pages/Digests.tsx";
+import MiraStudio from "./pages/MiraStudio.tsx";
+import ContentManager from "./pages/ContentManager.tsx";
+import Account from "./pages/Account.tsx";
+import GenAILens from "./pages/GenAILens.tsx";
+import SocialTrends from "./pages/SocialTrends.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+    <TooltipProvider delayDuration={0}>
       <Toaster />
       <Sonner />
       <BrowserRouter>
@@ -30,6 +36,12 @@ const App = () => (
           <Route path="/outreach" element={<Outreach />} />
           <Route path="/alerts" element={<Alerts />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/digests" element={<Digests />} />
+          <Route path="/mira" element={<MiraStudio />} />
+          <Route path="/content-manager" element={<ContentManager />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/genai-lens" element={<GenAILens />} />
+          <Route path="/social-trends" element={<SocialTrends />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

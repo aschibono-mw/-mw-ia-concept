@@ -11,6 +11,18 @@ export interface FeedItem {
   sentiment?: 'positive' | 'negative' | 'neutral';
   imageUrl?: string;
   mentions?: string[];
+  // Media type & platform metadata
+  mediaType?: 'news' | 'social' | 'radio' | 'reddit';
+  platform?: string;
+  country?: string;
+  subreddit?: string;
+  // Engagement
+  likes?: number;
+  views?: number;
+  // Keyword to highlight in content
+  keyword?: string;
+  // Audio (radio)
+  audioDuration?: string;
 }
 
 export interface MonitorStream {
