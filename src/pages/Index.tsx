@@ -100,21 +100,12 @@ const Index = () => {
       <Header />
 
       <main className="ml-52 pt-16">
+
         <div className="p-6 flex flex-col items-center">
           <div className="w-full max-w-[1100px] space-y-6">
 
-            {/* Mira Banner */}
-            <div className="flex items-center gap-3 bg-card border border-border rounded-lg px-4 py-3">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-purple-500 to-primary flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-3.5 h-3.5 text-white" />
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Hello, I'm Mira. I can help with quick things like creating a search, report, or an alert...
-              </p>
-            </div>
-
             {/* Welcome heading */}
-            <h1 className="text-2xl font-bold text-foreground text-center">
+            <h1 className="text-2xl font-bold font-nunito text-foreground text-center">
               Welcome back John! Here's what's happening today...
             </h1>
 

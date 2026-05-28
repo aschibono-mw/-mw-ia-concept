@@ -302,7 +302,7 @@ const Analyze = () => {
             {/* Page Header */}
             <div className="mb-6 flex items-end justify-between">
               <div>
-                <h1 className="text-2xl font-semibold text-foreground mb-2">
+                <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
                   Analyze your coverage and performance
                 </h1>
                 <p className="text-sm text-muted-foreground">

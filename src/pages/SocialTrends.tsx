@@ -128,11 +128,9 @@ const SocialTrends = () => {
         <div className="p-5">
 
           {/* ── Page title ── */}
-          <div className="flex items-center gap-3 mb-4">
-            <button className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground transition-colors">
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <h1 className="text-lg font-semibold text-foreground">Trends Center</h1>
+          <div className="mb-6">
+            <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">Discover what's trending on social</h1>
+            <p className="text-sm text-muted-foreground">Track the top hashtags and tracks across TikTok, X, Instagram, and more.</p>
           </div>
 
           {/* ── Platform tabs ── */}

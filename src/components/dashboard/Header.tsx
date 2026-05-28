@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, AlertCircle, ShieldCheck, LogOut, Building2, UserCircle, FolderOpen, Users, FileStack, Rows3, Send, ChevronRight, ChevronLeft, Check } from "lucide-react";
+import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, AlertCircle, ShieldCheck, LogOut, Building2, UserCircle, FolderOpen, Users, FileStack, Rows3, Send, ChevronRight, ChevronLeft, Check, FolderKanban } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "./SearchBar";
 import {
@@ -23,7 +23,8 @@ const createMenuItems = [
   { icon: Search, label: "Search" },
   { icon: Rows3, label: "Monitor" },
   { icon: LayoutGrid, label: "Dashboard" },
-  { icon: FileText, label: "Brief" },
+  { icon: FileText, label: "Report" },
+  { icon: FileStack, label: "Digest" },
   { icon: Send, label: "Pitch" },
   { icon: Mail, label: "Newsletter" },
   { icon: AlertCircle, label: "Alert" },
@@ -31,7 +32,10 @@ const createMenuItems = [
 
 const pageTitles: Record<string, string> = {
   "/": "Meltwater",
-  "/discover": "Explore",
+  "/home2": "Home",
+  "/discover": "Search",
+  "/search-plus": "Search+",
+  "/search-plus-hub": "Search+",
   "/monitor": "Monitor",
   "/analyze": "Analyze",
   "/distribute": "Newsletters",
@@ -40,11 +44,14 @@ const pageTitles: Record<string, string> = {
   "/alerts": "Alerts",
   "/reports": "Reports",
   "/digests": "Digests",
-  "/mira": "Mira Studio",
-  "/content-manager": "Content Manager",
+  "/mira": "Ask Mira",
+  "/content-manager": "Asset Manager",
+  "/projects-manager": "Projects Manager",
   "/account": "Account",
   "/genai-lens": "GenAI Lens",
   "/social-trends": "Social Trends",
+  "/execute": "Execute",
+  "/outreach": "Outreach",
 };
 
 const unreadAlertsCount = mockAlerts.filter(a => !a.isRead).length;
@@ -59,13 +66,21 @@ const accounts = [
   { id: "5", name: "Tony Schibono's Buddy Account" },
 ];
 
+const workspaces = [
+  { id: "1", name: "Brand & Comms" },
+  { id: "2", name: "Competitive Intel" },
+  { id: "3", name: "Executive Insights" },
+];
+
 export const Header = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [bellTab, setBellTab] = useState<string>("alerts");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [userMenuView, setUserMenuView] = useState<"menu" | "accounts">("menu");
+  const [userMenuView, setUserMenuView] = useState<"menu" | "accounts" | "workspaces">("menu");
   const [activeAccountId, setActiveAccountId] = useState("5");
   const [accountSearch, setAccountSearch] = useState("");
+  const [activeWorkspaceId, setActiveWorkspaceId] = useState("1");
+  const [workspaceSearch, setWorkspaceSearch] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const pageTitle = pageTitles[location.pathname] || "Meltwater";
@@ -73,6 +88,10 @@ export const Header = () => {
   const activeAccount = accounts.find((a) => a.id === activeAccountId)!;
   const filteredAccounts = accounts.filter((a) =>
     a.name.toLowerCase().includes(accountSearch.toLowerCase())
+  );
+  const activeWorkspace = workspaces.find((w) => w.id === activeWorkspaceId)!;
+  const filteredWorkspaces = workspaces.filter((w) =>
+    w.name.toLowerCase().includes(workspaceSearch.toLowerCase())
   );
 
   const handleUserMenuOpenChange = (open: boolean) => {
@@ -82,6 +101,7 @@ export const Header = () => {
       setTimeout(() => {
         setUserMenuView("menu");
         setAccountSearch("");
+        setWorkspaceSearch("");
       }, 150);
     }
   };
@@ -109,9 +129,9 @@ export const Header = () => {
   return (
     <header className="h-16 bg-sidebar border-b border-sidebar-border flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-10">
       {/* Logo and Title */}
-      <div className="flex items-center gap-3 min-w-[200px]">
-        <img src={meltwaterIcon} alt="Meltwater" className="h-4 w-auto" />
-        <span className="text-xl font-semibold text-foreground">{pageTitle}</span>
+      <div className="flex items-center gap-1.5 min-w-[200px]">
+        <img src={meltwaterIcon} alt="Meltwater" className="h-4 w-auto" style={{ filter: "brightness(0)" }} />
+        <span className="text-xl font-bold font-nunito text-foreground">{pageTitle}</span>
       </div>
 
       {/* Search Bar */}
@@ -147,9 +167,7 @@ export const Header = () => {
           <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
             <Wand2 className="w-5 h-5" />
           </button>
-          <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
-            <LayoutGrid className="w-5 h-5" />
-          </button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="relative w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
@@ -327,38 +345,49 @@ export const Header = () => {
                     <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0 ml-1" />
                   </DropdownMenuItem>
 
+                  <DropdownMenuSeparator />
+
+                  {/* Workspace switcher row */}
+                  <DropdownMenuItem
+                    className="cursor-pointer mx-1 rounded-md"
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      setUserMenuView("workspaces");
+                      setWorkspaceSearch("");
+                    }}
+                  >
+                    <LayoutGrid className="w-4 h-4 mr-2 text-muted-foreground flex-shrink-0" />
+                    <div className="flex flex-col flex-1 min-w-0">
+                      <span className="text-xs text-muted-foreground leading-none mb-0.5">Workspace</span>
+                      <span className="text-sm font-medium truncate">{activeWorkspace.name}</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0 ml-1" />
+                  </DropdownMenuItem>
+
                   <DropdownMenuSeparator className="my-1" />
 
-                  <div className="px-3 pt-1 pb-0.5">
-                    <span className="text-xs font-medium text-muted-foreground">Administration</span>
-                  </div>
                   <DropdownMenuItem className="cursor-pointer mx-1 rounded-md">
                     <UserCircle className="w-4 h-4 mr-2" />
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md">
-                    <ShieldCheck className="w-4 h-4 mr-2" />
-                    Admin
-                  </DropdownMenuItem>
+
                   <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/account")}>
                     <Building2 className="w-4 h-4 mr-2" />
                     Account Settings
                   </DropdownMenuItem>
-
-                  <DropdownMenuSeparator className="my-1" />
-
-                  <div className="px-3 pt-1 pb-0.5">
-                    <span className="text-xs font-medium text-muted-foreground">Workspace</span>
-                  </div>
-                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md">
-                    <FolderOpen className="w-4 h-4 mr-2" />
-                    Asset Manager
+                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/reports")}>
+                    <FileText className="w-4 h-4 mr-2" />
+                    Reports
                   </DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/content-manager")}>
                     <FileStack className="w-4 h-4 mr-2" />
-                    Content Manager
+                    Assets Manager
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md">
+                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/projects-manager")}>
+                    <FolderKanban className="w-4 h-4 mr-2" />
+                    Projects Manager
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/social-accounts")}>
                     <Users className="w-4 h-4 mr-2" />
                     Social Accounts
                   </DropdownMenuItem>
@@ -426,6 +455,71 @@ export const Header = () => {
                     {filteredAccounts.length === 0 && (
                       <p className="text-sm text-muted-foreground text-center py-4">No accounts found</p>
                     )}
+                  </div>
+                </>
+              )}
+
+              {/* ── WORKSPACE SWITCHER VIEW ── */}
+              {userMenuView === "workspaces" && (
+                <>
+                  {/* Header */}
+                  <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border">
+                    <button
+                      className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      onClick={() => setUserMenuView("menu")}
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                      <span className="font-medium">Workspaces</span>
+                    </button>
+                  </div>
+
+                  {/* Search */}
+                  <div className="px-3 py-2 border-b border-border">
+                    <p className="text-xs text-muted-foreground mb-1.5">Find workspace</p>
+                    <div className="relative">
+                      <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                      <input
+                        className="w-full pl-7 pr-3 py-1.5 text-sm bg-transparent border border-border rounded focus:outline-none focus:ring-1 focus:ring-primary"
+                        placeholder=""
+                        value={workspaceSearch}
+                        onChange={(e) => setWorkspaceSearch(e.target.value)}
+                        autoFocus
+                        onKeyDown={(e) => e.stopPropagation()}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Workspace list */}
+                  <div className="py-1 max-h-64 overflow-y-auto">
+                    {filteredWorkspaces.map((workspace) => (
+                      <DropdownMenuItem
+                        key={workspace.id}
+                        className="cursor-pointer mx-1 rounded-md flex items-center justify-between"
+                        onSelect={(e) => {
+                          e.preventDefault();
+                          setActiveWorkspaceId(workspace.id);
+                          setUserMenuView("menu");
+                          setWorkspaceSearch("");
+                        }}
+                      >
+                        <span className={`text-sm ${workspace.id === activeWorkspaceId ? "font-semibold text-foreground" : "text-foreground"}`}>
+                          {workspace.name}
+                        </span>
+                        {workspace.id === activeWorkspaceId && (
+                          <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                        )}
+                      </DropdownMenuItem>
+                    ))}
+                    {filteredWorkspaces.length === 0 && (
+                      <p className="text-sm text-muted-foreground text-center py-4">No workspaces found</p>
+                    )}
+                  </div>
+
+                  <div className="border-t border-border px-1 py-1">
+                    <DropdownMenuItem className="cursor-pointer rounded-md text-muted-foreground">
+                      <LayoutGrid className="w-4 h-4 mr-2" />
+                      Manage Workspaces
+                    </DropdownMenuItem>
                   </div>
                 </>
               )}

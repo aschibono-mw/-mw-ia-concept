@@ -12,6 +12,7 @@ import { SourcesTab } from "@/components/content-manager/SourcesTab";
 import { DigestsTab } from "@/components/content-manager/DigestsTab";
 
 const TABS = [
+  { value: "digests", label: "Digests" },
   { value: "tags", label: "Tags" },
   { value: "automation", label: "Automation" },
   { value: "rss-feeds", label: "Incoming RSS feeds" },
@@ -19,12 +20,11 @@ const TABS = [
   { value: "labels", label: "Labels" },
   { value: "newsfeeds", label: "Newsfeeds" },
   { value: "sources", label: "Sources" },
-  { value: "digests", label: "Digests" },
 ];
 
 const ContentManager = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = searchParams.get("tab") || "tags";
+  const activeTab = searchParams.get("tab") || "digests";
 
   const handleTabChange = (value: string) => {
     setSearchParams({ tab: value });
@@ -40,11 +40,11 @@ const ContentManager = () => {
           <div className="w-full max-w-[1100px]">
             {/* Page Header */}
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-foreground mb-2">
-                Content Manager
+              <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
+                Everything organised, all in one place.
               </h1>
               <p className="text-sm text-muted-foreground">
-                Manage your tags, automation rules, feeds, labels, content sources, and digests.
+                Manage your tags, labels, sources, feeds, automation rules, and digests from a single hub.
               </p>
             </div>
 

@@ -189,12 +189,36 @@ const Discover = () => {
           <div className="w-full max-w-[1100px]">
             {/* Page Header */}
             <div className="mb-6">
-              <h1 className="text-2xl font-semibold text-foreground mb-2">
+              <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
                 Explore media coverage in one place
               </h1>
               <p className="text-sm text-muted-foreground">
                 Build searches across news, social, and online sources.
               </p>
+            </div>
+
+            {/* Tab nav */}
+            <div className="flex items-center border-b border-border mb-6 -mx-0 overflow-x-auto">
+              {[
+                "Standard searches",
+                "Optimized searches",
+                "Comparisons",
+                "Custom fields",
+                "Custom categories",
+                "Author lists",
+                "Filter sets",
+              ].map((tab, i) => (
+                <button
+                  key={tab}
+                  className={`px-4 py-2.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
+                    i === 0
+                      ? "border-primary text-foreground"
+                      : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
             </div>
 
             {/* AI Search Builder */}

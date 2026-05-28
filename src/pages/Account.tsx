@@ -2,25 +2,23 @@ import { useSearchParams } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ProfileTab } from "@/components/account/ProfileTab";
 import { UsersTab } from "@/components/account/UsersTab";
 import { RolesTab } from "@/components/account/RolesTab";
 import { ThirdPartyTab } from "@/components/account/ThirdPartyTab";
-import { MeltwaterAPITab } from "@/components/account/MeltwaterAPITab";
 import { SocialConnectionsTab } from "@/components/account/SocialConnectionsTab";
 
 const TABS = [
-  { value: "profile",             label: "Profile" },
   { value: "users",               label: "Users" },
   { value: "roles",               label: "Roles" },
-  { value: "third-party",         label: "Third party integra..." },
-  { value: "meltwater-api",       label: "Meltwater API" },
+  { value: "third-party",         label: "Third party integrations" },
   { value: "social-connections",  label: "Social connections" },
+  { value: "approved-senders",    label: "Approved senders" },
+  { value: "email-integration",   label: "Email integration" },
 ];
 
 const Account = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = searchParams.get("tab") || "profile";
+  const activeTab = searchParams.get("tab") || "users";
 
   const handleTabChange = (value: string) => {
     setSearchParams({ tab: value });
@@ -36,9 +34,11 @@ const Account = () => {
           <div className="w-full max-w-[1100px]">
             {/* Page Header */}
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-foreground mb-2">Account</h1>
+              <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
+                Manage your team, access, and integrations
+              </h1>
               <p className="text-sm text-muted-foreground">
-                Manage your account profile, users, roles, integrations, and connected services.
+                Control who can access your workspace, define roles and permissions, and connect your tools and services.
               </p>
             </div>
 
@@ -56,10 +56,6 @@ const Account = () => {
                 ))}
               </TabsList>
 
-              <TabsContent value="profile">
-                <ProfileTab />
-              </TabsContent>
-
               <TabsContent value="users">
                 <UsersTab />
               </TabsContent>
@@ -72,12 +68,20 @@ const Account = () => {
                 <ThirdPartyTab />
               </TabsContent>
 
-              <TabsContent value="meltwater-api">
-                <MeltwaterAPITab />
-              </TabsContent>
-
               <TabsContent value="social-connections">
                 <SocialConnectionsTab />
+              </TabsContent>
+
+              <TabsContent value="approved-senders">
+                <div className="py-12 text-center text-sm text-muted-foreground">
+                  Approved senders settings coming soon.
+                </div>
+              </TabsContent>
+
+              <TabsContent value="email-integration">
+                <div className="py-12 text-center text-sm text-muted-foreground">
+                  Email integration settings coming soon.
+                </div>
               </TabsContent>
             </Tabs>
           </div>

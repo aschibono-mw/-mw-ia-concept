@@ -325,7 +325,7 @@ function NewsletterOnboarding({ onComplete }: { onComplete: (data: any) => void 
         <div className="px-8 pt-8 pb-10">
 
           {/* Rounded grey pane — centered column */}
-          <div className="rounded-[28px] px-12 pt-8 pb-10 flex flex-col items-center" style={{ backgroundColor: "#EEF2F2" }}>
+          <div className="rounded-[28px] px-12 pt-8 pb-10 flex flex-col items-center" style={{ backgroundColor: "#F2F5F5" }}>
 
             {/* Eyebrow — sits above the illustration */}
             <p className="text-[13px] font-bold text-foreground mb-3 tracking-wide text-center">
@@ -340,7 +340,7 @@ function NewsletterOnboarding({ onComplete }: { onComplete: (data: any) => void 
               {/* Soft fade at the base */}
               <div style={{
                 position: "absolute", bottom: 0, left: 0, right: 0, height: 36, pointerEvents: "none",
-                background: "linear-gradient(to bottom, transparent, #EEF2F2)",
+                background: "linear-gradient(to bottom, transparent, #F2F5F5)",
               }} />
             </div>
 
@@ -1319,9 +1319,9 @@ function AllNewslettersInbox() {
   ];
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-col">
       {/* Header */}
-      <div className="px-6 pt-5 pb-4 border-b border-border bg-white flex-shrink-0">
+      <div className="px-6 pt-5 pb-4 border-b border-border bg-white">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-5">
             <StackedThumbnails />
@@ -1392,7 +1392,7 @@ function AllNewslettersInbox() {
       </div>
 
       {/* Column headers */}
-      <div className="border-b border-border bg-black/[0.02] flex-shrink-0"
+      <div className="border-b border-border bg-black/[0.02]"
         style={{ display: "grid", gridTemplateColumns: COL_GRID, padding: "8px 20px", gap: 12, alignItems: "center" }}>
         {HEADER_COLS.map(col => (
           col.noSort
@@ -1402,7 +1402,7 @@ function AllNewslettersInbox() {
       </div>
 
       {/* Rows */}
-      <div className="flex-1 overflow-auto">
+      <div>
         {sorted.map(item => <InboxRow key={item._key} item={item} />)}
         {sorted.length === 0 && (
           <div className="flex items-center justify-center h-24">
@@ -1425,7 +1425,7 @@ function SeriesDetail({ series }: { series: any }) {
   const SkillIcon = skill?.Icon || Sparkles;
 
   return (
-    <div className="h-full overflow-auto">
+    <div>
       {/* Header */}
       <div className="px-6 pt-5 pb-4 border-b border-border bg-white">
         <div className="flex items-start gap-4 mb-3">
@@ -1551,8 +1551,8 @@ function SeriesDetail({ series }: { series: any }) {
 // ── RecipientsPlaceholder ─────────────────────────────────────────────────────
 function RecipientsPlaceholder() {
   return (
-    <div className="h-full flex flex-col overflow-hidden">
-      <div className="px-6 pt-5 pb-4 border-b border-border bg-white flex-shrink-0">
+    <div className="flex flex-col">
+      <div className="px-6 pt-5 pb-4 border-b border-border bg-white">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-bold text-xl mb-0.5">Recipient Lists</h2>
@@ -1563,7 +1563,7 @@ function RecipientsPlaceholder() {
           </button>
         </div>
       </div>
-      <div className="flex-1 p-6">
+      <div className="p-6">
         <div className="border border-border rounded-xl overflow-hidden bg-white">
           {[
             { name: "External List",     subscribers: "2,840", usedIn: "3 Newsletters",   owner: "Maricela", updated: "Mar 25, 2026" },
@@ -1595,25 +1595,22 @@ function RecipientsPlaceholder() {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 const Newsletters = () => {
-  const [onboarded, setOnboarded] = useState(false);
+  const [onboarded, setOnboarded]   = useState(false);
   const [selectedId, setSelectedId] = useState(ALL_VIEW_ID);
-  const [search, setSearch] = useState("");
+  const [search, setSearch]         = useState("");
+  const [activeTab, setActiveTab]   = useState<"newsletters" | "recipients">("newsletters");
 
-  const isAllView        = selectedId === ALL_VIEW_ID;
-  const isRecipientsView = selectedId === RECIPIENTS_VIEW_ID;
-  const selectedSeries   = SERIES.find((s: any) => s.id === selectedId) as any;
-  const readyCount       = SERIES.filter((s: any) => s.status === "ready").length;
-  const filteredSeries   = SERIES.filter((s: any) => s.name.toLowerCase().includes(search.toLowerCase()));
+  const selectedSeries = SERIES.find((s: any) => s.id === selectedId) as any;
+  const readyCount     = SERIES.filter((s: any) => s.status === "ready").length;
+  const filteredSeries = SERIES.filter((s: any) => s.name.toLowerCase().includes(search.toLowerCase()));
 
   if (!onboarded) {
     return (
       <div className="min-h-screen bg-background">
         <Sidebar activePage="newsletters" />
         <Header />
-        <main className="ml-52 pt-16 flex flex-col" style={{ height: "100vh" }}>
-          <div className="flex flex-col flex-1 overflow-hidden">
-            <NewsletterOnboarding onComplete={() => setOnboarded(true)} />
-          </div>
+        <main className="ml-52 pt-16 min-h-screen">
+          <NewsletterOnboarding onComplete={() => setOnboarded(true)} />
         </main>
       </div>
     );
@@ -1623,91 +1620,129 @@ const Newsletters = () => {
     <div className="min-h-screen bg-background">
       <Sidebar activePage="newsletters" />
       <Header />
-      <main className="ml-52 pt-16 flex" style={{ height: "100vh" }}>
+      <main className="ml-52 pt-16">
 
-        {/* ── Left sidebar ── */}
-        <div className="w-[290px] flex-shrink-0 flex flex-col border-r border-border bg-white overflow-hidden">
-          {/* Add button + search */}
-          <div className="px-3 pt-3 pb-2">
-            <button className="w-full flex items-center justify-center gap-2 text-white font-semibold text-[13px] rounded-lg py-2 mb-3"
-              style={{ backgroundColor: PURPLE }}>
+        {/* ── Page header ── */}
+        <div className="px-8 pt-6 bg-background">
+          <div className="flex items-start justify-between mb-5">
+            <div>
+              <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
+                Design, curate and send branded newsletters
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Build series powered by your searches. Mira curates each edition automatically.
+              </p>
+            </div>
+            <button
+              className="flex items-center gap-2 text-white font-semibold text-[13px] rounded-lg px-4 py-2 mt-1 flex-shrink-0"
+              style={{ backgroundColor: TEAL }}
+            >
               <Plus className="w-3.5 h-3.5" /> New Newsletter Series
             </button>
-            <div className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 bg-muted/50 border border-border">
-              <Search className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
-              <input value={search} onChange={e => setSearch(e.target.value)}
-                placeholder="Search series..."
-                className="flex-1 bg-transparent text-[13px] outline-none placeholder:text-muted-foreground" />
-            </div>
           </div>
 
-          <div className="flex-1 overflow-auto">
-            {/* All Newsletters */}
-            <div onClick={() => setSelectedId(ALL_VIEW_ID)}
-              className="mx-3 my-1 px-3 py-2.5 rounded-lg cursor-pointer flex items-center gap-3 transition-colors"
-              style={{ backgroundColor: isAllView ? TEAL_LIGHT : "transparent", border: `1px solid ${isAllView ? "rgba(0,130,127,0.2)" : "transparent"}` }}>
-              <div className="w-7 h-7 rounded flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: isAllView ? "rgba(0,130,127,0.15)" : "rgba(0,0,0,0.06)" }}>
-                <Inbox className="w-4 h-4" style={{ color: isAllView ? TEAL : "var(--muted-foreground)" }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px]" style={{ fontWeight: isAllView ? 700 : 500, color: isAllView ? TEAL : "inherit" }}>All Newsletters</p>
-                <p className="text-[11px] text-muted-foreground">{SERIES.length} series · all editions</p>
-              </div>
-              {readyCount > 0 && (
-                <span className="rounded-full px-2 py-px text-[10px] font-bold text-white flex-shrink-0" style={{ backgroundColor: TEAL }}>{readyCount}</span>
-              )}
-            </div>
-
-            {/* Recipient Lists */}
-            <div onClick={() => setSelectedId(RECIPIENTS_VIEW_ID)}
-              className="mx-3 mb-1 px-3 py-2.5 rounded-lg cursor-pointer flex items-center gap-3 transition-colors"
-              style={{ backgroundColor: isRecipientsView ? TEAL_LIGHT : "transparent", border: `1px solid ${isRecipientsView ? "rgba(0,130,127,0.2)" : "transparent"}` }}>
-              <div className="w-7 h-7 rounded flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: isRecipientsView ? "rgba(0,130,127,0.15)" : "rgba(0,0,0,0.06)" }}>
-                <Users className="w-4 h-4" style={{ color: isRecipientsView ? TEAL : "var(--muted-foreground)" }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px]" style={{ fontWeight: isRecipientsView ? 700 : 500, color: isRecipientsView ? TEAL : "inherit" }}>Recipient Lists</p>
-                <p className="text-[11px] text-muted-foreground">8 lists · 7,022 subscribers</p>
-              </div>
-            </div>
-
-            <div className="mx-3 mb-1 border-t border-border" />
-
-            {/* Series section label */}
-            <div className="flex items-center justify-between px-4 py-1.5">
-              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
-                Series ({filteredSeries.length})
-              </span>
-              {readyCount > 0 && (
-                <span className="rounded-full px-2 py-px text-[10px] font-bold text-white" style={{ backgroundColor: TEAL }}>
-                  {readyCount} need review
-                </span>
-              )}
-            </div>
-
-            {(filteredSeries as any[]).map((s: any) => (
-              <SeriesListItem key={s.id} series={s} selected={selectedId === s.id} onClick={() => setSelectedId(s.id)} />
-            ))}
+          {/* Tab nav */}
+          <div className="border-b border-border">
+            <nav className="flex gap-1">
+              {([
+                { id: "newsletters", label: "Newsletters" },
+                { id: "recipients",  label: "Recipient Lists" },
+              ] as const).map(({ id, label }) => (
+                <button
+                  key={id}
+                  onClick={() => setActiveTab(id)}
+                  className="px-4 py-3 text-sm font-medium transition-colors border-b-2 -mb-px whitespace-nowrap"
+                  style={{
+                    borderBottomColor: activeTab === id ? TEAL : "transparent",
+                    color: activeTab === id ? "var(--foreground)" : "var(--muted-foreground)",
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </nav>
           </div>
         </div>
 
-        {/* ── Right panel ── */}
-        <div className="flex-1 overflow-hidden" style={{ backgroundColor: isAllView || isRecipientsView ? "white" : "rgba(0,0,0,0.02)" }}>
-          {isRecipientsView
-            ? <RecipientsPlaceholder />
-            : isAllView
-            ? <AllNewslettersInbox />
-            : selectedSeries
-            ? <SeriesDetail series={selectedSeries} />
-            : (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-[13px] text-muted-foreground">Select a series to view editions</p>
+        {/* ── Newsletters tab ── */}
+        {activeTab === "newsletters" && (
+          <div className="flex">
+
+            {/* Left sidebar */}
+            <div className="w-[260px] flex-shrink-0 flex flex-col border-r border-border bg-white sticky top-16 self-start" style={{ maxHeight: "calc(100vh - 64px)", overflowY: "auto" }}>
+              <div className="px-3 pt-3 pb-2">
+                <div className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 bg-muted/50 border border-border">
+                  <Search className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
+                  <input value={search} onChange={e => setSearch(e.target.value)}
+                    placeholder="Search series..."
+                    className="flex-1 bg-transparent text-[13px] outline-none placeholder:text-muted-foreground" />
+                </div>
               </div>
-            )
-          }
-        </div>
+
+              <div className="flex-1 overflow-auto">
+                {/* All Newsletters */}
+                <div onClick={() => setSelectedId(ALL_VIEW_ID)}
+                  className="mx-3 my-1 px-3 py-2.5 rounded-lg cursor-pointer flex items-center gap-3 transition-colors"
+                  style={{
+                    backgroundColor: selectedId === ALL_VIEW_ID ? TEAL_LIGHT : "transparent",
+                    border: `1px solid ${selectedId === ALL_VIEW_ID ? "rgba(0,130,127,0.2)" : "transparent"}`,
+                  }}>
+                  <div className="w-7 h-7 rounded flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: selectedId === ALL_VIEW_ID ? "rgba(0,130,127,0.15)" : "rgba(0,0,0,0.06)" }}>
+                    <Inbox className="w-4 h-4" style={{ color: selectedId === ALL_VIEW_ID ? TEAL : "var(--muted-foreground)" }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px]" style={{ fontWeight: selectedId === ALL_VIEW_ID ? 700 : 500, color: selectedId === ALL_VIEW_ID ? TEAL : "inherit" }}>All Newsletters</p>
+                    <p className="text-[11px] text-muted-foreground">{SERIES.length} series · all editions</p>
+                  </div>
+                  {readyCount > 0 && (
+                    <span className="rounded-full px-2 py-px text-[10px] font-bold text-white flex-shrink-0" style={{ backgroundColor: TEAL }}>{readyCount}</span>
+                  )}
+                </div>
+
+                <div className="mx-3 mb-1 border-t border-border" />
+
+                {/* Series section label */}
+                <div className="flex items-center justify-between px-4 py-1.5">
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+                    Series ({filteredSeries.length})
+                  </span>
+                  {readyCount > 0 && (
+                    <span className="rounded-full px-2 py-px text-[10px] font-bold text-white" style={{ backgroundColor: TEAL }}>
+                      {readyCount} need review
+                    </span>
+                  )}
+                </div>
+
+                {(filteredSeries as any[]).map((s: any) => (
+                  <SeriesListItem key={s.id} series={s} selected={selectedId === s.id} onClick={() => setSelectedId(s.id)} />
+                ))}
+              </div>
+            </div>
+
+            {/* Right panel */}
+            <div className="flex-1" style={{ backgroundColor: selectedId === ALL_VIEW_ID ? "white" : "rgba(0,0,0,0.02)" }}>
+              {selectedId === ALL_VIEW_ID
+                ? <AllNewslettersInbox />
+                : selectedSeries
+                ? <SeriesDetail series={selectedSeries} />
+                : (
+                  <div className="flex items-center justify-center h-full">
+                    <p className="text-[13px] text-muted-foreground">Select a series to view editions</p>
+                  </div>
+                )
+              }
+            </div>
+          </div>
+        )}
+
+        {/* ── Recipient Lists tab ── */}
+        {activeTab === "recipients" && (
+          <div className="bg-white">
+            <RecipientsPlaceholder />
+          </div>
+        )}
+
       </main>
     </div>
   );

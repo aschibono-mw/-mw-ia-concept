@@ -148,7 +148,7 @@ const Monitor = () => {
         <div className="px-6 pt-6">
           {/* Page Header */}
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold text-foreground mb-1">
+            <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
               Track real-time media mentions
             </h1>
             <p className="text-sm text-muted-foreground">

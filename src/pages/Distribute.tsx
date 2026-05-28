@@ -274,7 +274,7 @@ const Distribute = () => {
           <div className="w-full max-w-[1100px]">
             {/* Page Header */}
             <div className="mb-6">
-              <h1 className="text-2xl font-semibold text-foreground mb-2">
+              <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
                 Keep stakeholders informed
               </h1>
               <p className="text-sm text-muted-foreground">

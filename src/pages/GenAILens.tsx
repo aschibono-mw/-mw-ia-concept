@@ -219,7 +219,7 @@ const kpiCards = [
   },
 ];
 
-const TABS = ["Overview", "Trends", "Benchmarking", "Sentiment", "Sources", "Prompt"];
+const TABS = ["Overview", "Trends", "Benchmarking", "Sentiment", "Sources", "Settings"];
 
 // ── Main page ───────────────────────────────────────────────────────────────
 const GenAILens = () => {
@@ -236,8 +236,41 @@ const GenAILens = () => {
       <main className="ml-52 pt-16">
         <div className="p-5">
 
+          {/* ── Page title ── */}
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">See how AI models talk about your brand</h1>
+              <p className="text-sm text-muted-foreground">Monitor brand visibility, sentiment, and mentions across leading AI models and prompts.</p>
+            </div>
+            <Button
+              size="sm"
+              className="gap-1.5 text-sm text-white shrink-0 mt-1"
+              style={{ backgroundColor: "#00827F", border: "none" }}
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Create a prompt
+            </Button>
+          </div>
+
+          {/* ── Tab bar ── */}
+          <div className="flex items-center border-b border-border mb-0 gap-0">
+            {TABS.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-5 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap -mb-px ${
+                  activeTab === tab
+                    ? "border-teal-500 text-foreground"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
           {/* ── Filter bar ── */}
-          <div className="flex items-center gap-2 mb-4 flex-wrap">
+          <div className="flex items-center gap-2 py-3 mb-4 flex-wrap border-b border-border">
             <button className="p-1.5 hover:bg-muted rounded text-muted-foreground hover:text-foreground transition-colors">
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -304,36 +337,6 @@ const GenAILens = () => {
               <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
             </button>
 
-            <div className="flex-1" />
-
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-1.5 text-sm border-dashed text-muted-foreground hover:text-foreground"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              Create a prompt
-            </Button>
-          </div>
-
-          {/* ── Tab bar ── */}
-          <div className="flex items-center border-b border-border mb-5 gap-0">
-            {TABS.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-5 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap -mb-px ${
-                  activeTab === tab
-                    ? "border-teal-500 text-teal-600"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-            <button className="px-3 py-2.5 text-muted-foreground hover:text-foreground -mb-px border-b-2 border-transparent">
-              <ChevronRight className="w-4 h-4" />
-            </button>
           </div>
 
           {/* ── Overview tab content ── */}
