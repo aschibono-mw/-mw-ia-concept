@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ChevronLeft, ChevronRight, Info, Download, Search, MapPin, ChevronDown, Zap } from "lucide-react";
@@ -128,9 +129,14 @@ const SocialTrends = () => {
         <div className="p-5">
 
           {/* ── Page title ── */}
-          <div className="mb-6">
-            <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">Discover what's trending on social</h1>
-            <p className="text-sm text-muted-foreground">Track the top hashtags and tracks across TikTok, X, Instagram, and more.</p>
+          <div className="mb-6 flex items-start justify-between">
+            <div>
+              <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">Discover what's trending on social</h1>
+              <p className="text-sm text-muted-foreground">Track the top hashtags and tracks across TikTok, X, Instagram, and more.</p>
+            </div>
+            <Link to="/social-trends" className="text-xs text-muted-foreground hover:text-foreground underline shrink-0 mt-1">
+              View first time UX
+            </Link>
           </div>
 
           {/* ── Platform tabs ── */}

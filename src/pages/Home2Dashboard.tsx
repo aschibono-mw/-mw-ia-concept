@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import {
@@ -191,6 +192,10 @@ const Home2Dashboard = () => {
                   <h1 className="text-2xl font-bold font-nunito text-foreground">Welcome back John!</h1>
                   <p className="text-sm text-muted-foreground mt-1">Here's what's happening across your searches today.</p>
                 </div>
+                <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                  <Link to="/home2" className="text-xs text-muted-foreground hover:text-foreground underline">
+                    View first time UX
+                  </Link>
                 <div className="flex items-center gap-3 flex-shrink-0">
                   <div className="flex items-center gap-2">
                     <div className="flex flex-col items-end">
@@ -215,6 +220,7 @@ const Home2Dashboard = () => {
                     <Sparkles className="w-3.5 h-3.5" />
                     AI Insight: Tesla Cybercore tech now in media
                   </div>
+                </div>
                 </div>
               </div>
 

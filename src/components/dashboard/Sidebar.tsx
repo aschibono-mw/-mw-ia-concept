@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Home, Compass, BarChart2, Rows3, Mail, Users, Sparkles, Bot, UsersRound, ChevronRight, Bell, FileText, FileStack, BarChart, Zap, Search, Eye } from "lucide-react";
+import { Home, Compass, BarChart2, Rows3, Mail, Users, Sparkles, Bot, UsersRound, ChevronRight, ChevronDown, Bell, FileText, FileStack, BarChart, Zap, Search, Eye, Newspaper } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import meltwaterIcon from "@/assets/meltwater-icon.svg";
@@ -11,19 +11,19 @@ interface NavItem {
   path: string;
   id: string;
   tip: string;
+  chevron?: boolean;
 }
 
 const topNavItems: NavItem[] = [
-  { icon: <Home className="w-5 h-5" />, label: "Home", path: "/home2", id: "home2", tip: "Your overview dashboard" },
+  { icon: <Home className="w-5 h-5" />, label: "Home", path: "/home2-dashboard", id: "home2", tip: "Your overview dashboard" },
 ];
 
 const mainNavItems: NavItem[] = [
-  { icon: <Search className="w-5 h-5" />,  label: "Search",   path: "/discover",     id: "discover",     tip: "Find and save searches across 300,000+ sources" },
-  { icon: <Search className="w-5 h-5" />,  label: "Search+",  path: "/search-plus",  id: "search-plus",  tip: "Advanced search with analytics, discovery, and comparison" },
-  { icon: <Rows3 className="w-5 h-5" />,   label: "Monitor",  path: "/monitor",      id: "monitor",      tip: "Track coverage in real-time streams"           },
-  { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze", path: "/analyze",  id: "analyze",  tip: "Dashboards and performance insights"            },
-  { icon: <Zap className="w-5 h-5" />,     label: "Execute",  path: "/execute",  id: "execute",  tip: "AI-recommended next actions"                    },
-  { icon: <Users className="w-5 h-5" />,   label: "Outreach", path: "/outreach", id: "outreach", tip: "Pitch and manage media contacts"                },
+  { icon: <Search className="w-5 h-5" />,  label: "Search",   path: "/search",            id: "discover",     tip: "Find and save searches across 300,000+ sources", chevron: true },
+  { icon: <Rows3 className="w-5 h-5" />,   label: "Monitor",  path: "/monitor-streams",   id: "monitor",      tip: "Track coverage in real-time streams", chevron: true },
+  { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze", path: "/analyze-dashboard", id: "analyze",  tip: "Dashboards and performance insights"            },
+  { icon: <Zap className="w-5 h-5" />,     label: "Execute",  path: "/execute",           id: "execute",  tip: "AI-recommended next actions"                    },
+  { icon: <Users className="w-5 h-5" />,   label: "Outreach", path: "/outreach-campaigns", id: "outreach", tip: "Pitch and manage media contacts", chevron: true },
 ];
 
 interface PromoCard {
@@ -127,7 +127,8 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
             <li key={item.label}>
               <NavLink to={item.path} activePage={activePage} id={item.id} tip={item.tip}>
                 {item.icon}
-                {item.label}
+                <span className="flex-1">{item.label}</span>
+                {item.chevron && <ChevronDown className="w-3.5 h-3.5 text-muted-foreground ml-auto" />}
               </NavLink>
             </li>
           ))}
@@ -161,21 +162,21 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              to="/reports"
+              to="/author-segments"
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                activePage === "reports"
+                activePage === "author-segments"
                   ? "text-foreground bg-sidebar-accent"
                   : "text-sidebar-foreground hover:bg-sidebar-accent/50"
               )}
             >
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center shrink-0">
-                <BarChart className="w-3 h-3 text-white" />
+              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center shrink-0">
+                <Users className="w-3 h-3 text-white" />
               </div>
-              Reports
+              Author Segments
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right" className="z-[9999]">Shareable reports for stakeholders</TooltipContent>
+          <TooltipContent side="right" className="z-[9999]">Segment and target authors by beat, reach, and sentiment</TooltipContent>
         </Tooltip>
 
         {/* Divider */}
@@ -186,7 +187,7 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              to="/genai-lens"
+              to="/genai-lens-explore"
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 activePage === "genai-lens"
@@ -206,7 +207,7 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              to="/social-trends"
+              to="/social-trends-explore"
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 activePage === "social-trends"
@@ -222,53 +223,6 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
           </TooltipTrigger>
           <TooltipContent side="right" className="z-[9999]">Trending topics and social signals</TooltipContent>
         </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to="https://klear.com/creators/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                activePage === "klear"
-                  ? "text-foreground bg-sidebar-accent"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-              )}
-            >
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center shrink-0">
-                <Users className="w-3 h-3 text-white" />
-              </div>
-              Klear
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="z-[9999]">Influencer discovery and management</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to="https://oauth.linkfluence.com/sso/pre-login?clientId=lCASlzEBUSoEdBWGfyAhfyQOMInIOy&redirect=https%3A%2F%2Fradarly.linkfluence.com%2Fsso%2Fredirect%3Fredirect%3Dhttps%253A%252F%252Fradarly.linkfluence.com%252Flogin"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                activePage === "radarly"
-                  ? "text-foreground bg-sidebar-accent"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-              )}
-            >
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shrink-0">
-                <Eye className="w-3 h-3 text-white" />
-              </div>
-              Radarly
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="z-[9999]">Social listening and audience intelligence</TooltipContent>
-        </Tooltip>
-
-        {/* Divider */}
-        <div className="mx-3 my-3 border-t border-sidebar-border" />
 
         <Tooltip>
           <TooltipTrigger asChild>

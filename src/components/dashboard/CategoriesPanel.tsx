@@ -52,9 +52,10 @@ export const CategoriesPanel = ({ categories, onAddCategory }: CategoriesPanelPr
         <ul className="space-y-2 pr-3">
           {categories.map((category) => (
             <li key={category.name}>
-              <button className="flex items-center gap-2 text-sm text-foreground hover:text-primary cursor-pointer">
+              <button className="flex items-center gap-2 text-sm text-foreground hover:text-primary cursor-pointer w-full min-w-0">
                 <Folder className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                <span className="underline">{category.name} ({category.count})</span>
+                <span className="underline truncate">{category.name}</span>
+                <span className="text-muted-foreground flex-shrink-0">({category.count})</span>
               </button>
             </li>
           ))}

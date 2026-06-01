@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, AlertCircle, ShieldCheck, LogOut, Building2, UserCircle, FolderOpen, Users, FileStack, Rows3, Send, ChevronRight, ChevronLeft, Check, FolderKanban } from "lucide-react";
+import { Search, Wand2, LayoutGrid, Bell, HelpCircle, User, ChevronDown, FileText, Mail, AlertCircle, ShieldCheck, LogOut, Building2, UserCircle, FolderOpen, Users, FileStack, Rows3, Send, ChevronRight, ChevronLeft, Check, FolderKanban, Grid2x2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "./SearchBar";
 import {
@@ -34,6 +34,14 @@ const pageTitles: Record<string, string> = {
   "/": "Meltwater",
   "/home2": "Home",
   "/discover": "Search",
+  "/search": "Search",
+  "/home2-dashboard": "Home",
+  "/monitor-streams": "Monitor",
+  "/analyze-dashboard": "Analyze",
+  "/outreach-campaigns": "Outreach",
+  "/genai-lens-explore": "GenAI Lens",
+  "/social-trends-explore": "Social Trends",
+  "/reports-library": "Reports",
   "/search-plus": "Search+",
   "/search-plus-hub": "Search+",
   "/monitor": "Monitor",
@@ -83,7 +91,12 @@ export const Header = () => {
   const [workspaceSearch, setWorkspaceSearch] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-  const pageTitle = pageTitles[location.pathname] || "Meltwater";
+  const pageTitle = pageTitles[location.pathname] ||
+    (location.pathname.startsWith("/search-detail/")
+      ? decodeURIComponent(location.pathname.replace("/search-detail/", ""))
+      : location.pathname.startsWith("/analyze-detail/")
+      ? decodeURIComponent(location.pathname.replace("/analyze-detail/", ""))
+      : "Meltwater");
 
   const activeAccount = accounts.find((a) => a.id === activeAccountId)!;
   const filteredAccounts = accounts.filter((a) =>
@@ -303,6 +316,52 @@ export const Header = () => {
                 </Tabs>
               </DropdownMenuContent>
           </DropdownMenu>
+          {/* More from Meltwater */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
+                <Grid2x2 className="w-5 h-5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-72 bg-card p-4">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">More from Meltwater</p>
+              <a
+                href="https://klear.com/creators/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors mb-2 block"
+              >
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "rgba(0,130,127,0.10)" }}>
+                  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#00827F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Klear</p>
+                  <p className="text-xs text-muted-foreground leading-snug">Build, scale and measure influencer marketing campaigns</p>
+                </div>
+              </a>
+              <a
+                href="https://oauth.linkfluence.com/sso/pre-login?clientId=lCASlzEBUSoEdBWGfyAhfyQOMInIOy&redirect=https%3A%2F%2Fradarly.linkfluence.com%2Fsso%2Fredirect%3Fredirect%3Dhttps%253A%252F%252Fradarly.linkfluence.com%252Flogin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors block"
+              >
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "rgba(0,130,127,0.10)" }}>
+                  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none">
+                    <circle cx="12" cy="12" r="3" stroke="#00827F" strokeWidth="2"/>
+                    <path d="M2 12h3M19 12h3M12 2v3M12 19v3" stroke="#00827F" strokeWidth="2" strokeLinecap="round"/>
+                    <path d="M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" stroke="#00827F" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Radarly</p>
+                  <p className="text-xs text-muted-foreground leading-snug">Conduct real-time consumer research with AI-enabled insights</p>
+                </div>
+              </a>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <button className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-gray-100 transition-colors">
             <HelpCircle className="w-5 h-5" />
           </button>

@@ -1595,7 +1595,7 @@ function RecipientsPlaceholder() {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 const Newsletters = () => {
-  const [onboarded, setOnboarded]   = useState(false);
+  const [onboarded, setOnboarded]   = useState(true);
   const [selectedId, setSelectedId] = useState(ALL_VIEW_ID);
   const [search, setSearch]         = useState("");
   const [activeTab, setActiveTab]   = useState<"newsletters" | "recipients">("newsletters");
@@ -1633,12 +1633,20 @@ const Newsletters = () => {
                 Build series powered by your searches. Mira curates each edition automatically.
               </p>
             </div>
-            <button
-              className="flex items-center gap-2 text-white font-semibold text-[13px] rounded-lg px-4 py-2 mt-1 flex-shrink-0"
-              style={{ backgroundColor: TEAL }}
-            >
-              <Plus className="w-3.5 h-3.5" /> New Newsletter Series
-            </button>
+            <div className="flex flex-col items-end gap-2">
+              <button
+                onClick={() => setOnboarded(false)}
+                className="text-xs text-muted-foreground hover:text-foreground underline"
+              >
+                View first time UX
+              </button>
+              <button
+                className="flex items-center gap-2 text-white font-semibold text-[13px] rounded-lg px-4 py-2 flex-shrink-0"
+                style={{ backgroundColor: TEAL }}
+              >
+                <Plus className="w-3.5 h-3.5" /> New Newsletter Series
+              </button>
+            </div>
           </div>
 
           {/* Tab nav */}

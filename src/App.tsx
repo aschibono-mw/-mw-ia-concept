@@ -33,6 +33,11 @@ import SocialTrendsLanding from "./pages/SocialTrendsLanding.tsx";
 import ReportsLanding from "./pages/ReportsLanding.tsx";
 import Home2 from "./pages/Home2.tsx";
 import Home2Dashboard from "./pages/Home2Dashboard.tsx";
+import SearchDetail from "./pages/SearchDetail.tsx";
+import AnalyzeDetail from "./pages/AnalyzeDetail.tsx";
+import AuthorSegments from "./pages/AuthorSegments.tsx";
+import AuthorSegmentsLanding from "./pages/AuthorSegmentsLanding.tsx";
+import AuthorSegmentsDetail from "./pages/AuthorSegmentsDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -44,7 +49,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/home2" replace />} />
+          <Route path="/" element={<Navigate to="/home2-dashboard" replace />} />
           <Route path="/old-home" element={<Index />} />
           <Route path="/home2" element={<Home2 />} />
           <Route path="/home2-dashboard" element={<Home2Dashboard />} />
@@ -73,6 +78,11 @@ const App = () => (
           <Route path="/social-trends-explore" element={<SocialTrends />} />
           <Route path="/social-accounts" element={<SocialAccounts />} />
           <Route path="/search" element={<Discover />} />
+          <Route path="/search-detail/:name" element={<SearchDetail />} />
+          <Route path="/analyze-detail/:name" element={<AnalyzeDetail />} />
+          <Route path="/author-segments" element={<AuthorSegments />} />
+          <Route path="/author-segments-landing" element={<AuthorSegmentsLanding />} />
+          <Route path="/author-segments-detail/:name" element={<AuthorSegmentsDetail />} />
           <Route path="/monitor-landing" element={<MonitorLanding />} />
           <Route path="/execute" element={<ExecuteLanding />} />
           <Route path="/outreach-landing" element={<OutreachLanding />} />

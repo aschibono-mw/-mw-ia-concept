@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { BarChart2, SlidersHorizontal, Compass, GitCompare } from "lucide-react";
@@ -50,13 +51,18 @@ export default function SearchPlusHub() {
         <div className="px-8 pt-6">
 
           {/* Page header */}
-          <div className="mb-0">
-            <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
-              Explore media coverage in one place
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Build searches across news, social, and online sources.
-            </p>
+          <div className="mb-0 flex items-start justify-between">
+            <div>
+              <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
+                Explore media coverage in one place
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Build searches across news, social, and online sources.
+              </p>
+            </div>
+            <Link to="/search-plus" className="text-xs text-muted-foreground hover:text-foreground underline shrink-0 mt-1">
+              View first time UX
+            </Link>
           </div>
 
           {/* Tab nav */}

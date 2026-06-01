@@ -20,7 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
@@ -147,13 +147,18 @@ const Monitor = () => {
       <main className="ml-52 pt-16">
         <div className="px-6 pt-6">
           {/* Page Header */}
-          <div className="mb-6">
-            <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
-              Track real-time media mentions
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Monitor your searches in customizable streams, or set up alerts to stay informed.
-            </p>
+          <div className="mb-6 flex items-start justify-between">
+            <div>
+              <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
+                Track real-time media mentions
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Monitor your searches in customizable streams, or set up alerts to stay informed.
+              </p>
+            </div>
+            <Link to="/monitor-landing" className="text-xs text-muted-foreground hover:text-foreground underline shrink-0 mt-1">
+              View first time UX
+            </Link>
           </div>
 
           {/* Canvas Tabs */}

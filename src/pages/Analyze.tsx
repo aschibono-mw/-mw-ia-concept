@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link as RouterLink } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
@@ -48,7 +48,7 @@ interface DashboardItem {
 const allDashboardItems: DashboardItem[] = [
   { id: 1, name: "Executive Visibility Report", category: "Leadership", lastEdited: "3 hrs ago", owner: "Rachel Wu", starred: true, insight: "CEO mentions: Up 34% this week", insightIcon: TrendingUp },
   { id: 2, name: "Brand Health Dashboard", category: "Brand", lastEdited: "7 hrs ago", owner: "Sophia Patel", starred: true, insight: "Sentiment: 72% positive", insightIcon: ThumbsUp },
-  { id: 3, name: "Competitor Benchmark", category: "Competition", lastEdited: "Yesterday", owner: "Tom Nguyen", starred: true, insight: "Share of voice: 28% (+3%)", insightIcon: PieChart },
+  { id: 3, name: "Competitor Benchmark", category: "Competitive Analysis", lastEdited: "Yesterday", owner: "Tom Nguyen", starred: true, insight: "Share of voice: 28% (+3%)", insightIcon: PieChart },
   { id: 4, name: "Audience Insights", category: "Audience", lastEdited: "2 days ago", owner: "David Kim", starred: false, insight: "18-34 segment: Engagement +12%", insightIcon: Users },
   { id: 5, name: "Campaign Performance", category: "Brand", lastEdited: "2 days ago", owner: "Alex Morgan", starred: false, insight: "Impressions: 1.2M, CTR 3.4%", insightIcon: Eye },
   { id: 6, name: "Crisis Monitor", category: "Crisis", lastEdited: "2 days ago", owner: "Rachel Wu", starred: false, insight: "Status: No active alerts", insightIcon: ShieldCheck },
@@ -65,6 +65,7 @@ const initialCategories: CategoryItem[] = [
   { name: "Brand", count: 24 },
   { name: "Market", count: 20 },
   { name: "Competition", count: 17 },
+  { name: "Competitive Analysis", count: 1 },
   { name: "Audience", count: 13 },
   { name: "Social", count: 12 },
   { name: "Leadership", count: 10 },
@@ -222,6 +223,7 @@ const Analyze = () => {
   }, [searchQuery]);
 
   const DashboardCard = ({ item }: { item: DashboardItem }) => (
+    <RouterLink to={`/analyze-detail/${encodeURIComponent(item.name)}`} className="block">
     <Card className="hover:border-primary transition-colors cursor-pointer group">
       <CardContent className="p-4">
         <div className="flex items-start gap-3 mb-2">
@@ -289,6 +291,7 @@ const Analyze = () => {
         </div>
       </CardContent>
     </Card>
+    </RouterLink>
   );
 
   return (
@@ -309,10 +312,15 @@ const Analyze = () => {
                   Build dashboards from your searches and social accounts, or add always-on intelligence.
                 </p>
               </div>
-              <Button onClick={() => setIsTemplateDrawerOpen(true)} className="gap-2">
-                <Plus className="w-4 h-4" />
-                Create Dashboard
-              </Button>
+              <div className="flex flex-col items-end gap-2">
+                <RouterLink to="/analyze" className="text-xs text-muted-foreground hover:text-foreground underline">
+                  View first time UX
+                </RouterLink>
+                <Button onClick={() => setIsTemplateDrawerOpen(true)} className="gap-2">
+                  <Plus className="w-4 h-4" />
+                  Create Dashboard
+                </Button>
+              </div>
             </div>
 
 

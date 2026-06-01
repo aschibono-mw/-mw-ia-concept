@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
@@ -141,10 +142,15 @@ const Reports = () => {
                 Reports generated across Meltwater — from Monitor, Analyze, GenAI Lens, and more — all land here.
               </p>
             </div>
-            <Button className="gap-2 shrink-0 mt-1">
-              <FileText className="w-4 h-4" />
-              Generate report
-            </Button>
+            <div className="flex flex-col items-end gap-2">
+              <Link to="/reports" className="text-xs text-muted-foreground hover:text-foreground underline">
+                View first time UX
+              </Link>
+              <Button className="gap-2 shrink-0">
+                <FileText className="w-4 h-4" />
+                Generate report
+              </Button>
+            </div>
           </div>
 
           {/* Tab nav */}

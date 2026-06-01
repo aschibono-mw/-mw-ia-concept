@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link as RouterLink } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { AISearchBuilder } from "@/components/discover/AISearchBuilder";
@@ -43,7 +43,7 @@ interface SearchItem {
 const allSearchItems: SearchItem[] = [
   { id: 1, name: "Adidas", category: "Brand", lastEdited: "3 hrs ago", owner: "Rachel Wu", starred: true },
   { id: 2, name: "Nike", category: "Brand", lastEdited: "7 hrs ago", owner: "Sophia Patel", starred: true },
-  { id: 3, name: "Tesla", category: "Competition", lastEdited: "Yesterday", owner: "Tom Nguyen", starred: true },
+  { id: 3, name: "Tesla", category: "American Competitors", lastEdited: "Yesterday", owner: "Tom Nguyen", starred: true },
   { id: 4, name: "Google Meet", category: "Product", lastEdited: "2 days ago", owner: "David Kim", starred: true },
   { id: 5, name: "Google Translate", category: "Product", lastEdited: "2 days ago", owner: "Alex Morgan", starred: true },
   { id: 6, name: "Dodge", category: "Competition", lastEdited: "2 days ago", owner: "Alex Morgan", starred: true },
@@ -77,6 +77,7 @@ const initialCategories: CategoryItem[] = [
   { name: "Brand", count: 24 },
   { name: "Market", count: 20 },
   { name: "Competition", count: 17 },
+  { name: "American Competitors", count: 1 },
   { name: "Social", count: 12 },
   { name: "Leadership", count: 10 },
   { name: "Finance", count: 5 },
@@ -188,13 +189,18 @@ const Discover = () => {
         <div className="p-6 flex flex-col items-center">
           <div className="w-full max-w-[1100px]">
             {/* Page Header */}
-            <div className="mb-6">
-              <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
-                Explore media coverage in one place
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Build searches across news, social, and online sources.
-              </p>
+            <div className="mb-6 flex items-start justify-between">
+              <div>
+                <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
+                  Explore media coverage in one place
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  Build searches across news, social, and online sources.
+                </p>
+              </div>
+              <RouterLink to="/search-landing" className="text-xs text-muted-foreground hover:text-foreground underline shrink-0 mt-1">
+                View first time UX
+              </RouterLink>
             </div>
 
             {/* Tab nav */}
@@ -300,9 +306,9 @@ const Discover = () => {
                         <td className="p-4">
                           <div className="flex items-center gap-2">
                             <Search className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm font-medium text-foreground underline cursor-pointer hover:text-primary">
+                            <RouterLink to={`/search-detail/${encodeURIComponent(item.name)}`} className="text-sm font-medium text-foreground underline cursor-pointer hover:text-primary">
                               {item.name}
-                            </span>
+                            </RouterLink>
                           </div>
                         </td>
                         <td className="p-4">

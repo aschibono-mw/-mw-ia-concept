@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
@@ -249,13 +250,18 @@ const Outreach = () => {
         <div className="p-6 flex flex-col items-center">
           <div className="w-full max-w-[1100px]">
             {/* Page Header */}
-            <div className="mb-6">
-              <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
-                Manage your PR Outreach
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Create pitches, discover journalists and outlets, and track engagement across your outreach.
-              </p>
+            <div className="mb-6 flex items-start justify-between">
+              <div>
+                <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
+                  Manage your PR Outreach
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  Create pitches, discover journalists and outlets, and track engagement across your outreach.
+                </p>
+              </div>
+              <Link to="/outreach-landing" className="text-xs text-muted-foreground hover:text-foreground underline shrink-0 mt-1">
+                View first time UX
+              </Link>
             </div>
 
             {/* Tabbed Interface */}

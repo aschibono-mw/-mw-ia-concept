@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import {
@@ -242,14 +243,19 @@ const GenAILens = () => {
               <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">See how AI models talk about your brand</h1>
               <p className="text-sm text-muted-foreground">Monitor brand visibility, sentiment, and mentions across leading AI models and prompts.</p>
             </div>
-            <Button
-              size="sm"
-              className="gap-1.5 text-sm text-white shrink-0 mt-1"
-              style={{ backgroundColor: "#00827F", border: "none" }}
-            >
-              <Plus className="w-3.5 h-3.5" />
-              Create a prompt
-            </Button>
+            <div className="flex flex-col items-end gap-2">
+              <Link to="/genai-lens" className="text-xs text-muted-foreground hover:text-foreground underline">
+                View first time UX
+              </Link>
+              <Button
+                size="sm"
+                className="gap-1.5 text-sm text-white shrink-0"
+                style={{ backgroundColor: "#00827F", border: "none" }}
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Create a prompt
+              </Button>
+            </div>
           </div>
 
           {/* ── Tab bar ── */}
