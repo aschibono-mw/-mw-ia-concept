@@ -79,8 +79,10 @@ export default function AuthorSegments() {
       <Sidebar activePage="author-segments" />
       <Header />
 
-      <main className="ml-52 pt-16">
-        <div className="p-6 max-w-5xl mx-auto">
+      <main className="ml-52 pt-16 bg-white">
+        <div className="px-8 pt-8 pb-10">
+          <div className="rounded-[28px] px-8 pt-6 pb-8 w-full" style={{ backgroundColor: "#F2F5F5" }}>
+          <div className="w-full max-w-[1100px] mx-auto">
 
           {/* Page header */}
           <div className="mb-6 flex items-start justify-between">
@@ -227,6 +229,8 @@ export default function AuthorSegments() {
             </div>
           </div>
 
+          </div>
+          </div>
         </div>
       </main>
     </div>

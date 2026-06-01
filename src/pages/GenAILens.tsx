@@ -234,8 +234,10 @@ const GenAILens = () => {
       <Sidebar activePage="genai-lens" />
       <Header />
 
-      <main className="ml-52 pt-16">
-        <div className="p-5">
+      <main className="ml-52 pt-16 bg-white">
+        <div className="px-8 pt-8 pb-10">
+          <div className="rounded-[28px] px-8 pt-6 pb-8 w-full" style={{ backgroundColor: "#F2F5F5" }}>
+          <div className="w-full max-w-[1100px] mx-auto">
 
           {/* ── Page title ── */}
           <div className="flex items-start justify-between mb-6">
@@ -563,6 +565,8 @@ const GenAILens = () => {
             </div>
           )}
 
+          </div>
+          </div>
         </div>
       </main>
     </div>
