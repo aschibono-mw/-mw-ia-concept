@@ -19,11 +19,11 @@ const topNavItems: NavItem[] = [
 ];
 
 const mainNavItems: NavItem[] = [
-  { icon: <Search className="w-5 h-5" />,  label: "Search",   path: "/search",            id: "discover",     tip: "Find and save searches across 300,000+ sources", chevron: true },
-  { icon: <Rows3 className="w-5 h-5" />,   label: "Monitor",  path: "/monitor-streams",   id: "monitor",      tip: "Track coverage in real-time streams", chevron: true },
+  { icon: <Search className="w-5 h-5" />,  label: "Search",   path: "/search",            id: "discover",     tip: "Find and save searches across 300,000+ sources" },
+  { icon: <Rows3 className="w-5 h-5" />,   label: "Monitor",  path: "/monitor-streams",   id: "monitor",      tip: "Track coverage in real-time streams" },
   { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze", path: "/analyze-dashboard", id: "analyze",  tip: "Dashboards and performance insights"            },
   { icon: <Zap className="w-5 h-5" />,     label: "Execute",  path: "/execute",           id: "execute",  tip: "AI-recommended next actions"                    },
-  { icon: <Users className="w-5 h-5" />,   label: "Outreach", path: "/outreach-campaigns", id: "outreach", tip: "Pitch and manage media contacts", chevron: true },
+  { icon: <Users className="w-5 h-5" />,   label: "Outreach", path: "/outreach-campaigns", id: "outreach", tip: "Pitch and manage media contacts" },
 ];
 
 interface PromoCard {
