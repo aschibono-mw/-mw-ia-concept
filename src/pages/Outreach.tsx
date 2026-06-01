@@ -592,7 +592,6 @@ const Outreach = () => {
             </Tabs>
           </div>
           </div>
-          </div>
         </div>
       </main>
 
