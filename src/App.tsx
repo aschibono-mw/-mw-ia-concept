@@ -54,7 +54,7 @@ const App = () => (
           <Route path="/home2" element={<Home2 />} />
           <Route path="/home2-dashboard" element={<Home2Dashboard />} />
           <Route path="/discover" element={<SearchLanding />} />
-          <Route path="/search-plus" element={<SearchPlus />} />
+          <Route path="/search-plus" element={<SearchPlusHub />} />
           <Route path="/search-plus-hub" element={<SearchPlusHub />} />
           <Route path="/search-landing" element={<SearchLanding />} />
           <Route path="/analyze" element={<AnalyzeLanding />} />

@@ -33,8 +33,8 @@ const createMenuItems = [
 const pageTitles: Record<string, string> = {
   "/": "Meltwater",
   "/home2": "Home",
-  "/discover": "Search",
-  "/search": "Search",
+  "/discover": "Explore",
+  "/search": "Explore",
   "/home2-dashboard": "Home",
   "/monitor-streams": "Monitor",
   "/analyze-dashboard": "Analyze",
@@ -42,8 +42,8 @@ const pageTitles: Record<string, string> = {
   "/genai-lens-explore": "GenAI Lens",
   "/social-trends-explore": "Social Trends",
   "/reports-library": "Reports",
-  "/search-plus": "Search+",
-  "/search-plus-hub": "Search+",
+  "/search-plus": "Explore+",
+  "/search-plus-hub": "Explore+",
   "/monitor": "Monitor",
   "/analyze": "Analyze",
   "/distribute": "Newsletters",
@@ -58,7 +58,8 @@ const pageTitles: Record<string, string> = {
   "/account": "Account",
   "/genai-lens": "GenAI Lens",
   "/social-trends": "Social Trends",
-  "/execute": "Execute",
+  "/execute": "Engage",
+  "/engage":"Execute",
   "/outreach": "Outreach",
 };
 
@@ -434,13 +435,9 @@ export const Header = () => {
                     <Building2 className="w-4 h-4 mr-2" />
                     Account Settings
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/reports")}>
-                    <FileText className="w-4 h-4 mr-2" />
-                    Reports
-                  </DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/content-manager")}>
                     <FileStack className="w-4 h-4 mr-2" />
-                    Assets Manager
+                    Assets & Exports
                   </DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/projects-manager")}>
                     <FolderKanban className="w-4 h-4 mr-2" />

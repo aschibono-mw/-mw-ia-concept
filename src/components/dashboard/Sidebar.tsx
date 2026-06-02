@@ -19,11 +19,11 @@ const topNavItems: NavItem[] = [
 ];
 
 const mainNavItems: NavItem[] = [
-  { icon: <Search className="w-5 h-5" />,  label: "Search",   path: "/search",            id: "discover",     tip: "Find and save searches across 300,000+ sources" },
-  { icon: <Rows3 className="w-5 h-5" />,   label: "Monitor",  path: "/monitor-streams",   id: "monitor",      tip: "Track coverage in real-time streams" },
+  { icon: <Search className="w-5 h-5" />,  label: "Explore",   path: "/search",            id: "discover",     tip: "Find and save searches across 300,000+ sources", chevron: true },
+  { icon: <Rows3 className="w-5 h-5" />,   label: "Monitor",  path: "/monitor-streams",   id: "monitor",      tip: "Track coverage in real-time streams", chevron: true },
   { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze", path: "/analyze-dashboard", id: "analyze",  tip: "Dashboards and performance insights"            },
-  { icon: <Zap className="w-5 h-5" />,     label: "Execute",  path: "/execute",           id: "execute",  tip: "AI-recommended next actions"                    },
-  { icon: <Users className="w-5 h-5" />,   label: "Outreach", path: "/outreach-campaigns", id: "outreach", tip: "Pitch and manage media contacts" },
+  { icon: <Users className="w-5 h-5" />,   label: "Media Relations", path: "/outreach-campaigns", id: "outreach", tip: "Pitch and manage media contacts", chevron: true },
+  { icon: <Zap className="w-5 h-5" />,     label: "Engage",  path: "/execute",           id: "engage",   tip: "AI-recommended next actions"                    },
 ];
 
 interface PromoCard {
@@ -118,10 +118,6 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
           ))}
         </ul>
 
-        <div className="mx-3 my-2 border-t border-sidebar-border" />
-
-        <p className="px-3 mb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">Workflow</p>
-
         <ul className="space-y-1">
           {mainNavItems.map((item) => (
             <li key={item.label}>
@@ -134,11 +130,6 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
           ))}
         </ul>
 
-        {/* Divider */}
-        <div className="mx-3 my-3 border-t border-sidebar-border" />
-
-        <p className="px-3 mb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">Tools</p>
-
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
@@ -150,33 +141,11 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
                   : "text-sidebar-foreground hover:bg-sidebar-accent/50"
               )}
             >
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center shrink-0">
-                <Mail className="w-3 h-3 text-white" />
-              </div>
+              <Mail className="w-5 h-5" />
               Newsletters
             </Link>
           </TooltipTrigger>
           <TooltipContent side="right" className="z-[9999]">Design and send branded email newsletters</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to="/author-segments"
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                activePage === "author-segments"
-                  ? "text-foreground bg-sidebar-accent"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-              )}
-            >
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center shrink-0">
-                <Users className="w-3 h-3 text-white" />
-              </div>
-              Author Segments
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="z-[9999]">Segment and target authors by beat, reach, and sentiment</TooltipContent>
         </Tooltip>
 
         {/* Divider */}
@@ -238,7 +207,7 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
               <div className="w-5 h-5 rounded-full bg-gradient-to-br from-purple-500 to-primary flex items-center justify-center shrink-0">
                 <img src={meltwaterIcon} alt="Mira" className="w-3 h-3 brightness-0 invert" />
               </div>
-              Ask Mira
+              Mira Studio
             </Link>
           </TooltipTrigger>
           <TooltipContent side="right" className="z-[9999]">Your AI assistant for smarter media analysis</TooltipContent>

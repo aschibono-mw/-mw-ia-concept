@@ -20,6 +20,7 @@ const TABS = [
   { value: "labels", label: "Labels" },
   { value: "newsfeeds", label: "Newsfeeds" },
   { value: "sources", label: "Sources" },
+  { value: "exports", label: "Exports" },
 ];
 
 const ContentManager = () => {

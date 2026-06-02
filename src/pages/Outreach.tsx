@@ -246,10 +246,9 @@ const Outreach = () => {
       <Sidebar activePage="outreach" />
       <Header />
       
-      <main className="ml-52 pt-16 bg-white">
-        <div className="px-8 pt-8 pb-10">
-          <div className="rounded-[28px] px-8 pt-6 pb-8 w-full" style={{ backgroundColor: "#F2F5F5" }}>
-          <div className="w-full max-w-[1100px] mx-auto">
+      <main className="ml-52 pt-16">
+        <div className="p-6 flex flex-col items-center">
+          <div className="w-full max-w-[1100px]">
             {/* Page Header */}
             <div className="mb-6 flex items-start justify-between">
               <div>
@@ -277,7 +276,7 @@ const Outreach = () => {
                           className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground flex items-center gap-2"
                         >
                           <Send className="w-4 h-4" />
-                          Pitches
+                          Outreach
                         </TabsTrigger>
                       </span>
                     </TooltipTrigger>
@@ -590,7 +589,6 @@ const Outreach = () => {
                 </div>
               </TabsContent>
             </Tabs>
-          </div>
           </div>
         </div>
       </main>

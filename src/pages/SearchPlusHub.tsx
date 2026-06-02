@@ -2,16 +2,16 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { BarChart2, SlidersHorizontal, Compass, GitCompare } from "lucide-react";
+import { BarChart2, SlidersHorizontal, Compass, GitCompare, Users } from "lucide-react";
 
-const PURPLE = "#B627A1";
+const PURPLE = "#00827F";
 
 const SECTIONS = [
   {
     id: "searches",
-    label: "Searches & Filters",
+    label: "Searches",
     Icon: SlidersHorizontal,
-    title: "Searches & Filters",
+    title: "Searches",
     description: "Manage your saved searches, boolean logic, source filters, and language rules in one place.",
   },
   {
@@ -35,9 +35,16 @@ const SECTIONS = [
     title: "Compare",
     description: "Side-by-side comparison of searches, competitors, or time periods to spot what's changed.",
   },
+  {
+    id: "audience-segments",
+    label: "Audience Segments",
+    Icon: Users,
+    title: "Audience Segments",
+    description: "Discover and analyze the audiences engaging with your searches — understand who's talking and how to reach them.",
+  },
 ];
 
-export default function SearchPlusHub() {
+export default function SearchesPlusHub() {
   const [activeSection, setActiveSection] = useState("searches");
 
   const active = SECTIONS.find(s => s.id === activeSection)!;

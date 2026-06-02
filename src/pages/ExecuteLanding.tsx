@@ -1,32 +1,104 @@
+import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { Zap } from "lucide-react";
+import { MessageSquare, Send, Image, BarChart2, Megaphone } from "lucide-react";
 
 const TEAL = "#00827F";
 
+const SECTIONS = [
+  {
+    id: "conversations",
+    label: "Conversations",
+    Icon: MessageSquare,
+    title: "Conversations",
+    description: "Monitor and join conversations happening around your brand across social and news channels.",
+  },
+  {
+    id: "publish",
+    label: "Publish",
+    Icon: Send,
+    title: "Publish",
+    description: "Schedule and publish content across your social channels from one place.",
+  },
+  {
+    id: "asset-library",
+    label: "Asset Library",
+    Icon: Image,
+    title: "Asset Library",
+    description: "Manage your brand assets, images, and creative files for use across campaigns.",
+  },
+  {
+    id: "measure",
+    label: "Measure",
+    Icon: BarChart2,
+    title: "Measure",
+    description: "Track the performance of your published content and social engagement over time.",
+  },
+  {
+    id: "advertise",
+    label: "Advertise",
+    Icon: Megaphone,
+    title: "Advertise",
+    description: "Amplify your top-performing content and reach new audiences with paid promotion.",
+    beta: true,
+  },
+];
+
 const ExecuteLanding = () => {
+  const [activeSection, setActiveSection] = useState("conversations");
+  const active = SECTIONS.find(s => s.id === activeSection)!;
+
   return (
     <div className="min-h-screen bg-background">
-      <Sidebar activePage="execute" />
+      <Sidebar activePage="engage" />
       <Header />
 
       <main className="ml-52 pt-16">
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] text-center px-6">
-          <div
-            className="w-14 h-14 rounded-full flex items-center justify-center mb-6"
-            style={{ backgroundColor: "rgba(0,130,127,0.1)" }}
-          >
-            <Zap className="w-6 h-6" style={{ color: TEAL }} />
+        <div className="p-6 max-w-5xl mx-auto">
+
+          {/* Page Header */}
+          <div className="mb-6">
+            <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">Engage influencers and grow your social presence</h1>
+            <p className="text-sm text-muted-foreground">Discover, connect, and collaborate with influencers — then publish, measure, and amplify across your social channels.</p>
           </div>
 
-          <h1 className="text-3xl font-extrabold font-nunito text-foreground mb-3">
-            Execute is coming soon
-          </h1>
-          <p className="text-sm text-muted-foreground max-w-sm">
-            Based on signals across your searches, Execute will surface your
-            highest-impact next steps — from content opportunities to outreach
-            moments and strategic communications.
-          </p>
+          {/* Tab bar */}
+          <div className="border-b border-border">
+            <nav className="flex gap-1">
+              {SECTIONS.map(({ id, label, beta }) => (
+                <button
+                  key={id}
+                  onClick={() => setActiveSection(id)}
+                  className="flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors border-b-2 -mb-px"
+                  style={{
+                    borderBottomColor: activeSection === id ? TEAL : "transparent",
+                    color: activeSection === id ? "var(--foreground)" : "var(--muted-foreground)",
+                  }}
+                >
+                  {label}
+                  {beta && (
+                    <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded border"
+                      style={{ color: "#B627A1", borderColor: "#B627A1" }}>
+                      Beta
+                    </span>
+                  )}
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          {/* Section content */}
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <div
+              className="w-14 h-14 rounded-full flex items-center justify-center mb-6"
+              style={{ backgroundColor: "rgba(0,130,127,0.1)" }}
+            >
+              <active.Icon className="w-6 h-6" style={{ color: TEAL }} />
+            </div>
+            <h2 className="text-xl font-bold text-foreground mb-2">{active.title}</h2>
+            <p className="text-sm text-muted-foreground max-w-sm">{active.description}</p>
+          </div>
+
         </div>
       </main>
     </div>
