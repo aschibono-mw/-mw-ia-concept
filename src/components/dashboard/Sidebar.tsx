@@ -17,7 +17,7 @@ interface NavItem {
 
 const currentNavItems: NavItem[] = [
   { icon: <Search className="w-5 h-5" />,    label: "Explore",         path: "/search",              id: "discover",   tip: "Find and save searches across 300,000+ sources", chevron: true },
-  { icon: <Rows3 className="w-5 h-5" />,     label: "Monitor",         path: "/monitor-streams",     id: "monitor",    tip: "Track coverage in real-time streams", chevron: true },
+  { icon: <Rows3 className="w-5 h-5" />,     label: "Monitor",         path: "/monitor-streams",     id: "monitor",    tip: "Track coverage in real-time streams" },
   { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze",         path: "/analyze-dashboard",   id: "analyze",    tip: "Dashboards and performance insights" },
   { icon: <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>, label: "Engage", path: "/execute", id: "engage", tip: "Engage influencers and grow your social presence", chevron: true },
   { icon: <Users className="w-5 h-5" />,     label: "Media Relations", path: "/outreach-campaigns",  id: "outreach",   tip: "Manage journalist relationships, pitches, and PR campaigns", chevron: true },
@@ -88,8 +88,41 @@ function NavLink({
   );
 }
 
+const mediaRelationsSubItems = [
+  { label: "Media Lists",   path: "/outreach-campaigns" },
+  { label: "Search",        path: "/outreach-campaigns" },
+  { label: "Outreach",      path: "/outreach-campaigns" },
+  { label: "PR Assistant",  path: "/outreach-campaigns" },
+];
+
+const engageSubItems = [
+  { label: "Conversations", path: "/execute", beta: false },
+  { label: "Publish",       path: "/execute", beta: false },
+  { label: "Asset Library", path: "/execute", beta: false },
+  { label: "Measure",       path: "/execute", beta: false },
+  { label: "Advertise",     path: "/execute", beta: true },
+];
+
+const exploreSubItems = [
+  { label: "Searches",           path: "/search" },
+  { label: "Optimized searches", path: "/search" },
+  { label: "Compare",            path: "/search" },
+  { label: "Discover",           path: "/search" },
+  { label: "Analytics",          path: "/search" },
+  { label: "Author Segments",    path: "/author-segments" },
+  { label: "Tags",               path: "/search" },
+  { label: "Rules",              path: "/search" },
+  { label: "Author lists",       path: "/search" },
+  { label: "Filter sets",        path: "/search" },
+];
+
 export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
   const [currentPromo, setCurrentPromo] = useState(0);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const toggleMenu = (id: string) => setOpenMenu((prev) => (prev === id ? null : id));
+  const exploreOpen = openMenu === "discover";
+  const engageOpen = openMenu === "engage";
+  const mediaRelationsOpen = openMenu === "outreach";
   const navMode = useNavMode();
   const isFuture = navMode === "future";
   const mainNavItems = isFuture ? futureNavItems : currentNavItems;
@@ -119,11 +152,106 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
         <ul className="space-y-1">
           {mainNavItems.map((item) => (
             <li key={item.label}>
-              <NavLink to={item.path} activePage={activePage} id={item.id} tip={item.tip}>
-                {item.icon}
-                <span className="flex-1">{item.label}</span>
-                {item.chevron && <ChevronDown className="w-3.5 h-3.5 text-muted-foreground ml-auto" />}
-              </NavLink>
+              {item.id === "outreach" && item.chevron ? (
+                <>
+                  <button
+                    onClick={() => toggleMenu("outreach")}
+                    className={cn(
+                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                      activePage === item.id
+                        ? "text-foreground bg-sidebar-accent"
+                        : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                    )}
+                  >
+                    {item.icon}
+                    <span className="flex-1 text-left">{item.label}</span>
+                    <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground ml-auto transition-transform", mediaRelationsOpen && "rotate-180")} />
+                  </button>
+                  {mediaRelationsOpen && (
+                    <ul className="mt-1 ml-4 space-y-0.5 border-l border-sidebar-border pl-3">
+                      {mediaRelationsSubItems.map((sub) => (
+                        <li key={sub.label}>
+                          <Link
+                            to={sub.path}
+                            className="block px-2 py-1.5 rounded-md text-xs text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
+                          >
+                            {sub.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : item.id === "engage" && item.chevron ? (
+                <>
+                  <button
+                    onClick={() => toggleMenu("engage")}
+                    className={cn(
+                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                      activePage === item.id
+                        ? "text-foreground bg-sidebar-accent"
+                        : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                    )}
+                  >
+                    {item.icon}
+                    <span className="flex-1 text-left">{item.label}</span>
+                    <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground ml-auto transition-transform", engageOpen && "rotate-180")} />
+                  </button>
+                  {engageOpen && (
+                    <ul className="mt-1 ml-4 space-y-0.5 border-l border-sidebar-border pl-3">
+                      {engageSubItems.map((sub) => (
+                        <li key={sub.label}>
+                          <Link
+                            to={sub.path}
+                            className="flex items-center justify-between px-2 py-1.5 rounded-md text-xs text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
+                          >
+                            {sub.label}
+                            {sub.beta && (
+                              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded border" style={{ color: "#B627A1", borderColor: "#B627A1" }}>Beta</span>
+                            )}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : item.id === "discover" && item.chevron ? (
+                <>
+                  <button
+                    onClick={() => toggleMenu("discover")}
+                    className={cn(
+                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                      activePage === item.id
+                        ? "text-foreground bg-sidebar-accent"
+                        : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                    )}
+                  >
+                    {item.icon}
+                    <span className="flex-1 text-left">{item.label}</span>
+                    <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground ml-auto transition-transform", exploreOpen && "rotate-180")} />
+                  </button>
+                  {exploreOpen && (
+                    <ul className="mt-1 ml-4 space-y-0.5 border-l border-sidebar-border pl-3">
+                      {exploreSubItems.map((sub) => (
+                        <li key={sub.label}>
+                          <Link
+                            to={sub.path}
+                            className="block px-2 py-1.5 rounded-md text-xs text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
+                          >
+                            {sub.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                <NavLink to={item.path} activePage={activePage} id={item.id} tip={item.tip}>
+                  {item.icon}
+                  <span className="flex-1">{item.label}</span>
+                  {item.chevron && <ChevronDown className="w-3.5 h-3.5 text-muted-foreground ml-auto" />}
+                </NavLink>
+              )}
             </li>
           ))}
         </ul>
