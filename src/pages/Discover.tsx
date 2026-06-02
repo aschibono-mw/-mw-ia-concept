@@ -209,13 +209,13 @@ const Discover = () => {
                 "Searches",
                 "Optimized searches",
                 "Compare",
+                "Discover",
+                "Analytics",
+                "Audience Segments",
                 "Tags",
                 "Rules",
                 "Author lists",
                 "Filter sets",
-                "Analytics",
-                "Discover",
-                "Audience Segments",
               ].map((tab, i) => (
                 <button
                   key={tab}

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import meltwaterIcon from "@/assets/meltwater-icon.svg";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useNavMode } from "@/contexts/NavContext";
 
 interface NavItem {
   icon: React.ReactNode;
@@ -14,16 +15,27 @@ interface NavItem {
   chevron?: boolean;
 }
 
-const topNavItems: NavItem[] = [
-  { icon: <Home className="w-5 h-5" />, label: "Home", path: "/home2-dashboard", id: "home2", tip: "Your overview dashboard" },
+const currentNavItems: NavItem[] = [
+  { icon: <Search className="w-5 h-5" />,    label: "Explore",         path: "/search",              id: "discover",   tip: "Find and save searches across 300,000+ sources", chevron: true },
+  { icon: <Rows3 className="w-5 h-5" />,     label: "Monitor",         path: "/monitor-streams",     id: "monitor",    tip: "Track coverage in real-time streams", chevron: true },
+  { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze",         path: "/analyze-dashboard",   id: "analyze",    tip: "Dashboards and performance insights" },
+  { icon: <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>, label: "Engage", path: "/execute", id: "engage", tip: "Engage influencers and grow your social presence" },
+  { icon: <Mail className="w-5 h-5" />,      label: "Send",            path: "/newsletters",         id: "newsletters", tip: "Design and send branded email newsletters" },
+  { icon: <Users className="w-5 h-5" />,     label: "Media Relations", path: "/outreach-campaigns",  id: "outreach",   tip: "Manage journalist relationships, pitches, and PR campaigns", chevron: true },
 ];
 
-const mainNavItems: NavItem[] = [
-  { icon: <Search className="w-5 h-5" />,  label: "Explore",   path: "/search",            id: "discover",     tip: "Find and save searches across 300,000+ sources", chevron: true },
-  { icon: <Rows3 className="w-5 h-5" />,   label: "Monitor",  path: "/monitor-streams",   id: "monitor",      tip: "Track coverage in real-time streams", chevron: true },
-  { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze", path: "/analyze-dashboard", id: "analyze",  tip: "Dashboards and performance insights"            },
-  { icon: <Users className="w-5 h-5" />,   label: "Media Relations", path: "/outreach-campaigns", id: "outreach", tip: "Pitch and manage media contacts", chevron: true },
-  { icon: <Zap className="w-5 h-5" />,     label: "Engage",  path: "/execute",           id: "engage",   tip: "AI-recommended next actions"                    },
+const futureNavItems: NavItem[] = [
+  { icon: <Search className="w-5 h-5" />,    label: "Search",   path: "/future/search",              id: "discover",   tip: "Find and save searches across 300,000+ sources" },
+  { icon: <Rows3 className="w-5 h-5" />,     label: "Monitor",  path: "/future/monitor-streams",     id: "monitor",    tip: "Track coverage in real-time streams" },
+  { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze",  path: "/future/analyze-dashboard",   id: "analyze",    tip: "Dashboards and performance insights" },
+  { icon: <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>, label: "Engage", path: "/future/execute", id: "engage", tip: "Engage influencers and grow your social presence" },
+  { icon: <Sparkles className="w-5 h-5" />, label: "Execute",  path: "/future/execute",             id: "execute",    tip: "AI-recommended next actions" },
+  { icon: <Mail className="w-5 h-5" />,     label: "Send",     path: "/newsletters",                id: "newsletters", tip: "Design and send branded email newsletters" },
+  { icon: <Users className="w-5 h-5" />,    label: "Outreach", path: "/future/outreach-campaigns",  id: "outreach",   tip: "Manage journalist relationships, pitches, and PR campaigns" },
+];
+
+const topNavItems: NavItem[] = [
+  { icon: <Home className="w-5 h-5" />, label: "Home", path: "/home2-dashboard", id: "home2", tip: "Your overview dashboard" },
 ];
 
 interface PromoCard {
@@ -34,31 +46,15 @@ interface PromoCard {
 }
 
 const promoCards: PromoCard[] = [
-  {
-    icon: <Sparkles className="w-5 h-5" />,
-    title: "GenAI Lens",
-    description: "AI-powered insights across all your media data",
-    cta: "Try it now"
-  },
-  {
-    icon: <Bot className="w-5 h-5" />,
-    title: "Mira Companion",
-    description: "Your AI assistant for smarter media analysis",
-    cta: "Meet Mira"
-  },
-  {
-    icon: <UsersRound className="w-5 h-5" />,
-    title: "Audience Segments",
-    description: "Deep audience insights powered by intelligence",
-    cta: "Explore"
-  },
+  { icon: <Sparkles className="w-5 h-5" />, title: "GenAI Lens", description: "AI-powered insights across all your media data", cta: "Try it now" },
+  { icon: <Bot className="w-5 h-5" />, title: "Mira Companion", description: "Your AI assistant for smarter media analysis", cta: "Meet Mira" },
+  { icon: <UsersRound className="w-5 h-5" />, title: "Audience Segments", description: "Deep audience insights powered by intelligence", cta: "Explore" },
 ];
 
 interface SidebarProps {
   activePage?: string;
 }
 
-// Reusable nav link
 function NavLink({
   to, activePage, id, tip, children,
 }: {
@@ -87,15 +83,17 @@ function NavLink({
   return (
     <Tooltip>
       <TooltipTrigger asChild>{linkEl}</TooltipTrigger>
-      <TooltipContent side="right" className="z-[9999]">
-        {tip}
-      </TooltipContent>
+      <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>{tip}</TooltipContent>
     </Tooltip>
   );
 }
 
 export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
   const [currentPromo, setCurrentPromo] = useState(0);
+  const navMode = useNavMode();
+  const isFuture = navMode === "future";
+  const mainNavItems = isFuture ? futureNavItems : currentNavItems;
+  const prefix = isFuture ? "/future" : "";
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -105,12 +103,12 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
   }, []);
 
   return (
-    <aside className="w-52 bg-sidebar border-r border-sidebar-border flex flex-col h-screen fixed left-0 top-16">
+    <aside className="w-52 bg-sidebar border-r border-sidebar-border flex flex-col h-screen fixed left-0 top-16" style={{ zIndex: 50 }}>
       <nav className="px-3 py-4">
         <ul className="space-y-1">
           {topNavItems.map((item) => (
             <li key={item.label}>
-              <NavLink to={item.path} activePage={activePage} id={item.id} tip={item.tip}>
+              <NavLink to={isFuture ? `${prefix}/home2-dashboard` : item.path} activePage={activePage} id={item.id} tip={item.tip}>
                 {item.icon}
                 {item.label}
               </NavLink>
@@ -130,24 +128,6 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
           ))}
         </ul>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to="/newsletters"
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                activePage === "newsletters"
-                  ? "text-foreground bg-sidebar-accent"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-              )}
-            >
-              <Mail className="w-5 h-5" />
-              Newsletters
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="z-[9999]">Design and send branded email newsletters</TooltipContent>
-        </Tooltip>
-
         {/* Divider */}
         <div className="mx-3 my-3 border-t border-sidebar-border" />
 
@@ -156,7 +136,7 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              to="/genai-lens-explore"
+              to={`${prefix}/genai-lens-explore`}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 activePage === "genai-lens"
@@ -170,13 +150,13 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
               GenAI Lens
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right" className="z-[9999]">AI-powered insights across all your media data</TooltipContent>
+          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>AI-powered insights across all your media data</TooltipContent>
         </Tooltip>
 
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              to="/social-trends-explore"
+              to={`${prefix}/social-trends-explore`}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 activePage === "social-trends"
@@ -190,13 +170,13 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
               Social Trends
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right" className="z-[9999]">Trending topics and social signals</TooltipContent>
+          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>Trending topics and social signals</TooltipContent>
         </Tooltip>
 
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              to="/mira"
+              to={`${prefix}/mira`}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 activePage === "mira"
@@ -210,10 +190,9 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
               Mira Studio
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right" className="z-[9999]">Your AI assistant for smarter media analysis</TooltipContent>
+          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>Your AI assistant for smarter media analysis</TooltipContent>
         </Tooltip>
       </nav>
-      {/* Spacer */}
       <div className="flex-1" />
     </aside>
   );

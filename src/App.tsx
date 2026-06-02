@@ -1,3 +1,4 @@
+import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -39,8 +40,10 @@ import AuthorSegments from "./pages/AuthorSegments.tsx";
 import AuthorSegmentsLanding from "./pages/AuthorSegmentsLanding.tsx";
 import AuthorSegmentsDetail from "./pages/AuthorSegmentsDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import { FutureWrapper } from "./components/FutureWrapper.tsx";
 
 const queryClient = new QueryClient();
+const fw = (el: React.ReactElement) => <FutureWrapper>{el}</FutureWrapper>;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -86,6 +89,21 @@ const App = () => (
           <Route path="/monitor-landing" element={<MonitorLanding />} />
           <Route path="/execute" element={<ExecuteLanding />} />
           <Route path="/outreach-landing" element={<OutreachLanding />} />
+          {/* FUTURE prototype routes */}
+          <Route path="/future" element={<Navigate to="/future/home2-dashboard" replace />} />
+          <Route path="/future/home2-dashboard" element={fw(<Home2Dashboard />)} />
+          <Route path="/future/search" element={fw(<Discover />)} />
+          <Route path="/future/monitor-streams" element={fw(<Monitor />)} />
+          <Route path="/future/analyze-dashboard" element={fw(<Analyze />)} />
+          <Route path="/future/execute" element={fw(<ExecuteLanding />)} />
+          <Route path="/future/outreach-campaigns" element={fw(<Outreach />)} />
+          <Route path="/future/genai-lens-explore" element={fw(<GenAILens />)} />
+          <Route path="/future/social-trends-explore" element={fw(<SocialTrends />)} />
+          <Route path="/future/mira" element={fw(<MiraStudio />)} />
+          <Route path="/future/search-detail/:name" element={fw(<SearchDetail />)} />
+          <Route path="/future/analyze-detail/:name" element={fw(<AnalyzeDetail />)} />
+          <Route path="/future/author-segments" element={fw(<AuthorSegments />)} />
+          <Route path="/future/author-segments-detail/:name" element={fw(<AuthorSegmentsDetail />)} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
