@@ -187,7 +187,7 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
               <div className="w-5 h-5 rounded-full bg-gradient-to-br from-purple-500 to-primary flex items-center justify-center shrink-0">
                 <img src={meltwaterIcon} alt="Mira" className="w-3 h-3 brightness-0 invert" />
               </div>
-              Mira Studio
+              {isFuture ? "Ask Mira" : "Mira Studio"}
             </Link>
           </TooltipTrigger>
           <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>Your AI assistant for smarter media analysis</TooltipContent>
