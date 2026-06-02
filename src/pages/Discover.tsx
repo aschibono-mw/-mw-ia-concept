@@ -211,7 +211,7 @@ const Discover = () => {
                 "Compare",
                 "Discover",
                 "Analytics",
-                "Audience Segments",
+                "Author Segments",
                 "Tags",
                 "Rules",
                 "Author lists",
