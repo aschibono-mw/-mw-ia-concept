@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { MessageSquare, Send, Image, BarChart2, Megaphone } from "lucide-react";
@@ -40,21 +41,24 @@ const SECTIONS = [
     Icon: Megaphone,
     title: "Advertise",
     description: "Amplify your top-performing content and reach new audiences with paid promotion.",
-    beta: true,
+    beta: false,
   },
 ];
 
 const ExecuteLanding = () => {
-  const [activeSection, setActiveSection] = useState("conversations");
-  const active = SECTIONS.find(s => s.id === activeSection)!;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeSection = searchParams.get("tab") || "conversations";
+  const setActiveSection = (id: string) => setSearchParams({ tab: id });
+  const active = SECTIONS.find(s => s.id === activeSection) ?? SECTIONS[0];
 
   return (
     <div className="min-h-screen bg-background">
       <Sidebar activePage="engage" />
       <Header />
 
-      <main className="ml-52 pt-16">
-        <div className="p-6 max-w-5xl mx-auto">
+      <main className="ml-52 pt-16 bg-white" style={{ minHeight: "100vh" }}>
+        <div className="px-8 pt-8 pb-10" style={{ minHeight: "calc(100vh - 64px)" }}>
+          <div className="rounded-[28px] px-8 pt-6 pb-8" style={{ backgroundColor: "#F2F5F5", minHeight: "calc(100vh - 64px - 72px)" }}>
 
           {/* Page Header */}
           <div className="mb-6">
@@ -99,6 +103,7 @@ const ExecuteLanding = () => {
             <p className="text-sm text-muted-foreground max-w-sm">{active.description}</p>
           </div>
 
+          </div>
         </div>
       </main>
     </div>

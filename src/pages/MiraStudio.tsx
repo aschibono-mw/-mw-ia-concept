@@ -85,7 +85,9 @@ const MiraStudio = () => {
       <Sidebar activePage="mira" />
       <Header />
 
-      <main className="ml-52 pt-16 flex flex-col h-[calc(100vh-64px)] bg-background">
+      <main className="ml-52 pt-16 min-h-screen bg-white">
+        <div className="px-8 pt-8 pb-10">
+        <div className="rounded-[28px] px-8 pt-6 pb-8" style={{ backgroundColor: "#F2F5F5" }}>
         {/* Sub-header toolbar */}
         <div className="flex items-center justify-between px-6 py-2.5 border-b border-border">
           <DropdownMenu>
@@ -115,8 +117,8 @@ const MiraStudio = () => {
           </div>
         </div>
 
-        {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto">
+        {/* Content */}
+        <div>
           <div className="max-w-2xl mx-auto px-6 pt-12 pb-10">
 
             {/* Logo + greeting */}
@@ -240,6 +242,8 @@ const MiraStudio = () => {
             </Tabs>
 
           </div>
+        </div>
+        </div>
         </div>
       </main>
     </div>

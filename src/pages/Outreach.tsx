@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { ShareDialog } from "@/components/discover/ShareDialog";
-import { ChevronDown, Star, MoreVertical, Plus, Send, Users, Megaphone, Radio, FolderOpen } from "lucide-react";
+import { ChevronDown, Star, MoreVertical, Plus, Send, Users, Megaphone, Radio, FolderOpen, FileText, ExternalLink, Settings } from "lucide-react";
 import { JournalistsOutletsTab } from "@/components/outreach/JournalistsOutletsTab";
 import { MediaListsTab } from "@/components/outreach/MediaListsTab";
 import { MediaList, mockMediaLists } from "@/components/outreach/mediaListTypes";
@@ -90,7 +90,129 @@ type StatusFilter = 'all' | 'sent' | 'scheduled' | 'draft';
 
 const ITEMS_PER_PAGE = 10;
 
+const TEAL_OUT = "#00827F";
+
+type ReleaseStatus = "Published" | "Scheduled" | "Draft";
+const STATUS_STYLES: Record<ReleaseStatus, string> = {
+  Published: "bg-green-100 text-green-700",
+  Scheduled: "bg-blue-100 text-blue-700",
+  Draft:     "bg-gray-100 text-gray-600",
+};
+const NW_RELEASES = [
+  { id: "1", title: "Meltwater Announces Record Q2 2026 Results",               status: "Published" as ReleaseStatus, date: "Jun 2, 2026",  wire: "PR Newswire" },
+  { id: "2", title: "Meltwater Expands AI-Powered Media Intelligence Platform",  status: "Published" as ReleaseStatus, date: "May 20, 2026", wire: "Business Wire" },
+  { id: "3", title: "Meltwater Partners with Leading ESG Data Providers",        status: "Scheduled" as ReleaseStatus, date: "Jun 10, 2026", wire: "GlobeNewswire" },
+  { id: "4", title: "Q3 Investor Day Preview",                                   status: "Draft"     as ReleaseStatus, date: "—",            wire: "—" },
+];
+const FILTER_OPTS = ["All Press Releases", "Published", "Scheduled", "Drafts"];
+
+const NewswireTab = () => {
+  const [filter, setFilter] = useState("All Press Releases");
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [actionsOpen, setActionsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState<string | null>(null);
+  const filtered = NW_RELEASES.filter((r) => {
+    if (filter === "All Press Releases") return true;
+    if (filter === "Drafts") return r.status === "Draft";
+    return r.status === filter;
+  });
+  return (
+    <div>
+      {/* Actions bar */}
+      <div className="flex items-center justify-end mb-4">
+        <div className="relative">
+          <button
+            onClick={() => setActionsOpen((o) => !o)}
+            className="flex items-center gap-2 text-white font-semibold text-sm rounded-lg px-4 py-2"
+            style={{ backgroundColor: TEAL_OUT }}
+          >
+            Actions <ChevronDown className="w-3.5 h-3.5" />
+          </button>
+          {actionsOpen && (
+            <div className="absolute right-0 top-10 z-50 bg-white border border-border rounded-lg shadow-lg py-1 min-w-[180px]">
+              <button className="w-full text-left px-4 py-2.5 text-sm hover:bg-muted/50 flex items-center gap-2" onClick={() => setActionsOpen(false)}>
+                <Plus className="w-4 h-4 text-muted-foreground" /> Create a Newswire
+              </button>
+              <button className="w-full text-left px-4 py-2.5 text-sm hover:bg-muted/50 flex items-center gap-2" onClick={() => setActionsOpen(false)}>
+                <Settings className="w-4 h-4 text-muted-foreground" /> Manage Accounts
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="bg-card rounded-xl border border-border overflow-hidden">
+        {/* Filter */}
+        <div className="flex items-center px-5 py-3 border-b border-border">
+          <div className="relative">
+            <button
+              onClick={() => setFilterOpen((o) => !o)}
+              className="flex items-center gap-2 text-sm font-medium border border-border rounded-lg px-3 py-1.5 hover:bg-muted/40 transition-colors"
+            >
+              {filter} <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
+            </button>
+            {filterOpen && (
+              <div className="absolute left-0 top-9 z-50 bg-white border border-border rounded-lg shadow-lg py-1 min-w-[180px]">
+                {FILTER_OPTS.map((opt) => (
+                  <button key={opt} onClick={() => { setFilter(opt); setFilterOpen(false); }}
+                    className={`w-full text-left px-4 py-2 text-sm hover:bg-muted/50 ${filter === opt ? "font-semibold" : ""}`}>
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+        {/* Header */}
+        <div className="grid border-b border-border bg-muted/20" style={{ gridTemplateColumns: "2fr 1fr 1fr 1fr 48px" }}>
+          {["Title","Status","Date","Wire Service"].map((h) => (
+            <div key={h} className="px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide">{h}</div>
+          ))}
+          <div />
+        </div>
+        {/* Rows */}
+        {filtered.map((r) => (
+          <div key={r.id} className="grid border-b border-border last:border-0 hover:bg-muted/20 transition-colors group relative"
+            style={{ gridTemplateColumns: "2fr 1fr 1fr 1fr 48px" }}>
+            <div className="px-5 py-4 flex items-center gap-2.5">
+              <FileText className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+              <span className="text-sm font-medium text-foreground">{r.title}</span>
+            </div>
+            <div className="px-4 py-4 flex items-center">
+              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${STATUS_STYLES[r.status]}`}>{r.status}</span>
+            </div>
+            <div className="px-4 py-4 flex items-center text-sm text-muted-foreground">{r.date}</div>
+            <div className="px-4 py-4 flex items-center text-sm text-muted-foreground">{r.wire}</div>
+            <div className="flex items-center justify-center relative">
+              <button onClick={() => setMenuOpen((m) => m === r.id ? null : r.id)}
+                className="opacity-0 group-hover:opacity-100 p-1.5 rounded hover:bg-muted transition-all">
+                <MoreVertical className="w-4 h-4 text-muted-foreground" />
+              </button>
+              {menuOpen === r.id && (
+                <div className="absolute right-2 top-10 z-50 bg-white border border-border rounded-lg shadow-lg py-1 min-w-[140px]">
+                  <button className="w-full text-left px-4 py-2 text-sm hover:bg-muted/50" onClick={() => setMenuOpen(null)}>View</button>
+                  <button className="w-full text-left px-4 py-2 text-sm hover:bg-muted/50" onClick={() => setMenuOpen(null)}>Edit</button>
+                  <button className="w-full text-left px-4 py-2 text-sm hover:bg-muted/50 flex items-center gap-2" onClick={() => setMenuOpen(null)}>
+                    <ExternalLink className="w-3.5 h-3.5" /> View Live
+                  </button>
+                  <div className="border-t border-border my-1" />
+                  <button className="w-full text-left px-4 py-2 text-sm text-destructive hover:bg-muted/50" onClick={() => setMenuOpen(null)}>Delete</button>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div className="py-16 text-center text-sm text-muted-foreground">No press releases found.</div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const Outreach = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get("tab") || "pitches";
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [sortField, setSortField] = useState<SortField>('sentDate');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
@@ -246,9 +368,10 @@ const Outreach = () => {
       <Sidebar activePage="outreach" />
       <Header />
       
-      <main className="ml-52 pt-16">
-        <div className="p-6 flex flex-col items-center">
-          <div className="w-full max-w-[1100px]">
+      <main className="ml-52 pt-16 min-h-screen bg-white">
+        <div className="px-8 pt-8 pb-10">
+          <div className="rounded-[28px] px-8 pt-6 pb-8" style={{ backgroundColor: "#F2F5F5" }}>
+          <div className="w-full max-w-[1100px] mx-auto">
             {/* Page Header */}
             <div className="mb-6 flex items-start justify-between">
               <div>
@@ -265,7 +388,7 @@ const Outreach = () => {
             </div>
 
             {/* Tabbed Interface */}
-            <Tabs defaultValue="pitches" className="w-full">
+            <Tabs value={activeTab} onValueChange={(v) => setSearchParams({ tab: v })} className="w-full">
               <TabsList className="bg-transparent border-b border-border w-full justify-start rounded-none h-auto p-0 mb-6">
                 <TooltipProvider>
                   <Tooltip>
@@ -292,7 +415,7 @@ const Outreach = () => {
                           className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-muted-foreground data-[state=active]:text-foreground flex items-center gap-2"
                         >
                           <Users className="w-4 h-4" />
-                          Journalists & Outlets
+                          Search
                         </TabsTrigger>
                       </span>
                     </TooltipTrigger>
@@ -579,16 +702,10 @@ const Outreach = () => {
 
               {/* Newswire Tab */}
               <TabsContent value="newswire" className="mt-0">
-                <div className="bg-card rounded-lg border border-border p-6">
-                  <div className="text-center py-12">
-                    <Radio className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <h2 className="font-semibold text-card-foreground mb-2">Newswire</h2>
-                    <p className="text-sm text-muted-foreground mb-4">Distribute your press releases to major news outlets worldwide.</p>
-                    <button className="text-sm text-foreground underline hover:text-primary">Get started &gt;&gt;</button>
-                  </div>
-                </div>
+                <NewswireTab />
               </TabsContent>
             </Tabs>
+          </div>
           </div>
         </div>
       </main>

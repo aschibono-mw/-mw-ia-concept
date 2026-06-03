@@ -89,17 +89,18 @@ function NavLink({
 }
 
 const mediaRelationsSubItems = [
-  { label: "Search",     path: "/outreach-campaigns", tip: "Find media contacts and sources for outreach" },
-  { label: "Outreach",   path: "/outreach-campaigns", tip: "Send personalized pitches and track engagement" },
-  { label: "Newswires",  path: "/outreach-campaigns", tip: "Publish and schedule press releases" },
+  { label: "Outreach",     path: "/outreach-campaigns?tab=pitches",      tip: "Send personalized pitches and track engagement" },
+  { label: "Search",       path: "/outreach-campaigns?tab=journalists",  tip: "Find media contacts and sources for outreach" },
+  { label: "Media Lists",  path: "/outreach-campaigns?tab=media-lists",  tip: "Manage your lists of media contacts and sources" },
+  { label: "Newswires",    path: "/outreach-campaigns?tab=newswire",     tip: "Publish and schedule press releases" },
 ];
 
 const engageSubItems = [
-  { label: "Conversations", path: "/execute", beta: false, tip: "" },
-  { label: "Publish",       path: "/execute", beta: false, tip: "" },
-  { label: "Asset Library", path: "/execute", beta: false, tip: "" },
-  { label: "Measure",       path: "/execute", beta: false, tip: "" },
-  { label: "Advertise",     path: "/execute", beta: false, tip: "" },
+  { label: "Conversations", path: "/execute?tab=conversations", beta: false, tip: "" },
+  { label: "Publish",       path: "/execute?tab=publish",       beta: false, tip: "" },
+  { label: "Asset Library", path: "/execute?tab=asset-library", beta: false, tip: "" },
+  { label: "Measure",       path: "/execute?tab=measure",       beta: false, tip: "" },
+  { label: "Advertise",     path: "/execute?tab=advertise",     beta: false, tip: "" },
 ];
 
 const exploreSubItems = [
@@ -110,7 +111,18 @@ const exploreSubItems = [
 
 export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
   const [currentPromo, setCurrentPromo] = useState(0);
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const exploreSubIds = ["searches", "compare", "discover-sub"];
+  const engageSubIds  = ["conversations", "publish", "asset-library", "measure", "advertise"];
+  const outreachSubIds = ["search-sub", "outreach-sub", "newswires-sub"];
+
+  const getInitialMenu = () => {
+    if (["searches","compare"].includes(activePage) || activePage === "discover") return "discover";
+    if (activePage === "engage" || ["conversations","publish","asset-library","measure","advertise"].includes(activePage)) return "engage";
+    if (["outreach","newswires"].includes(activePage)) return "outreach";
+    return null;
+  };
+
+  const [openMenu, setOpenMenu] = useState<string | null>(getInitialMenu);
   const toggleMenu = (id: string) => setOpenMenu((prev) => (prev === id ? null : id));
   const exploreOpen = openMenu === "discover";
   const engageOpen = openMenu === "engage";
@@ -170,19 +182,15 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
             <li key={item.label}>
               {item.id === "outreach" && item.chevron ? (
                 <>
-                  <button
-                    onClick={() => toggleMenu("outreach")}
-                    className={cn(
-                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                      activePage === item.id
-                        ? "text-foreground bg-sidebar-accent"
-                        : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-                    )}
-                  >
-                    {item.icon}
-                    <span className="flex-1 text-left">{item.label}</span>
-                    <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground ml-auto transition-transform", mediaRelationsOpen && "rotate-180")} />
-                  </button>
+                  <div className={cn("flex items-center rounded-lg transition-colors", activePage === item.id ? "bg-sidebar-accent" : "hover:bg-sidebar-accent/50")}>
+                    <Link to={item.path} className={cn("flex-1 flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors", activePage === item.id ? "text-foreground" : "text-sidebar-foreground")}>
+                      {item.icon}
+                      <span>{item.label}</span>
+                    </Link>
+                    <button onClick={() => toggleMenu("outreach")} className="pr-3 py-2.5 text-muted-foreground hover:text-foreground transition-colors">
+                      <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", mediaRelationsOpen && "rotate-180")} />
+                    </button>
+                  </div>
                   {mediaRelationsOpen && (
                     <ul className="mt-1 ml-4 space-y-0.5 border-l border-sidebar-border pl-3">
                       {mediaRelationsSubItems.map((sub) => (
@@ -202,19 +210,15 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
                 </>
               ) : item.id === "engage" && item.chevron ? (
                 <>
-                  <button
-                    onClick={() => toggleMenu("engage")}
-                    className={cn(
-                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                      activePage === item.id
-                        ? "text-foreground bg-sidebar-accent"
-                        : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-                    )}
-                  >
-                    {item.icon}
-                    <span className="flex-1 text-left">{item.label}</span>
-                    <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground ml-auto transition-transform", engageOpen && "rotate-180")} />
-                  </button>
+                  <div className={cn("flex items-center rounded-lg transition-colors", activePage === item.id ? "bg-sidebar-accent" : "hover:bg-sidebar-accent/50")}>
+                    <Link to={item.path} className={cn("flex-1 flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors", activePage === item.id ? "text-foreground" : "text-sidebar-foreground")}>
+                      {item.icon}
+                      <span>{item.label}</span>
+                    </Link>
+                    <button onClick={() => toggleMenu("engage")} className="pr-3 py-2.5 text-muted-foreground hover:text-foreground transition-colors">
+                      <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", engageOpen && "rotate-180")} />
+                    </button>
+                  </div>
                   {engageOpen && (
                     <ul className="mt-1 ml-4 space-y-0.5 border-l border-sidebar-border pl-3">
                       {engageSubItems.map((sub) => (
@@ -235,24 +239,23 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
                 </>
               ) : item.id === "discover" && item.chevron ? (
                 <>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        onClick={() => toggleMenu("discover")}
-                        className={cn(
-                          "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                          activePage === item.id
-                            ? "text-foreground bg-sidebar-accent"
-                            : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-                        )}
-                      >
-                        {item.icon}
-                        <span className="flex-1 text-left">{item.label}</span>
-                        <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground ml-auto transition-transform", exploreOpen && "rotate-180")} />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>{item.tip}</TooltipContent>
-                  </Tooltip>
+                  <div className={cn("flex items-center rounded-lg transition-colors", activePage === item.id ? "bg-sidebar-accent" : "hover:bg-sidebar-accent/50")}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link
+                          to={item.path}
+                          className={cn("flex-1 flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors", activePage === item.id ? "text-foreground" : "text-sidebar-foreground")}
+                        >
+                          {item.icon}
+                          <span>{item.label}</span>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>{item.tip}</TooltipContent>
+                    </Tooltip>
+                    <button onClick={() => toggleMenu("discover")} className="pr-3 py-2.5 text-muted-foreground hover:text-foreground transition-colors">
+                      <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", exploreOpen && "rotate-180")} />
+                    </button>
+                  </div>
                   {exploreOpen && (
                     <ul className="mt-1 ml-4 space-y-0.5 border-l border-sidebar-border pl-3">
                       {exploreSubItems.map((sub) => (
@@ -329,7 +332,7 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              to={`${prefix}/social-trends-explore`}
+              to={`${prefix}/newswires`}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 activePage === "newswires"

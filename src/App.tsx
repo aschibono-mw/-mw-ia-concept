@@ -22,6 +22,7 @@ import Account from "./pages/Account.tsx";
 import Profile from "./pages/Profile.tsx";
 import GenAILens from "./pages/GenAILens.tsx";
 import SocialTrends from "./pages/SocialTrends.tsx";
+import Newswires from "./pages/Newswires.tsx";
 import SearchLanding from "./pages/SearchLanding.tsx";
 import SearchPlus from "./pages/SearchPlus.tsx";
 import SearchPlusHub from "./pages/SearchPlusHub.tsx";
@@ -81,6 +82,7 @@ const App = () => (
           <Route path="/genai-lens-explore" element={<GenAILens />} />
           <Route path="/social-trends" element={<SocialTrendsLanding />} />
           <Route path="/social-trends-explore" element={<SocialTrends />} />
+          <Route path="/newswires" element={<Newswires />} />
           <Route path="/social-accounts" element={<SocialAccounts />} />
           <Route path="/search" element={<Discover />} />
           <Route path="/search-detail/:name" element={<SearchDetail />} />

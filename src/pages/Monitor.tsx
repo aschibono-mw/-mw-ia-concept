@@ -144,8 +144,9 @@ const Monitor = () => {
       <Sidebar activePage="monitor" />
       <Header />
 
-      <main className="ml-52 pt-16">
-        <div className="px-6 pt-6">
+      <main className="ml-52 pt-16 min-h-screen bg-white">
+        <div className="px-8 pt-8 pb-10">
+        <div className="rounded-[28px] px-8 pt-6 pb-8" style={{ backgroundColor: "#F2F5F5" }}>
           {/* Page Header */}
           <div className="mb-6 flex items-start justify-between">
             <div>
@@ -221,39 +222,40 @@ const Monitor = () => {
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
           </div>
-        </div>
 
-        {/* Streams Container - Full width, no horizontal padding */}
-        <div className="min-h-[calc(100vh-240px)]">
-          {activeCanvas && activeCanvas.streams.length > 0 ? (
-            <ScrollArea className="w-full">
-              <div className="flex gap-4 p-4 pl-6">
-                {activeCanvas.streams.map((stream) => (
-                  <MonitorStream
-                    key={stream.id}
-                    stream={stream}
-                    onAnalyze={handleAnalyzeStream}
-                    onRemove={handleRemoveStream}
+          {/* Streams Container */}
+          <div className="min-h-[calc(100vh-240px)] mt-4">
+            {activeCanvas && activeCanvas.streams.length > 0 ? (
+              <ScrollArea className="w-full">
+                <div className="flex gap-4 pb-2">
+                  {activeCanvas.streams.map((stream) => (
+                    <MonitorStream
+                      key={stream.id}
+                      stream={stream}
+                      onAnalyze={handleAnalyzeStream}
+                      onRemove={handleRemoveStream}
+                    />
+                  ))}
+                  {/* Add Stream Hover Card */}
+                  <AddStreamHover
+                    existingSearches={existingSearches}
+                    onSelectSearch={handleQuickAddStream}
+                    onCreateNew={() => setIsAddStreamOpen(true)}
                   />
-                ))}
-                {/* Add Stream Hover Card */}
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
+            ) : (
+              <div className="flex items-start">
                 <AddStreamHover
                   existingSearches={existingSearches}
                   onSelectSearch={handleQuickAddStream}
                   onCreateNew={() => setIsAddStreamOpen(true)}
                 />
               </div>
-              <ScrollBar orientation="horizontal" />
-            </ScrollArea>
-          ) : (
-            <div className="flex items-start p-4 pl-6">
-              <AddStreamHover
-                existingSearches={existingSearches}
-                onSelectSearch={handleQuickAddStream}
-                onCreateNew={() => setIsAddStreamOpen(true)}
-              />
-            </div>
-          )}
+            )}
+          </div>
+        </div>
         </div>
       </main>
 

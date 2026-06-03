@@ -1620,10 +1620,12 @@ const Newsletters = () => {
     <div className="min-h-screen bg-background">
       <Sidebar activePage="newsletters" />
       <Header />
-      <main className="ml-52 pt-16">
+      <main className="ml-52 pt-16 bg-white" style={{ minHeight: "100vh" }}>
+        <div className="px-8 pt-8 pb-10" style={{ minHeight: "calc(100vh - 64px)" }}>
+        <div className="rounded-[28px] px-8 pt-6 pb-8" style={{ backgroundColor: "#F2F5F5", minHeight: "calc(100vh - 64px - 72px)" }}>
 
         {/* ── Page header ── */}
-        <div className="px-8 pt-6 bg-background">
+        <div className="pt-0">
           <div className="flex items-start justify-between mb-5">
             <div>
               <h1 className="text-2xl font-extrabold font-nunito text-foreground mb-1">
@@ -1674,10 +1676,10 @@ const Newsletters = () => {
 
         {/* ── Newsletters tab ── */}
         {activeTab === "newsletters" && (
-          <div className="flex">
+          <div className="mt-4 flex rounded-2xl border border-border/40 bg-white">
 
             {/* Left sidebar */}
-            <div className="w-[260px] flex-shrink-0 flex flex-col border-r border-border bg-white sticky top-16 self-start" style={{ maxHeight: "calc(100vh - 64px)", overflowY: "auto" }}>
+            <div className="w-[260px] flex-shrink-0 flex flex-col border-r border-border bg-white rounded-tl-2xl sticky top-16 self-start" style={{ maxHeight: "calc(100vh - 64px)", overflowY: "auto" }}>
               <div className="px-3 pt-3 pb-2">
                 <div className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 bg-muted/50 border border-border">
                   <Search className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
@@ -1729,7 +1731,7 @@ const Newsletters = () => {
             </div>
 
             {/* Right panel */}
-            <div className="flex-1" style={{ backgroundColor: selectedId === ALL_VIEW_ID ? "white" : "rgba(0,0,0,0.02)" }}>
+            <div className="flex-1 rounded-tr-2xl rounded-br-2xl overflow-hidden" style={{ backgroundColor: selectedId === ALL_VIEW_ID ? "white" : "rgba(0,0,0,0.02)" }}>
               {selectedId === ALL_VIEW_ID
                 ? <AllNewslettersInbox />
                 : selectedSeries
@@ -1746,11 +1748,13 @@ const Newsletters = () => {
 
         {/* ── Recipient Lists tab ── */}
         {activeTab === "recipients" && (
-          <div className="bg-white">
+          <div className="bg-white rounded-2xl overflow-hidden border border-border/40">
             <RecipientsPlaceholder />
           </div>
         )}
 
+        </div>
+        </div>
       </main>
     </div>
   );
