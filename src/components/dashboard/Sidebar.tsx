@@ -104,7 +104,7 @@ const engageSubItems = [
 ];
 
 const exploreSubItems = [
-  { label: "Searches", path: "/search",  tip: "Search and uncover insights across news, social, and broadcast" },
+  { label: "Searches & Filters", path: "/search",  tip: "Search and uncover insights across news, social, and broadcast" },
   { label: "Compare",  path: "/search",  tip: "Benchmark search results across brands, topics, and more" },
   { label: "Discover", path: "/search",  tip: "Surface key trends across your searches" },
 ];

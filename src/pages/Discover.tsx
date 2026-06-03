@@ -207,7 +207,7 @@ const Discover = () => {
             {/* Tab nav */}
             <div className="flex items-center border-b border-border mb-6 -mx-0 overflow-x-auto">
               {[
-                "Searches",
+                "Searches & Filters",
                 "Optimized searches",
                 "Compare",
                 "Discover",
