@@ -110,11 +110,11 @@ const exploreSubItems = [
 
 export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
   const [currentPromo, setCurrentPromo] = useState(0);
-  const [openMenus, setOpenMenus] = useState<Set<string>>(new Set(["discover", "outreach", "engage"]));
-  const toggleMenu = (id: string) => setOpenMenus((prev) => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next; });
-  const exploreOpen = openMenus.has("discover");
-  const engageOpen = openMenus.has("engage");
-  const mediaRelationsOpen = openMenus.has("outreach");
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const toggleMenu = (id: string) => setOpenMenu((prev) => (prev === id ? null : id));
+  const exploreOpen = openMenu === "discover";
+  const engageOpen = openMenu === "engage";
+  const mediaRelationsOpen = openMenu === "outreach";
   const navMode = useNavMode();
   const isFuture = navMode === "future";
   const mainNavItems = isFuture ? futureNavItems : currentNavItems;
