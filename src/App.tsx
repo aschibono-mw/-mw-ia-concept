@@ -19,6 +19,7 @@ import MiraStudio from "./pages/MiraStudio.tsx";
 import ContentManager from "./pages/ContentManager.tsx";
 import ProjectsManager from "./pages/ProjectsManager.tsx";
 import Account from "./pages/Account.tsx";
+import Profile from "./pages/Profile.tsx";
 import GenAILens from "./pages/GenAILens.tsx";
 import SocialTrends from "./pages/SocialTrends.tsx";
 import SearchLanding from "./pages/SearchLanding.tsx";
@@ -75,6 +76,7 @@ const App = () => (
           <Route path="/content-manager" element={<ContentManager />} />
           <Route path="/projects-manager" element={<ProjectsManager />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/genai-lens" element={<GenAILensLanding />} />
           <Route path="/genai-lens-explore" element={<GenAILens />} />
           <Route path="/social-trends" element={<SocialTrendsLanding />} />

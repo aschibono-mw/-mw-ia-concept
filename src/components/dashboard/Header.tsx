@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import meltwaterIcon from "@/assets/meltwater-icon.svg";
 import { mockAlerts } from "@/components/alerts/mockData";
 import { getAlertIcon } from "@/components/alerts/alertIcons";
@@ -25,7 +26,7 @@ const createMenuItems = [
   { icon: LayoutGrid, label: "Dashboard" },
   { icon: FileText, label: "Report" },
   { icon: FileStack, label: "Digest" },
-  { icon: Send, label: "Pitch" },
+  { icon: Send, label: "Outreach" },
   { icon: Mail, label: "Newsletter" },
   { icon: AlertCircle, label: "Alert" },
 ];
@@ -53,8 +54,8 @@ const pageTitles: Record<string, string> = {
   "/reports": "Reports",
   "/digests": "Digests",
   "/mira": "Ask Mira",
-  "/content-manager": "Asset Manager",
-  "/projects-manager": "Projects Manager",
+  "/content-manager": "Assets",
+  "/projects-manager": "Projects",
   "/account": "Account",
   "/genai-lens": "GenAI Lens",
   "/social-trends": "Social Trends",
@@ -378,12 +379,15 @@ export const Header = () => {
               {userMenuView === "menu" && (
                 <>
                   {/* User info */}
-                  <div className="flex items-center gap-3 p-3 border-b border-border">
+                  <div
+                    className="flex items-center gap-3 p-3 border-b border-border cursor-pointer hover:bg-muted/40 transition-colors"
+                    onClick={() => { navigate("/profile"); setUserMenuOpen(false); }}
+                  >
                     <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
                       <User className="w-5 h-5 text-muted-foreground" />
                     </div>
                     <div className="flex flex-col min-w-0">
-                      <span className="font-medium text-sm">John Box</span>
+                      <span className="font-medium text-sm hover:underline">John Box</span>
                       <span className="text-xs text-muted-foreground truncate">John.Box@meltwater.com</span>
                     </div>
                   </div>
@@ -426,27 +430,55 @@ export const Header = () => {
 
                   <DropdownMenuSeparator className="my-1" />
 
-                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md">
-                    <UserCircle className="w-4 h-4 mr-2" />
-                    Profile
-                  </DropdownMenuItem>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/profile")}>
+                        <UserCircle className="w-4 h-4 mr-2" />
+                        Profile
+                      </DropdownMenuItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="left">Update your personal details and preferences</TooltipContent>
+                  </Tooltip>
 
-                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/account")}>
-                    <Building2 className="w-4 h-4 mr-2" />
-                    Account Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/content-manager")}>
-                    <FileStack className="w-4 h-4 mr-2" />
-                    Assets & Exports
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/projects-manager")}>
-                    <FolderKanban className="w-4 h-4 mr-2" />
-                    Projects Manager
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/social-accounts")}>
-                    <Users className="w-4 h-4 mr-2" />
-                    Social Accounts
-                  </DropdownMenuItem>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/account")}>
+                        <Building2 className="w-4 h-4 mr-2" />
+                        Account
+                      </DropdownMenuItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="left">Manage your organization's settings, billing, and subscription details</TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/content-manager")}>
+                        <FileStack className="w-4 h-4 mr-2" />
+                        Assets
+                      </DropdownMenuItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="left">Manage your brand assets and templates</TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/projects-manager")}>
+                        <FolderKanban className="w-4 h-4 mr-2" />
+                        Projects
+                      </DropdownMenuItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="left">Bundle your searches, dashboards, and reports into focused workspaces</TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <DropdownMenuItem className="cursor-pointer mx-1 rounded-md" onClick={() => navigate("/social-accounts")}>
+                        <Users className="w-4 h-4 mr-2" />
+                        Social Connections
+                      </DropdownMenuItem>
+                    </TooltipTrigger>
+                    <TooltipContent side="left">Add your social accounts and define monitored topics and hashtags</TooltipContent>
+                  </Tooltip>
 
                   <DropdownMenuSeparator className="my-1" />
 

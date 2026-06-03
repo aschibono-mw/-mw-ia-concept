@@ -3,7 +3,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import {
   MoreVertical, Search, Info, ChevronDown, ChevronUp, ChevronsUpDown,
-  FolderKanban, Plus,
+  FolderKanban, Plus, ChevronRight, BarChart2, FileText, Rows3, BookOpen,
 } from "lucide-react";
 
 const TEAL = "#00827F";
@@ -15,6 +15,54 @@ interface Project {
   lastUsed: string;
   lastUsedSort: number;
 }
+
+type AssetType = "search" | "dashboard" | "report" | "monitor";
+
+interface ProjectAsset {
+  id: string;
+  name: string;
+  type: AssetType;
+}
+
+const ASSET_ICONS: Record<AssetType, React.ReactNode> = {
+  search:    <Search className="w-3.5 h-3.5 text-muted-foreground" />,
+  dashboard: <BarChart2 className="w-3.5 h-3.5 text-muted-foreground" />,
+  report:    <FileText className="w-3.5 h-3.5 text-muted-foreground" />,
+  monitor:   <Rows3 className="w-3.5 h-3.5 text-muted-foreground" />,
+};
+
+const ASSET_TYPE_LABEL: Record<AssetType, string> = {
+  search: "Search", dashboard: "Dashboard", report: "Report", monitor: "Monitor",
+};
+
+const PROJECT_ASSETS: Record<number, ProjectAsset[]> = {
+  1: [
+    { id: "1a", name: "Brand Mentions – Global",    type: "search" },
+    { id: "1b", name: "Brand Health Overview",       type: "dashboard" },
+    { id: "1c", name: "Q2 Executive Summary",        type: "report" },
+    { id: "1d", name: "Brand Sentiment Stream",      type: "monitor" },
+  ],
+  2: [
+    { id: "2a", name: "Competitor Share of Voice",   type: "search" },
+    { id: "2b", name: "Competitive Landscape Dash",  type: "dashboard" },
+    { id: "2c", name: "Competitor Coverage Report",  type: "report" },
+  ],
+  3: [
+    { id: "3a", name: "Executive Mentions Search",   type: "search" },
+    { id: "3b", name: "Visibility Dashboard",         type: "dashboard" },
+    { id: "3c", name: "Monthly Visibility Report",   type: "report" },
+  ],
+  4: [
+    { id: "4a", name: "Crisis Keywords Search",      type: "search" },
+    { id: "4b", name: "Crisis Monitoring Stream",    type: "monitor" },
+    { id: "4c", name: "Incident Timeline Report",    type: "report" },
+  ],
+  5: [
+    { id: "5a", name: "Q1 Coverage Search",          type: "search" },
+    { id: "5b", name: "Q1 Performance Dashboard",    type: "dashboard" },
+    { id: "5c", name: "Q1 Media Recap Report",       type: "report" },
+  ],
+};
 
 const PROJECTS: Project[] = [
   { id: 1, name: "Brand Health Q2 2026",        visibility: "Team",     lastUsed: "Just now",      lastUsedSort: 0 },
@@ -45,6 +93,8 @@ const ProjectsManager = () => {
   const [menuOpen, setMenuOpen]   = useState<number | null>(null);
   const [visMenuOpen, setVisMenuOpen] = useState<number | null>(null);
   const [projects, setProjects]   = useState<Project[]>(PROJECTS);
+  const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
+  const toggleExpand = (id: number) => setExpandedIds(prev => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next; });
 
   const handleSortLastUsed = () => {
     setSortDir(d => d === "asc" ? "desc" : "asc");
@@ -123,14 +173,19 @@ const ProjectsManager = () => {
             {/* Rows */}
             {filtered.map((project) => {
               const visCfg = VISIBILITY_COLORS[project.visibility];
+              const isExpanded = expandedIds.has(project.id);
+              const assets = PROJECT_ASSETS[project.id] ?? [];
               return (
+                <div key={project.id} className="border-b border-border last:border-b-0">
                 <div
-                  key={project.id}
-                  className="grid border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors group relative"
+                  className="grid hover:bg-muted/30 transition-colors group relative"
                   style={{ gridTemplateColumns: "2fr 1.2fr 1.2fr 48px" }}
                 >
                   {/* Name */}
-                  <div className="px-5 py-4 flex items-center gap-3">
+                  <div className="px-5 py-4 flex items-center gap-2">
+                    <button onClick={() => toggleExpand(project.id)} className="flex-shrink-0 p-0.5 rounded hover:bg-muted transition-colors">
+                      <ChevronRight className={`w-3.5 h-3.5 text-muted-foreground transition-transform ${isExpanded ? "rotate-90" : ""}`} />
+                    </button>
                     <FolderKanban className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                     <span className="text-[14px] font-medium text-foreground">{project.name}</span>
                   </div>
@@ -187,6 +242,26 @@ const ProjectsManager = () => {
                       </div>
                     )}
                   </div>
+                </div>
+
+                {/* Expanded asset rows */}
+                {isExpanded && (
+                  <div className="bg-muted/20 border-t border-border/50">
+                    {assets.map((asset) => (
+                      <div
+                        key={asset.id}
+                        className="flex items-center gap-3 pl-14 pr-5 py-2.5 hover:bg-muted/40 transition-colors group/asset border-b border-border/30 last:border-b-0"
+                      >
+                        {ASSET_ICONS[asset.type]}
+                        <span className="text-[13px] flex-1 cursor-pointer hover:underline" style={{ color: TEAL }}>{asset.name}</span>
+                        <span className="text-[11px] text-muted-foreground/60 bg-muted px-2 py-0.5 rounded-full">{ASSET_TYPE_LABEL[asset.type]}</span>
+                      </div>
+                    ))}
+                    {assets.length === 0 && (
+                      <div className="pl-14 pr-5 py-3 text-[13px] text-muted-foreground">No assets in this project yet.</div>
+                    )}
+                  </div>
+                )}
                 </div>
               );
             })}

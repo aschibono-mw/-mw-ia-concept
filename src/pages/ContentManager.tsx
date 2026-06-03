@@ -10,17 +10,19 @@ import { LabelsTab } from "@/components/content-manager/LabelsTab";
 import { NewsfeedsTab } from "@/components/content-manager/NewsfeedsTab";
 import { SourcesTab } from "@/components/content-manager/SourcesTab";
 import { DigestsTab } from "@/components/content-manager/DigestsTab";
+import { BrandTab } from "@/components/content-manager/BrandTab";
 
 const TABS = [
   { value: "digests", label: "Digests" },
   { value: "tags", label: "Tags" },
+  { value: "brand", label: "Brand" },
   { value: "automation", label: "Automation" },
   { value: "rss-feeds", label: "Incoming RSS feeds" },
   { value: "added-content", label: "Added content" },
   { value: "labels", label: "Labels" },
   { value: "newsfeeds", label: "Newsfeeds" },
   { value: "sources", label: "Sources" },
-  { value: "exports", label: "Exports" },
+  { value: "exports", label: "Reports" },
 ];
 
 const ContentManager = () => {
@@ -95,7 +97,11 @@ const ContentManager = () => {
                 <DigestsTab />
               </TabsContent>
 
-              {TABS.filter((t) => !["tags","automation","rss-feeds","added-content","labels","newsfeeds","sources","digests"].includes(t.value)).map((tab) => (
+              <TabsContent value="brand">
+                <BrandTab />
+              </TabsContent>
+
+              {TABS.filter((t) => !["tags","automation","rss-feeds","added-content","labels","newsfeeds","sources","digests","brand"].includes(t.value)).map((tab) => (
                 <TabsContent key={tab.value} value={tab.value}>
                   <div className="bg-card rounded-lg border border-border p-12 flex items-center justify-center">
                     <p className="text-sm text-muted-foreground">{tab.label} content coming soon.</p>

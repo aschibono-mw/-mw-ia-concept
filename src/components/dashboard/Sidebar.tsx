@@ -16,26 +16,26 @@ interface NavItem {
 }
 
 const currentNavItems: NavItem[] = [
-  { icon: <Search className="w-5 h-5" />,    label: "Explore",         path: "/search",              id: "discover",   tip: "Find and save searches across 300,000+ sources", chevron: true },
-  { icon: <Rows3 className="w-5 h-5" />,     label: "Monitor",         path: "/monitor-streams",     id: "monitor",    tip: "Track coverage in real-time streams" },
-  { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze",         path: "/analyze-dashboard",   id: "analyze",    tip: "Dashboards and performance insights" },
-  { icon: <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>, label: "Engage", path: "/execute", id: "engage", tip: "Engage influencers and grow your social presence", chevron: true },
-  { icon: <Users className="w-5 h-5" />,     label: "Media Relations", path: "/outreach-campaigns",  id: "outreach",   tip: "Manage journalist relationships, pitches, and PR campaigns", chevron: true },
-  { icon: <Mail className="w-5 h-5" />,      label: "Newsletters",     path: "/newsletters",         id: "newsletters", tip: "Design and send branded email newsletters" },
+  { icon: <Search className="w-5 h-5" />,    label: "Explore",         path: "/search",              id: "discover",   tip: "Search and uncover insights across news, social, and broadcast", chevron: true },
+  { icon: <Rows3 className="w-5 h-5" />,     label: "Monitor",         path: "/monitor-streams",     id: "monitor",    tip: "Track topics, brands, and trends in real time" },
+  { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze",         path: "/analyze-dashboard",   id: "analyze",    tip: "Combines paid, earned, owned, and influencer data into one interactive, shareable dashboard" },
+  { icon: <Users className="w-5 h-5" />,     label: "Media Relations", path: "/outreach-campaigns",  id: "outreach",   tip: "Journalist database, media list management and outreach for PR teams", chevron: true },
+  { icon: <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>, label: "Engage", path: "/execute", id: "engage", tip: "Publish, reply, and manage conversations", chevron: true },
+  { icon: <Mail className="w-5 h-5" />,      label: "Newsletters",     path: "/newsletters",         id: "newsletters", tip: "Create and send media newsletters to your targeted audiences" },
 ];
 
 const futureNavItems: NavItem[] = [
-  { icon: <Search className="w-5 h-5" />,    label: "Search",   path: "/future/search",              id: "discover",   tip: "Find and save searches across 300,000+ sources" },
-  { icon: <Rows3 className="w-5 h-5" />,     label: "Monitor",  path: "/future/monitor-streams",     id: "monitor",    tip: "Track coverage in real-time streams" },
-  { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze",  path: "/future/analyze-dashboard",   id: "analyze",    tip: "Dashboards and performance insights" },
-  { icon: <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>, label: "Engage", path: "/future/execute", id: "engage", tip: "Engage influencers and grow your social presence" },
+  { icon: <Search className="w-5 h-5" />,    label: "Search",   path: "/future/search",              id: "discover",   tip: "Search and uncover insights across news, social, and broadcast" },
+  { icon: <Rows3 className="w-5 h-5" />,     label: "Monitor",  path: "/future/monitor-streams",     id: "monitor",    tip: "Track topics, brands, and trends in real time" },
+  { icon: <BarChart2 className="w-5 h-5" />, label: "Analyze",  path: "/future/analyze-dashboard",   id: "analyze",    tip: "Combines paid, earned, owned, and influencer data into one interactive, shareable dashboard" },
+  { icon: <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>, label: "Engage", path: "/future/execute", id: "engage", tip: "Publish, reply, and manage conversations" },
   { icon: <Sparkles className="w-5 h-5" />, label: "Execute",  path: "/future/execute",             id: "execute",    tip: "AI-recommended next actions" },
-  { icon: <Mail className="w-5 h-5" />,     label: "Send",     path: "/newsletters",                id: "newsletters", tip: "Design and send branded email newsletters" },
-  { icon: <Users className="w-5 h-5" />,    label: "Outreach", path: "/future/outreach-campaigns",  id: "outreach",   tip: "Manage journalist relationships, pitches, and PR campaigns" },
+  { icon: <Mail className="w-5 h-5" />,     label: "Send",     path: "/newsletters",                id: "newsletters", tip: "Create and send media newsletters to your targeted audiences" },
+  { icon: <Users className="w-5 h-5" />,    label: "Outreach", path: "/future/outreach-campaigns",  id: "outreach",   tip: "Journalist database, media list management and outreach for PR teams" },
 ];
 
 const topNavItems: NavItem[] = [
-  { icon: <Home className="w-5 h-5" />, label: "Home", path: "/home2-dashboard", id: "home2", tip: "Your overview dashboard" },
+  { icon: <Home className="w-5 h-5" />, label: "Home", path: "/home2-dashboard", id: "home2", tip: "Landing page with quick access to recent activities, insights, and shortcuts across the application" },
 ];
 
 interface PromoCard {
@@ -89,40 +89,32 @@ function NavLink({
 }
 
 const mediaRelationsSubItems = [
-  { label: "Media Lists",   path: "/outreach-campaigns" },
-  { label: "Search",        path: "/outreach-campaigns" },
-  { label: "Outreach",      path: "/outreach-campaigns" },
-  { label: "PR Assistant",  path: "/outreach-campaigns" },
+  { label: "Search",     path: "/outreach-campaigns", tip: "Find media contacts and sources for outreach" },
+  { label: "Outreach",   path: "/outreach-campaigns", tip: "Send personalized pitches and track engagement" },
+  { label: "Newswires",  path: "/outreach-campaigns", tip: "Publish and schedule press releases" },
 ];
 
 const engageSubItems = [
-  { label: "Conversations", path: "/execute", beta: false },
-  { label: "Publish",       path: "/execute", beta: false },
-  { label: "Asset Library", path: "/execute", beta: false },
-  { label: "Measure",       path: "/execute", beta: false },
-  { label: "Advertise",     path: "/execute", beta: true },
+  { label: "Conversations", path: "/execute", beta: false, tip: "" },
+  { label: "Publish",       path: "/execute", beta: false, tip: "" },
+  { label: "Asset Library", path: "/execute", beta: false, tip: "" },
+  { label: "Measure",       path: "/execute", beta: false, tip: "" },
+  { label: "Advertise",     path: "/execute", beta: false, tip: "" },
 ];
 
 const exploreSubItems = [
-  { label: "Searches",           path: "/search" },
-  { label: "Optimized searches", path: "/search" },
-  { label: "Compare",            path: "/search" },
-  { label: "Discover",           path: "/search" },
-  { label: "Analytics",          path: "/search" },
-  { label: "Author Segments",    path: "/author-segments" },
-  { label: "Tags",               path: "/search" },
-  { label: "Rules",              path: "/search" },
-  { label: "Author lists",       path: "/search" },
-  { label: "Filter sets",        path: "/search" },
+  { label: "Searches", path: "/search",  tip: "Search and uncover insights across news, social, and broadcast" },
+  { label: "Compare",  path: "/search",  tip: "Benchmark search results across brands, topics, and more" },
+  { label: "Discover", path: "/search",  tip: "Surface key trends across your searches" },
 ];
 
 export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
   const [currentPromo, setCurrentPromo] = useState(0);
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const toggleMenu = (id: string) => setOpenMenu((prev) => (prev === id ? null : id));
-  const exploreOpen = openMenu === "discover";
-  const engageOpen = openMenu === "engage";
-  const mediaRelationsOpen = openMenu === "outreach";
+  const [openMenus, setOpenMenus] = useState<Set<string>>(new Set(["discover", "outreach", "engage"]));
+  const toggleMenu = (id: string) => setOpenMenus((prev) => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next; });
+  const exploreOpen = openMenus.has("discover");
+  const engageOpen = openMenus.has("engage");
+  const mediaRelationsOpen = openMenus.has("outreach");
   const navMode = useNavMode();
   const isFuture = navMode === "future";
   const mainNavItems = isFuture ? futureNavItems : currentNavItems;
@@ -147,7 +139,31 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
               </NavLink>
             </li>
           ))}
+          <li>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to={`${prefix}/mira`}
+                  className={cn(
+                    "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                    activePage === "mira"
+                      ? "text-foreground bg-sidebar-accent"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                  )}
+                >
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-purple-500 to-primary flex items-center justify-center shrink-0">
+                    <img src={meltwaterIcon} alt="Mira" className="w-3 h-3 brightness-0 invert" />
+                  </div>
+                  {isFuture ? "Ask Mira" : "Mira Studio"}
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>Your AI teammate to generate instant media insights, briefings, and reports</TooltipContent>
+            </Tooltip>
+          </li>
         </ul>
+
+        {/* Separator after Mira Studio */}
+        <div className="mx-3 my-3 border-t border-sidebar-border" />
 
         <ul className="space-y-1">
           {mainNavItems.map((item) => (
@@ -171,12 +187,14 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
                     <ul className="mt-1 ml-4 space-y-0.5 border-l border-sidebar-border pl-3">
                       {mediaRelationsSubItems.map((sub) => (
                         <li key={sub.label}>
-                          <Link
-                            to={sub.path}
-                            className="block px-2 py-1.5 rounded-md text-xs text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
-                          >
-                            {sub.label}
-                          </Link>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Link to={sub.path} className="block px-2 py-1.5 rounded-md text-xs text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors">
+                                {sub.label}
+                              </Link>
+                            </TooltipTrigger>
+                            {sub.tip && <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>{sub.tip}</TooltipContent>}
+                          </Tooltip>
                         </li>
                       ))}
                     </ul>
@@ -217,29 +235,36 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
                 </>
               ) : item.id === "discover" && item.chevron ? (
                 <>
-                  <button
-                    onClick={() => toggleMenu("discover")}
-                    className={cn(
-                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                      activePage === item.id
-                        ? "text-foreground bg-sidebar-accent"
-                        : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-                    )}
-                  >
-                    {item.icon}
-                    <span className="flex-1 text-left">{item.label}</span>
-                    <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground ml-auto transition-transform", exploreOpen && "rotate-180")} />
-                  </button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={() => toggleMenu("discover")}
+                        className={cn(
+                          "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                          activePage === item.id
+                            ? "text-foreground bg-sidebar-accent"
+                            : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                        )}
+                      >
+                        {item.icon}
+                        <span className="flex-1 text-left">{item.label}</span>
+                        <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground ml-auto transition-transform", exploreOpen && "rotate-180")} />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>{item.tip}</TooltipContent>
+                  </Tooltip>
                   {exploreOpen && (
                     <ul className="mt-1 ml-4 space-y-0.5 border-l border-sidebar-border pl-3">
                       {exploreSubItems.map((sub) => (
                         <li key={sub.label}>
-                          <Link
-                            to={sub.path}
-                            className="block px-2 py-1.5 rounded-md text-xs text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
-                          >
-                            {sub.label}
-                          </Link>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Link to={sub.path} className="block px-2 py-1.5 rounded-md text-xs text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors">
+                                {sub.label}
+                              </Link>
+                            </TooltipTrigger>
+                            {sub.tip && <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>{sub.tip}</TooltipContent>}
+                          </Tooltip>
                         </li>
                       ))}
                     </ul>
@@ -278,7 +303,7 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
               GenAI Lens
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>AI-powered insights across all your media data</TooltipContent>
+          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>See how AI models describe you, what people are searching, and whether AI is citing your content</TooltipContent>
         </Tooltip>
 
         <Tooltip>
@@ -295,31 +320,36 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
               <div className="w-5 h-5 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center shrink-0">
                 <BarChart2 className="w-3 h-3 text-white" />
               </div>
-              Social Trends
+              Trends Center
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>Trending topics and social signals</TooltipContent>
+          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>Universal trend detection that surfaces emerging stories, narratives, and spikes across news and social</TooltipContent>
         </Tooltip>
 
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              to={`${prefix}/mira`}
+              to={`${prefix}/social-trends-explore`}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                activePage === "mira"
+                activePage === "newswires"
                   ? "text-foreground bg-sidebar-accent"
                   : "text-sidebar-foreground hover:bg-sidebar-accent/50"
               )}
             >
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-purple-500 to-primary flex items-center justify-center shrink-0">
-                <img src={meltwaterIcon} alt="Mira" className="w-3 h-3 brightness-0 invert" />
+              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 20v-8"/>
+                  <path d="M6 17c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+                  <path d="M3 14c0-5 4-9 9-9s9 4 9 9"/>
+                </svg>
               </div>
-              {isFuture ? "Ask Mira" : "Mira Studio"}
+              Newswires
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>Your AI assistant for smarter media analysis</TooltipContent>
+          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>Access real-time newswire feeds</TooltipContent>
         </Tooltip>
+
       </nav>
       <div className="flex-1" />
     </aside>
