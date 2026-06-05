@@ -22,6 +22,7 @@ const currentNavItems: NavItem[] = [
   { icon: <Users className="w-5 h-5" />,     label: "Media Relations", path: "/outreach-campaigns",  id: "outreach",   tip: "Journalist database, media list management and outreach for PR teams", chevron: true },
   { icon: <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>, label: "Engage", path: "/execute", id: "engage", tip: "Publish, reply, and manage conversations", chevron: true },
   { icon: <Mail className="w-5 h-5" />,      label: "Newsletters",     path: "/newsletters",         id: "newsletters", tip: "Create and send media newsletters to your targeted audiences" },
+  { icon: <BarChart2 className="w-5 h-5" />, label: "Trends Center",  path: "/social-trends-explore", id: "social-trends", tip: "Universal trend detection that surfaces emerging stories, narratives, and spikes across news and social" },
 ];
 
 const futureNavItems: NavItem[] = [
@@ -172,6 +173,27 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
               <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>Your AI teammate to generate instant media insights, briefings, and reports</TooltipContent>
             </Tooltip>
           </li>
+          <li>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  to={`${prefix}/genai-lens-explore`}
+                  className={cn(
+                    "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                    activePage === "genai-lens"
+                      ? "text-foreground bg-sidebar-accent"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                  )}
+                >
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center shrink-0">
+                    <Sparkles className="w-3 h-3 text-white" />
+                  </div>
+                  GenAI Lens
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>See how AI models describe you, what people are searching, and whether AI is citing your content</TooltipContent>
+            </Tooltip>
+          </li>
         </ul>
 
         {/* Separator after Mira Studio */}
@@ -283,75 +305,6 @@ export const Sidebar = ({ activePage = "home" }: SidebarProps) => {
             </li>
           ))}
         </ul>
-
-        {/* Divider */}
-        <div className="mx-3 my-3 border-t border-sidebar-border" />
-
-        <p className="px-3 mb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">Discover</p>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to={`${prefix}/genai-lens-explore`}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                activePage === "genai-lens"
-                  ? "text-foreground bg-sidebar-accent"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-              )}
-            >
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center shrink-0">
-                <Sparkles className="w-3 h-3 text-white" />
-              </div>
-              GenAI Lens
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>See how AI models describe you, what people are searching, and whether AI is citing your content</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to={`${prefix}/social-trends-explore`}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                activePage === "social-trends"
-                  ? "text-foreground bg-sidebar-accent"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-              )}
-            >
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center shrink-0">
-                <BarChart2 className="w-3 h-3 text-white" />
-              </div>
-              Trends Center
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>Universal trend detection that surfaces emerging stories, narratives, and spikes across news and social</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              to={`${prefix}/newswires`}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                activePage === "newswires"
-                  ? "text-foreground bg-sidebar-accent"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-              )}
-            >
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 20v-8"/>
-                  <path d="M6 17c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
-                  <path d="M3 14c0-5 4-9 9-9s9 4 9 9"/>
-                </svg>
-              </div>
-              Newswires
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="z-[99999] pointer-events-none" style={{ zIndex: 99999 }}>Access real-time newswire feeds</TooltipContent>
-        </Tooltip>
 
       </nav>
       <div className="flex-1" />
